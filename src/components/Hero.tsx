@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 
-const ROLES = ["طراح وب", "توسعه‌دهنده فرانت‌اند", "خلاق دیجیتال با AI"];
+const ROLES = [
+  "طراح و توسعه‌دهنده‌ی وب",
+  "خلاق دیجیتال با کمک AI",
+  "سازنده‌ی سایت‌های سریع",
+];
 const ROTATION_MS = 3400;
 
 const TECH_STACK = ["HTML", "CSS", "JavaScript", "Next.js", "AI"];
@@ -84,12 +88,12 @@ export default function Hero() {
         </div>
 
         <h1 className="hero-title">
-          <span className="hero-title-line">سایت‌هایی که</span>
+          <span className="hero-title-line">سایتی که</span>
           <span className="hero-title-line hero-title-muted">
-            فقط دیده نمی‌شن؛
+            بازدیدکننده رو
           </span>
           <span className="hero-title-line">
-            <em className="hero-title-em">ماندگار</em> می‌شن.
+            <em className="hero-title-em">مشتری</em> می‌کنه.
           </span>
         </h1>
 
@@ -103,14 +107,14 @@ export default function Hero() {
             {ROLES[roleIndex]}
           </span>
           <span className="sr-only">
-            طراح وب، توسعه‌دهنده فرانت‌اند و خلاق دیجیتال با هوش مصنوعی
+            طراح و توسعه‌دهنده‌ی وب، خلاق دیجیتال با هوش مصنوعی، سازنده‌ی
+            سایت‌های سریع
           </span>
         </p>
 
         <p className="hero-description">
-          سایت اختصاصی برای کسب‌وکارهایی که به «قالب آماده» راضی نیستن —
-          طراحی از صفر، کد سبک و سریع، و هوش مصنوعی که ایده‌ها رو جلوتر
-          می‌بره.
+          از صفر طراحی می‌شه، زیر ۲ ثانیه لود می‌شه، روی موبایل عالی
+          کار می‌کنه. برای کسب‌وکارهایی که به قالب آماده راضی نیستن.
         </p>
 
         <ul className="hero-tech" aria-label="تکنولوژی‌های مورد استفاده">
@@ -124,14 +128,14 @@ export default function Hero() {
         <div className="hero-actions">
           <MagneticButton strength={0.2} radius={70}>
             <Link href="/order" className="btn btn-primary">
-              سفارش پروژه
+              شروع پروژه
               <span aria-hidden="true">←</span>
             </Link>
           </MagneticButton>
 
           <MagneticButton strength={0.15} radius={60}>
             <a href="#portfolio" className="btn btn-secondary">
-              مشاهده نمونه‌کارها
+              دیدن نمونه‌کارها
             </a>
           </MagneticButton>
 
