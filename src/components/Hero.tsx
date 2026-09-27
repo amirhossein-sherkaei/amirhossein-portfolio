@@ -61,9 +61,55 @@ function useTehranClock() {
   return mounted ? toPersian(time) : "--:--:--";
 }
 
+/* ═══════════════════════════════════════════════════════════
+   PERSIAN DATE — auto-updates every minute
+   Returns: { day, month, year, weekday }
+   ═══════════════════════════════════════════════════════════ */
+function usePersianDate() {
+  const [mounted, setMounted] = useState(false);
+  const [date, setDate] = useState({
+    day: "--",
+    month: "--",
+    year: "----",
+    weekday: "--",
+  });
+
+  useEffect(() => {
+    setMounted(true);
+    const update = () => {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat("fa-IR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        weekday: "long",
+        timeZone: "Asia/Tehran",
+      });
+      const parts = fmt.formatToParts(now);
+      const get = (t: string) =>
+        parts.find((p) => p.type === t)?.value ?? "--";
+      setDate({
+        day: get("day"),
+        month: get("month"),
+        year: get("year").replace(/[^\u06F0-\u06F9]/g, ""),
+        weekday: get("weekday"),
+      });
+    };
+    update();
+    /* Update every 30s to catch midnight changes quickly */
+    const id = window.setInterval(update, 30000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return mounted
+    ? date
+    : { day: "--", month: "--", year: "----", weekday: "--" };
+}
+
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const clock = useTehranClock();
+  const persianDate = usePersianDate();
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -234,15 +280,27 @@ export default function Hero() {
               </span>
             </article>
 
-            {/* Cell C — Signature */}
-            <article className="hero-bento-cell hero-bento-cell--sig">
+            {/* ═══ Cell C — Persian Date (auto-updating) ═══ */}
+            <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
               </span>
-              <span className="hero-bento-label">SIGNATURE</span>
-              <span className="hero-bento-sig-mark" aria-hidden="true">
-                <SignatureMark />
-              </span>
+              <span className="hero-bento-label">TODAY</span>
+
+              <div className="hero-bento-date">
+                <span className="hero-bento-date-weekday">
+                  {persianDate.weekday}
+                </span>
+                <span className="hero-bento-date-day">
+                  {persianDate.day}
+                </span>
+                <span className="hero-bento-date-month">
+                  {persianDate.month}
+                </span>
+                <span className="hero-bento-date-year">
+                  {persianDate.year}
+                </span>
+              </div>
             </article>
 
             {/* Cell D — Big number */}
@@ -282,27 +340,6 @@ function CrosshairMark() {
       <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" strokeWidth="0.7" />
       <line x1="0" y1="12" x2="24" y2="12" stroke="currentColor" strokeWidth="0.7" />
       <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="0.7" />
-    </svg>
-  );
-}
-
-function SignatureMark() {
-  return (
-    <svg
-      viewBox="0 0 220 60"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M6 40C24 20 46 50 70 28C88 14 106 42 130 28C150 18 172 38 206 22"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        className="hero-sig-path"
-      />
-      <circle cx="212" cy="20" r="3" fill="currentColor" />
     </svg>
   );
 }
