@@ -92,13 +92,17 @@ import "@/styles/theme-toggle.css";
 /* 29. Hero Editorial */
 import "@/styles/hero-editorial.css";
 
-/* 30. Signature Ink — must be LAST */
+/* 30. Signature Ink */
 import "@/styles/signature-ink.css";
+
+/* 31. Density Standardization — FINAL override layer */
+import "@/styles/density-standardization.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
 import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
+import SignatureInk from "@/components/SignatureInk";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -265,6 +269,7 @@ export default function RootLayout({
         <WelcomeOnboarding />
         <TouchFeedback />
         <SensoryFeedback />
+        <SignatureInk />
         <Analytics />
         <SpeedInsights />
       </body>
