@@ -11,7 +11,7 @@ const ROLES = [
 ];
 const ROTATION_MS = 3400;
 
-const TECH_STACK = ["HTML", "CSS", "JavaScript", "Next.js", "AI"];
+const TECH_STACK = ["Next.js", "React", "TypeScript", "AI"];
 
 const MARQUEE_WORDS = [
   "WEB DESIGN",
@@ -50,11 +50,21 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero-section">
+      {/* ═══════ Ambient aurora ═══════ */}
+      <div className="hero-aurora" aria-hidden="true">
+        <span className="hero-aurora-blob hero-aurora-blob-1" />
+        <span className="hero-aurora-blob hero-aurora-blob-2" />
+        <span className="hero-aurora-blob hero-aurora-blob-3" />
+        <span className="hero-aurora-grid" />
+      </div>
+
+      {/* ═══════ Corner marks ═══════ */}
       <span className="hero-corner hero-corner-tl" aria-hidden="true" />
       <span className="hero-corner hero-corner-tr" aria-hidden="true" />
       <span className="hero-corner hero-corner-bl" aria-hidden="true" />
       <span className="hero-corner hero-corner-br" aria-hidden="true" />
 
+      {/* ═══════ Vertical rail ═══════ */}
       <div className="hero-rail" aria-hidden="true">
         <span className="hero-rail-line" />
         <span className="hero-rail-text">
@@ -64,6 +74,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-inner">
+        {/* ═══════ Editorial masthead ═══════ */}
         <div className="hero-masthead">
           <span className="hero-masthead-left">
             VOL.&nbsp;01&nbsp;—&nbsp;ISSUE&nbsp;{CURRENT_PERSIAN_YEAR}
@@ -76,86 +87,125 @@ export default function Hero() {
           </span>
         </div>
 
-        <div className="hero-top">
-          <span className="eyebrow">
-            طراحی وب · فرانت‌اند · خلاقیت با AI
-          </span>
+        {/* ═══════ Split grid: main + glass aside ═══════ */}
+        <div className="hero-grid">
+          {/* ─── Main column ─── */}
+          <div className="hero-main">
+            <span className="hero-eyebrow">
+              <span className="hero-eyebrow-dot" aria-hidden="true" />
+              <span>طراحی وب · فرانت‌اند · خلاقیت با AI</span>
+            </span>
 
-          <span className="hero-top-meta">
-            <span className="hero-top-meta-dot" aria-hidden="true" />
-            <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
-          </span>
+            <h1 className="hero-title">
+              <span className="hero-title-line">سایتی که</span>
+              <span className="hero-title-line hero-title-muted">
+                بازدیدکننده رو
+              </span>
+              <span className="hero-title-line">
+                <em className="hero-title-em">مشتری</em> می‌کنه.
+              </span>
+            </h1>
+
+            <p className="hero-role">
+              <span className="hero-role-dot" aria-hidden="true" />
+              <span
+                key={roleIndex}
+                className="hero-role-text"
+                aria-hidden="true"
+              >
+                {ROLES[roleIndex]}
+              </span>
+              <span className="sr-only">
+                طراح و توسعه‌دهنده‌ی وب، خلاق دیجیتال با هوش مصنوعی،
+                سازنده‌ی سایت‌های سریع
+              </span>
+            </p>
+
+            <p className="hero-description">
+              از صفر طراحی می‌شه، زیر ۲ ثانیه لود می‌شه، روی موبایل
+              عالی کار می‌کنه. برای کسب‌وکارهایی که به قالب آماده راضی
+              نیستن.
+            </p>
+
+            <div className="hero-actions">
+              <MagneticButton strength={0.2} radius={70}>
+                <Link href="/order" className="btn btn-primary">
+                  شروع پروژه
+                  <span aria-hidden="true">←</span>
+                </Link>
+              </MagneticButton>
+
+              <MagneticButton strength={0.15} radius={60}>
+                <a href="#portfolio" className="btn btn-secondary">
+                  دیدن نمونه‌کارها
+                </a>
+              </MagneticButton>
+            </div>
+
+            <div className="hero-tech-row">
+              <span className="hero-tech-label">Stack</span>
+              <ul className="hero-tech" aria-label="تکنولوژی‌های مورد استفاده">
+                {TECH_STACK.map((tech) => (
+                  <li key={tech} className="hero-tech-chip">
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* ─── Glass aside card ─── */}
+          <aside className="hero-aside" aria-hidden="true">
+            <div className="hero-glass">
+              <span className="hero-glass-corner hero-glass-corner-tl" />
+              <span className="hero-glass-corner hero-glass-corner-tr" />
+              <span className="hero-glass-corner hero-glass-corner-bl" />
+              <span className="hero-glass-corner hero-glass-corner-br" />
+
+              <div className="hero-glass-head">
+                <span className="hero-glass-live">
+                  <span className="hero-glass-live-dot" />
+                  LIVE
+                </span>
+                <span className="hero-glass-issue">
+                  Nº&nbsp;{CURRENT_PERSIAN_YEAR}
+                </span>
+              </div>
+
+              <div className="hero-glass-status">
+                <span className="hero-glass-status-label">وضعیت</span>
+                <span className="hero-glass-status-value">
+                  <span className="hero-glass-status-pulse" />
+                  پذیرش پروژه
+                </span>
+              </div>
+
+              <div className="hero-glass-stats">
+                <div className="hero-glass-stat">
+                  <strong>۹۹</strong>
+                  <span>RES / ۱۰۰</span>
+                </div>
+                <div className="hero-glass-stat">
+                  <strong>۲۴</strong>
+                  <span>ساعت پاسخ</span>
+                </div>
+                <div className="hero-glass-stat">
+                  <strong>۱۰۰٪</strong>
+                  <span>کد اختصاصی</span>
+                </div>
+              </div>
+
+              <div className="hero-glass-foot">
+                <span className="hero-glass-name">امیرحسین شرکائی</span>
+                <span className="hero-glass-latin">
+                  AMIRHOSSEIN&nbsp;SHERKAEI
+                </span>
+              </div>
+            </div>
+          </aside>
         </div>
 
-        <h1 className="hero-title">
-          <span className="hero-title-line">سایتی که</span>
-          <span className="hero-title-line hero-title-muted">
-            بازدیدکننده رو
-          </span>
-          <span className="hero-title-line">
-            <em className="hero-title-em">مشتری</em> می‌کنه.
-          </span>
-        </h1>
-
-        <p className="hero-role">
-          <span className="hero-role-dot" aria-hidden="true" />
-          <span
-            key={roleIndex}
-            className="hero-role-text"
-            aria-hidden="true"
-          >
-            {ROLES[roleIndex]}
-          </span>
-          <span className="sr-only">
-            طراح و توسعه‌دهنده‌ی وب، خلاق دیجیتال با هوش مصنوعی، سازنده‌ی
-            سایت‌های سریع
-          </span>
-        </p>
-
-        <p className="hero-description">
-          از صفر طراحی می‌شه، زیر ۲ ثانیه لود می‌شه، روی موبایل عالی
-          کار می‌کنه. برای کسب‌وکارهایی که به قالب آماده راضی نیستن.
-        </p>
-
-        <ul className="hero-tech" aria-label="تکنولوژی‌های مورد استفاده">
-          {TECH_STACK.map((tech) => (
-            <li key={tech} className="hero-tech-chip">
-              {tech}
-            </li>
-          ))}
-        </ul>
-
-        <div className="hero-actions">
-          <MagneticButton strength={0.2} radius={70}>
-            <Link href="/order" className="btn btn-primary">
-              شروع پروژه
-              <span aria-hidden="true">←</span>
-            </Link>
-          </MagneticButton>
-
-          <MagneticButton strength={0.15} radius={60}>
-            <a href="#portfolio" className="btn btn-secondary">
-              دیدن نمونه‌کارها
-            </a>
-          </MagneticButton>
-
-          <span className="hero-arrow" aria-hidden="true">
-            <svg
-              viewBox="0 0 60 60"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 12C16 20 24 32 26 46M26 46L18 42M26 46L34 38"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </div>
-
+        {/* ═══════ Footer signature ═══════ */}
         <footer className="hero-footer">
           <div className="hero-signature">
             <span className="hero-signature-mark" aria-hidden="true">
@@ -174,6 +224,7 @@ export default function Hero() {
         </footer>
       </div>
 
+      {/* ═══════ Marquee ═══════ */}
       <div className="hero-marquee" aria-hidden="true">
         <div className="hero-marquee-track">
           {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
