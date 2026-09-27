@@ -1316,3 +1316,311 @@
     transition: none !important;
   }
 }
+/* ============================================================
+   HERO — 2026 TYPOGRAPHY SYSTEM
+   ────────────────────────────────────────────────────────────
+   - Fluid scale via clamp() from 360px → 1440px
+   - Persian: letter-spacing = 0 (ALReq spec compliant)
+   - Latin fragments (.eyebrow-en, .hero-meta-en): letter-spacing positive
+   - Three-weight system: 600 / 500 / 400
+   - Line-height tighter as size grows
+   ============================================================ */
+
+/* ── Hero section base ── */
+.hero-section {
+  padding-block: clamp(112px, 14vw, 168px) clamp(56px, 7vw, 88px);
+}
+
+/* ── Hero title (H1) ── */
+.hero-section .hero-title {
+  margin: 0;
+  font-weight: 600;
+  line-height: var(--hero-display-lh);
+  letter-spacing: var(--hero-display-ls);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hero-section .hero-title-line {
+  display: block;
+  font-size: var(--hero-display);
+  line-height: var(--hero-display-lh);
+}
+
+.hero-section .hero-title-line + .hero-title-line {
+  margin-top: 0.04em;
+}
+
+.hero-section .hero-title-muted {
+  color: var(--ink-3);
+}
+
+.hero-section .hero-title-em {
+  font-style: normal;
+  color: var(--accent);
+  position: relative;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.hero-section .hero-title-em::after {
+  content: "";
+  position: absolute;
+  inset-inline: -3px;
+  bottom: 0.06em;
+  height: 0.05em;
+  background: var(--accent);
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+/* ── Hero role pill ── */
+.hero-section .hero-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: var(--hero-role);
+  font-weight: 500;
+  line-height: var(--hero-role-lh);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+@media (min-width: 900px) {
+  .hero-section .hero-role {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+.hero-section .hero-role-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulseDot 2.4s var(--ease-in-out) infinite;
+}
+
+.hero-section .hero-role-text {
+  display: inline-block;
+  animation: roleIn 420ms var(--ease-out);
+}
+
+/* ── Hero description ── */
+.hero-section .hero-description {
+  max-width: 54ch;
+  margin-top: clamp(18px, 2vw, 24px);
+  font-size: var(--hero-desc);
+  line-height: var(--hero-desc-lh);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ── Eyebrow (Persian) ── */
+.hero-section .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-3);
+  font-size: var(--hero-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.hero-section .eyebrow::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* ── Hero top meta (Latin) ── */
+.hero-section .hero-top-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: var(--hero-meta);
+  letter-spacing: var(--hero-meta-ls);
+  color: var(--ink-2);
+  text-transform: uppercase;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  direction: ltr;
+}
+
+.hero-section .hero-top-meta-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+  flex-shrink: 0;
+}
+
+/* ── Hero CTA actions ── */
+.hero-section .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(26px, 3vw, 38px);
+}
+
+.hero-section .hero-actions .btn {
+  min-height: 56px;
+  padding-inline: 28px;
+  font-size: var(--hero-cta);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ── Hero masthead (Latin) ── */
+.hero-section .hero-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: clamp(28px, 3.2vw, 40px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--hero-meta);
+  letter-spacing: var(--hero-meta-ls);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+.hero-section .hero-masthead-left,
+.hero-section .hero-masthead-right {
+  opacity: 0.7;
+}
+
+.hero-section .hero-masthead-center {
+  opacity: 0.5;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+/* ── Hero footer ── */
+.hero-section .hero-footer {
+  margin-top: clamp(48px, 6vw, 80px);
+  padding-top: clamp(20px, 2.4vw, 32px);
+}
+
+.hero-section .hero-signature-name strong {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.hero-section .hero-signature-name small {
+  font-family: var(--font-mono);
+  font-size: var(--hero-meta);
+  letter-spacing: var(--hero-meta-ls);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+/* ── Hero footer meta (Latin) ── */
+.hero-section .hero-footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: var(--hero-meta);
+  letter-spacing: var(--hero-meta-ls);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  direction: ltr;
+}
+
+/* ── Hero tech chips (Latin labels) ── */
+.hero-section .hero-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+  list-style: none;
+  padding: 0;
+}
+
+.hero-section .hero-tech-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--surface);
+  direction: ltr;
+  transition:
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+.hero-section .hero-tech-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Mobile overrides ── */
+@media (max-width: 720px) {
+  .hero-section .hero-title-line {
+    line-height: 1.22;
+  }
+
+  .hero-section .hero-description {
+    max-width: 100%;
+  }
+
+  .hero-section .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .hero-section .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 54px;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-section .hero-title-line {
+    font-size: 1.75rem;
+  }
+
+  .hero-section .hero-top-meta {
+    font-size: 9px;
+    padding: 6px 10px;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .hero-role-dot,
+  .hero-section .hero-role-text {
+    animation: none;
+  }
+}
