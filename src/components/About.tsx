@@ -42,15 +42,41 @@ const facts = [
   { label: "STATUS", value: "آماده همکاری" },
 ];
 
+/* ═══════════════════════════════════════════════════════════
+   PROOF STRIP — جایگزین استریپ آمار فروش
+   ------------------------------------------------------------
+   به جای اعداد فروش (که در ابتدای کار ضعیف به نظر می‌رسن)،
+   اثبات‌های فنی قابل تأیید می‌گذاریم که کاربر نمی‌تونه انکارش کنه.
+   ═══════════════════════════════════════════════════════════ */
+const proofPoints = [
+  {
+    value: "۹۹",
+    suffix: "/۱۰۰",
+    label: "امتیاز تجربه‌ی کاربر واقعی",
+    hint: "Vercel Speed Insights",
+  },
+  {
+    value: "AAA",
+    suffix: "",
+    label: "کنتراست مطابق WCAG 2.2",
+    hint: "استاندارد دسترسی‌پذیری",
+  },
+  {
+    value: "۲۴",
+    suffix: "ساعت",
+    label: "زمان پاسخ به درخواست",
+    hint: "تعهد شخصی",
+  },
+  {
+    value: "۱۰۰",
+    suffix: "٪",
+    label: "کد اختصاصی به نام شما",
+    hint: "بدون وابستگی به من",
+  },
+];
+
 export default function About() {
   const projectCount = String(projects.length).padStart(2, "0");
-
-  const stats = [
-    { value: projectCount, label: "نمونه‌کار فعال" },
-    { value: "۰۴", label: "خدمات تخصصی" },
-    { value: "۱۰۰٪", label: "طراحی اختصاصی" },
-    { value: CURRENT_PERSIAN_YEAR, label: "سال جاری" },
-  ];
 
   return (
     <section id="about" className="about-section section">
@@ -131,12 +157,18 @@ export default function About() {
           </aside>
         </div>
 
-        {/* ═══════ STATS STRIP ═══════ */}
-        <div className="about-stats reveal" aria-label="آمار کوتاه">
-          {stats.map((stat) => (
-            <div key={stat.label} className="about-stat">
-              <span className="about-stat-value">{stat.value}</span>
-              <span className="about-stat-label">{stat.label}</span>
+        {/* ═══════ PROOF STRIP — جایگزین استریپ آمار ═══════ */}
+        <div className="about-proof reveal" aria-label="اثبات‌های فنی">
+          {proofPoints.map((point) => (
+            <div key={point.label} className="about-proof-item">
+              <span className="about-proof-value">
+                {point.value}
+                {point.suffix && (
+                  <span className="about-proof-suffix">{point.suffix}</span>
+                )}
+              </span>
+              <span className="about-proof-label">{point.label}</span>
+              <span className="about-proof-hint">{point.hint}</span>
             </div>
           ))}
         </div>
