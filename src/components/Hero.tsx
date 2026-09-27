@@ -12,9 +12,9 @@ const ROLES = [
 const ROTATION_MS = 3400;
 
 const CURRENT_TASKS = [
-  "در حال طراحی فروشگاه نیلا",
-  "نوشتن مقاله‌ی جدید بلاگ",
-  "ساخت ویدیوی تبلیغاتی لومن",
+  "طراحی فروشگاه نیلا",
+  "نوشتن مقاله‌ی جدید",
+  "ساخت ویدیوی لومن",
 ];
 
 const MARQUEE_WORDS = [
@@ -40,9 +40,6 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   .replace(/[^\u06F0-\u06F9]/g, "")
   .slice(0, 4);
 
-/* ═══════════════════════════════════════════════════════════
-   LIVE TEHRAN CLOCK — updates every second
-   ═══════════════════════════════════════════════════════════ */
 function useTehranClock() {
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState("--:--:--");
@@ -71,9 +68,6 @@ function useTehranClock() {
   return mounted ? toPersian(time) : "--:--:--";
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LIVE TASK TICKER — rotates every 4s
-   ═══════════════════════════════════════════════════════════ */
 function useTaskTicker() {
   const [index, setIndex] = useState(0);
 
@@ -92,9 +86,6 @@ function useTaskTicker() {
   return CURRENT_TASKS[index];
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HERO
-   ═══════════════════════════════════════════════════════════ */
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const clock = useTehranClock();
@@ -114,35 +105,26 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero-section">
-      {/* ═══════ Ambient background ═══════ */}
+      {/* ═══════ Background ═══════ */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
         <span className="hero-bg-grid" />
       </div>
 
-      {/* ═══════ Signature: Aperture (unique) ═══════ */}
+      {/* ═══════ Aperture watermark ═══════ */}
       <div className="hero-aperture" aria-hidden="true">
         <ApertureMark />
       </div>
 
-      {/* ═══════ Corner marks ═══════ */}
+      {/* ═══════ Corners ═══════ */}
       <span className="hero-corner hero-corner-tl" aria-hidden="true" />
       <span className="hero-corner hero-corner-tr" aria-hidden="true" />
       <span className="hero-corner hero-corner-bl" aria-hidden="true" />
       <span className="hero-corner hero-corner-br" aria-hidden="true" />
 
-      {/* ═══════ Vertical Persian date rail ═══════ */}
-      <aside className="hero-rail" aria-hidden="true">
-        <span className="hero-rail-line" />
-        <span className="hero-rail-text">
-          {CURRENT_PERSIAN_YEAR}&nbsp;·&nbsp;TEHRAN&nbsp;·&nbsp;IRAN
-        </span>
-        <span className="hero-rail-line" />
-      </aside>
-
       <div className="hero-inner">
-        {/* ═══════ Top bar: LIVE + clock ═══════ */}
+        {/* ═══════ Topbar — LIVE + clock ═══════ */}
         <div className="hero-topbar">
           <span className="hero-live">
             <span className="hero-live-bars" aria-hidden="true">
@@ -172,9 +154,8 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* ═══════ Main grid ═══════ */}
+        {/* ═══════ Grid: main + visual ═══════ */}
         <div className="hero-grid">
-          {/* ─── Text column ─── */}
           <div className="hero-main">
             <span className="hero-eyebrow">
               <span className="hero-eyebrow-dot" aria-hidden="true" />
@@ -187,7 +168,10 @@ export default function Hero() {
                 با «قالب آماده»
               </span>
               <span className="hero-title-line">
-                راضی نمی‌شن<em className="hero-title-accent">.</em>
+                راضی نمی‌شن
+                <em className="hero-title-accent">
+                  <span className="hero-title-dot">.</span>
+                </em>
               </span>
             </h1>
 
@@ -208,8 +192,7 @@ export default function Hero() {
 
             <p className="hero-description">
               طراحی اختصاصی از صفر، سرعت لود زیر ۲ ثانیه، و کد کامل به
-              نام شما. بدون وابستگی، بدون قالب آماده، بدون هزینه‌ی
-              پنهان.
+              نام شما — بدون وابستگی، بدون قالب آماده.
             </p>
 
             <div className="hero-actions">
@@ -235,6 +218,7 @@ export default function Hero() {
               </MagneticButton>
             </div>
 
+            {/* ── Trust row ── */}
             <div className="hero-trust" aria-label="اثبات‌های کوتاه">
               <div className="hero-trust-item">
                 <strong className="hero-trust-value">۹۹</strong>
@@ -251,8 +235,8 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ─── Glass signature card ─── */}
-          <aside className="hero-visual" aria-hidden="true">
+          {/* ═══════ Glass card — visible on ALL screens ═══════ */}
+          <aside className="hero-visual">
             <div className="hero-glass">
               <span className="hero-glass-corner hero-glass-corner-tl" />
               <span className="hero-glass-corner hero-glass-corner-tr" />
@@ -273,11 +257,12 @@ export default function Hero() {
                 <span className="hero-glass-currently-label">
                   الان در حال
                 </span>
-                <span
-                  key={currentTask}
-                  className="hero-glass-currently-text"
-                >
-                  {currentTask}
+                <span className="hero-glass-currently-text">
+                  <span key={currentTask}>{currentTask}</span>
+                  <span
+                    className="hero-glass-currently-cursor"
+                    aria-hidden="true"
+                  />
                 </span>
               </div>
 
@@ -297,7 +282,7 @@ export default function Hero() {
               </div>
 
               <div className="hero-glass-clock">
-                <span className="hero-glass-clock-label">تهران</span>
+                <span className="hero-glass-clock-label">TEHRAN</span>
                 <span className="hero-glass-clock-time">{clock}</span>
               </div>
 
@@ -313,12 +298,19 @@ export default function Hero() {
 
         {/* ═══════ Footer ═══════ */}
         <footer className="hero-footer">
-          <span className="hero-signature" aria-hidden="true">
-            <SignatureMark />
-          </span>
+          <div className="hero-signature">
+            <span className="hero-signature-mark" aria-hidden="true">
+              <SignatureMark />
+            </span>
+            <span className="hero-signature-name">
+              <strong>امیرحسین شرکائی</strong>
+              <small>AMIRHOSSEIN SHERKAEI</small>
+            </span>
+          </div>
+
           <span className="hero-footer-meta">
-            <span>AMIRHOSSEIN&nbsp;SHERKAEI</span>
-            <span>PORTFOLIO&nbsp;·&nbsp;{CURRENT_PERSIAN_YEAR}</span>
+            <span>PORTFOLIO</span>
+            <span>01 / 04</span>
           </span>
         </footer>
       </div>
@@ -338,9 +330,6 @@ export default function Hero() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   APERTURE — signature visual
-   ═══════════════════════════════════════════════════════════ */
 function ApertureMark() {
   const blades = [0, 60, 120, 180, 240, 300];
   return (
@@ -350,30 +339,9 @@ function ApertureMark() {
       xmlns="http://www.w3.org/2000/svg"
       focusable="false"
     >
-      <circle
-        cx="100"
-        cy="100"
-        r="94"
-        stroke="currentColor"
-        strokeWidth="0.6"
-        opacity="0.35"
-      />
-      <circle
-        cx="100"
-        cy="100"
-        r="56"
-        stroke="currentColor"
-        strokeWidth="0.6"
-        opacity="0.35"
-      />
-      <circle
-        cx="100"
-        cy="100"
-        r="22"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        opacity="0.5"
-      />
+      <circle cx="100" cy="100" r="94" stroke="currentColor" strokeWidth="0.6" opacity="0.35" />
+      <circle cx="100" cy="100" r="56" stroke="currentColor" strokeWidth="0.6" opacity="0.35" />
+      <circle cx="100" cy="100" r="22" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
       <g transform="rotate(8 100 100)">
         {blades.map((angle) => {
           const rad = ((angle - 90) * Math.PI) / 180;
@@ -396,13 +364,7 @@ function ApertureMark() {
           );
         })}
       </g>
-      <circle
-        cx="100"
-        cy="100"
-        r="2"
-        fill="currentColor"
-        opacity="0.6"
-      />
+      <circle cx="100" cy="100" r="2" fill="currentColor" opacity="0.6" />
     </svg>
   );
 }
