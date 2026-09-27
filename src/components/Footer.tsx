@@ -31,12 +31,14 @@ export default function Footer() {
           <h2 className="footer-cta-title">
             ایده‌ای داری؟
             <br />
-            <em>بیا بسازیمش.</em>
+            <em className="ink-word">بیا بسازیمش.</em>
           </h2>
 
           <div className="footer-cta-actions">
             <Link href="/order" className="button button-primary button-lg">
-              شروع پروژه
+              <span className="ink-word ink-word--on-dark">
+                شروع پروژه
+              </span>
               <span aria-hidden="true">←</span>
             </Link>
 
@@ -44,7 +46,7 @@ export default function Footer() {
               href="#portfolio"
               className="button button-secondary button-lg"
             >
-              دیدن نمونه‌کارها
+              <span className="ink-word">دیدن نمونه‌کارها</span>
             </a>
           </div>
         </div>

@@ -1,0 +1,148 @@
+/* ============================================================
+   SIGNATURE INK — Hand-drawn underline
+   ────────────────────────────────────────────────────────────
+   - Draws like a brush stroke from right to left (RTL-native)
+   - Holds for ~1.5s, then fades out
+   - Light mode: burnt amber (#B45309) — ink on paper
+   - Dark mode:  warm gold   (#E8B27A) — gold on dark ground
+   - Variant "--on-dark" for dark / accent buttons
+   - Triggered by: hover (desktop) · focus-visible · .is-inking (touch)
+   - Respects prefers-reduced-motion
+   ============================================================ */
+
+.ink-word {
+  --ink-color: #b45309;
+  --ink-glow:  rgba(180, 83, 9, 0.38);
+  --ink-bleed: rgba(180, 83, 9, 0.18);
+
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  padding-block-end: 0.02em;
+}
+
+[data-theme="dark"] .ink-word {
+  --ink-color: #e8b27a;
+  --ink-glow:  rgba(232, 178, 122, 0.45);
+  --ink-bleed: rgba(232, 178, 122, 0.22);
+}
+
+/* ─── Variant: on dark / accent backgrounds (buttons) ─── */
+.ink-word--on-dark {
+  --ink-color: #f5d5a8;
+  --ink-glow:  rgba(245, 213, 168, 0.55);
+  --ink-bleed: rgba(255, 255, 255, 0.28);
+}
+
+[data-theme="dark"] .ink-word--on-dark {
+  --ink-color: #fff3e5;
+  --ink-glow:  rgba(255, 243, 229, 0.6);
+  --ink-bleed: rgba(255, 255, 255, 0.35);
+}
+
+/* ─── The brush stroke itself ─── */
+.ink-word::before {
+  content: "";
+  position: absolute;
+  inset-inline: -0.04em;
+  bottom: 0.02em;
+  height: 0.115em;
+  border-radius: 3px 4px 2px 3px;
+
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ink-color) 60%, transparent) 0%,
+    var(--ink-color) 14%,
+    var(--ink-color) 86%,
+    color-mix(in srgb, var(--ink-color) 60%, transparent) 100%
+  );
+
+  box-shadow:
+    0 0 10px -1px var(--ink-glow),
+    0 0 2px 0 var(--ink-color),
+    inset 0 0 4px 0 var(--ink-bleed);
+
+  transform: scaleX(0);
+  transform-origin: right center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ─── Draw → hold → fade ─── */
+@keyframes inkDraw {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  16% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  72% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIGGER 1 — Direct hover / keyboard focus on the word
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .ink-word:hover::before,
+  .ink-word:focus-visible::before {
+    animation: inkDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIGGER 2 — Parent CTA hover
+   (so hovering button padding draws ink under the label)
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .hero-btn:hover .ink-word::before,
+  .hero-btn:focus-visible .ink-word::before,
+  .button:hover .ink-word::before,
+  .button:focus-visible .ink-word::before,
+  .button-primary:hover .ink-word::before,
+  .button-secondary:hover .ink-word::before,
+  .oform-btn:hover .ink-word::before,
+  .oform-btn:focus-visible .ink-word::before {
+    animation: inkDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+/* ─── Touch / any device: class-driven (added by JS on tap) ─── */
+.ink-word.is-inking::before {
+  animation: inkDraw 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Reduced motion: skip the draw, show briefly then fade ─── */
+@media (prefers-reduced-motion: reduce) {
+  .ink-word::before {
+    animation: none !important;
+    transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: scaleX(1);
+    opacity: 0;
+  }
+
+  .ink-word:hover::before,
+  .ink-word:focus-visible::before,
+  .ink-word.is-inking::before,
+  .hero-btn:hover .ink-word::before,
+  .button:hover .ink-word::before {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
+/* ─── Buttons: remove overflow clipping so ink glow shows ─── */
+.hero-btn .ink-word,
+.button .ink-word,
+.oform-btn .ink-word {
+  overflow: visible;
+}

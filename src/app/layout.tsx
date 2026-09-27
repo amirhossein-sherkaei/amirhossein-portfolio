@@ -71,7 +71,7 @@ import "@/styles/responsive.css";
 /* 22. Enhancements */
 import "@/styles/enhancements.css";
 
-/* 23. Process — AFTER layout-more so it wins */
+/* 23. Process */
 import "@/styles/process.css";
 
 /* 24. Commitments */
@@ -80,7 +80,7 @@ import "@/styles/commitments.css";
 /* 25. Mobile fix */
 import "@/styles/mobile-fix.css";
 
-/* 26. Mobile polish v2 — LAST mobile override */
+/* 26. Mobile polish v2 */
 import "@/styles/mobile-polish-v2.css";
 
 /* 27. Blog */
@@ -88,8 +88,12 @@ import "@/app/blog/blog.css";
 
 /* 28. Theme toggle */
 import "@/styles/theme-toggle.css";
-/* 29. Hero Editorial — must be LAST to win cascade */
+
+/* 29. Hero Editorial */
 import "@/styles/hero-editorial.css";
+
+/* 30. Signature Ink — must be LAST */
+import "@/styles/signature-ink.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

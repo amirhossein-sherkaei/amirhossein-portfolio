@@ -61,10 +61,6 @@ function useTehranClock() {
   return mounted ? toPersian(time) : "--:--:--";
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PERSIAN DATE — auto-updates every minute
-   Returns: { day, month, year, weekday }
-   ═══════════════════════════════════════════════════════════ */
 function usePersianDate() {
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState({
@@ -96,7 +92,6 @@ function usePersianDate() {
       });
     };
     update();
-    /* Update every 30s to catch midnight changes quickly */
     const id = window.setInterval(update, 30000);
     return () => window.clearInterval(id);
   }, []);
@@ -125,7 +120,6 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero-section">
-      {/* ═══════ Ambient ═══════ */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
@@ -134,7 +128,6 @@ export default function Hero() {
         <span className="hero-bg-grain" />
       </div>
 
-      {/* ═══════ Editorial rulers ═══════ */}
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">
         {Array.from({ length: 13 }).map((_, i) => (
           <span key={i}>{toPersian(String(i).padStart(2, "0"))}</span>
@@ -146,7 +139,6 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* ═══════ Crosshairs ═══════ */}
       <span className="hero-crosshair hero-crosshair-tl" aria-hidden="true">
         <CrosshairMark />
       </span>
@@ -161,7 +153,6 @@ export default function Hero() {
       </span>
 
       <div className="hero-inner">
-        {/* ═══════ Masthead ═══════ */}
         <div className="hero-masthead">
           <span className="hero-masthead-cell">
             <span className="hero-masthead-dot" aria-hidden="true" />
@@ -176,9 +167,7 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* ═══════ Split grid ═══════ */}
         <div className="hero-grid">
-          {/* ─── Text column ─── */}
           <div className="hero-main">
             <span className="hero-kicker" aria-hidden="true">
               <span className="hero-kicker-line" />
@@ -193,7 +182,7 @@ export default function Hero() {
                 که به «قالب آماده»
               </span>
               <span className="hero-title-line">
-                راضی نمی‌شن
+                <span className="ink-word">راضی نمی‌شن</span>
                 <em className="hero-title-accent">.</em>
               </span>
             </h1>
@@ -221,7 +210,9 @@ export default function Hero() {
             <div className="hero-actions">
               <MagneticButton strength={0.18} radius={80}>
                 <Link href="/order" className="hero-btn hero-btn-primary">
-                  <span>شروع پروژه</span>
+                  <span className="ink-word ink-word--on-dark">
+                    شروع پروژه
+                  </span>
                   <span className="hero-btn-arrow" aria-hidden="true">
                     ←
                   </span>
@@ -233,7 +224,7 @@ export default function Hero() {
                   href="#portfolio"
                   className="hero-btn hero-btn-secondary"
                 >
-                  <span>دیدن نمونه‌کارها</span>
+                  <span className="ink-word">دیدن نمونه‌کارها</span>
                   <span className="hero-btn-count" aria-hidden="true">
                     ۰۴
                   </span>
@@ -242,9 +233,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ─── Bento grid ─── */}
           <aside className="hero-bento" aria-label="کارت هویت">
-            {/* Cell A — Name */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -267,7 +256,6 @@ export default function Hero() {
               </div>
             </article>
 
-            {/* Cell B — Clock */}
             <article className="hero-bento-cell hero-bento-cell--clock">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۲
@@ -280,7 +268,6 @@ export default function Hero() {
               </span>
             </article>
 
-            {/* ═══ Cell C — Persian Date (auto-updating) ═══ */}
             <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
@@ -303,7 +290,6 @@ export default function Hero() {
               </div>
             </article>
 
-            {/* Cell D — Big number */}
             <article className="hero-bento-cell hero-bento-cell--num">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -319,7 +305,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ═══════ Marquee ═══════ */}
       <div className="hero-marquee" aria-hidden="true">
         <div className="hero-marquee-track">
           {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
