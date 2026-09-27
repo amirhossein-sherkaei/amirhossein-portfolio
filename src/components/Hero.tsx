@@ -35,7 +35,7 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
 
 function useTehranClock() {
   const [mounted, setMounted] = useState(false);
-  const [time, setTime] = useState("--:--");
+  const [time, setTime] = useState("--:--:--");
 
   useEffect(() => {
     setMounted(true);
@@ -44,17 +44,21 @@ function useTehranClock() {
       const fmt = new Intl.DateTimeFormat("en-US", {
         hour: "2-digit",
         minute: "2-digit",
+        second: "2-digit",
         hour12: false,
         timeZone: "Asia/Tehran",
       });
-      setTime(fmt.format(now));
+      const parts = fmt.formatToParts(now);
+      const get = (t: string) =>
+        parts.find((p) => p.type === t)?.value ?? "00";
+      setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
     };
     update();
-    const id = window.setInterval(update, 30000);
+    const id = window.setInterval(update, 1000);
     return () => window.clearInterval(id);
   }, []);
 
-  return mounted ? toPersian(time) : "--:--";
+  return mounted ? toPersian(time) : "--:--:--";
 }
 
 export default function Hero() {
@@ -75,38 +79,66 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero-section">
-      {/* ═══════ Ambient background ═══════ */}
+      {/* ═══════ Ambient ═══════ */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
+        <span className="hero-bg-orb hero-bg-orb-3" />
+        <span className="hero-bg-grid" />
         <span className="hero-bg-grain" />
       </div>
 
-      {/* ═══════ Corners ═══════ */}
-      <span className="hero-corner hero-corner-tl" aria-hidden="true" />
-      <span className="hero-corner hero-corner-tr" aria-hidden="true" />
-      <span className="hero-corner hero-corner-bl" aria-hidden="true" />
-      <span className="hero-corner hero-corner-br" aria-hidden="true" />
+      {/* ═══════ Editorial rulers ═══════ */}
+      <div className="hero-ruler hero-ruler-top" aria-hidden="true">
+        {Array.from({ length: 13 }).map((_, i) => (
+          <span key={i}>{toPersian(String(i).padStart(2, "0"))}</span>
+        ))}
+      </div>
+      <div className="hero-ruler hero-ruler-left" aria-hidden="true">
+        {["A", "B", "C", "D", "E", "F", "G", "H"].map((l) => (
+          <span key={l}>{l}</span>
+        ))}
+      </div>
+
+      {/* ═══════ Crosshairs ═══════ */}
+      <span className="hero-crosshair hero-crosshair-tl" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-tr" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-bl" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-br" aria-hidden="true">
+        <CrosshairMark />
+      </span>
 
       <div className="hero-inner">
         {/* ═══════ Masthead ═══════ */}
         <div className="hero-masthead">
-          <span className="hero-masthead-side">
+          <span className="hero-masthead-cell">
             <span className="hero-masthead-dot" aria-hidden="true" />
             <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
           </span>
-          <span className="hero-masthead-side hero-masthead-side--latin">
-            TEHRAN&nbsp;·&nbsp;{clock}
+          <span className="hero-masthead-cell hero-masthead-cell--center">
+            AMIRHOSSEIN&nbsp;SHERKAEI
+          </span>
+          <span className="hero-masthead-cell hero-masthead-cell--latin">
+            <span className="hero-masthead-coord">35.6892°N · 51.3890°E</span>
+            <span className="hero-masthead-clock">{clock}</span>
           </span>
         </div>
 
-        {/* ═══════ Main grid ═══════ */}
+        {/* ═══════ Split grid ═══════ */}
         <div className="hero-grid">
           {/* ─── Text column ─── */}
           <div className="hero-main">
             <span className="hero-kicker" aria-hidden="true">
               <span className="hero-kicker-line" />
-              <span className="hero-kicker-text">PORTFOLIO · MMXXVI</span>
+              <span className="hero-kicker-text">
+                SECTION&nbsp;·&nbsp;01&nbsp;·&nbsp;INTRO
+              </span>
             </span>
 
             <h1 className="hero-title">
@@ -164,53 +196,66 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ═══════ SIGNATURE GLASS CARD — always visible ═══════ */}
-          <aside className="hero-card-wrap">
-            <article className="hero-card">
-              <span className="hero-card-corner hero-card-corner-tl" />
-              <span className="hero-card-corner hero-card-corner-tr" />
-              <span className="hero-card-corner hero-card-corner-bl" />
-              <span className="hero-card-corner hero-card-corner-br" />
-
-              {/* Inner gradient mesh */}
-              <div className="hero-card-mesh" aria-hidden="true" />
-
-              {/* Issue number top-right */}
-              <div className="hero-card-issue">
-                <span className="hero-card-issue-label">ISSUE</span>
-                <span className="hero-card-issue-num">
-                  Nº&nbsp;{CURRENT_PERSIAN_YEAR}
-                </span>
-              </div>
-
-              {/* Status pill top-left */}
-              <span className="hero-card-status">
-                <span className="hero-card-status-dot" aria-hidden="true" />
-                <span>آماده همکاری</span>
+          {/* ─── Bento grid ─── */}
+          <aside className="hero-bento" aria-label="کارت هویت">
+            {/* Cell A — Name */}
+            <article className="hero-bento-cell hero-bento-cell--name">
+              <span className="hero-bento-cell-mesh" aria-hidden="true" />
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۱
               </span>
-
-              {/* Big name center */}
-              <div className="hero-card-body">
-                <span className="hero-card-eyebrow">STUDIO</span>
-                <h2 className="hero-card-name">
+              <span className="hero-bento-status">
+                <span className="hero-bento-status-dot" aria-hidden="true" />
+                آماده همکاری
+              </span>
+              <div className="hero-bento-body">
+                <span className="hero-bento-eyebrow">STUDIO</span>
+                <h2 className="hero-bento-name">
                   امیرحسین
                   <br />
                   شرکائی
                 </h2>
-                <p className="hero-card-role">
+                <p className="hero-bento-role">
                   طراح و توسعه‌دهنده‌ی وب
                 </p>
               </div>
+            </article>
 
-              {/* Bottom: signature + latin */}
-              <div className="hero-card-foot">
-                <span className="hero-card-sig" aria-hidden="true">
-                  <SignatureMark />
-                </span>
-                <span className="hero-card-latin">
-                  AMIRHOSSEIN&nbsp;·&nbsp;SHERKAEI
-                </span>
-              </div>
+            {/* Cell B — Clock */}
+            <article className="hero-bento-cell hero-bento-cell--clock">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۲
+              </span>
+              <span className="hero-bento-label">TEHRAN</span>
+              <span className="hero-bento-clock-time">{clock}</span>
+              <span className="hero-bento-live">
+                <span className="hero-bento-live-dot" aria-hidden="true" />
+                LIVE
+              </span>
+            </article>
+
+            {/* Cell C — Signature */}
+            <article className="hero-bento-cell hero-bento-cell--sig">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۳
+              </span>
+              <span className="hero-bento-label">SIGNATURE</span>
+              <span className="hero-bento-sig-mark" aria-hidden="true">
+                <SignatureMark />
+              </span>
+            </article>
+
+            {/* Cell D — Big number */}
+            <article className="hero-bento-cell hero-bento-cell--num">
+              <span className="hero-bento-cell-mesh" aria-hidden="true" />
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۴
+              </span>
+              <span className="hero-bento-label">RES / ۱۰۰</span>
+              <span className="hero-bento-bignum">
+                ۹۹<em>+</em>
+              </span>
+              <span className="hero-bento-sub">امتیاز تجربه‌ی کاربر</span>
             </article>
           </aside>
         </div>
@@ -231,22 +276,33 @@ export default function Hero() {
   );
 }
 
+function CrosshairMark() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" strokeWidth="0.7" />
+      <line x1="0" y1="12" x2="24" y2="12" stroke="currentColor" strokeWidth="0.7" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="0.7" />
+    </svg>
+  );
+}
+
 function SignatureMark() {
   return (
     <svg
-      viewBox="0 0 220 48"
+      viewBox="0 0 220 60"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
     >
       <path
-        d="M6 34C24 14 46 40 70 22C88 8 106 34 130 22C150 12 172 30 206 18"
+        d="M6 40C24 20 46 50 70 28C88 14 106 42 130 28C150 18 172 38 206 22"
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="2"
         strokeLinecap="round"
+        className="hero-sig-path"
       />
-      <circle cx="212" cy="16" r="2.4" fill="currentColor" />
+      <circle cx="212" cy="20" r="3" fill="currentColor" />
     </svg>
   );
 }

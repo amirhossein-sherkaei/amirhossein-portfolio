@@ -1,8 +1,12 @@
 /* ============================================================
-   HERO — EDITORIAL GLASS EDITION
+   HERO — AWWWARDS 2026 EDITION
    ────────────────────────────────────────────────────────────
-   Loaded LAST to defeat any legacy override.
-   Card is FORCED visible on every screen.
+   - Editorial rulers (magazine style)
+   - Crosshair markers at 4 corners
+   - Bento grid (asymmetric glass tiles)
+   - 3-color aurora
+   - Signature draw animation
+   - All !important to defeat any legacy override
    ============================================================ */
 
 /* ═══════════════════════════════════════════════════════════
@@ -10,20 +14,20 @@
    ═══════════════════════════════════════════════════════════ */
 .hero-section {
   position: relative !important;
-  padding-block: 92px 40px !important;
+  padding-block: 96px 48px !important;
   overflow: hidden !important;
   isolation: isolate !important;
 }
 
 @media (min-width: 721px) {
   .hero-section {
-    padding-block: 120px 72px !important;
+    padding-block: 132px 88px !important;
   }
 }
 
 .hero-section .hero-inner {
   position: relative !important;
-  z-index: 3 !important;
+  z-index: 4 !important;
   width: min(calc(100% - 28px), 1320px) !important;
   margin-inline: auto !important;
 }
@@ -35,7 +39,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BACKGROUND
+   BACKGROUND — 3-COLOR AURORA
    ═══════════════════════════════════════════════════════════ */
 .hero-section .hero-bg {
   position: absolute !important;
@@ -48,119 +52,197 @@
 .hero-section .hero-bg-orb {
   position: absolute !important;
   border-radius: 50% !important;
-  filter: blur(90px) !important;
-  will-change: transform;
+  filter: blur(100px) !important;
+  will-change: transform !important;
 }
 
 .hero-section .hero-bg-orb-1 {
-  top: -22% !important;
+  top: -20% !important;
   inset-inline-end: -12% !important;
   width: 70vw !important;
   height: 70vw !important;
-  max-width: 780px !important;
-  max-height: 780px !important;
+  max-width: 820px !important;
+  max-height: 820px !important;
   background: radial-gradient(
     circle at 40% 40%,
     var(--accent-glow) 0%,
     transparent 62%
   ) !important;
-  opacity: 0.55 !important;
-  animation: heroOrb1 32s var(--ease-in-out) infinite !important;
+  opacity: 0.6 !important;
+  animation: heroOrb1 34s var(--ease-in-out) infinite !important;
 }
 
 .hero-section .hero-bg-orb-2 {
-  bottom: -28% !important;
+  bottom: -25% !important;
   inset-inline-start: -18% !important;
   width: 60vw !important;
   height: 60vw !important;
-  max-width: 620px !important;
-  max-height: 620px !important;
+  max-width: 660px !important;
+  max-height: 660px !important;
   background: radial-gradient(
     circle at 50% 50%,
-    color-mix(in srgb, var(--accent-soft) 55%, transparent) 0%,
+    color-mix(in srgb, var(--accent-soft) 60%, transparent) 0%,
     transparent 68%
   ) !important;
-  opacity: 0.4 !important;
-  animation: heroOrb2 38s var(--ease-in-out) infinite !important;
+  opacity: 0.45 !important;
+  animation: heroOrb2 40s var(--ease-in-out) infinite !important;
+}
+
+.hero-section .hero-bg-orb-3 {
+  top: 30% !important;
+  inset-inline-start: 25% !important;
+  width: 45vw !important;
+  height: 45vw !important;
+  max-width: 520px !important;
+  max-height: 520px !important;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, #ffcc66 45%, transparent) 0%,
+    transparent 70%
+  ) !important;
+  opacity: 0.22 !important;
+  animation: heroOrb3 46s var(--ease-in-out) infinite !important;
 }
 
 @keyframes heroOrb1 {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-28px, 22px, 0) scale(1.06); }
+  50%      { transform: translate3d(-30px, 24px, 0) scale(1.06); }
 }
 
 @keyframes heroOrb2 {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(22px, -20px, 0) scale(1.05); }
+  50%      { transform: translate3d(24px, -22px, 0) scale(1.05); }
 }
 
-/* Grain texture — SVG noise for depth */
+@keyframes heroOrb3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-16px, 20px, 0) scale(1.08); }
+}
+
+.hero-section .hero-bg-grid {
+  position: absolute !important;
+  inset: 0 !important;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px) !important;
+  background-size: 56px 56px !important;
+  mask-image: radial-gradient(
+    ellipse 70% 55% at 55% 40%,
+    #000 25%,
+    transparent 75%
+  ) !important;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 55% at 55% 40%,
+    #000 25%,
+    transparent 75%
+  ) !important;
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
 .hero-section .hero-bg-grain {
   position: absolute !important;
   inset: 0 !important;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>") !important;
-  opacity: 0.15 !important;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>") !important;
+  opacity: 0.14 !important;
   mix-blend-mode: overlay !important;
   pointer-events: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CORNERS
+   EDITORIAL RULERS
    ═══════════════════════════════════════════════════════════ */
-.hero-section .hero-corner {
+.hero-section .hero-ruler {
   position: absolute !important;
-  width: 12px !important;
-  height: 12px !important;
-  pointer-events: none !important;
-  opacity: 0.35 !important;
   z-index: 2 !important;
+  display: flex !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.6rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em !important;
   color: var(--ink-3) !important;
+  opacity: 0.55 !important;
+  pointer-events: none !important;
+  direction: ltr !important;
 }
 
-.hero-section .hero-corner::before,
-.hero-section .hero-corner::after {
-  content: "" !important;
+.hero-section .hero-ruler-top {
+  top: 0 !important;
+  inset-inline: 0 !important;
+  padding: 6px 20px !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent) !important;
+}
+
+.hero-section .hero-ruler-left {
+  inset-block: 0 !important;
+  inset-inline-start: 0 !important;
+  padding-block: 20px !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 32px !important;
+  border-inline-end: 1px solid color-mix(in srgb, var(--ink) 6%, transparent) !important;
+  writing-mode: horizontal-tb !important;
+}
+
+@media (max-width: 900px) {
+  .hero-section .hero-ruler-left {
+    display: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-section .hero-ruler-top {
+    font-size: 0.5rem !important;
+    padding: 4px 12px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CROSSHAIRS
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-crosshair {
   position: absolute !important;
-  background: currentColor !important;
+  width: 22px !important;
+  height: 22px !important;
+  z-index: 3 !important;
+  color: var(--accent) !important;
+  opacity: 0.55 !important;
+  pointer-events: none !important;
 }
 
-.hero-section .hero-corner::before {
-  width: 1px !important;
-  height: 100% !important;
-  inset-inline-start: 0 !important;
-  top: 0 !important;
-}
-
-.hero-section .hero-corner::after {
+.hero-section .hero-crosshair svg {
   width: 100% !important;
-  height: 1px !important;
-  top: 0 !important;
-  inset-inline-start: 0 !important;
+  height: 100% !important;
+  display: block !important;
 }
 
-.hero-section .hero-corner-tl { top: 0.85rem !important; inset-inline-start: 0.85rem !important; }
-.hero-section .hero-corner-tr { top: 0.85rem !important; inset-inline-end: 0.85rem !important; transform: scaleX(-1) !important; }
-.hero-section .hero-corner-bl { bottom: 0.85rem !important; inset-inline-start: 0.85rem !important; transform: scaleY(-1) !important; }
-.hero-section .hero-corner-br { bottom: 0.85rem !important; inset-inline-end: 0.85rem !important; transform: scale(-1, -1) !important; }
+.hero-section .hero-crosshair-tl { top: 34px !important; inset-inline-start: 34px !important; }
+.hero-section .hero-crosshair-tr { top: 34px !important; inset-inline-end: 34px !important; }
+.hero-section .hero-crosshair-bl { bottom: 34px !important; inset-inline-start: 34px !important; }
+.hero-section .hero-crosshair-br { bottom: 34px !important; inset-inline-end: 34px !important; }
 
-@media (min-width: 721px) {
-  .hero-section .hero-corner { width: 16px !important; height: 16px !important; }
-  .hero-section .hero-corner-tl { top: 1.5rem !important; inset-inline-start: 1.5rem !important; }
-  .hero-section .hero-corner-tr { top: 1.5rem !important; inset-inline-end: 1.5rem !important; }
-  .hero-section .hero-corner-bl { bottom: 1.5rem !important; inset-inline-start: 1.5rem !important; }
-  .hero-section .hero-corner-br { bottom: 1.5rem !important; inset-inline-end: 1.5rem !important; }
+@media (max-width: 720px) {
+  .hero-section .hero-crosshair {
+    width: 16px !important;
+    height: 16px !important;
+    opacity: 0.4 !important;
+  }
+  .hero-section .hero-crosshair-tl { top: 22px !important; inset-inline-start: 18px !important; }
+  .hero-section .hero-crosshair-tr { top: 22px !important; inset-inline-end: 18px !important; }
+  .hero-section .hero-crosshair-bl { bottom: 22px !important; inset-inline-start: 18px !important; }
+  .hero-section .hero-crosshair-br { bottom: 22px !important; inset-inline-end: 18px !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════
    MASTHEAD
    ═══════════════════════════════════════════════════════════ */
 .hero-section .hero-masthead {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 10px !important;
-  padding-bottom: 0.9rem !important;
-  margin-bottom: 22px !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  padding-bottom: 14px !important;
+  margin-bottom: 28px !important;
   border-bottom: 1px solid var(--line) !important;
   font-size: 0.65rem !important;
   font-weight: 500 !important;
@@ -168,33 +250,70 @@
 
 @media (min-width: 721px) {
   .hero-section .hero-masthead {
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
     gap: 20px !important;
-    padding-bottom: 1rem !important;
-    margin-bottom: 36px !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 48px !important;
     font-size: 0.7rem !important;
   }
 }
 
-.hero-section .hero-masthead-side {
+.hero-section .hero-masthead-cell {
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
   color: var(--ink-3) !important;
 }
 
-.hero-section .hero-masthead-side--latin {
+.hero-section .hero-masthead-cell--center {
   font-family: var(--font-mono) !important;
-  font-size: 0.62rem !important;
-  letter-spacing: 0.18em !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.28em !important;
   text-transform: uppercase !important;
   direction: ltr !important;
+  color: var(--ink-2) !important;
+  font-weight: 600 !important;
+  display: none !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-masthead-side--latin {
+  .hero-section .hero-masthead-cell--center {
+    display: inline-flex !important;
+  }
+}
+
+.hero-section .hero-masthead-cell--latin {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  direction: ltr !important;
+  margin-inline-start: auto !important;
+  flex-wrap: wrap !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-masthead-cell--latin {
+    justify-content: flex-end !important;
+    margin-inline-start: 0 !important;
     font-size: 0.68rem !important;
     letter-spacing: 0.22em !important;
   }
+}
+
+.hero-section .hero-masthead-coord {
+  color: var(--ink-3) !important;
+  opacity: 0.7 !important;
+}
+
+.hero-section .hero-masthead-clock {
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+  font-variant-numeric: tabular-nums !important;
 }
 
 .hero-section .hero-masthead-dot {
@@ -224,8 +343,8 @@
 
 @media (min-width: 1025px) {
   .hero-section .hero-grid {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr) !important;
-    gap: clamp(48px, 6vw, 96px) !important;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr) !important;
+    gap: clamp(48px, 6vw, 88px) !important;
   }
 }
 
@@ -237,28 +356,28 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   KICKER (editorial line)
+   KICKER
    ═══════════════════════════════════════════════════════════ */
 .hero-section .hero-kicker {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  margin-bottom: 22px !important;
+  gap: 12px !important;
+  margin-bottom: 24px !important;
   color: var(--ink-3) !important;
 }
 
 @media (min-width: 721px) {
   .hero-section .hero-kicker {
-    margin-bottom: 32px !important;
+    margin-bottom: 36px !important;
   }
 }
 
 .hero-section .hero-kicker-line {
   display: inline-block !important;
-  width: 32px !important;
+  width: 36px !important;
   height: 1px !important;
   background: var(--accent) !important;
-  opacity: 0.6 !important;
+  opacity: 0.7 !important;
 }
 
 .hero-section .hero-kicker-text {
@@ -267,22 +386,23 @@
   letter-spacing: 0.32em !important;
   text-transform: uppercase !important;
   direction: ltr !important;
+  color: var(--ink-3) !important;
 }
 
 @media (min-width: 721px) {
   .hero-section .hero-kicker-text {
-    font-size: 0.7rem !important;
-    letter-spacing: 0.38em !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.4em !important;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   TITLE
+   MEGA TITLE
    ═══════════════════════════════════════════════════════════ */
 .hero-section .hero-title {
   margin: 0 !important;
-  font-weight: 600 !important;
-  line-height: 1.18 !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
   letter-spacing: 0 !important;
   color: var(--ink) !important;
   text-wrap: balance !important;
@@ -290,20 +410,20 @@
 
 .hero-section .hero-title-line {
   display: block !important;
-  font-size: clamp(1.875rem, 8vw, 2.5rem) !important;
-  line-height: 1.2 !important;
-  font-weight: 600 !important;
+  font-size: clamp(2rem, 8.5vw, 2.75rem) !important;
+  line-height: 1.14 !important;
+  font-weight: 700 !important;
 }
 
 @media (min-width: 721px) {
   .hero-section .hero-title-line {
-    font-size: clamp(2.25rem, 1.4rem + 3.8vw, 4.25rem) !important;
-    line-height: 1.14 !important;
+    font-size: clamp(2.5rem, 1.4rem + 4.5vw, 5rem) !important;
+    line-height: 1.06 !important;
   }
 }
 
 .hero-section .hero-title-line + .hero-title-line {
-  margin-top: 0.04em !important;
+  margin-top: 0.02em !important;
 }
 
 .hero-section .hero-title-muted {
@@ -314,9 +434,15 @@
 .hero-section .hero-title-accent {
   font-style: normal !important;
   color: var(--accent) !important;
-  font-weight: 600 !important;
-  margin-inline-start: 0.02em !important;
+  font-weight: 700 !important;
   display: inline-block !important;
+  margin-inline-start: 0.02em !important;
+  animation: dotGlow 2.4s var(--ease-in-out) infinite !important;
+}
+
+@keyframes dotGlow {
+  0%, 100% { opacity: 1; text-shadow: 0 0 0 transparent; }
+  50%      { opacity: 0.85; text-shadow: 0 0 24px var(--accent-glow); }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -326,8 +452,8 @@
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
-  margin-top: 20px !important;
-  padding: 6px 13px !important;
+  margin-top: 22px !important;
+  padding: 7px 14px !important;
   border-radius: 999px !important;
   background: var(--glass) !important;
   border: 1px solid var(--glass-border) !important;
@@ -341,7 +467,7 @@
 @media (min-width: 721px) {
   .hero-section .hero-role {
     gap: 10px !important;
-    margin-top: 28px !important;
+    margin-top: 32px !important;
     padding: 8px 16px !important;
     font-size: 1.0625rem !important;
     backdrop-filter: blur(10px) saturate(1.3) !important;
@@ -378,7 +504,7 @@
    ═══════════════════════════════════════════════════════════ */
 .hero-section .hero-description {
   max-width: 100% !important;
-  margin-top: 18px !important;
+  margin-top: 20px !important;
   font-size: 0.9375rem !important;
   line-height: 1.8 !important;
   font-weight: 400 !important;
@@ -389,8 +515,8 @@
 
 @media (min-width: 721px) {
   .hero-section .hero-description {
-    max-width: 54ch !important;
-    margin-top: 24px !important;
+    max-width: 52ch !important;
+    margin-top: 26px !important;
     font-size: 1.0625rem !important;
     line-height: 1.75 !important;
   }
@@ -405,7 +531,7 @@
   align-items: stretch !important;
   gap: 10px !important;
   width: 100% !important;
-  margin-top: 28px !important;
+  margin-top: 32px !important;
 }
 
 @media (min-width: 721px) {
@@ -415,7 +541,7 @@
     align-items: center !important;
     gap: 12px !important;
     width: auto !important;
-    margin-top: 40px !important;
+    margin-top: 44px !important;
   }
 }
 
@@ -425,8 +551,8 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  min-height: 54px !important;
-  padding-inline: 24px !important;
+  min-height: 56px !important;
+  padding-inline: 26px !important;
   border-radius: 999px !important;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
@@ -450,8 +576,8 @@
   .hero-section .hero-btn {
     width: auto !important;
     gap: 12px !important;
-    min-height: 58px !important;
-    padding-inline: 30px !important;
+    min-height: 60px !important;
+    padding-inline: 32px !important;
     font-size: 1rem !important;
   }
 }
@@ -461,10 +587,10 @@
   background: linear-gradient(145deg, #0a0908 0%, #211c18 55%, #0a0908 100%) !important;
   border: 1px solid transparent !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
     0 1px 2px rgba(10, 9, 8, 0.08),
-    0 12px 30px -12px rgba(10, 9, 8, 0.42) !important;
+    0 14px 34px -12px rgba(10, 9, 8, 0.44) !important;
 }
 
 .hero-section .hero-btn-primary::before {
@@ -485,9 +611,9 @@
 .hero-section .hero-btn-primary:hover {
   transform: translateY(-2px) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 18px 44px -14px var(--accent-glow),
-    0 8px 20px -8px rgba(10, 9, 8, 0.24) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 22px 50px -14px var(--accent-glow),
+    0 8px 22px -8px rgba(10, 9, 8, 0.26) !important;
 }
 
 .hero-section .hero-btn-primary:hover::before {
@@ -541,7 +667,7 @@
   color: var(--accent) !important;
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
-    0 12px 28px -12px var(--accent-glow) !important;
+    0 14px 32px -12px var(--accent-glow) !important;
 }
 
 .hero-section .hero-btn-secondary:active {
@@ -571,19 +697,25 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GLASS CARD — forced visible everywhere
+   BENTO GRID
    ═══════════════════════════════════════════════════════════ */
-.hero-section .hero-card-wrap {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+.hero-section .hero-bento {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
   width: 100% !important;
-  max-width: 460px !important;
+  max-width: 520px !important;
   margin-inline: auto !important;
 }
 
+@media (min-width: 721px) {
+  .hero-section .hero-bento {
+    gap: 14px !important;
+  }
+}
+
 @media (min-width: 1025px) {
-  .hero-section .hero-card-wrap {
+  .hero-section .hero-bento {
     margin-inline: 0 !important;
     position: sticky !important;
     top: 130px !important;
@@ -591,62 +723,57 @@
   }
 }
 
-.hero-section .hero-card {
+/* ── Base cell ── */
+.hero-section .hero-bento-cell {
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
-  aspect-ratio: 3 / 4 !important;
-  padding: 22px !important;
-  border-radius: 26px !important;
+  padding: 16px !important;
+  border-radius: 20px !important;
   overflow: hidden !important;
   isolation: isolate !important;
-
   background:
     linear-gradient(
       155deg,
-      color-mix(in srgb, var(--surface) 82%, transparent) 0%,
-      color-mix(in srgb, var(--surface) 58%, transparent) 100%
+      color-mix(in srgb, var(--surface) 78%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 50%, transparent) 100%
     ) !important;
-
   border: 1px solid transparent !important;
   background-clip: padding-box !important;
-
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #fff 70%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--ink) 5%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 65%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
     0 1px 2px rgba(10, 9, 8, 0.04),
-    0 30px 70px -24px rgba(10, 9, 8, 0.2),
-    0 10px 30px -14px color-mix(in srgb, var(--accent) 30%, transparent) !important;
+    0 16px 40px -18px rgba(10, 9, 8, 0.16) !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-card {
-    padding: clamp(26px, 3vw, 34px) !important;
-    border-radius: 30px !important;
+  .hero-section .hero-bento-cell {
+    padding: 20px !important;
+    border-radius: 22px !important;
   }
 }
 
 @media (min-width: 900px) {
-  .hero-section .hero-card {
+  .hero-section .hero-bento-cell {
     backdrop-filter: blur(26px) saturate(1.7) !important;
     -webkit-backdrop-filter: blur(26px) saturate(1.7) !important;
   }
 }
 
 /* Gradient border ring */
-.hero-section .hero-card::before {
+.hero-section .hero-bento-cell::before {
   content: "" !important;
   position: absolute !important;
   inset: -1px !important;
   border-radius: inherit !important;
-  padding: 1.2px !important;
+  padding: 1px !important;
   background: linear-gradient(
     155deg,
-    color-mix(in srgb, var(--accent) 55%, transparent) 0%,
-    color-mix(in srgb, var(--ink) 8%, transparent) 30%,
-    color-mix(in srgb, var(--ink) 4%, transparent) 60%,
-    color-mix(in srgb, var(--accent) 38%, transparent) 100%
+    color-mix(in srgb, var(--accent) 40%, transparent) 0%,
+    color-mix(in srgb, var(--ink) 8%, transparent) 35%,
+    color-mix(in srgb, var(--ink) 4%, transparent) 65%,
+    color-mix(in srgb, var(--accent) 30%, transparent) 100%
   ) !important;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -660,8 +787,8 @@
   z-index: -1 !important;
 }
 
-/* Gradient mesh — sunrise */
-.hero-section .hero-card-mesh {
+/* Interior mesh for accent cells */
+.hero-section .hero-bento-cell-mesh {
   position: absolute !important;
   inset: 0 !important;
   border-radius: inherit !important;
@@ -670,141 +797,95 @@
   overflow: hidden !important;
 }
 
-.hero-section .hero-card-mesh::before {
+.hero-section .hero-bento-cell-mesh::before {
   content: "" !important;
   position: absolute !important;
-  top: -30% !important;
-  inset-inline-end: -40% !important;
+  top: -40% !important;
+  inset-inline-end: -30% !important;
   width: 110% !important;
-  height: 90% !important;
+  height: 100% !important;
   border-radius: 50% !important;
   background: radial-gradient(
     circle at 40% 40%,
     color-mix(in srgb, var(--accent) 55%, transparent) 0%,
-    color-mix(in srgb, var(--accent-2) 30%, transparent) 30%,
+    color-mix(in srgb, var(--accent-2) 30%, transparent) 35%,
     transparent 65%
   ) !important;
-  filter: blur(30px) !important;
+  filter: blur(28px) !important;
   opacity: 0.9 !important;
-  animation: meshDrift 18s var(--ease-in-out) infinite !important;
+  animation: bentoMesh 20s var(--ease-in-out) infinite !important;
 }
 
-.hero-section .hero-card-mesh::after {
-  content: "" !important;
-  position: absolute !important;
-  bottom: -35% !important;
-  inset-inline-start: -30% !important;
-  width: 90% !important;
-  height: 80% !important;
-  border-radius: 50% !important;
-  background: radial-gradient(
-    circle at 60% 60%,
-    color-mix(in srgb, var(--accent-soft) 45%, transparent) 0%,
-    transparent 65%
-  ) !important;
-  filter: blur(40px) !important;
-  opacity: 0.6 !important;
-  animation: meshDrift2 24s var(--ease-in-out) infinite !important;
-}
-
-@keyframes meshDrift {
+@keyframes bentoMesh {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-15px, 10px, 0) scale(1.08); }
+  50%      { transform: translate3d(-16px, 12px, 0) scale(1.08); }
 }
 
-@keyframes meshDrift2 {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(12px, -12px, 0) scale(1.06); }
+/* Cell number (top-left) */
+.hero-section .hero-bento-num {
+  position: relative !important;
+  z-index: 2 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.2em !important;
+  color: var(--ink-3) !important;
+  opacity: 0.75 !important;
+  line-height: 1 !important;
 }
 
-/* Card corner marks */
-.hero-section .hero-card-corner {
-  position: absolute !important;
-  width: 12px !important;
-  height: 12px !important;
-  opacity: 0.55 !important;
-  pointer-events: none !important;
-  z-index: 3 !important;
-  color: var(--accent) !important;
+/* Cell label (small caps) */
+.hero-section .hero-bento-label {
+  position: relative !important;
+  z-index: 2 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.55rem !important;
+  letter-spacing: 0.24em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
+  opacity: 0.7 !important;
+  direction: ltr !important;
+  margin-top: 4px !important;
 }
 
-.hero-section .hero-card-corner::before,
-.hero-section .hero-card-corner::after {
-  content: "" !important;
-  position: absolute !important;
-  background: currentColor !important;
+/* ── Cell A: Name (2x2) ── */
+.hero-section .hero-bento-cell--name {
+  grid-column: span 2 !important;
+  min-height: 240px !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
 }
 
-.hero-section .hero-card-corner::before { width: 1px !important; height: 100% !important; inset-inline-start: 0 !important; top: 0 !important; }
-.hero-section .hero-card-corner::after  { width: 100% !important; height: 1px !important; top: 0 !important; inset-inline-start: 0 !important; }
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--name {
+    min-height: 320px !important;
+  }
+}
 
-.hero-section .hero-card-corner-tl { top: 12px !important; inset-inline-start: 12px !important; }
-.hero-section .hero-card-corner-tr { top: 12px !important; inset-inline-end: 12px !important; transform: scaleX(-1) !important; }
-.hero-section .hero-card-corner-bl { bottom: 12px !important; inset-inline-start: 12px !important; transform: scaleY(-1) !important; }
-.hero-section .hero-card-corner-br { bottom: 12px !important; inset-inline-end: 12px !important; transform: scale(-1, -1) !important; }
-
-/* Card issue number top-right */
-.hero-section .hero-card-issue {
+.hero-section .hero-bento-cell--name .hero-bento-status {
   position: relative !important;
   z-index: 2 !important;
   display: inline-flex !important;
-  align-items: baseline !important;
-  gap: 5px !important;
-  align-self: flex-end !important;
-  padding: 4px 10px !important;
-  border-radius: 999px !important;
-  background: color-mix(in srgb, var(--ink) 8%, transparent) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  color: var(--ink-2) !important;
-  font-family: var(--font-mono) !important;
-  font-size: 0.58rem !important;
-  letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
-  direction: ltr !important;
-}
-
-.hero-section .hero-card-issue-label {
-  opacity: 0.55 !important;
-  font-size: 0.52rem !important;
-}
-
-.hero-section .hero-card-issue-num {
-  font-weight: 700 !important;
-  color: var(--ink) !important;
-}
-
-/* Card status pill top-left */
-.hero-section .hero-card-status {
-  position: absolute !important;
-  top: 22px !important;
-  inset-inline-start: 22px !important;
-  z-index: 2 !important;
-  display: inline-flex !important;
   align-items: center !important;
-  gap: 7px !important;
-  padding: 5px 11px !important;
+  gap: 6px !important;
+  align-self: flex-start !important;
+  padding: 5px 10px !important;
   border-radius: 999px !important;
   background: color-mix(in srgb, var(--success) 12%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--success) 30%, transparent) !important;
   color: var(--success) !important;
-  font-size: 0.62rem !important;
+  font-size: 0.6rem !important;
   font-weight: 600 !important;
-  letter-spacing: 0 !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  margin-top: 6px !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-card-status {
-    top: clamp(26px, 3vw, 34px) !important;
-    inset-inline-start: clamp(26px, 3vw, 34px) !important;
+  .hero-section .hero-bento-cell--name .hero-bento-status {
     font-size: 0.68rem !important;
     padding: 6px 12px !important;
   }
 }
 
-.hero-section .hero-card-status-dot {
+.hero-section .hero-bento-status-dot {
   display: inline-block !important;
   width: 6px !important;
   height: 6px !important;
@@ -816,96 +897,195 @@
   animation: heroDotPulse 2s var(--ease-in-out) infinite !important;
 }
 
-/* Card body — big name */
-.hero-section .hero-card-body {
+.hero-section .hero-bento-cell--name .hero-bento-body {
   position: relative !important;
   z-index: 2 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 6px !important;
-  padding-block: 24px !important;
+  gap: 4px !important;
+  margin-top: auto !important;
 }
 
-.hero-section .hero-card-eyebrow {
+.hero-section .hero-bento-eyebrow {
   font-family: var(--font-mono) !important;
-  font-size: 0.6rem !important;
+  font-size: 0.58rem !important;
   letter-spacing: 0.32em !important;
   text-transform: uppercase !important;
   color: color-mix(in srgb, var(--ink) 55%, transparent) !important;
   direction: ltr !important;
 }
 
-.hero-section .hero-card-name {
-  margin: 4px 0 0 !important;
-  font-size: clamp(1.75rem, 7vw, 2.75rem) !important;
+.hero-section .hero-bento-name {
+  margin: 2px 0 0 !important;
+  font-size: clamp(1.6rem, 6.5vw, 2.25rem) !important;
   font-weight: 700 !important;
-  line-height: 1.05 !important;
+  line-height: 1.02 !important;
   letter-spacing: 0 !important;
   color: var(--ink) !important;
-  text-wrap: balance !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-card-name {
-    font-size: clamp(2rem, 3.4vw, 3rem) !important;
+  .hero-section .hero-bento-name {
+    font-size: clamp(1.9rem, 3.2vw, 2.75rem) !important;
   }
 }
 
-.hero-section .hero-card-role {
-  margin: 8px 0 0 !important;
-  font-size: 0.875rem !important;
+.hero-section .hero-bento-role {
+  margin: 6px 0 0 !important;
+  font-size: 0.8125rem !important;
   line-height: 1.5 !important;
   font-weight: 500 !important;
   color: color-mix(in srgb, var(--ink) 72%, transparent) !important;
   letter-spacing: 0 !important;
 }
 
-/* Card foot */
-.hero-section .hero-card-foot {
+/* ── Cell B: Clock (1x1) ── */
+.hero-section .hero-bento-cell--clock {
+  grid-column: span 1 !important;
+  min-height: 130px !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--clock {
+    min-height: 150px !important;
+  }
+}
+
+.hero-section .hero-bento-clock-time {
   position: relative !important;
   z-index: 2 !important;
-  display: flex !important;
-  align-items: flex-end !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  padding-top: 16px !important;
-  border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent) !important;
-}
-
-.hero-section .hero-card-sig {
-  display: block !important;
-  width: 90px !important;
-  color: var(--accent) !important;
-  opacity: 0.95 !important;
-  flex-shrink: 0 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 1.125rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--ink) !important;
+  font-variant-numeric: tabular-nums !important;
+  line-height: 1 !important;
+  margin-top: auto !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-card-sig {
-    width: 110px !important;
+  .hero-section .hero-bento-clock-time {
+    font-size: 1.375rem !important;
   }
 }
 
-.hero-section .hero-card-sig svg {
-  width: 100% !important;
-  height: auto !important;
-}
-
-.hero-section .hero-card-latin {
+.hero-section .hero-bento-live {
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
   font-family: var(--font-mono) !important;
   font-size: 0.55rem !important;
-  letter-spacing: 0.22em !important;
-  text-transform: uppercase !important;
-  color: color-mix(in srgb, var(--ink) 55%, transparent) !important;
+  letter-spacing: 0.24em !important;
+  font-weight: 700 !important;
+  color: var(--success) !important;
   direction: ltr !important;
-  text-align: end !important;
-  line-height: 1.3 !important;
+}
+
+.hero-section .hero-bento-live-dot {
+  display: inline-block !important;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--success) !important;
+  animation: heroDotPulse 2s var(--ease-in-out) infinite !important;
+}
+
+/* ── Cell C: Signature (1x1) ── */
+.hero-section .hero-bento-cell--sig {
+  grid-column: span 1 !important;
+  min-height: 130px !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
 }
 
 @media (min-width: 721px) {
-  .hero-section .hero-card-latin {
-    font-size: 0.62rem !important;
+  .hero-section .hero-bento-cell--sig {
+    min-height: 150px !important;
   }
+}
+
+.hero-section .hero-bento-sig-mark {
+  position: relative !important;
+  z-index: 2 !important;
+  display: block !important;
+  width: 100% !important;
+  color: var(--accent) !important;
+  margin-top: auto !important;
+}
+
+.hero-section .hero-bento-sig-mark svg {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* Signature draw animation */
+.hero-section .hero-sig-path {
+  stroke-dasharray: 500 !important;
+  stroke-dashoffset: 500 !important;
+  animation: sigDraw 2.4s var(--ease-out) 0.4s forwards !important;
+}
+
+@keyframes sigDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── Cell D: Big number (2x1) ── */
+.hero-section .hero-bento-cell--num {
+  grid-column: span 2 !important;
+  min-height: 140px !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--num {
+    min-height: 160px !important;
+  }
+}
+
+.hero-section .hero-bento-bignum {
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 4px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 3.5rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+  color: var(--ink) !important;
+  font-variant-numeric: tabular-nums !important;
+  margin-top: auto !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-bignum {
+    font-size: 4.5rem !important;
+  }
+}
+
+.hero-section .hero-bento-bignum em {
+  font-size: 0.4em !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
+  margin-inline-start: 2px !important;
+}
+
+.hero-section .hero-bento-sub {
+  position: relative !important;
+  z-index: 2 !important;
+  font-size: 0.7rem !important;
+  color: color-mix(in srgb, var(--ink) 62%, transparent) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -914,9 +1094,9 @@
 .hero-section .hero-marquee {
   position: relative !important;
   z-index: 2 !important;
-  margin-top: 48px !important;
+  margin-top: 56px !important;
   overflow: hidden !important;
-  padding: 0.85rem 0 !important;
+  padding: 0.9rem 0 !important;
   border-top: 1px solid var(--line) !important;
   border-bottom: 1px solid var(--line) !important;
   mask-image: linear-gradient(
@@ -937,8 +1117,8 @@
 
 @media (min-width: 721px) {
   .hero-section .hero-marquee {
-    margin-top: 72px !important;
-    padding: 1rem 0 !important;
+    margin-top: 88px !important;
+    padding: 1.1rem 0 !important;
   }
 }
 
@@ -955,27 +1135,26 @@
   align-items: center !important;
   gap: 2.2rem !important;
   font-family: var(--font-mono) !important;
-  font-size: 0.68rem !important;
-  letter-spacing: 0.26em !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.3em !important;
   text-transform: uppercase !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   white-space: nowrap !important;
-  opacity: 0.65 !important;
   color: var(--ink-2) !important;
   direction: ltr !important;
 }
 
 @media (min-width: 721px) {
   .hero-section .hero-marquee-item {
-    font-size: 0.72rem !important;
-    letter-spacing: 0.28em !important;
-    gap: 2.5rem !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.36em !important;
+    gap: 2.8rem !important;
   }
 }
 
 .hero-section .hero-marquee-sep {
-  font-size: 0.6rem !important;
-  opacity: 0.5 !important;
+  font-size: 0.65rem !important;
+  opacity: 0.6 !important;
   letter-spacing: 0 !important;
   color: var(--accent) !important;
 }
@@ -986,37 +1165,32 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   VERY SMALL
+   SMALL SCREENS
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 400px) {
   .hero-section .hero-title-line {
-    font-size: 1.7rem !important;
-  }
-
-  .hero-section .hero-card {
-    padding: 18px !important;
-    border-radius: 22px !important;
-    aspect-ratio: 5 / 6 !important;
-  }
-
-  .hero-section .hero-card-name {
     font-size: 1.75rem !important;
   }
 
-  .hero-section .hero-card-status {
-    top: 18px !important;
-    inset-inline-start: 18px !important;
-    font-size: 0.6rem !important;
-    padding: 5px 9px !important;
+  .hero-section .hero-bento-cell--name {
+    min-height: 220px !important;
   }
 
-  .hero-section .hero-card-issue {
-    font-size: 0.52rem !important;
-    padding: 3px 8px !important;
+  .hero-section .hero-bento-name {
+    font-size: 1.5rem !important;
   }
 
-  .hero-section .hero-card-sig {
-    width: 80px !important;
+  .hero-section .hero-bento-bignum {
+    font-size: 3rem !important;
+  }
+
+  .hero-section .hero-bento-clock-time {
+    font-size: 1rem !important;
+  }
+
+  .hero-section .hero-bento-cell {
+    padding: 14px !important;
+    border-radius: 16px !important;
   }
 }
 
@@ -1028,18 +1202,17 @@
   .hero-section .hero-masthead-dot,
   .hero-section .hero-role-dot,
   .hero-section .hero-role-text,
-  .hero-section .hero-card-status-dot,
-  .hero-section .hero-card-mesh::before,
-  .hero-section .hero-card-mesh::after,
-  .hero-section .hero-marquee-track {
+  .hero-section .hero-title-accent,
+  .hero-section .hero-bento-status-dot,
+  .hero-section .hero-bento-live-dot,
+  .hero-section .hero-bento-cell-mesh::before,
+  .hero-section .hero-marquee-track,
+  .hero-section .hero-sig-path {
     animation: none !important;
+    stroke-dashoffset: 0 !important;
   }
 
   .hero-section .hero-btn:hover {
-    transform: none !important;
-  }
-
-  .hero-section .hero-btn-primary:hover .hero-btn-arrow {
     transform: none !important;
   }
 }
