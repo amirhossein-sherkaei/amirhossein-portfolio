@@ -88,6 +88,8 @@ import "@/app/blog/blog.css";
 
 /* 28. Theme toggle */
 import "@/styles/theme-toggle.css";
+/* 29. Hero Editorial — must be LAST to win cascade */
+import "@/styles/hero-editorial.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
