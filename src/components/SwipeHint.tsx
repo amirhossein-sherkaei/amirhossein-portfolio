@@ -74,4 +74,4 @@ export default function SwipeHint() {
       <span>برای بخش بعدی، سوایپ کن</span>
     </div>
   );
-}
+}9

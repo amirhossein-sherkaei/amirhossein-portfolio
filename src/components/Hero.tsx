@@ -11,7 +11,11 @@ const ROLES = [
 ];
 const ROTATION_MS = 3400;
 
-const TECH_STACK = ["Next.js", "React", "TypeScript", "AI"];
+const CURRENT_TASKS = [
+  "در حال طراحی فروشگاه نیلا",
+  "نوشتن مقاله‌ی جدید بلاگ",
+  "ساخت ویدیوی تبلیغاتی لومن",
+];
 
 const MARQUEE_WORDS = [
   "WEB DESIGN",
@@ -19,10 +23,15 @@ const MARQUEE_WORDS = [
   "AI VISUALS",
   "BRAND IDENTITY",
   "MOTION",
-  "EXPERIMENTATION",
   "INTERFACE",
   "STORYTELLING",
 ];
+
+const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+
+function toPersian(value: string | number): string {
+  return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[+d]);
+}
 
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
@@ -31,31 +40,90 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   .replace(/[^\u06F0-\u06F9]/g, "")
   .slice(0, 4);
 
-export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
+/* ═══════════════════════════════════════════════════════════
+   LIVE TEHRAN CLOCK — updates every second
+   ═══════════════════════════════════════════════════════════ */
+function useTehranClock() {
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState("--:--:--");
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
+    setMounted(true);
+    const update = () => {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Tehran",
+      });
+      const parts = fmt.formatToParts(now);
+      const get = (t: string) =>
+        parts.find((p) => p.type === t)?.value ?? "00";
+      setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
+    };
+    update();
+    const id = window.setInterval(update, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return mounted ? toPersian(time) : "--:--:--";
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIVE TASK TICKER — rotates every 4s
+   ═══════════════════════════════════════════════════════════ */
+function useTaskTicker() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setIndex((i) => (i + 1) % CURRENT_TASKS.length),
+      4000
+    );
+    return () => window.clearInterval(id);
+  }, []);
 
-    if (prefersReducedMotion) return;
+  return CURRENT_TASKS[index];
+}
 
-    const interval = window.setInterval(() => {
-      setRoleIndex((current) => (current + 1) % ROLES.length);
-    }, ROTATION_MS);
+/* ═══════════════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════════════ */
+export default function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const clock = useTehranClock();
+  const currentTask = useTaskTicker();
 
-    return () => window.clearInterval(interval);
+  useEffect(() => {
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setRoleIndex((i) => (i + 1) % ROLES.length),
+      ROTATION_MS
+    );
+    return () => window.clearInterval(id);
   }, []);
 
   return (
     <section id="home" className="hero-section">
-      {/* ═══════ Ambient aurora ═══════ */}
-      <div className="hero-aurora" aria-hidden="true">
-        <span className="hero-aurora-blob hero-aurora-blob-1" />
-        <span className="hero-aurora-blob hero-aurora-blob-2" />
-        <span className="hero-aurora-blob hero-aurora-blob-3" />
-        <span className="hero-aurora-grid" />
+      {/* ═══════ Ambient background ═══════ */}
+      <div className="hero-bg" aria-hidden="true">
+        <span className="hero-bg-orb hero-bg-orb-1" />
+        <span className="hero-bg-orb hero-bg-orb-2" />
+        <span className="hero-bg-grid" />
+      </div>
+
+      {/* ═══════ Signature: Aperture (unique) ═══════ */}
+      <div className="hero-aperture" aria-hidden="true">
+        <ApertureMark />
       </div>
 
       {/* ═══════ Corner marks ═══════ */}
@@ -64,17 +132,34 @@ export default function Hero() {
       <span className="hero-corner hero-corner-bl" aria-hidden="true" />
       <span className="hero-corner hero-corner-br" aria-hidden="true" />
 
-      {/* ═══════ Vertical rail ═══════ */}
-      <div className="hero-rail" aria-hidden="true">
+      {/* ═══════ Vertical Persian date rail ═══════ */}
+      <aside className="hero-rail" aria-hidden="true">
         <span className="hero-rail-line" />
         <span className="hero-rail-text">
-          AMIRHOSSEIN&nbsp;·&nbsp;SHERKAEI&nbsp;·&nbsp;{CURRENT_PERSIAN_YEAR}
+          {CURRENT_PERSIAN_YEAR}&nbsp;·&nbsp;TEHRAN&nbsp;·&nbsp;IRAN
         </span>
         <span className="hero-rail-line" />
-      </div>
+      </aside>
 
       <div className="hero-inner">
-        {/* ═══════ Editorial masthead ═══════ */}
+        {/* ═══════ Top bar: LIVE + clock ═══════ */}
+        <div className="hero-topbar">
+          <span className="hero-live">
+            <span className="hero-live-bars" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span className="hero-live-text">LIVE</span>
+          </span>
+
+          <span className="hero-clock" aria-hidden="true">
+            <span className="hero-clock-label">TEHRAN</span>
+            <span className="hero-clock-time">{clock}</span>
+          </span>
+        </div>
+
+        {/* ═══════ Masthead ═══════ */}
         <div className="hero-masthead">
           <span className="hero-masthead-left">
             VOL.&nbsp;01&nbsp;—&nbsp;ISSUE&nbsp;{CURRENT_PERSIAN_YEAR}
@@ -87,22 +172,22 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* ═══════ Split grid: main + glass aside ═══════ */}
+        {/* ═══════ Main grid ═══════ */}
         <div className="hero-grid">
-          {/* ─── Main column ─── */}
+          {/* ─── Text column ─── */}
           <div className="hero-main">
             <span className="hero-eyebrow">
               <span className="hero-eyebrow-dot" aria-hidden="true" />
-              <span>طراحی وب · فرانت‌اند · خلاقیت با AI</span>
+              <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
             </span>
 
             <h1 className="hero-title">
-              <span className="hero-title-line">سایتی که</span>
+              <span className="hero-title-line">برای برندهایی که</span>
               <span className="hero-title-line hero-title-muted">
-                بازدیدکننده رو
+                با «قالب آماده»
               </span>
               <span className="hero-title-line">
-                <em className="hero-title-em">مشتری</em> می‌کنه.
+                راضی نمی‌شن<em className="hero-title-accent">.</em>
               </span>
             </h1>
 
@@ -122,40 +207,52 @@ export default function Hero() {
             </p>
 
             <p className="hero-description">
-              از صفر طراحی می‌شه، زیر ۲ ثانیه لود می‌شه، روی موبایل
-              عالی کار می‌کنه. برای کسب‌وکارهایی که به قالب آماده راضی
-              نیستن.
+              طراحی اختصاصی از صفر، سرعت لود زیر ۲ ثانیه، و کد کامل به
+              نام شما. بدون وابستگی، بدون قالب آماده، بدون هزینه‌ی
+              پنهان.
             </p>
 
             <div className="hero-actions">
-              <MagneticButton strength={0.2} radius={70}>
-                <Link href="/order" className="btn btn-primary">
-                  شروع پروژه
-                  <span aria-hidden="true">←</span>
+              <MagneticButton strength={0.18} radius={80}>
+                <Link href="/order" className="hero-btn hero-btn-primary">
+                  <span className="hero-btn-text">شروع پروژه</span>
+                  <span className="hero-btn-arrow" aria-hidden="true">
+                    ←
+                  </span>
                 </Link>
               </MagneticButton>
 
-              <MagneticButton strength={0.15} radius={60}>
-                <a href="#portfolio" className="btn btn-secondary">
-                  دیدن نمونه‌کارها
+              <MagneticButton strength={0.12} radius={70}>
+                <a
+                  href="#portfolio"
+                  className="hero-btn hero-btn-secondary"
+                >
+                  <span className="hero-btn-text">دیدن نمونه‌کارها</span>
+                  <span className="hero-btn-count" aria-hidden="true">
+                    ۰۴
+                  </span>
                 </a>
               </MagneticButton>
             </div>
 
-            <div className="hero-tech-row">
-              <span className="hero-tech-label">Stack</span>
-              <ul className="hero-tech" aria-label="تکنولوژی‌های مورد استفاده">
-                {TECH_STACK.map((tech) => (
-                  <li key={tech} className="hero-tech-chip">
-                    {tech}
-                  </li>
-                ))}
-              </ul>
+            <div className="hero-trust" aria-label="اثبات‌های کوتاه">
+              <div className="hero-trust-item">
+                <strong className="hero-trust-value">۹۹</strong>
+                <span className="hero-trust-label">RES / ۱۰۰</span>
+              </div>
+              <div className="hero-trust-item">
+                <strong className="hero-trust-value">۲۴</strong>
+                <span className="hero-trust-label">ساعت پاسخ</span>
+              </div>
+              <div className="hero-trust-item">
+                <strong className="hero-trust-value">۱۰۰٪</strong>
+                <span className="hero-trust-label">کد به نام شما</span>
+              </div>
             </div>
           </div>
 
-          {/* ─── Glass aside card ─── */}
-          <aside className="hero-aside" aria-hidden="true">
+          {/* ─── Glass signature card ─── */}
+          <aside className="hero-visual" aria-hidden="true">
             <div className="hero-glass">
               <span className="hero-glass-corner hero-glass-corner-tl" />
               <span className="hero-glass-corner hero-glass-corner-tr" />
@@ -172,27 +269,36 @@ export default function Hero() {
                 </span>
               </div>
 
-              <div className="hero-glass-status">
-                <span className="hero-glass-status-label">وضعیت</span>
-                <span className="hero-glass-status-value">
-                  <span className="hero-glass-status-pulse" />
-                  پذیرش پروژه
+              <div className="hero-glass-currently">
+                <span className="hero-glass-currently-label">
+                  الان در حال
+                </span>
+                <span
+                  key={currentTask}
+                  className="hero-glass-currently-text"
+                >
+                  {currentTask}
                 </span>
               </div>
 
-              <div className="hero-glass-stats">
-                <div className="hero-glass-stat">
-                  <strong>۹۹</strong>
-                  <span>RES / ۱۰۰</span>
+              <div className="hero-glass-capacity">
+                <span className="hero-glass-capacity-label">
+                  ظرفیت این ماه
+                </span>
+                <div className="hero-glass-capacity-dots">
+                  <span className="is-open" />
+                  <span className="is-open" />
+                  <span className="is-filled" />
+                  <span className="is-filled" />
                 </div>
-                <div className="hero-glass-stat">
-                  <strong>۲۴</strong>
-                  <span>ساعت پاسخ</span>
-                </div>
-                <div className="hero-glass-stat">
-                  <strong>۱۰۰٪</strong>
-                  <span>کد اختصاصی</span>
-                </div>
+                <span className="hero-glass-capacity-count">
+                  ۲ از ۴ باز
+                </span>
+              </div>
+
+              <div className="hero-glass-clock">
+                <span className="hero-glass-clock-label">تهران</span>
+                <span className="hero-glass-clock-time">{clock}</span>
               </div>
 
               <div className="hero-glass-foot">
@@ -205,21 +311,14 @@ export default function Hero() {
           </aside>
         </div>
 
-        {/* ═══════ Footer signature ═══════ */}
+        {/* ═══════ Footer ═══════ */}
         <footer className="hero-footer">
-          <div className="hero-signature">
-            <span className="hero-signature-mark" aria-hidden="true">
-              <SignatureMark />
-            </span>
-            <span className="hero-signature-name">
-              <strong>امیرحسین شرکائی</strong>
-              <small>AMIRHOSSEIN SHERKAEI</small>
-            </span>
-          </div>
-
+          <span className="hero-signature" aria-hidden="true">
+            <SignatureMark />
+          </span>
           <span className="hero-footer-meta">
-            <span>PORTFOLIO</span>
-            <span>01 / 04</span>
+            <span>AMIRHOSSEIN&nbsp;SHERKAEI</span>
+            <span>PORTFOLIO&nbsp;·&nbsp;{CURRENT_PERSIAN_YEAR}</span>
           </span>
         </footer>
       </div>
@@ -236,6 +335,75 @@ export default function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   APERTURE — signature visual
+   ═══════════════════════════════════════════════════════════ */
+function ApertureMark() {
+  const blades = [0, 60, 120, 180, 240, 300];
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      focusable="false"
+    >
+      <circle
+        cx="100"
+        cy="100"
+        r="94"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.35"
+      />
+      <circle
+        cx="100"
+        cy="100"
+        r="56"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        opacity="0.35"
+      />
+      <circle
+        cx="100"
+        cy="100"
+        r="22"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        opacity="0.5"
+      />
+      <g transform="rotate(8 100 100)">
+        {blades.map((angle) => {
+          const rad = ((angle - 90) * Math.PI) / 180;
+          const x1 = 100 + 22 * Math.cos(rad);
+          const y1 = 100 + 22 * Math.sin(rad);
+          const rad2 = ((angle - 90 + 24) * Math.PI) / 180;
+          const x2 = 100 + 94 * Math.cos(rad2);
+          const y2 = 100 + 94 * Math.sin(rad2);
+          return (
+            <line
+              key={angle}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke="currentColor"
+              strokeWidth="0.7"
+              opacity="0.55"
+            />
+          );
+        })}
+      </g>
+      <circle
+        cx="100"
+        cy="100"
+        r="2"
+        fill="currentColor"
+        opacity="0.6"
+      />
+    </svg>
   );
 }
 
