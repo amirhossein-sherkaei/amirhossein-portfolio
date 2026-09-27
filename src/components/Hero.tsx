@@ -9,13 +9,7 @@ const ROLES = [
   "خلاق دیجیتال با کمک AI",
   "سازنده‌ی سایت‌های سریع",
 ];
-const ROTATION_MS = 3400;
-
-const CURRENT_TASKS = [
-  "طراحی فروشگاه نیلا",
-  "نوشتن مقاله‌ی جدید",
-  "ساخت ویدیوی لومن",
-];
+const ROTATION_MS = 3600;
 
 const MARQUEE_WORDS = [
   "WEB DESIGN",
@@ -24,7 +18,6 @@ const MARQUEE_WORDS = [
   "BRAND IDENTITY",
   "MOTION",
   "INTERFACE",
-  "STORYTELLING",
 ];
 
 const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
@@ -42,7 +35,7 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
 
 function useTehranClock() {
   const [mounted, setMounted] = useState(false);
-  const [time, setTime] = useState("--:--:--");
+  const [time, setTime] = useState("--:--");
 
   useEffect(() => {
     setMounted(true);
@@ -51,45 +44,22 @@ function useTehranClock() {
       const fmt = new Intl.DateTimeFormat("en-US", {
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit",
         hour12: false,
         timeZone: "Asia/Tehran",
       });
-      const parts = fmt.formatToParts(now);
-      const get = (t: string) =>
-        parts.find((p) => p.type === t)?.value ?? "00";
-      setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
+      setTime(fmt.format(now));
     };
     update();
-    const id = window.setInterval(update, 1000);
+    const id = window.setInterval(update, 30000);
     return () => window.clearInterval(id);
   }, []);
 
-  return mounted ? toPersian(time) : "--:--:--";
-}
-
-function useTaskTicker() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reduced) return;
-    const id = window.setInterval(
-      () => setIndex((i) => (i + 1) % CURRENT_TASKS.length),
-      4000
-    );
-    return () => window.clearInterval(id);
-  }, []);
-
-  return CURRENT_TASKS[index];
+  return mounted ? toPersian(time) : "--:--";
 }
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const clock = useTehranClock();
-  const currentTask = useTaskTicker();
 
   useEffect(() => {
     const reduced = window.matchMedia(
@@ -105,16 +75,11 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero-section">
-      {/* ═══════ Background ═══════ */}
+      {/* ═══════ Ambient background ═══════ */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
-        <span className="hero-bg-grid" />
-      </div>
-
-      {/* ═══════ Aperture watermark ═══════ */}
-      <div className="hero-aperture" aria-hidden="true">
-        <ApertureMark />
+        <span className="hero-bg-grain" />
       </div>
 
       {/* ═══════ Corners ═══════ */}
@@ -124,54 +89,34 @@ export default function Hero() {
       <span className="hero-corner hero-corner-br" aria-hidden="true" />
 
       <div className="hero-inner">
-        {/* ═══════ Topbar — LIVE + clock ═══════ */}
-        <div className="hero-topbar">
-          <span className="hero-live">
-            <span className="hero-live-bars" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className="hero-live-text">LIVE</span>
-          </span>
-
-          <span className="hero-clock" aria-hidden="true">
-            <span className="hero-clock-label">TEHRAN</span>
-            <span className="hero-clock-time">{clock}</span>
-          </span>
-        </div>
-
         {/* ═══════ Masthead ═══════ */}
         <div className="hero-masthead">
-          <span className="hero-masthead-left">
-            VOL.&nbsp;01&nbsp;—&nbsp;ISSUE&nbsp;{CURRENT_PERSIAN_YEAR}
+          <span className="hero-masthead-side">
+            <span className="hero-masthead-dot" aria-hidden="true" />
+            <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
           </span>
-          <span className="hero-masthead-center" aria-hidden="true">
-            ✦
-          </span>
-          <span className="hero-masthead-right">
-            PORTFOLIO&nbsp;·&nbsp;SPECIMEN
+          <span className="hero-masthead-side hero-masthead-side--latin">
+            TEHRAN&nbsp;·&nbsp;{clock}
           </span>
         </div>
 
-        {/* ═══════ Grid: main + visual ═══════ */}
+        {/* ═══════ Main grid ═══════ */}
         <div className="hero-grid">
+          {/* ─── Text column ─── */}
           <div className="hero-main">
-            <span className="hero-eyebrow">
-              <span className="hero-eyebrow-dot" aria-hidden="true" />
-              <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
+            <span className="hero-kicker" aria-hidden="true">
+              <span className="hero-kicker-line" />
+              <span className="hero-kicker-text">PORTFOLIO · MMXXVI</span>
             </span>
 
             <h1 className="hero-title">
-              <span className="hero-title-line">برای برندهایی که</span>
+              <span className="hero-title-line">برای برندهایی</span>
               <span className="hero-title-line hero-title-muted">
-                با «قالب آماده»
+                که به «قالب آماده»
               </span>
               <span className="hero-title-line">
                 راضی نمی‌شن
-                <em className="hero-title-accent">
-                  <span className="hero-title-dot">.</span>
-                </em>
+                <em className="hero-title-accent">.</em>
               </span>
             </h1>
 
@@ -191,14 +136,14 @@ export default function Hero() {
             </p>
 
             <p className="hero-description">
-              طراحی اختصاصی از صفر، سرعت لود زیر ۲ ثانیه، و کد کامل به
-              نام شما — بدون وابستگی، بدون قالب آماده.
+              طراحی از صفر، سرعت لود زیر ۲ ثانیه، کد کامل به نام شما.
+              بدون وابستگی — بدون قالب آماده.
             </p>
 
             <div className="hero-actions">
               <MagneticButton strength={0.18} radius={80}>
                 <Link href="/order" className="hero-btn hero-btn-primary">
-                  <span className="hero-btn-text">شروع پروژه</span>
+                  <span>شروع پروژه</span>
                   <span className="hero-btn-arrow" aria-hidden="true">
                     ←
                   </span>
@@ -210,109 +155,65 @@ export default function Hero() {
                   href="#portfolio"
                   className="hero-btn hero-btn-secondary"
                 >
-                  <span className="hero-btn-text">دیدن نمونه‌کارها</span>
+                  <span>دیدن نمونه‌کارها</span>
                   <span className="hero-btn-count" aria-hidden="true">
                     ۰۴
                   </span>
                 </a>
               </MagneticButton>
             </div>
-
-            {/* ── Trust row ── */}
-            <div className="hero-trust" aria-label="اثبات‌های کوتاه">
-              <div className="hero-trust-item">
-                <strong className="hero-trust-value">۹۹</strong>
-                <span className="hero-trust-label">RES / ۱۰۰</span>
-              </div>
-              <div className="hero-trust-item">
-                <strong className="hero-trust-value">۲۴</strong>
-                <span className="hero-trust-label">ساعت پاسخ</span>
-              </div>
-              <div className="hero-trust-item">
-                <strong className="hero-trust-value">۱۰۰٪</strong>
-                <span className="hero-trust-label">کد به نام شما</span>
-              </div>
-            </div>
           </div>
 
-          {/* ═══════ Glass card — visible on ALL screens ═══════ */}
-          <aside className="hero-visual">
-            <div className="hero-glass">
-              <span className="hero-glass-corner hero-glass-corner-tl" />
-              <span className="hero-glass-corner hero-glass-corner-tr" />
-              <span className="hero-glass-corner hero-glass-corner-bl" />
-              <span className="hero-glass-corner hero-glass-corner-br" />
+          {/* ═══════ SIGNATURE GLASS CARD — always visible ═══════ */}
+          <aside className="hero-card-wrap">
+            <article className="hero-card">
+              <span className="hero-card-corner hero-card-corner-tl" />
+              <span className="hero-card-corner hero-card-corner-tr" />
+              <span className="hero-card-corner hero-card-corner-bl" />
+              <span className="hero-card-corner hero-card-corner-br" />
 
-              <div className="hero-glass-head">
-                <span className="hero-glass-live">
-                  <span className="hero-glass-live-dot" />
-                  LIVE
-                </span>
-                <span className="hero-glass-issue">
+              {/* Inner gradient mesh */}
+              <div className="hero-card-mesh" aria-hidden="true" />
+
+              {/* Issue number top-right */}
+              <div className="hero-card-issue">
+                <span className="hero-card-issue-label">ISSUE</span>
+                <span className="hero-card-issue-num">
                   Nº&nbsp;{CURRENT_PERSIAN_YEAR}
                 </span>
               </div>
 
-              <div className="hero-glass-currently">
-                <span className="hero-glass-currently-label">
-                  الان در حال
-                </span>
-                <span className="hero-glass-currently-text">
-                  <span key={currentTask}>{currentTask}</span>
-                  <span
-                    className="hero-glass-currently-cursor"
-                    aria-hidden="true"
-                  />
-                </span>
+              {/* Status pill top-left */}
+              <span className="hero-card-status">
+                <span className="hero-card-status-dot" aria-hidden="true" />
+                <span>آماده همکاری</span>
+              </span>
+
+              {/* Big name center */}
+              <div className="hero-card-body">
+                <span className="hero-card-eyebrow">STUDIO</span>
+                <h2 className="hero-card-name">
+                  امیرحسین
+                  <br />
+                  شرکائی
+                </h2>
+                <p className="hero-card-role">
+                  طراح و توسعه‌دهنده‌ی وب
+                </p>
               </div>
 
-              <div className="hero-glass-capacity">
-                <span className="hero-glass-capacity-label">
-                  ظرفیت این ماه
+              {/* Bottom: signature + latin */}
+              <div className="hero-card-foot">
+                <span className="hero-card-sig" aria-hidden="true">
+                  <SignatureMark />
                 </span>
-                <div className="hero-glass-capacity-dots">
-                  <span className="is-open" />
-                  <span className="is-open" />
-                  <span className="is-filled" />
-                  <span className="is-filled" />
-                </div>
-                <span className="hero-glass-capacity-count">
-                  ۲ از ۴ باز
+                <span className="hero-card-latin">
+                  AMIRHOSSEIN&nbsp;·&nbsp;SHERKAEI
                 </span>
               </div>
-
-              <div className="hero-glass-clock">
-                <span className="hero-glass-clock-label">TEHRAN</span>
-                <span className="hero-glass-clock-time">{clock}</span>
-              </div>
-
-              <div className="hero-glass-foot">
-                <span className="hero-glass-name">امیرحسین شرکائی</span>
-                <span className="hero-glass-latin">
-                  AMIRHOSSEIN&nbsp;SHERKAEI
-                </span>
-              </div>
-            </div>
+            </article>
           </aside>
         </div>
-
-        {/* ═══════ Footer ═══════ */}
-        <footer className="hero-footer">
-          <div className="hero-signature">
-            <span className="hero-signature-mark" aria-hidden="true">
-              <SignatureMark />
-            </span>
-            <span className="hero-signature-name">
-              <strong>امیرحسین شرکائی</strong>
-              <small>AMIRHOSSEIN SHERKAEI</small>
-            </span>
-          </div>
-
-          <span className="hero-footer-meta">
-            <span>PORTFOLIO</span>
-            <span>01 / 04</span>
-          </span>
-        </footer>
       </div>
 
       {/* ═══════ Marquee ═══════ */}
@@ -330,45 +231,6 @@ export default function Hero() {
   );
 }
 
-function ApertureMark() {
-  const blades = [0, 60, 120, 180, 240, 300];
-  return (
-    <svg
-      viewBox="0 0 200 200"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      focusable="false"
-    >
-      <circle cx="100" cy="100" r="94" stroke="currentColor" strokeWidth="0.6" opacity="0.35" />
-      <circle cx="100" cy="100" r="56" stroke="currentColor" strokeWidth="0.6" opacity="0.35" />
-      <circle cx="100" cy="100" r="22" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
-      <g transform="rotate(8 100 100)">
-        {blades.map((angle) => {
-          const rad = ((angle - 90) * Math.PI) / 180;
-          const x1 = 100 + 22 * Math.cos(rad);
-          const y1 = 100 + 22 * Math.sin(rad);
-          const rad2 = ((angle - 90 + 24) * Math.PI) / 180;
-          const x2 = 100 + 94 * Math.cos(rad2);
-          const y2 = 100 + 94 * Math.sin(rad2);
-          return (
-            <line
-              key={angle}
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="currentColor"
-              strokeWidth="0.7"
-              opacity="0.55"
-            />
-          );
-        })}
-      </g>
-      <circle cx="100" cy="100" r="2" fill="currentColor" opacity="0.6" />
-    </svg>
-  );
-}
-
 function SignatureMark() {
   return (
     <svg
@@ -381,10 +243,10 @@ function SignatureMark() {
       <path
         d="M6 34C24 14 46 40 70 22C88 8 106 34 130 22C150 12 172 30 206 18"
         stroke="currentColor"
-        strokeWidth="1.4"
+        strokeWidth="1.6"
         strokeLinecap="round"
       />
-      <circle cx="212" cy="16" r="2.2" fill="currentColor" />
+      <circle cx="212" cy="16" r="2.4" fill="currentColor" />
     </svg>
   );
 }
