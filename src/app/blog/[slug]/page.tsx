@@ -5,6 +5,8 @@ import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents from "@/components/TableOfContents";
 import MarkdownContent from "@/components/MarkdownContent";
+import BlogAuthorBox from "@/components/BlogAuthorBox";
+import BlogEndCTA from "@/components/BlogEndCTA";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -94,6 +96,10 @@ export default async function BlogPostPage({ params }: Props) {
             <MarkdownContent content={post.content || ""} />
           </article>
 
+          {/* ─── About Author ─── */}
+          <BlogAuthorBox />
+
+          {/* ─── Related Posts ─── */}
           {relatedPosts.length > 0 && (
             <section className="blog-related">
               <h3 className="blog-related-title">مقالات مرتبط</h3>
@@ -115,15 +121,8 @@ export default async function BlogPostPage({ params }: Props) {
             </section>
           )}
 
-          <footer className="blog-post-footer">
-            <div className="blog-post-cta">
-              <p>پروژه‌ای داری که می‌خوای درباره‌اش صحبت کنیم؟</p>
-              <Link href="/order" className="button button-primary">
-                شروع همکاری
-                <span aria-hidden="true">←</span>
-              </Link>
-            </div>
-          </footer>
+          {/* ─── End CTA (Lead Funnel) ─── */}
+          <BlogEndCTA />
         </div>
 
         {post.toc && post.toc.length > 0 && (
