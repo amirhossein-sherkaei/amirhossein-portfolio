@@ -1,140 +1,59 @@
 /* ============================================================
-   MANUSCRIPT GRID — Persian 8-pointed star (Khatam / خاتم)
+   MANUSCRIPT GRID — Persian Khatam (8-pointed star / خاتم)
    ────────────────────────────────────────────────────────────
    Two overlapping squares (0° + 45°) = 8-pointed star.
-   Sacred geometry: Isfahan mosques, Quran illumination, Safavid tile.
+   Sacred geometry of Isfahan mosques + Quran illumination.
 
-   - Body background → shows through every transparent section
-   - Layered on solid sections via background-image
-   - Pure CSS, ~1KB, no JS, no external SVG file
-   - Very low opacity (5.5-7%) — a feeling, not a decoration
-   - Fixed attachment = stationary pattern while scrolling (parallax feel)
+   SAFE IMPLEMENTATION:
+   - Fully percent-encoded data-URI (no raw spaces, no raw #)
+   - No CSS custom property holding the URL (avoids minifier bugs)
+   - No background-attachment: fixed
+   - No !important
+   - Minimal targeting: body + 5 solid surfaces
    ============================================================ */
 
-:root {
-  /* ── Light mode: burnt amber stroke, 5.5% opacity ── */
-  --manuscript-pattern: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23B45309' stroke-opacity='0.055' stroke-width='0.6'%3E%3Crect x='32' y='32' width='32' height='32'/%3E%3Crect x='32' y='32' width='32' height='32' transform='rotate(45 48 48)'/%3E%3Crect x='-16' y='-16' width='32' height='32'/%3E%3Crect x='-16' y='-16' width='32' height='32' transform='rotate(45 0 0)'/%3E%3Crect x='80' y='-16' width='32' height='32'/%3E%3Crect x='80' y='-16' width='32' height='32' transform='rotate(45 96 0)'/%3E%3Crect x='-16' y='80' width='32' height='32'/%3E%3Crect x='-16' y='80' width='32' height='32' transform='rotate(45 0 96)'/%3E%3Crect x='80' y='80' width='32' height='32'/%3E%3Crect x='80' y='80' width='32' height='32' transform='rotate(45 96 96)'/%3E%3C/g%3E%3C/svg%3E");
-  --manuscript-size: 96px;
-}
-
-[data-theme="dark"] {
-  /* ── Dark mode: warm gold stroke, 7% opacity ── */
-  --manuscript-pattern: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23E8B27A' stroke-opacity='0.07' stroke-width='0.6'%3E%3Crect x='32' y='32' width='32' height='32'/%3E%3Crect x='32' y='32' width='32' height='32' transform='rotate(45 48 48)'/%3E%3Crect x='-16' y='-16' width='32' height='32'/%3E%3Crect x='-16' y='-16' width='32' height='32' transform='rotate(45 0 0)'/%3E%3Crect x='80' y='-16' width='32' height='32'/%3E%3Crect x='80' y='-16' width='32' height='32' transform='rotate(45 96 0)'/%3E%3Crect x='-16' y='80' width='32' height='32'/%3E%3Crect x='-16' y='80' width='32' height='32' transform='rotate(45 0 96)'/%3E%3Crect x='80' y='80' width='32' height='32'/%3E%3Crect x='80' y='80' width='32' height='32' transform='rotate(45 96 96)'/%3E%3C/g%3E%3C/svg%3E");
-}
-
-/* ═══════════════════════════════════════════════════════════
-   1. BODY — shows through every transparent section
-   (Hero · Portfolio · About · FAQ · FinalCTA · Work · Blog · 404)
-   ═══════════════════════════════════════════════════════════ */
-body {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-attachment: fixed !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   2. SOLID SECTIONS — layer pattern over their own color
-   ═══════════════════════════════════════════════════════════ */
-
-/* .services-section::before  (paper-2 + radial gradient) */
-.services-section::before {
-  background-image:
-    var(--manuscript-pattern),
-    radial-gradient(
-      circle at 90% 10%,
-      color-mix(in srgb, var(--accent) 4%, transparent),
-      transparent 45%
-    ) !important;
-  background-size:
-    var(--manuscript-size) var(--manuscript-size),
-    auto !important;
-  background-repeat: repeat, no-repeat !important;
-  background-position: 0 0, 0 0 !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed, scroll !important;
-}
-
-/* .why-section::before  (paper-2) */
-.why-section::before {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed !important;
-}
-
-/* .latest-blog-section::before  (paper-2) */
+/* ─── Light mode ─── */
+body,
+.commitments-section,
+.process-section,
+.site-footer,
+.why-section::before,
 .latest-blog-section::before {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'%3E%3Cg%20fill='none'%20stroke='%23B45309'%20stroke-opacity='0.09'%20stroke-width='0.75'%3E%3Crect%20x='10'%20y='10'%20width='20'%20height='20'/%3E%3Crect%20x='10'%20y='10'%20width='20'%20height='20'%20transform='rotate(45%2020%2020)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 40px;
+  background-repeat: repeat;
 }
 
-/* .commitments-section  (paper-2 directly on section) */
-.commitments-section {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed !important;
+/* ─── Dark mode ─── */
+[data-theme="dark"] body,
+[data-theme="dark"] .commitments-section,
+[data-theme="dark"] .process-section,
+[data-theme="dark"] .site-footer,
+[data-theme="dark"] .why-section::before,
+[data-theme="dark"] .latest-blog-section::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'%3E%3Cg%20fill='none'%20stroke='%23E8B27A'%20stroke-opacity='0.11'%20stroke-width='0.75'%3E%3Crect%20x='10'%20y='10'%20width='20'%20height='20'/%3E%3Crect%20x='10'%20y='10'%20width='20'%20height='20'%20transform='rotate(45%2020%2020)'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* .process-section  (paper-2 directly on section) */
-.process-section {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed !important;
-}
-
-/* .site-footer  (paper-2) */
-.site-footer {
-  background-image: var(--manuscript-pattern) !important;
-  background-size: var(--manuscript-size) var(--manuscript-size) !important;
-  background-repeat: repeat !important;
-  background-color: var(--paper-2) !important;
-  background-attachment: fixed !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   3. MOBILE — smaller tile + scroll (performance)
-   ═══════════════════════════════════════════════════════════ */
+/* ─── Mobile: smaller tile ─── */
 @media (max-width: 720px) {
-  :root {
-    --manuscript-size: 72px;
-  }
-
   body,
-  .services-section::before,
-  .why-section::before,
-  .latest-blog-section::before,
   .commitments-section,
   .process-section,
-  .site-footer {
-    background-attachment: scroll !important;
-  }
-
-  /* Restore scroll-only for the multi-layer services gradient */
-  .services-section::before {
-    background-attachment: scroll, scroll !important;
+  .site-footer,
+  .why-section::before,
+  .latest-blog-section::before {
+    background-size: 32px 32px;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   4. REDUCED DATA — skip pattern entirely on data-saver
-   ═══════════════════════════════════════════════════════════ */
+/* ─── Reduced data: skip pattern ─── */
 @media (prefers-reduced-data: reduce) {
   body,
-  .services-section::before,
-  .why-section::before,
-  .latest-blog-section::before,
   .commitments-section,
   .process-section,
-  .site-footer {
-    background-image: none !important;
+  .site-footer,
+  .why-section::before,
+  .latest-blog-section::before {
+    background-image: none;
   }
 }
