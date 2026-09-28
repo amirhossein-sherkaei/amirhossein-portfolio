@@ -95,8 +95,11 @@ import "@/styles/hero-editorial.css";
 /* 30. Signature Ink */
 import "@/styles/signature-ink.css";
 
-/* 31. Density Standardization — FINAL override layer */
+/* 31. Density Standardization */
 import "@/styles/density-standardization.css";
+
+/* 32. Manuscript Grid — Persian Khatam pattern everywhere */
+import "@/styles/manuscript-grid.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
