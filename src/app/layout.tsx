@@ -255,6 +255,7 @@ export default function RootLayout({
       dir="rtl"
       className={vazirmatn.variable}
       data-theme="light"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>

@@ -21,8 +21,7 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
 
-    /* ── Modules & packages ── */
-    /* ── Modules & packages ── */
+  /* ── Modules & packages ── */
   experimental: {
     optimizePackageImports: ['shiki'],
   },
@@ -51,16 +50,6 @@ const nextConfig = {
           {
             key: 'Cross-Origin-Opener-Policy',
             value: 'same-origin',
-          },
-        ],
-      },
-      /* ── Long-cache immutable assets ── */
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
