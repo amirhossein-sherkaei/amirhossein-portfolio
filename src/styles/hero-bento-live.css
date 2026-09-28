@@ -1,0 +1,245 @@
+/* ============================================================
+   HERO BENTO — LIVE CELL
+   ────────────────────────────────────────────────────────────
+   Fifth bento cell — shows 3 auto-rotating states:
+     1. Latest post + relative time
+     2. Live index count (posts · projects)
+     3. Archive pick (older post)
+   Rotates every 5.5s. Fades between states. Auto-pauses on hover.
+   ============================================================ */
+
+.hero-section .hero-bento-cell--live {
+  grid-column: span 2 !important;
+  min-height: 124px !important;
+  padding: 14px 16px !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  grid-template-rows: auto 1fr !important;
+  column-gap: 10px !important;
+  row-gap: 8px !important;
+  align-items: start !important;
+  overflow: hidden !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--live {
+    min-height: 138px !important;
+    padding: 16px 18px !important;
+  }
+}
+
+/* ─── Top row: number + LIVE badge ─── */
+.hero-section .hero-bento-cell--live .hero-bento-num {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+}
+
+.hero-section .hero-bento-live-badge {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.5625rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2em !important;
+  color: var(--success) !important;
+  direction: ltr !important;
+  text-transform: uppercase !important;
+  align-self: center !important;
+}
+
+.hero-section .hero-bento-live-dot {
+  display: inline-block !important;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--success) !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--success) 18%, transparent),
+    0 0 8px color-mix(in srgb, var(--success) 55%, transparent) !important;
+  animation: heroDotPulse 2s var(--ease-in-out) infinite !important;
+  flex-shrink: 0 !important;
+}
+
+/* ─── Stack area ─── */
+.hero-section .hero-bento-live-stack {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 62px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-live-stack {
+    min-height: 72px !important;
+  }
+}
+
+/* ─── Single state item ─── */
+.hero-section .hero-bento-live-item {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 12px !important;
+  row-gap: 3px !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  animation: liveItemIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+@keyframes liveItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Label (top of item) ─── */
+.hero-section .hero-bento-live-label {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.5625rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
+  opacity: 0.85 !important;
+  direction: ltr !important;
+}
+
+.hero-section .hero-bento-live-label-text {
+  direction: rtl !important;
+  letter-spacing: 0 !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  color: color-mix(in srgb, var(--ink) 70%, transparent) !important;
+}
+
+/* ─── Title (bottom of item) ─── */
+.hero-section .hero-bento-live-title {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  margin: 0 !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0 !important;
+  color: var(--ink) !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  transition: color 240ms var(--ease-out) !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-live-title {
+    font-size: 0.9375rem !important;
+  }
+}
+
+.hero-section .hero-bento-live-item:hover .hero-bento-live-title {
+  color: var(--accent) !important;
+}
+
+/* ─── Arrow (right side, spans both rows) ─── */
+.hero-section .hero-bento-live-arrow {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+  font-size: 1.125rem !important;
+  color: var(--accent) !important;
+  opacity: 0.7 !important;
+  transition:
+    transform 260ms var(--ease-out),
+    opacity 240ms var(--ease-out) !important;
+}
+
+.hero-section .hero-bento-live-item:hover .hero-bento-live-arrow {
+  transform: translateX(-4px) !important;
+  opacity: 1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STATS STATE — different layout
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bento-live-item--stats {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  align-items: flex-start !important;
+}
+
+.hero-section .hero-bento-live-stats {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.hero-section .hero-bento-live-stat {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 4px !important;
+}
+
+.hero-section .hero-bento-live-stat strong {
+  font-family: var(--font-mono) !important;
+  font-size: 1.375rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.02em !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-live-stat strong {
+    font-size: 1.5rem !important;
+  }
+}
+
+.hero-section .hero-bento-live-stat span {
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  color: var(--ink-3) !important;
+  letter-spacing: 0 !important;
+}
+
+.hero-section .hero-bento-live-stat-sep {
+  color: var(--accent) !important;
+  opacity: 0.7 !important;
+  font-weight: 800 !important;
+  font-size: 1.125rem !important;
+  align-self: center !important;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .hero-bento-live-item {
+    animation: none !important;
+  }
+  .hero-section .hero-bento-live-dot {
+    animation: none !important;
+  }
+  .hero-section .hero-bento-live-item:hover .hero-bento-live-arrow {
+    transform: none !important;
+  }
+}

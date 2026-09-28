@@ -1,15 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
+
+type LivePost = {
+  slug: string;
+  title: string;
+  date: string;
+};
+
+type HeroProps = {
+  latestPost: LivePost | null;
+  archivePost: LivePost | null;
+  totalPosts: number;
+  totalProjects: number;
+};
 
 const ROLES = [
   "طراح و توسعه‌دهنده‌ی وب",
   "خلاق دیجیتال با کمک AI",
   "سازنده‌ی سایت‌های سریع",
 ];
-const ROTATION_MS = 3600;
+const ROLE_ROTATION_MS = 3600;
+const LIVE_ROTATION_MS = 5500;
 
 const MARQUEE_WORDS = [
   "WEB DESIGN",
@@ -101,11 +115,48 @@ function usePersianDate() {
     : { day: "--", month: "--", year: "----", weekday: "--" };
 }
 
-export default function Hero() {
+/* ─── Relative time from ISO date ─── */
+function useRelativeTime(iso: string | null): string {
+  const [mounted, setMounted] = useState(false);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    if (!iso) return;
+    const compute = () => {
+      const diff = Date.now() - new Date(iso).getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      if (days <= 0) setText("امروز");
+      else if (days === 1) setText("دیروز");
+      else if (days < 30) setText(`${toPersian(days)} روز پیش`);
+      else if (days < 365)
+        setText(`${toPersian(Math.floor(days / 30))} ماه پیش`);
+      else setText(`${toPersian(Math.floor(days / 365))} سال پیش`);
+    };
+    compute();
+    const id = window.setInterval(compute, 60000);
+    return () => window.clearInterval(id);
+  }, [iso]);
+
+  return mounted ? text : "";
+}
+
+export default function Hero({
+  latestPost,
+  archivePost,
+  totalPosts,
+  totalProjects,
+}: HeroProps) {
   const [roleIndex, setRoleIndex] = useState(0);
+  const [liveIndex, setLiveIndex] = useState(0);
+  const [livePaused, setLivePaused] = useState(false);
+
   const clock = useTehranClock();
   const persianDate = usePersianDate();
+  const latestAgo = useRelativeTime(latestPost?.date ?? null);
+  const archiveAgo = useRelativeTime(archivePost?.date ?? null);
 
+  /* ─── Role rotation ─── */
   useEffect(() => {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -113,10 +164,134 @@ export default function Hero() {
     if (reduced) return;
     const id = window.setInterval(
       () => setRoleIndex((i) => (i + 1) % ROLES.length),
-      ROTATION_MS
+      ROLE_ROTATION_MS
     );
     return () => window.clearInterval(id);
   }, []);
+
+  /* ─── Live cell rotation ─── */
+  useEffect(() => {
+    if (livePaused) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setLiveIndex((i) => (i + 1) % 3),
+      LIVE_ROTATION_MS
+    );
+    return () => window.clearInterval(id);
+  }, [livePaused]);
+
+  /* ─── Live cell states ─── */
+  const liveStates = useMemo(() => {
+    const states: Array<{
+      id: "latest" | "stats" | "archive";
+      render: () => React.ReactNode;
+    }> = [];
+
+    if (latestPost) {
+      states.push({
+        id: "latest",
+        render: () => (
+          <Link
+            href={`/blog/${latestPost.slug}`}
+            className="hero-bento-live-item"
+          >
+            <span className="hero-bento-live-label">
+              NOW <span className="hero-bento-live-label-text">· آخرین یادداشت</span>
+            </span>
+            <span className="hero-bento-live-title">{latestPost.title}</span>
+            <span className="hero-bento-live-arrow" aria-hidden="true">
+              ←
+            </span>
+            {latestAgo && (
+              <span
+                className="hero-bento-live-label"
+                style={{
+                  gridColumn: "1 / -1",
+                  marginTop: 2,
+                  opacity: 0.6,
+                  letterSpacing: 0,
+                  direction: "rtl",
+                  fontFamily: "inherit",
+                  textTransform: "none",
+                }}
+              >
+                {latestAgo}
+              </span>
+            )}
+          </Link>
+        ),
+      });
+    }
+
+    states.push({
+      id: "stats",
+      render: () => (
+        <Link
+          href="/blog"
+          className="hero-bento-live-item hero-bento-live-item--stats"
+        >
+          <span className="hero-bento-live-label">
+            INDEX <span className="hero-bento-live-label-text">· آمار زنده</span>
+          </span>
+          <span className="hero-bento-live-stats">
+            <span className="hero-bento-live-stat">
+              <strong>{toPersian(totalPosts)}</strong>
+              <span>مقاله</span>
+            </span>
+            <span className="hero-bento-live-stat-sep">·</span>
+            <span className="hero-bento-live-stat">
+              <strong>{toPersian(totalProjects)}</strong>
+              <span>پروژه</span>
+            </span>
+          </span>
+        </Link>
+      ),
+    });
+
+    if (archivePost) {
+      states.push({
+        id: "archive",
+        render: () => (
+          <Link
+            href={`/blog/${archivePost.slug}`}
+            className="hero-bento-live-item"
+          >
+            <span className="hero-bento-live-label">
+              ARCHIVE{" "}
+              <span className="hero-bento-live-label-text">· از آرشیو</span>
+            </span>
+            <span className="hero-bento-live-title">{archivePost.title}</span>
+            <span className="hero-bento-live-arrow" aria-hidden="true">
+              ←
+            </span>
+            {archiveAgo && (
+              <span
+                className="hero-bento-live-label"
+                style={{
+                  gridColumn: "1 / -1",
+                  marginTop: 2,
+                  opacity: 0.6,
+                  letterSpacing: 0,
+                  direction: "rtl",
+                  fontFamily: "inherit",
+                  textTransform: "none",
+                }}
+              >
+                {archiveAgo}
+              </span>
+            )}
+          </Link>
+        ),
+      });
+    }
+
+    return states;
+  }, [latestPost, archivePost, latestAgo, archiveAgo, totalPosts, totalProjects]);
+
+  const activeLive = liveStates[liveIndex % liveStates.length];
 
   return (
     <section id="home" className="hero-section">
@@ -234,6 +409,7 @@ export default function Hero() {
           </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
+            {/* Cell A — Name */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -256,6 +432,7 @@ export default function Hero() {
               </div>
             </article>
 
+            {/* Cell B — Clock */}
             <article className="hero-bento-cell hero-bento-cell--clock">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۲
@@ -268,6 +445,7 @@ export default function Hero() {
               </span>
             </article>
 
+            {/* Cell C — Date */}
             <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
@@ -290,6 +468,7 @@ export default function Hero() {
               </div>
             </article>
 
+            {/* Cell D — Big number */}
             <article className="hero-bento-cell hero-bento-cell--num">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -300,6 +479,24 @@ export default function Hero() {
                 ۹۹<em>+</em>
               </span>
               <span className="hero-bento-sub">امتیاز تجربه‌ی کاربر</span>
+            </article>
+
+            {/* Cell E — LIVE rotating */}
+            <article className="hero-bento-cell hero-bento-cell--live">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۵
+              </span>
+              <span className="hero-bento-live-badge" aria-hidden="true">
+                <span className="hero-bento-live-dot" />
+                LIVE
+              </span>
+              <div
+                className="hero-bento-live-stack"
+                onMouseEnter={() => setLivePaused(true)}
+                onMouseLeave={() => setLivePaused(false)}
+              >
+                {activeLive && <div key={activeLive.id}>{activeLive.render()}</div>}
+              </div>
             </article>
           </aside>
         </div>
