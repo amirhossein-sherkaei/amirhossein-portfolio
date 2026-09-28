@@ -6,6 +6,7 @@ import Services from "@/components/Services";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import WhyMe from "@/components/WhyMe";
+import Testimonials from "@/components/Testimonials";
 import LatestBlogPosts from "@/components/LatestBlogPosts";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -37,7 +38,6 @@ const Portfolio = dynamic(() => import("@/components/Portfolio"), {
 });
 
 export default function Home() {
-  /* ─── Data for the LIVE bento cell ─── */
   const allPosts = getAllPosts();
   const recentPosts = getLatestPosts(6);
 
@@ -49,7 +49,6 @@ export default function Home() {
       }
     : null;
 
-  /* Archive pick: 4th newest, or the oldest available if fewer posts */
   const archiveSource =
     recentPosts.length > 4
       ? recentPosts[4]
@@ -80,6 +79,7 @@ export default function Home() {
         <Portfolio />
         <About />
         <WhyMe />
+        <Testimonials />
         <LatestBlogPosts />
         <FAQ />
         <FinalCTA />

@@ -98,10 +98,14 @@ import "@/styles/signature-ink.css";
 /* 31. Density Standardization */
 import "@/styles/density-standardization.css";
 
-/* 32. Manuscript Grid — Persian Khatam pattern everywhere */
+/* 32. Manuscript Grid */
 import "@/styles/manuscript-grid.css";
+
 /* 33. Hero Bento Live cell */
 import "@/styles/hero-bento-live.css";
+
+/* 34. Testimonials */
+import "@/styles/testimonials.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

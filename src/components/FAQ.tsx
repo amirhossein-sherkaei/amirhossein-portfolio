@@ -11,17 +11,14 @@ export default function FAQ() {
   };
 
   return (
-    <section
-      className="faq-section section"
-      aria-labelledby="faq-title"
-    >
+    <section className="faq-section section" aria-labelledby="faq-title">
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">06 — FAQ</span>
+            <span className="section-index">07 — FAQ</span>
             <h2 id="faq-title">
               سوال‌هایی که
-              <em> زیاد می‌شنوم</em>
+              <em className="ink-word"> زیاد می‌شنوم</em>
             </h2>
           </div>
           <p>
@@ -46,11 +43,11 @@ export default function FAQ() {
                   aria-expanded={isOpen}
                 >
                   <span
-  className="faq-question-text"
-  data-num={String(index + 1).padStart(2, "0")}
->
-  {item.q}
-</span>
+                    className="faq-question-text"
+                    data-num={String(index + 1).padStart(2, "0")}
+                  >
+                    {item.q}
+                  </span>
                   <span className="faq-icon" aria-hidden="true">
                     <svg
                       viewBox="0 0 24 24"

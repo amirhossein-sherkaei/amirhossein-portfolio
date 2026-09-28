@@ -14,10 +14,10 @@ export default function LatestBlogPosts() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">05 — BLOG</span>
+            <span className="section-index">06 — BLOG</span>
             <h2 id="latest-blog-title">
               مقالات و
-              <em> یادداشت‌ها</em>
+              <em className="ink-word"> یادداشت‌ها</em>
             </h2>
           </div>
           <p>

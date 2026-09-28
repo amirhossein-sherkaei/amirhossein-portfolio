@@ -12,12 +12,12 @@ export default function FinalCTA() {
       <div className="container">
         <div className="final-cta reveal">
           <div className="final-cta-content">
-            <span className="section-index">06 — START A PROJECT</span>
+            <span className="section-index">08 — START A PROJECT</span>
 
             <h2 id="final-cta-title">
               ایده‌ای داری؟
               <br />
-              <span>بیا بسازیمش.</span>
+              <span className="ink-word">بیا بسازیمش.</span>
             </h2>
 
             <p>
@@ -32,7 +32,9 @@ export default function FinalCTA() {
                   href="/order"
                   className="button button-primary button-lg"
                 >
-                  شروع پروژه
+                  <span className="ink-word ink-word--on-dark">
+                    شروع پروژه
+                  </span>
                   <span aria-hidden="true">←</span>
                 </Link>
               </MagneticButton>
@@ -42,7 +44,7 @@ export default function FinalCTA() {
                   href="#portfolio"
                   className="button button-secondary button-lg"
                 >
-                  دیدن نمونه‌کارها
+                  <span className="ink-word">دیدن نمونه‌کارها</span>
                 </a>
               </MagneticButton>
             </div>
