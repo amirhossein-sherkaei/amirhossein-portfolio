@@ -14,7 +14,7 @@ import BackToTop from "@/components/BackToTop";
 import RevealObserver from "@/components/RevealObserver";
 import SectionSwipeHandler from "@/components/SectionSwipeHandler";
 import SwipeHint from "@/components/SwipeHint";
-import { getLatestPosts } from "@/lib/blog";
+import { getAllPosts, getLatestPosts } from "@/lib/blog";
 import { projects } from "@/content/projects";
 
 const Portfolio = dynamic(() => import("@/components/Portfolio"), {
@@ -38,15 +38,22 @@ const Portfolio = dynamic(() => import("@/components/Portfolio"), {
 
 export default function Home() {
   /* ─── Data for the LIVE bento cell ─── */
-  const posts = getLatestPosts(6);
+  const allPosts = getAllPosts();
+  const recentPosts = getLatestPosts(6);
 
-  const latestPost = posts[0]
-    ? { slug: posts[0].slug, title: posts[0].title, date: posts[0].date }
+  const latestPost = recentPosts[0]
+    ? {
+        slug: recentPosts[0].slug,
+        title: recentPosts[0].title,
+        date: recentPosts[0].date,
+      }
     : null;
 
   /* Archive pick: 4th newest, or the oldest available if fewer posts */
   const archiveSource =
-    posts.length > 4 ? posts[4] : posts[posts.length - 1];
+    recentPosts.length > 4
+      ? recentPosts[4]
+      : recentPosts[recentPosts.length - 1];
   const archivePost =
     archiveSource && archiveSource.slug !== latestPost?.slug
       ? {
@@ -65,7 +72,7 @@ export default function Home() {
         <Hero
           latestPost={latestPost}
           archivePost={archivePost}
-          totalPosts={posts.length}
+          totalPosts={allPosts.length}
           totalProjects={projects.length}
         />
         <Services />
