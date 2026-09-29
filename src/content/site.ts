@@ -1,6 +1,6 @@
 export const siteContent = {
   name: "امیرحسین شرکائی",
-  latinName: "Amirhossein Sherkaei",
+  latinName: "Amirhossein Shorakaei",
 
   hero: {
     eyebrow: "طراحی دیجیتال با نگاه متفاوت",

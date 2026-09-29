@@ -11,9 +11,6 @@ export const size = {
 
 export const contentType = "image/png";
 
-/* ─────────────────────────────────────────────────────────────
-   Persian year (auto-computed from system date)
-   ───────────────────────────────────────────────────────────── */
 function getPersianYear(locale: "fa" | "en" = "fa"): string {
   const persianDigits = new Intl.DateTimeFormat("fa-IR", {
     year: "numeric",
@@ -38,9 +35,6 @@ function getPersianYear(locale: "fa" | "en" = "fa"): string {
   return digits.replace(/[۰-۹]/g, (d) => latinMap[d] || d);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Load Vazirmatn from CDN
-   ───────────────────────────────────────────────────────────── */
 async function loadFont(): Promise<ArrayBuffer | null> {
   const urls = [
     "https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/ttf/Vazirmatn-Bold.ttf",
@@ -64,9 +58,6 @@ export default async function OpengraphImage() {
   const yearFa = getPersianYear("fa");
   const yearEn = getPersianYear("en");
 
-  /* ═══════════════════════════════════════════════════════════
-     Fallback: no font available (Latin-only)
-     ═══════════════════════════════════════════════════════════ */
   if (!fontData) {
     return new ImageResponse(
       (
@@ -92,7 +83,7 @@ export default async function OpengraphImage() {
               color: "#5a5550",
             }}
           >
-            <span>AMIRHOSSEIN SHERKAEI</span>
+            <span>AMIRHOSSEIN SHORAKAEI</span>
             <span>01 / 01</span>
           </div>
 
@@ -117,7 +108,7 @@ export default async function OpengraphImage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Amirhossein Sherkaei
+              Amirhossein Shorakaei
             </div>
 
             <div
@@ -152,9 +143,6 @@ export default async function OpengraphImage() {
     );
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     Full Persian design (requires Vazirmatn)
-     ═══════════════════════════════════════════════════════════ */
   return new ImageResponse(
     (
       <div
@@ -194,7 +182,7 @@ export default async function OpengraphImage() {
             position: "relative",
           }}
         >
-          <span>AMIRHOSSEIN SHERKAEI</span>
+          <span>AMIRHOSSEIN SHORAKAEI</span>
           <span>01 / 01</span>
         </div>
 

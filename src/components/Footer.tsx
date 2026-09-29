@@ -60,7 +60,7 @@ export default function Footer() {
 
               <div>
                 <strong>امیرحسین شرکائی</strong>
-                <span>AMIRHOSSEIN SHERKAEI</span>
+                <span>AMIRHOSSEIN SHORAKAEI</span>
               </div>
             </div>
 

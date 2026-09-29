@@ -42,12 +42,6 @@ const facts = [
   { label: "STATUS", value: "آماده همکاری" },
 ];
 
-/* ═══════════════════════════════════════════════════════════
-   PROOF STRIP — جایگزین استریپ آمار فروش
-   ------------------------------------------------------------
-   به جای اعداد فروش (که در ابتدای کار ضعیف به نظر می‌رسن)،
-   اثبات‌های فنی قابل تأیید می‌گذاریم که کاربر نمی‌تونه انکارش کنه.
-   ═══════════════════════════════════════════════════════════ */
 const proofPoints = [
   {
     value: "۹۹",
@@ -81,7 +75,6 @@ export default function About() {
   return (
     <section id="about" className="about-section section">
       <div className="container">
-        {/* ═══════ IDENTITY BLOCK ═══════ */}
         <div className="about-identity reveal">
           <span className="section-index">03 — ABOUT</span>
 
@@ -97,7 +90,6 @@ export default function About() {
             طراح رابط · توسعه‌دهنده فرانت‌اند · خلاق دیجیتال
           </p>
 
-          {/* Fact strip */}
           <ul className="about-facts">
             {facts.map((fact) => (
               <li key={fact.label} className="about-fact">
@@ -108,13 +100,12 @@ export default function About() {
           </ul>
         </div>
 
-        {/* ═══════ NARRATIVE + STATEMENT ═══════ */}
         <div className="about-grid">
           <div className="about-content reveal">
             <h2>
               طراحی برای من،
               <span> فقط ساختن یک ظاهر زیبا </span>
-              <em>نیست.</em>
+              <em className="ink-word">نیست.</em>
             </h2>
 
             <h3 id="about-title" className="about-lead">
@@ -151,13 +142,12 @@ export default function About() {
             <div className="about-statement-sign">
               <span className="about-statement-name">امیرحسین شرکائی</span>
               <span className="about-statement-latin">
-                AMIRHOSSEIN SHERKAEI
+                AMIRHOSSEIN SHORAKAEI
               </span>
             </div>
           </aside>
         </div>
 
-        {/* ═══════ PROOF STRIP — جایگزین استریپ آمار ═══════ */}
         <div className="about-proof reveal" aria-label="اثبات‌های فنی">
           {proofPoints.map((point) => (
             <div key={point.label} className="about-proof-item">
@@ -173,7 +163,6 @@ export default function About() {
           ))}
         </div>
 
-        {/* ═══════ PRINCIPLES ═══════ */}
         <div className="about-principles reveal">
           <div className="about-principles-heading">
             <span className="eyebrow">اصول کاری</span>

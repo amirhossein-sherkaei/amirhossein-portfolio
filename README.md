@@ -1,15 +1,14 @@
-# Amirhossein Sherkaei — Portfolio
+# Amirhossein Shorakaei — Portfolio
 
 وب‌سایت شخصی امیرحسین شرکائی با تمرکز بر طراحی وب‌سایت‌های اختصاصی، تجربه کاربری و خلاقیت دیجیتال با کمک هوش مصنوعی.
 
 ## تکنولوژی‌ها
 
-- Next.js 14
-- React 18
+- Next.js 16
+- React 19
 - TypeScript
 - CSS Variables
-- Nodemailer
-- Brevo SMTP
+- EmailJS
 
 ## اجرای پروژه
 

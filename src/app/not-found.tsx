@@ -1,7 +1,6 @@
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
 
-/* سال شمسی جاری */
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
 })
@@ -33,13 +32,11 @@ export default function NotFound() {
     <main id="main" className="not-found-page">
       <div className="container">
         <div className="not-found-content">
-          {/* ── Top bar ── */}
           <div className="not-found-top">
-            <span>AMIRHOSSEIN SHERKAEI</span>
+            <span>AMIRHOSSEIN SHORAKAEI</span>
             <span>ERROR / 404</span>
           </div>
 
-          {/* ── Center ── */}
           <div className="not-found-center">
             <div className="not-found-number" aria-hidden="true">
               <span>4</span>
@@ -77,7 +74,6 @@ export default function NotFound() {
               <BackButton />
             </div>
 
-            {/* ── Helpful links ── */}
             <div className="not-found-suggestions">
               <span className="not-found-suggestions-label">
                 یا از این‌ها شروع کن
@@ -108,7 +104,6 @@ export default function NotFound() {
             </div>
           </div>
 
-          {/* ── Bottom bar ── */}
           <div className="not-found-bottom">
             <span>DESIGN / DEVELOPMENT / AI</span>
             <span>© {CURRENT_PERSIAN_YEAR}</span>

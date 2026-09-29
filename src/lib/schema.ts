@@ -10,7 +10,7 @@ const SITE_URL =
   "https://amirhossein-portfolio.vercel.app";
 
 const PERSON_NAME = "امیرحسین شرکائی";
-const PERSON_NAME_EN = "Amirhossein Sherkaei";
+const PERSON_NAME_EN = "Amirhossein Shorakaei";
 
 /* ─────────────────────────────────────────────────────────────
    1. PERSON

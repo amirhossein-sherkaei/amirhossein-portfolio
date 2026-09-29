@@ -19,7 +19,7 @@ export default function Portfolio() {
             <span className="section-index">02 — PORTFOLIO</span>
             <h2>
               پروژه‌هایی با
-              <em> جزئیات متفاوت</em>
+              <em className="ink-word"> جزئیات متفاوت</em>
             </h2>
           </div>
           <p>
@@ -49,7 +49,7 @@ export default function Portfolio() {
                   </div>
 
                   <div className="portfolio-card-chrome-url">
-                    {project.id.replace("project-", "")}.amirhossein.studio
+                    {project.slug}.shorakaei.ir
                   </div>
 
                   <span className="portfolio-card-chrome-meta">

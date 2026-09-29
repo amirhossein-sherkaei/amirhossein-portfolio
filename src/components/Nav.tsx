@@ -14,9 +14,8 @@ const navItems = [
   { label: "بلاگ", href: "/blog" },
 ];
 
-/* Thresholds for smart header */
-const SCROLL_HIDE_THRESHOLD = 120; // px scrolled before we allow hiding
-const SCROLL_DELTA = 8; // minimum delta to trigger state change
+const SCROLL_HIDE_THRESHOLD = 120;
+const SCROLL_DELTA = 8;
 
 export default function Nav() {
   const { theme, toggleTheme } = useTheme();
@@ -30,29 +29,22 @@ export default function Nav() {
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
-  /* ── Scroll handler: progress + smart hide ── */
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
-
-      /* Update scrolled state */
       setScrolled(y > 20);
 
-      /* Scroll progress */
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? Math.min(1, y / docHeight) : 0;
       setScrollProgress(pct);
 
-      /* Smart hide — only after threshold, only if delta is meaningful */
       const delta = y - lastScrollY.current;
 
       if (Math.abs(delta) > SCROLL_DELTA) {
         if (y > SCROLL_HIDE_THRESHOLD && delta > 0) {
-          /* Scrolling down */
           setHeaderHidden(true);
         } else if (delta < 0) {
-          /* Scrolling up */
           setHeaderHidden(false);
         }
         lastScrollY.current = y;
@@ -78,7 +70,6 @@ export default function Nav() {
     };
   }, []);
 
-  /* ── Always show header when user reaches bottom of page ── */
   useEffect(() => {
     const handleBottom = () => {
       const y = window.scrollY;
@@ -92,7 +83,6 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handleBottom);
   }, []);
 
-  /* ── Active section tracking (only on home page) ── */
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
     if (pathname !== "/") return;
@@ -132,7 +122,6 @@ export default function Nav() {
   const activeNumber = String(activeIndex + 1).padStart(2, "0");
   const totalNumber = String(sectionItems.length).padStart(2, "0");
 
-  /* ── Smart hide should not apply on blog pages ── */
   const isBlogPage = pathname?.startsWith("/blog");
   const shouldHide = !isBlogPage && headerHidden;
 
@@ -154,7 +143,7 @@ export default function Nav() {
             </span>
             <span className="brand-text">
               <strong>امیرحسین شرکائی</strong>
-              <small>Amirhossein Sherkaei</small>
+              <small>Amirhossein Shorakaei</small>
             </span>
 
             <span className="brand-issue" aria-hidden="true">
@@ -174,9 +163,6 @@ export default function Nav() {
                 const isBlogLink = item.href === "/blog";
                 const sectionId = isHash ? item.href.slice(1) : "";
 
-                /* Active logic:
-                   - Hash links: only active if we're on home and section matches
-                   - /blog: active if pathname starts with /blog */
                 const isActive = isHash
                   ? pathname === "/" && activeSection === sectionId
                   : isBlogLink

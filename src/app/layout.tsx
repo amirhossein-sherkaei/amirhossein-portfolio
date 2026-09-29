@@ -143,7 +143,7 @@ export const metadata: Metadata = {
   description: siteDescription,
   keywords: [
     "امیرحسین شرکائی",
-    "Amirhossein Sherkaei",
+    "Amirhossein Shorakaei",
     "طراحی سایت",
     "طراحی وب",
     "توسعه وب",
@@ -157,7 +157,7 @@ export const metadata: Metadata = {
     "React",
     "پورتفولیو",
   ],
-  applicationName: "Amirhossein Sherkaei",
+  applicationName: "Amirhossein Shorakaei",
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
   publisher: siteName,
