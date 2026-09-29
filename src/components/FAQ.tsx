@@ -15,7 +15,7 @@ export default function FAQ() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">07 — FAQ</span>
+            <span className="section-index">08 — FAQ</span>
             <h2 id="faq-title">
               سوال‌هایی که
               <em className="ink-word"> زیاد می‌شنوم</em>

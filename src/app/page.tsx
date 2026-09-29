@@ -8,6 +8,7 @@ import About from "@/components/About";
 import WhyMe from "@/components/WhyMe";
 import Testimonials from "@/components/Testimonials";
 import LatestBlogPosts from "@/components/LatestBlogPosts";
+import Newsletter from "@/components/Newsletter";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -81,6 +82,7 @@ export default function Home() {
         <WhyMe />
         <Testimonials />
         <LatestBlogPosts />
+        <Newsletter />
         <FAQ />
         <FinalCTA />
       </main>

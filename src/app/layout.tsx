@@ -109,6 +109,8 @@ import "@/styles/testimonials.css";
 
 /* 35. Brand Logo */
 import "@/styles/brand-logo.css";
+/* 36. Newsletter */
+import "@/styles/newsletter.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

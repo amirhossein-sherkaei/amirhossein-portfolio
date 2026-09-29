@@ -12,7 +12,7 @@ export default function FinalCTA() {
       <div className="container">
         <div className="final-cta reveal">
           <div className="final-cta-content">
-            <span className="section-index">08 — START A PROJECT</span>
+            <span className="section-index">09 — START A PROJECT</span>
 
             <h2 id="final-cta-title">
               ایده‌ای داری؟
