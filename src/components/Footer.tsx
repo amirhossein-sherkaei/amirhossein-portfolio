@@ -1,15 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import SoundToggle from "@/components/SoundToggle";
-
-const footerNav = [
-  { label: "خانه", href: "/" },
-  { label: "خدمات", href: "/#services" },
-  { label: "نمونه‌کارها", href: "/#portfolio" },
-  { label: "بلاگ", href: "/blog" },
-  { label: "درباره من", href: "/#about" },
-  { label: "شروع پروژه", href: "/order" },
-];
+import FooterClock from "@/components/FooterClock";
 
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
@@ -18,137 +10,263 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   .replace(/[^\u06F0-\u06F9]/g, "")
   .slice(0, 4);
 
+const navGroups = [
+  {
+    label: "PAGES",
+    links: [
+      { label: "خانه", href: "/" },
+      { label: "خدمات", href: "/#services" },
+      { label: "نمونه‌کارها", href: "/#portfolio" },
+      { label: "درباره من", href: "/#about" },
+      { label: "بلاگ", href: "/blog" },
+    ],
+  },
+  {
+    label: "SERVICES",
+    links: [
+      { label: "وب‌سایت اختصاصی", href: "/#services" },
+      { label: "وب + هوش مصنوعی", href: "/#services" },
+      { label: "تبلیغات هوشمند", href: "/#services" },
+      { label: "ویدیوی تبلیغاتی", href: "/#services" },
+    ],
+  },
+  {
+    label: "CONNECT",
+    links: [
+      { label: "پیامک", href: "sms:" },
+      { label: "روبیکا", href: "#" },
+      { label: "ایتا", href: "#" },
+      { label: "شروع پروژه", href: "/order", isPrimary: true },
+    ],
+  },
+];
+
 export default function Footer() {
   const contactEmail = process.env.PROJECT_CONTACT_EMAIL;
 
   return (
     <footer className="site-footer">
-      <div className="container">
-        <div className="footer-cta">
-          <span className="section-index" style={{ marginBottom: 0 }}>
-            NEXT — STEP
-          </span>
+      {/* ═══════ Ambient ═══════ */}
+      <div className="footer-ambient" aria-hidden="true">
+        <span className="footer-ambient-glow" />
+        <span className="footer-ambient-grid" />
+      </div>
 
-          <h2 className="footer-cta-title">
-            ایده‌ای داری؟
-            <br />
-            <em className="ink-word">بیا بسازیمش.</em>
-          </h2>
-
-          <div className="footer-cta-actions">
-            <Link href="/order" className="button button-primary button-lg">
-              <span className="ink-word ink-word--on-dark">
-                شروع پروژه
-              </span>
-              <span aria-hidden="true">←</span>
-            </Link>
-
-            <a
-              href="#portfolio"
-              className="button button-secondary button-lg"
-            >
-              <span className="ink-word">دیدن نمونه‌کارها</span>
-            </a>
+      {/* ═══════ Masthead ═══════ */}
+      <div className="footer-masthead">
+        <div className="container">
+          <div className="footer-masthead-inner">
+            <span className="footer-masthead-left">
+              CHAPTER&nbsp;·&nbsp;07&nbsp;—&nbsp;END
+            </span>
+            <span className="footer-masthead-mark" aria-hidden="true">
+              ✦
+            </span>
+            <span className="footer-masthead-right">
+              AMIRHOSSEIN&nbsp;SHORAKAEI&nbsp;·&nbsp;{CURRENT_PERSIAN_YEAR}
+            </span>
           </div>
         </div>
+      </div>
 
-        <div className="footer-main">
-          <div className="footer-brand-block">
-            <div className="footer-brand">
-              <Image
-                src="/logo.png"
-                alt=""
-                width={40}
-                height={40}
-                className="footer-mark footer-logo"
-                aria-hidden="true"
-              />
+      {/* ═══════ Hero CTA ═══════ */}
+      <section
+        className="footer-hero"
+        aria-labelledby="footer-hero-title"
+      >
+        <div className="container">
+          <div className="footer-hero-grid">
+            <div className="footer-hero-content">
+              <span className="footer-hero-eyebrow">NEXT&nbsp;·&nbsp;STEP</span>
 
-              <div>
-                <strong>امیرحسین شرکائی</strong>
-                <span>AMIRHOSSEIN SHORAKAEI</span>
+              <h2 id="footer-hero-title" className="footer-hero-title">
+                ایده‌ای داری؟
+                <br />
+                <em className="ink-word">بیا بسازیمش.</em>
+              </h2>
+
+              <p className="footer-hero-text">
+                اگه پروژه‌ت مشخصه، همون رو بفرست. اگه فقط یه ایده
+                داری، با هم به یه طرح روشن می‌رسیم.
+              </p>
+
+              <div className="footer-hero-actions">
+                <Link
+                  href="/order"
+                  className="footer-hero-btn footer-hero-btn--primary"
+                >
+                  <span className="ink-word ink-word--on-dark">
+                    شروع پروژه
+                  </span>
+                  <span aria-hidden="true">←</span>
+                </Link>
+                <Link
+                  href="/#portfolio"
+                  className="footer-hero-btn footer-hero-btn--secondary"
+                >
+                  <span className="ink-word">دیدن نمونه‌کارها</span>
+                </Link>
               </div>
             </div>
 
-            <p className="footer-tagline">
-              طراحی و توسعه وب‌سایت‌های اختصاصی — با تجربه‌های بصری و
-              تبلیغاتی متفاوت، به کمک هوش مصنوعی.
-            </p>
-
-            <span className="footer-signature" aria-hidden="true">
-              <SignatureMark />
-            </span>
-          </div>
-
-          <div className="footer-nav-block">
-            <nav className="footer-nav" aria-label="ناوبری پایین صفحه">
-              <span className="footer-nav-label">PAGES</span>
-
-              {footerNav.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            {contactEmail && (
-              <div className="footer-contact">
-                <span className="footer-nav-label">CONTACT</span>
-                <a
-                  href={`mailto:${contactEmail}`}
-                  className="footer-email"
-                  dir="ltr"
-                >
-                  {contactEmail}
-                </a>
+            <aside className="footer-hero-aside" aria-hidden="true">
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">پاسخ</span>
+                <strong className="footer-hero-stat-value">
+                  حداکثر ۲۴ ساعت
+                </strong>
               </div>
-            )}
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">روش تماس</span>
+                <strong className="footer-hero-stat-value">
+                  پیامک · روبیکا · ایتا
+                </strong>
+              </div>
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">حوزه</span>
+                <strong className="footer-hero-stat-value">
+                  وب · تبلیغات · ویدیو
+                </strong>
+              </div>
+            </aside>
           </div>
         </div>
+      </section>
 
-        <div className="footer-bottom">
-          <span className="footer-bottom-item">
-            © {CURRENT_PERSIAN_YEAR} — تمامی حقوق محفوظ است.
-          </span>
+      {/* ═══════ Main Grid ═══════ */}
+      <div className="footer-grid-wrap">
+        <div className="footer-watermark" aria-hidden="true">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={480}
+            height={480}
+            className="footer-watermark-img"
+          />
+        </div>
 
-          <span className="footer-bottom-center">
-            DESIGN · DEVELOPMENT · AI
-          </span>
+        <div className="container">
+          <div className="footer-grid">
+            {/* Brand column */}
+            <div className="footer-col footer-col--brand">
+              <Link
+                href="/"
+                className="footer-brand-link"
+                aria-label="امیرحسین شرکائی — بازگشت به خانه"
+              >
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="footer-brand-logo"
+                  aria-hidden="true"
+                />
+                <div className="footer-brand-copy">
+                  <strong>امیرحسین شرکائی</strong>
+                  <small>AMIRHOSSEIN SHORAKAEI</small>
+                </div>
+              </Link>
 
-          <div className="footer-bottom-actions">
-            <SoundToggle />
+              <p className="footer-brand-tagline">
+                طراحی و توسعه وب‌سایت‌های اختصاصی — با تمرکز بر
+                سرعت، جزئیات و تجربه‌ی کاربری.
+              </p>
 
-            <a
-              href="#home"
-              className="footer-back-top"
-              aria-label="بازگشت به بالای صفحه"
-            >
-              بازگشت به بالا ↑
-            </a>
+              <div className="footer-brand-meta">
+                <span className="footer-brand-status">
+                  <span
+                    className="footer-brand-status-dot"
+                    aria-hidden="true"
+                  />
+                  آماده همکاری
+                </span>
+                <span className="footer-brand-location">
+                  <FooterClock />
+                  <span className="footer-brand-location-sep" aria-hidden="true">
+                    ·
+                  </span>
+                  <span>Tehran</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Nav columns */}
+            {navGroups.map((group) => (
+              <nav
+                key={group.label}
+                className="footer-col footer-col--nav"
+                aria-label={group.label}
+              >
+                <span className="footer-col-label">{group.label}</span>
+                <ul className="footer-col-list">
+                  {group.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className={`footer-link${
+                          link.isPrimary ? " footer-link--primary" : ""
+                        }`}
+                      >
+                        <span>{link.label}</span>
+                        {link.isPrimary && (
+                          <span aria-hidden="true">←</span>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+
+          {/* Email row */}
+          {contactEmail && (
+            <div className="footer-email-row">
+              <span className="footer-email-label">— EMAIL</span>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="footer-email-value"
+                dir="ltr"
+              >
+                {contactEmail}
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ═══════ Bottom bar ═══════ */}
+      <div className="footer-bottom-wrap">
+        <div className="container">
+          <div className="footer-bottom">
+            <span className="footer-copyright">
+              ©&nbsp;{CURRENT_PERSIAN_YEAR}&nbsp;— تمامی حقوق محفوظ است.
+            </span>
+            <span className="footer-signature-line">
+              DESIGN&nbsp;·&nbsp;DEVELOPMENT&nbsp;·&nbsp;AI
+            </span>
+            <div className="footer-bottom-actions">
+              <SoundToggle />
+              <a
+                href="#home"
+                className="footer-back-to-top"
+                aria-label="بازگشت به بالای صفحه"
+              >
+                <span className="footer-back-to-top-label">
+                  بازگشت به بالا
+                </span>
+                <span
+                  className="footer-back-to-top-arrow"
+                  aria-hidden="true"
+                >
+                  ↑
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  );
-}
-
-function SignatureMark() {
-  return (
-    <svg
-      viewBox="0 0 220 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      focusable="false"
-      suppressHydrationWarning
-    >
-      <path
-        d="M6 34C24 14 46 40 70 22C88 8 106 34 130 22C150 12 172 30 206 18"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-      />
-      <circle cx="212" cy="16" r="2.2" fill="currentColor" />
-    </svg>
   );
 }

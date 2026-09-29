@@ -113,6 +113,8 @@ import "@/styles/brand-logo.css";
 import "@/styles/newsletter.css";
 /* 37. Performance Boost — must be last */
 import "@/styles/performance-boost.css";
+/* 38. Footer V2 — Editorial Masterpiece */
+import "@/styles/footer-v2.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
