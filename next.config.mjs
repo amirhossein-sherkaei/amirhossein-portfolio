@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
 
+  /* ── Performance ── */
   compress: true,
   productionBrowserSourceMaps: false,
   compiler: {
@@ -12,6 +13,7 @@ const nextConfig = {
         : false,
   },
 
+  /* ── Image optimization ── */
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
@@ -19,11 +21,12 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 
+  /* ── Modules & packages ── */
   experimental: {
     optimizePackageImports: ['shiki'],
-    viewTransition: true,
   },
 
+  /* ── Security headers ── */
   async headers() {
     return [
       {
