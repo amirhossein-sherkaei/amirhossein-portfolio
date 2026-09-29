@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import SoundToggle from "@/components/SoundToggle";
 
 const footerNav = [
@@ -54,9 +55,14 @@ export default function Footer() {
         <div className="footer-main">
           <div className="footer-brand-block">
             <div className="footer-brand">
-              <span className="footer-mark" aria-hidden="true">
-                ا
-              </span>
+              <Image
+                src="/logo.png"
+                alt=""
+                width={40}
+                height={40}
+                className="footer-mark footer-logo"
+                aria-hidden="true"
+              />
 
               <div>
                 <strong>امیرحسین شرکائی</strong>

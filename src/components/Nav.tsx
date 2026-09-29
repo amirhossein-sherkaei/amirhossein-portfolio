@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/components/ThemeProvider";
 import MagneticButton from "@/components/MagneticButton";
@@ -138,9 +139,15 @@ export default function Nav() {
             className="brand"
             aria-label="امیرحسین شرکائی — بازگشت به بالای صفحه"
           >
-            <span className="brand-mark" aria-hidden="true">
-              ا
-            </span>
+            <Image
+              src="/logo.png"
+              alt=""
+              width={36}
+              height={36}
+              className="brand-mark brand-logo"
+              aria-hidden="true"
+              priority
+            />
             <span className="brand-text">
               <strong>امیرحسین شرکائی</strong>
               <small>Amirhossein Shorakaei</small>

@@ -1,0 +1,81 @@
+/* ============================================================
+   BRAND LOGO — AH Monogram
+   ────────────────────────────────────────────────────────────
+   Overrides the previous flat «ا» mark with the new
+   3D chrome logo. Applied in Nav and Footer only.
+   Sizes tuned for editorial layout: appears as a brand seal.
+   ============================================================ */
+
+/* ─── Nav brand mark ─── */
+.site-nav .brand-logo {
+  display: block !important;
+  width: 36px !important;
+  height: 36px !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+  transition: transform 350ms var(--ease-spring) !important;
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .site-nav .brand-logo {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 9px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-nav .brand-logo {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* ─── Hover / scroll behavior ─── */
+.site-nav .brand:hover .brand-logo {
+  transform: scale(1.06) rotate(-2deg) !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.site-nav.is-scrolled .brand-logo {
+  transform: scale(0.94) !important;
+}
+
+/* ─── Footer brand mark ─── */
+.site-footer .footer-logo {
+  display: block !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: none !important;
+  border-radius: 11px !important;
+  background: transparent !important;
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 720px) {
+  .site-footer .footer-logo {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+  }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav .brand-logo {
+    transition: none !important;
+  }
+
+  .site-nav .brand:hover .brand-logo,
+  .site-nav.is-scrolled .brand-logo {
+    transform: none !important;
+  }
+}
