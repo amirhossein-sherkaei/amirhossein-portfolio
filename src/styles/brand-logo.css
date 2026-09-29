@@ -1,12 +1,18 @@
 /* ============================================================
-   BRAND LOGO — AH Monogram
+   BRAND LOGO + MOBILE NAV BRAND + DRAWING CURSOR
    ────────────────────────────────────────────────────────────
-   Overrides the previous flat «ا» mark with the new
-   3D chrome logo. Applied in Nav and Footer only.
-   Sizes tuned for editorial layout: appears as a brand seal.
+   All brand-related styling in one file:
+   1. Nav brand mark (36px)
+   2. Footer brand mark (40px)
+   3. Hero Bento Cell A seal (52-60px)
+   4. About Brand Showcase block (220px)
+   5. Mobile Nav — logo as Home button
+   6. Drawing Cursor — canvas overlay on Hero
    ============================================================ */
 
-/* ─── Nav brand mark ─── */
+/* ═══════════════════════════════════════════════════════════
+   1. NAV BRAND MARK
+   ═══════════════════════════════════════════════════════════ */
 .site-nav .brand-logo {
   display: block !important;
   width: 36px !important;
@@ -37,7 +43,6 @@
   }
 }
 
-/* ─── Hover / scroll behavior ─── */
 .site-nav .brand:hover .brand-logo {
   transform: scale(1.06) rotate(-2deg) !important;
   border: none !important;
@@ -48,7 +53,9 @@
   transform: scale(0.94) !important;
 }
 
-/* ─── Footer brand mark ─── */
+/* ═══════════════════════════════════════════════════════════
+   2. FOOTER BRAND MARK
+   ═══════════════════════════════════════════════════════════ */
 .site-footer .footer-logo {
   display: block !important;
   width: 40px !important;
@@ -68,21 +75,9 @@
   }
 }
 
-/* ─── Reduced motion ─── */
-@media (prefers-reduced-motion: reduce) {
-  .site-nav .brand-logo {
-    transition: none !important;
-  }
-
-  .site-nav .brand:hover .brand-logo,
-  .site-nav.is-scrolled .brand-logo {
-    transform: none !important;
-  }
-}
 /* ═══════════════════════════════════════════════════════════
-   HERO BENTO CELL A — Brand Seal
+   3. HERO BENTO CELL A — Brand Seal
    ═══════════════════════════════════════════════════════════ */
-
 .hero-section .hero-bento-cell--name {
   position: relative !important;
 }
@@ -124,9 +119,8 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ABOUT — Brand Showcase Block
+   4. ABOUT — Brand Showcase Block
    ═══════════════════════════════════════════════════════════ */
-
 .about-brand-showcase {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
@@ -269,7 +263,6 @@
   direction: ltr;
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 900px) {
   .about-brand-showcase {
     grid-template-columns: 1fr;
@@ -301,22 +294,10 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .about-brand-mark,
-  .hero-section .hero-bento-seal {
-    transition: none !important;
-  }
-}
 /* ═══════════════════════════════════════════════════════════
-   MOBILE BOTTOM NAV — Brand Logo as Home
-   ────────────────────────────────────────────────────────────
-   Following the standard mobile app pattern (X, Instagram,
-   TikTok): the brand mark replaces the Home icon.
-   Active state gets a warm amber glow ring.
+   5. MOBILE BOTTOM NAV — Brand Logo as Home
    ═══════════════════════════════════════════════════════════ */
-
 @media (max-width: 720px) {
-  /* ─── Logo image inside the nav ─── */
   .mobile-nav-brand-img {
     display: block !important;
     width: 26px !important;
@@ -335,13 +316,11 @@
     flex-shrink: 0 !important;
   }
 
-  /* ─── Brand item gets slightly larger container ─── */
   .mobile-nav-item--brand .mobile-nav-icon {
     width: 26px !important;
     height: 26px !important;
   }
 
-  /* ─── Active state — warm amber glow ring ─── */
   .mobile-nav-item.is-active .mobile-nav-brand-img {
     transform: translateY(-1px) scale(1.1);
     box-shadow:
@@ -351,26 +330,20 @@
       0 0 24px -4px rgba(233, 75, 44, 0.55) !important;
   }
 
-  /* ─── Press feedback ─── */
   .mobile-nav-item:active .mobile-nav-brand-img {
     transform: scale(0.9) !important;
     transition-duration: 100ms !important;
   }
 
-  /* ─── Brand label styling ─── */
   .mobile-nav-item--brand .mobile-nav-label {
     font-weight: 700 !important;
   }
 
-  /* ─── Brand active state — label gets accent color ─── */
   .mobile-nav-item--brand.is-active .mobile-nav-label {
     color: var(--accent) !important;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SMALL MOBILE — adjust sizing
-   ═══════════════════════════════════════════════════════════ */
 @media (max-width: 400px) {
   .mobile-nav-brand-img {
     width: 22px !important;
@@ -385,13 +358,43 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   REDUCED MOTION
+   6. DRAWING CURSOR — Canvas overlay on Hero
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .drawing-cursor-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  display: block !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero-section .drawing-cursor-canvas {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .drawing-cursor-canvas {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION — all brand elements
    ═══════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
+  .site-nav .brand-logo,
+  .about-brand-mark,
+  .hero-section .hero-bento-seal,
   .mobile-nav-brand-img {
     transition: none !important;
   }
 
+  .site-nav .brand:hover .brand-logo,
+  .site-nav.is-scrolled .brand-logo,
   .mobile-nav-item.is-active .mobile-nav-brand-img,
   .mobile-nav-item:active .mobile-nav-brand-img {
     transform: none !important;

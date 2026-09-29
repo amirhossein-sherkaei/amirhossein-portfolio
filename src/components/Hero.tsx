@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
+import DrawingCursor from "@/components/DrawingCursor";
 
 type LivePost = {
   slug: string;
@@ -425,14 +426,12 @@ export default function Hero({
           </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
-            {/* Cell A — Name + Logo seal */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۱
               </span>
 
-              {/* ── Brand seal ── */}
               <span className="hero-bento-seal" aria-hidden="true">
                 <Image
                   src="/logo.png"
@@ -463,7 +462,6 @@ export default function Hero({
               </div>
             </article>
 
-            {/* Cell B — Clock */}
             <article className="hero-bento-cell hero-bento-cell--clock">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۲
@@ -479,7 +477,6 @@ export default function Hero({
               </span>
             </article>
 
-            {/* Cell C — Date */}
             <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
@@ -502,7 +499,6 @@ export default function Hero({
               </div>
             </article>
 
-            {/* Cell D — Big number */}
             <article className="hero-bento-cell hero-bento-cell--num">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -517,7 +513,6 @@ export default function Hero({
               </span>
             </article>
 
-            {/* Cell E — LIVE rotating */}
             <article className="hero-bento-cell hero-bento-cell--live">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۵
@@ -550,6 +545,9 @@ export default function Hero({
           ))}
         </div>
       </div>
+
+      {/* ═══════ Drawing Cursor ═══════ */}
+      <DrawingCursor />
     </section>
   );
 }
