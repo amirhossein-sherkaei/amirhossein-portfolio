@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -8,8 +9,9 @@ type Item = {
   href: string;
   section: string;
   label: string;
-  icon: React.ReactNode;
+  icon: React.ReactNode | null;
   isPage?: boolean;
+  isBrand?: boolean;
 };
 
 const ITEMS: Item[] = [
@@ -17,19 +19,8 @@ const ITEMS: Item[] = [
     href: "#home",
     section: "home",
     label: "خانه",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M3 10.5L12 3l9 7.5V20a1.5 1.5 0 0 1-1.5 1.5h-4V15h-7v6.5h-4A1.5 1.5 0 0 1 3 20z" />
-      </svg>
-    ),
+    icon: null,
+    isBrand: true,
   },
   {
     href: "#services",
@@ -125,7 +116,6 @@ export default function MobileNav() {
     setMounted(true);
   }, []);
 
-  /* ── Active section tracking (home page only) ── */
   useEffect(() => {
     if (!mounted) return;
     if (typeof IntersectionObserver === "undefined") return;
@@ -153,7 +143,6 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  /* ── Hide when footer is visible ── */
   useEffect(() => {
     if (!mounted) return;
     if (typeof IntersectionObserver === "undefined") return;
@@ -179,16 +168,14 @@ export default function MobileNav() {
     >
       <ul className="mobile-nav-list">
         {ITEMS.map((item) => {
-          /* Active logic:
-             - Blog link: active if we're on /blog or /blog/[slug]
-             - Others: active only if we're on home and section is in view */
           const isActive = item.isPage
             ? isBlogPage
             : pathname === "/" && active === item.section;
 
-          const className = `mobile-nav-item${isActive ? " is-active" : ""}`;
+          const className = `mobile-nav-item${
+            isActive ? " is-active" : ""
+          }${item.isBrand ? " mobile-nav-item--brand" : ""}`;
 
-          /* Hash links should navigate home if not there */
           const resolvedHref =
             !item.isPage && pathname !== "/"
               ? `/${item.href}`
@@ -216,7 +203,21 @@ export default function MobileNav() {
                 className={className}
                 aria-current={isActive ? "location" : undefined}
               >
-                <span className="mobile-nav-icon">{item.icon}</span>
+                <span className="mobile-nav-icon">
+                  {item.isBrand ? (
+                    <Image
+                      src="/logo.png"
+                      alt=""
+                      width={26}
+                      height={26}
+                      className="mobile-nav-brand-img"
+                      aria-hidden="true"
+                      priority
+                    />
+                  ) : (
+                    item.icon
+                  )}
+                </span>
                 <span className="mobile-nav-label">{item.label}</span>
               </a>
             </li>
