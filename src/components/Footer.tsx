@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SoundToggle from "@/components/SoundToggle";
 import FooterClock from "@/components/FooterClock";
+import ContactLinks from "@/components/ContactLinks";
 
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
@@ -28,15 +29,6 @@ const navGroups = [
       { label: "وب + هوش مصنوعی", href: "/#services" },
       { label: "تبلیغات هوشمند", href: "/#services" },
       { label: "ویدیوی تبلیغاتی", href: "/#services" },
-    ],
-  },
-  {
-    label: "CONNECT",
-    links: [
-      { label: "پیامک", href: "sms:" },
-      { label: "روبیکا", href: "#" },
-      { label: "ایتا", href: "#" },
-      { label: "شروع پروژه", href: "/order", isPrimary: true },
     ],
   },
 ];
@@ -77,7 +69,9 @@ export default function Footer() {
         <div className="container">
           <div className="footer-hero-grid">
             <div className="footer-hero-content">
-              <span className="footer-hero-eyebrow">NEXT&nbsp;·&nbsp;STEP</span>
+              <span className="footer-hero-eyebrow">
+                NEXT&nbsp;·&nbsp;STEP
+              </span>
 
               <h2 id="footer-hero-title" className="footer-hero-title">
                 ایده‌ای داری؟
@@ -183,7 +177,10 @@ export default function Footer() {
                 </span>
                 <span className="footer-brand-location">
                   <FooterClock />
-                  <span className="footer-brand-location-sep" aria-hidden="true">
+                  <span
+                    className="footer-brand-location-sep"
+                    aria-hidden="true"
+                  >
                     ·
                   </span>
                   <span>Tehran</span>
@@ -202,22 +199,20 @@ export default function Footer() {
                 <ul className="footer-col-list">
                   {group.links.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className={`footer-link${
-                          link.isPrimary ? " footer-link--primary" : ""
-                        }`}
-                      >
+                      <Link href={link.href} className="footer-link">
                         <span>{link.label}</span>
-                        {link.isPrimary && (
-                          <span aria-hidden="true">←</span>
-                        )}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </nav>
             ))}
+
+            {/* Contact column */}
+            <div className="footer-col footer-col--nav footer-col--contact">
+              <span className="footer-col-label">CONNECT</span>
+              <ContactLinks variant="card" />
+            </div>
           </div>
 
           {/* Email row */}

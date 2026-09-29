@@ -115,6 +115,8 @@ import "@/styles/newsletter.css";
 import "@/styles/performance-boost.css";
 /* 38. Footer V2 — Editorial Masterpiece */
 import "@/styles/footer-v2.css";
+/* 39. Contact Links */
+import "@/styles/contact-links.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

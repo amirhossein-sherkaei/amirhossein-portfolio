@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MagneticButton from "@/components/MagneticButton";
+import ContactLinks from "@/components/ContactLinks";
 
 export default function FinalCTA() {
   const contactEmail = process.env.PROJECT_CONTACT_EMAIL;
@@ -59,27 +60,11 @@ export default function FinalCTA() {
             )}
           </div>
 
-          <aside className="final-cta-aside" aria-hidden="true">
-            <div className="final-cta-aside-item">
-              <span className="final-cta-aside-label">پاسخ</span>
-              <strong className="final-cta-aside-value">
-                حداکثر ۲۴ ساعت
-              </strong>
-            </div>
-
-            <div className="final-cta-aside-item">
-              <span className="final-cta-aside-label">روش تماس</span>
-              <strong className="final-cta-aside-value">
-                پیامک · روبیکا · ایتا
-              </strong>
-            </div>
-
-            <div className="final-cta-aside-item">
-              <span className="final-cta-aside-label">حوزه‌ی کار</span>
-              <strong className="final-cta-aside-value">
-                وب‌سایت · تبلیغات · ویدیو
-              </strong>
-            </div>
+          <aside className="final-cta-aside">
+            <span className="final-cta-aside-label">
+              راه‌های ارتباطی
+            </span>
+            <ContactLinks variant="card" ariaLabel="راه‌های تماس مستقیم" />
           </aside>
         </div>
       </div>
