@@ -106,6 +106,8 @@ import "@/styles/hero-bento-live.css";
 
 /* 34. Testimonials */
 import "@/styles/testimonials.css";
+/* 35. Page Transition — must be last */
+import "@/styles/page-transition.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

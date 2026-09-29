@@ -1,0 +1,75 @@
+/* ============================================================
+   PAGE TRANSITION — Smooth navigation between routes
+   ────────────────────────────────────────────────────────────
+   Uses View Transitions API (Chrome, Edge, Safari 18+).
+   Firefox: falls back gracefully (no animation).
+   ============================================================ */
+
+@view-transition {
+  navigation: auto;
+}
+
+/* ─── Root page out ─── */
+::view-transition-old(root) {
+  animation: pageSlideOut 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── New page in ─── */
+::view-transition-new(root) {
+  animation: pageSlideIn 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pageSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.995);
+  }
+}
+
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERSISTENT NAV — Header stays still during navigation
+   ═══════════════════════════════════════════════════════════ */
+.site-nav {
+  view-transition-name: persistent-nav;
+}
+
+.mobile-nav {
+  view-transition-name: persistent-mobile-nav;
+}
+
+::view-transition-old(persistent-nav),
+::view-transition-new(persistent-nav),
+::view-transition-old(persistent-mobile-nav),
+::view-transition-new(persistent-mobile-nav) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION — no animation for those who prefer
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(persistent-nav),
+  ::view-transition-new(persistent-nav),
+  ::view-transition-old(persistent-mobile-nav),
+  ::view-transition-new(persistent-mobile-nav) {
+    animation: none;
+  }
+}
