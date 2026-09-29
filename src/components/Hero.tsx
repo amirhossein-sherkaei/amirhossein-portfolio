@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 import DrawingCursor from "@/components/DrawingCursor";
 
@@ -52,9 +52,14 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
 function useTehranClock() {
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState("--:--:--");
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+
+    const onVis = () => setVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+
     const update = () => {
       const now = new Date();
       const fmt = new Intl.DateTimeFormat("en-US", {
@@ -70,9 +75,17 @@ function useTehranClock() {
       setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
     };
     update();
+
+    if (!visible) {
+      return () => document.removeEventListener("visibilitychange", onVis);
+    }
+
     const id = window.setInterval(update, 1000);
-    return () => window.clearInterval(id);
-  }, []);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [visible]);
 
   return mounted ? toPersian(time) : "--:--:--";
 }
@@ -108,7 +121,7 @@ function usePersianDate() {
       });
     };
     update();
-    const id = window.setInterval(update, 30000);
+    const id = window.setInterval(update, 60000);
     return () => window.clearInterval(id);
   }, []);
 
@@ -135,7 +148,7 @@ function useRelativeTime(iso: string | null): string {
       else setText(`${toPersian(Math.floor(days / 365))} سال پیش`);
     };
     compute();
-    const id = window.setInterval(compute, 60000);
+    const id = window.setInterval(compute, 120000);
     return () => window.clearInterval(id);
   }, [iso]);
 
@@ -148,16 +161,61 @@ export default function Hero({
   totalPosts,
   totalProjects,
 }: HeroProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [liveIndex, setLiveIndex] = useState(0);
   const [livePaused, setLivePaused] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
+  const [tabVisible, setTabVisible] = useState(true);
 
   const clock = useTehranClock();
   const persianDate = usePersianDate();
   const latestAgo = useRelativeTime(latestPost?.date ?? null);
   const archiveAgo = useRelativeTime(archivePost?.date ?? null);
 
+  /* ─── Track hero visibility ─── */
   useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setHeroInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    io.observe(section);
+
+    return () => io.disconnect();
+  }, []);
+
+  /* ─── Track tab visibility ─── */
+  useEffect(() => {
+    const onVis = () => {
+      setTabVisible(!document.hidden);
+      document.documentElement.setAttribute(
+        "data-tab-hidden",
+        document.hidden ? "true" : "false"
+      );
+    };
+    onVis();
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  /* ─── Update section class for CSS-driven pausing ─── */
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (heroInView) section.classList.add("hero-in-view");
+    else section.classList.remove("hero-in-view");
+  }, [heroInView]);
+
+  const shouldAnimate = heroInView && tabVisible;
+
+  /* ─── Role rotation ─── */
+  useEffect(() => {
+    if (!shouldAnimate) return;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -167,10 +225,11 @@ export default function Hero({
       ROLE_ROTATION_MS
     );
     return () => window.clearInterval(id);
-  }, []);
+  }, [shouldAnimate]);
 
+  /* ─── Live cell rotation ─── */
   useEffect(() => {
-    if (livePaused) return;
+    if (livePaused || !shouldAnimate) return;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -180,7 +239,7 @@ export default function Hero({
       LIVE_ROTATION_MS
     );
     return () => window.clearInterval(id);
-  }, [livePaused]);
+  }, [livePaused, shouldAnimate]);
 
   const liveStates = useMemo(() => {
     const states: Array<{
@@ -309,7 +368,7 @@ export default function Hero({
   const activeLive = liveStates[liveIndex % liveStates.length];
 
   return (
-    <section id="home" className="hero-section">
+    <section ref={sectionRef} id="home" className="hero-section hero-in-view">
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
@@ -546,7 +605,6 @@ export default function Hero({
         </div>
       </div>
 
-      {/* ═══════ Drawing Cursor ═══════ */}
       <DrawingCursor />
     </section>
   );

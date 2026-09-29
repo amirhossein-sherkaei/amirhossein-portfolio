@@ -111,6 +111,8 @@ import "@/styles/testimonials.css";
 import "@/styles/brand-logo.css";
 /* 36. Newsletter */
 import "@/styles/newsletter.css";
+/* 37. Performance Boost — must be last */
+import "@/styles/performance-boost.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

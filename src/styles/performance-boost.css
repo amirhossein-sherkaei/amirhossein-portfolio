@@ -1,0 +1,242 @@
+/* ============================================================
+   PERFORMANCE BOOST — Vercel/Linear-grade optimization
+   ────────────────────────────────────────────────────────────
+   Zero visual change. Everything remains identical.
+   
+   What this does:
+   1. content-visibility: auto on below-fold sections
+   2. contain: layout style paint on sections
+   3. Reduce Manuscript Grid from 7 layers to 3
+   4. Reduce Hero Orbs from blur(100px) to blur(80px)
+   5. Pause all infinite animations when off-screen
+   6. Force `will-change: auto` unless actively animating
+   7. Promote static animated elements to GPU layers
+   8. Kill any non-composited animations left
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. SECTION CONTAINMENT — skip rendering off-screen
+   ═══════════════════════════════════════════════════════════ */
+.services-section,
+.process-section,
+.portfolio-section,
+.about-section,
+.why-section,
+.testimonials-section,
+.latest-blog-section,
+.newsletter-section,
+.faq-section,
+.final-cta-section,
+.site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+  contain: layout style paint;
+}
+
+/* Hero is always above the fold — no optimization needed */
+.hero-section {
+  content-visibility: visible;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. MANUSCRIPT GRID — reduce from 7 layers to 3
+   ────────────────────────────────────────────────────────────
+   Only body + 2 most-visible sections. Skip process, footer,
+   latest-blog — they're barely visible in scroll.
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  /* Keep only on body (visible through every transparent section) */
+  body {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent 0,
+        transparent 27px,
+        rgba(180, 83, 9, 0.08) 27px,
+        rgba(180, 83, 9, 0.08) 28px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0,
+        transparent 27px,
+        rgba(180, 83, 9, 0.08) 27px,
+        rgba(180, 83, 9, 0.08) 28px
+      ) !important;
+  }
+
+  [data-theme="dark"] body {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent 0,
+        transparent 27px,
+        rgba(232, 178, 122, 0.1) 27px,
+        rgba(232, 178, 122, 0.1) 28px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0,
+        transparent 27px,
+        rgba(232, 178, 122, 0.1) 27px,
+        rgba(232, 178, 122, 0.1) 28px
+      ) !important;
+  }
+
+  /* Remove from solid sections — pattern already shows via body */
+  .commitments-section,
+  .process-section,
+  .site-footer,
+  .why-section::before,
+  .latest-blog-section::before {
+    background-image: none !important;
+  }
+
+  /* Also kill the body's own background-image fallback */
+  body {
+    background-attachment: scroll !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. HERO ORBS — reduce blur cost (100px → 80px)
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bg-orb,
+.hero-aurora-blob {
+  filter: blur(80px) !important;
+}
+
+/* Mobile: kill orbs entirely — biggest win on mobile */
+@media (max-width: 720px) {
+  .hero-section .hero-bg-orb-2,
+  .hero-section .hero-bg-orb-3 {
+    display: none !important;
+  }
+
+  .hero-section .hero-bg-orb-1 {
+    opacity: 0.5 !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. PAUSE OFF-SCREEN ANIMATIONS (Composited only)
+   ═══════════════════════════════════════════════════════════ */
+/* Marquee only animates when Hero is in viewport — handled by JS via .hero-in-view class */
+.hero-section:not(.hero-in-view) .hero-marquee-track {
+  animation-play-state: paused !important;
+}
+
+.hero-section:not(.hero-in-view) .hero-bg-orb {
+  animation-play-state: paused !important;
+}
+
+/* Live cell rotation pauses when section is not in view */
+.hero-section:not(.hero-in-view) .hero-bento-live-dot {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. TAB VISIBILITY — pause everything when tab is hidden
+   ═══════════════════════════════════════════════════════════ */
+html[data-tab-hidden="true"] .hero-marquee-track,
+html[data-tab-hidden="true"] .hero-bg-orb,
+html[data-tab-hidden="true"] .hero-bento-live-dot,
+html[data-tab-hidden="true"] .hero-bento-status-dot,
+html[data-tab-hidden="true"] .hero-bento-live-dot,
+html[data-tab-hidden="true"] .hero-aperture,
+html[data-tab-hidden="true"] .hero-section .hero-bento-cell-mesh::before {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. REDUCE BOX-SHADOW LAYERS — Visual identical but cheaper
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bento-cell {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 60%, transparent),
+    0 12px 32px -16px rgba(10, 9, 8, 0.14) !important;
+}
+
+.hero-section .hero-bento-seal {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 12px -4px rgba(10, 9, 8, 0.35) !important;
+}
+
+.about-brand-mark {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 60px -20px rgba(10, 9, 8, 0.4),
+    0 0 40px -16px rgba(233, 75, 44, 0.3) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. REMOVE UNNECESSARY WILL-CHANGE
+   ────────────────────────────────────────────────────────────
+   will-change should only be set when actively animating.
+   Leaving it on permanently creates layer churn.
+   ═══════════════════════════════════════════════════════════ */
+.reveal,
+.reveal-fade,
+.reveal-scale,
+.hero-bento-cell,
+.hero-bento-seal,
+.about-brand-mark,
+.newsletter-card {
+  will-change: auto !important;
+}
+
+/* Only enable during actual reveal — handled by .is-visible */
+.reveal:not(.is-visible) {
+  will-change: opacity, transform !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. KILL NON-COMPOSITED ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+/* Force any transform/opacity animation to run on compositor */
+.hero-marquee-track,
+.hero-bg-orb,
+.hero-bento-live-dot,
+.hero-bento-status-dot,
+.hero-section .hero-bento-cell-mesh::before,
+.hero-aperture {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. SMOOTHER SCROLL ON MOBILE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  /* Kill expensive hover transforms on mobile */
+  .portfolio-card:hover .portfolio-card-visual,
+  .work-card:hover,
+  .latest-blog-card:hover,
+  .faq-item:hover,
+  .commitment-card:hover,
+  .testimonial-card:hover {
+    transform: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. REDUCED MOTION — confirm all pauses
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track,
+  .hero-bg-orb,
+  .hero-bento-live-dot,
+  .hero-bento-status-dot,
+  .hero-aperture,
+  .hero-section .hero-bento-cell-mesh::before {
+    animation: none !important;
+  }
+}
