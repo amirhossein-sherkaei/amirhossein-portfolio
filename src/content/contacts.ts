@@ -24,14 +24,21 @@ export type Contact = {
 const PHONE_RAW = "+989371932549"; // ← برای لینک sms: (بین‌المللی)
 const PHONE_DISPLAY = "۰۹۳۷ ۱۹۳ ۲۵۴۹"; // ← برای نمایش
 
-/* ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   CHAT LINKS
+   ────────────────────────────────────────────────────────────
+   Rubika & Eitaa: use the exact link each app gives you when
+   you tap "Share profile" inside the app. If unsure, keep the
+   /@username format — Rubika and Eitaa both open a chat
+   directly when the username is prefixed with @.
+   ═══════════════════════════════════════════════════════════ */
 
 export const contacts: Contact[] = [
   {
     id: "rubika",
     label: "روبیکا",
     short: "Rubika",
-    href: "https://rubika.ir/Amirhosein2076",
+    href: "https://rubika.ir/@Amirhosein2076",
     external: true,
     value: "@Amirhosein2076",
   },
@@ -39,7 +46,7 @@ export const contacts: Contact[] = [
     id: "eitaa",
     label: "ایتا",
     short: "Eitaa",
-    href: "https://eitaa.com/AmirHosseinsherakaei",
+    href: "https://eitaa.com/@AmirHosseinsherakaei",
     external: true,
     value: "@AmirHosseinsherakaei",
   },
