@@ -11,6 +11,10 @@ export const size = {
 
 export const contentType = "image/png";
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://amirhossein-portfolio.vercel.app";
+
 function getPersianYear(locale: "fa" | "en" = "fa"): string {
   const persianDigits = new Intl.DateTimeFormat("fa-IR", {
     year: "numeric",
@@ -53,11 +57,37 @@ async function loadFont(): Promise<ArrayBuffer | null> {
   return null;
 }
 
+async function loadLogoDataUrl(): Promise<string | null> {
+  const urls = [
+    `${SITE_URL}/logo.png`,
+    "https://amirhossein-portfolio.vercel.app/logo.png",
+  ];
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { cache: "force-cache" });
+      if (!res.ok) continue;
+      const buffer = await res.arrayBuffer();
+      const base64 = Buffer.from(buffer).toString("base64");
+      return `data:image/png;base64,${base64}`;
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
 export default async function OpengraphImage() {
-  const fontData = await loadFont();
+  const [fontData, logoData] = await Promise.all([
+    loadFont(),
+    loadLogoDataUrl(),
+  ]);
   const yearFa = getPersianYear("fa");
   const yearEn = getPersianYear("en");
 
+  /* ═══════════════════════════════════════════════════════════
+     Fallback: no Persian font (English-only layout)
+     ═══════════════════════════════════════════════════════════ */
   if (!fontData) {
     return new ImageResponse(
       (
@@ -72,8 +102,24 @@ export default async function OpengraphImage() {
             background: "#f7f3ee",
             color: "#0a0908",
             fontFamily: "system-ui, -apple-system, sans-serif",
+            position: "relative",
           }}
         >
+          {logoData && (
+            <img
+              src={logoData}
+              alt=""
+              width={120}
+              height={120}
+              style={{
+                position: "absolute",
+                top: 72,
+                right: 72,
+                borderRadius: 28,
+              }}
+            />
+          )}
+
           <div
             style={{
               display: "flex",
@@ -87,7 +133,14 @@ export default async function OpengraphImage() {
             <span>01 / 01</span>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 22,
+              maxWidth: 900,
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -143,6 +196,9 @@ export default async function OpengraphImage() {
     );
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     Full Persian layout
+     ═══════════════════════════════════════════════════════════ */
   return new ImageResponse(
     (
       <div
@@ -159,6 +215,7 @@ export default async function OpengraphImage() {
           position: "relative",
         }}
       >
+        {/* Ambient warm glow */}
         <div
           style={{
             position: "absolute",
@@ -172,6 +229,24 @@ export default async function OpengraphImage() {
           }}
         />
 
+        {/* ── Brand logo seal ── */}
+        {logoData && (
+          <img
+            src={logoData}
+            alt=""
+            width={128}
+            height={128}
+            style={{
+              position: "absolute",
+              top: 72,
+              left: 72,
+              borderRadius: 30,
+              border: "1px solid rgba(10,9,8,0.08)",
+            }}
+          />
+        )}
+
+        {/* ── Top bar ── */}
         <div
           style={{
             display: "flex",
@@ -180,18 +255,21 @@ export default async function OpengraphImage() {
             letterSpacing: 3,
             color: "#5a5550",
             position: "relative",
+            paddingLeft: logoData ? 160 : 0,
           }}
         >
           <span>AMIRHOSSEIN SHORAKAEI</span>
           <span>01 / 01</span>
         </div>
 
+        {/* ── Center content ── */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: 28,
             position: "relative",
+            maxWidth: 1000,
           }}
         >
           <div
@@ -222,6 +300,7 @@ export default async function OpengraphImage() {
           </div>
         </div>
 
+        {/* ── Bottom bar ── */}
         <div
           style={{
             display: "flex",

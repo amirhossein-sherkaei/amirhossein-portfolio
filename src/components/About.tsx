@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { projects } from "@/content/projects";
 
 /* سال شمسی جاری — خودکار از تاریخ سیستم محاسبه می‌شود */
@@ -146,6 +147,60 @@ export default function About() {
               </span>
             </div>
           </aside>
+        </div>
+
+        {/* ═══════ BRAND SHOWCASE ═══════ */}
+        <div className="about-brand-showcase reveal">
+          <div className="about-brand-mark" aria-hidden="true">
+            <Image
+              src="/logo.png"
+              alt=""
+              width={220}
+              height={220}
+              priority={false}
+            />
+          </div>
+
+          <div className="about-brand-copy">
+            <span className="about-brand-eyebrow">
+              BRAND · MARK · 2026
+            </span>
+
+            <h3 className="about-brand-title">
+              هر پروژه از یک <em>هویت</em> شروع می‌شه،
+              <br />
+              نه از یک قالب.
+            </h3>
+
+            <p className="about-brand-text">
+              این مهر، ترکیبی از حروف اول نامم (AH) با ترکیب فلز و
+              نور نارنجی است — دقیقاً همون تعادلی که در هر پروژه
+              دنبالش هستم: ساختار محکم، جزئیات دقیق، و یک جرقه‌ی
+              گرم که کار رو زنده می‌کنه.
+            </p>
+
+            <div className="about-brand-sig">
+              <svg
+                className="about-brand-sig-mark"
+                viewBox="0 0 220 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 34C24 14 46 40 70 22C88 8 106 34 130 22C150 12 172 30 206 18"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+                <circle cx="212" cy="16" r="2.2" fill="currentColor" />
+              </svg>
+              <div className="about-brand-sig-name">
+                <strong>امیرحسین شرکائی</strong>
+                <small>AMIRHOSSEIN SHORAKAEI</small>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="about-proof reveal" aria-label="اثبات‌های فنی">

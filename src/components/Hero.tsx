@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 
@@ -424,12 +425,24 @@ export default function Hero({
           </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
-            {/* Cell A — Name */}
+            {/* Cell A — Name + Logo seal */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۱
               </span>
+
+              {/* ── Brand seal ── */}
+              <span className="hero-bento-seal" aria-hidden="true">
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={44}
+                  height={44}
+                  className="hero-bento-seal-img"
+                />
+              </span>
+
               <span className="hero-bento-status">
                 <span
                   className="hero-bento-status-dot"
