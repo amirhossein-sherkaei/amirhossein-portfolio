@@ -6108,3 +6108,62 @@
     display: none;
   }
 }
+/* ============================================================
+   FIX — Theme toggle icons
+   ────────────────────────────────────────────────────────────
+   مشکل: در JSX از کلاس‌های `theme-icon-sun` و `theme-icon-moon`
+   استفاده می‌شه، ولی layout.css فقط `icon-sun` و `icon-moon`
+   رو استایل کرده بود. نتیجه: آیکن‌ها بدون رنگ و سایز درست.
+   ============================================================ */
+
+.site-nav .theme-toggle .theme-icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 9px;
+  box-sizing: border-box;
+  display: block;
+  transition:
+    opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    color 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Sun — light mode */
+.site-nav .theme-toggle .theme-icon-sun {
+  color: var(--accent);
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Moon — hidden in light mode */
+.site-nav .theme-toggle .theme-icon-moon {
+  color: var(--accent);
+  opacity: 0;
+  transform: rotate(-100deg) scale(0.4);
+}
+
+/* Dark mode — flip visibility */
+[data-theme="dark"] .site-nav .theme-toggle .theme-icon-sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.4);
+}
+
+[data-theme="dark"] .site-nav .theme-toggle .theme-icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Mobile — smaller padding */
+@media (max-width: 640px) {
+  .site-nav .theme-toggle .theme-icon {
+    padding: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav .theme-toggle .theme-icon {
+    transition: none;
+  }
+}
