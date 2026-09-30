@@ -117,6 +117,8 @@ import "@/styles/performance-boost.css";
 import "@/styles/footer-v2.css";
 /* 39. Contact Links */
 import "@/styles/contact-links.css";
+/* 40. Count Up */
+import "@/styles/count-up.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

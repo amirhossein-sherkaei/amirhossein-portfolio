@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { projects } from "@/content/projects";
+import CountUp from "@/components/CountUp";
 
 /* سال شمسی جاری — خودکار از تاریخ سیستم محاسبه می‌شود */
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
@@ -203,11 +204,15 @@ export default function About() {
           </div>
         </div>
 
+        {/* ═══════ PROOF STRIP — CountUp animated ═══════ */}
         <div className="about-proof reveal" aria-label="اثبات‌های فنی">
           {proofPoints.map((point) => (
             <div key={point.label} className="about-proof-item">
               <span className="about-proof-value">
-                {point.value}
+                <CountUp
+                  value={point.value}
+                  className="about-proof-count"
+                />
                 {point.suffix && (
                   <span className="about-proof-suffix">{point.suffix}</span>
                 )}
