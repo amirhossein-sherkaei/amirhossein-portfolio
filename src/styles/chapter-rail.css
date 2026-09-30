@@ -1,0 +1,343 @@
+/* ============================================================
+   CHAPTER RAIL — Vertical section navigator
+   ────────────────────────────────────────────────────────────
+   A subtle vertical rail on the side of the page showing the
+   8 chapters of the portfolio. Active chapter = amber dot.
+   Hover = editorial tooltip with chapter number + label.
+   
+   Desktop: fixed left/right edge (RTL-aware)
+   Mobile:  horizontal at top, scrollable
+   ============================================================ */
+
+:root {
+  --rail-edge: 24px;
+  --rail-width: 12px;
+  --rail-gap: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RAIL WRAPPER
+   ═══════════════════════════════════════════════════════════ */
+.chapter-rail {
+  position: fixed;
+  top: 50%;
+  inset-inline-start: var(--rail-edge);
+  transform: translateY(-50%) translateX(-12px);
+  z-index: 85;
+
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.chapter-rail.is-visible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: auto;
+}
+
+/* ─── Vertical line behind the dots ─── */
+.chapter-rail-line {
+  position: absolute;
+  inset-inline-start: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--ink) 12%, transparent) 15%,
+    color-mix(in srgb, var(--ink) 12%, transparent) 85%,
+    transparent 100%
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIST
+   ═══════════════════════════════════════════════════════════ */
+.chapter-rail-list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rail-gap);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chapter-rail-item-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DOT BUTTON
+   ═══════════════════════════════════════════════════════════ */
+.chapter-rail-item {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.chapter-rail-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* ─── The actual dot ─── */
+.chapter-rail-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 25%, transparent);
+  border: 1px solid transparent;
+  transition:
+    width 320ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    height 320ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    background-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* ─── Hover state ─── */
+.chapter-rail-item:hover .chapter-rail-dot {
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: scale(1.2);
+}
+
+/* ─── Active state ─── */
+.chapter-rail-item.is-active .chapter-rail-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent),
+    0 0 16px -2px var(--accent-glow);
+  animation: chapter-rail-pulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes chapter-rail-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent),
+      0 0 16px -2px var(--accent-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--accent) 8%, transparent),
+      0 0 24px -2px var(--accent-glow);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOOLTIP — appears on hover
+   ═══════════════════════════════════════════════════════════ */
+.chapter-rail-tooltip {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: calc(100% + 12px);
+  transform: translateY(-50%) translateX(-6px);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 24px -8px rgba(10, 9, 8, 0.4);
+
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  z-index: 10;
+}
+
+/* Tooltip arrow */
+.chapter-rail-tooltip::before {
+  content: "";
+  position: absolute;
+  inset-inline-end: 100%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-inline-end-color: color-mix(in srgb, var(--ink) 92%, transparent);
+  transform: translateY(-50%);
+}
+
+.chapter-rail-tooltip-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+}
+
+.chapter-rail-tooltip-label {
+  color: inherit;
+}
+
+/* ─── Hover / focus: show tooltip ─── */
+.chapter-rail-item:hover .chapter-rail-tooltip,
+.chapter-rail-item:focus-visible .chapter-rail-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — horizontal rail at top
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .chapter-rail {
+    top: auto;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    inset-inline-start: 50%;
+    transform: translateX(-50%) translateY(12px);
+    max-width: calc(100% - 32px);
+  }
+
+  .chapter-rail.is-visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .chapter-rail-line {
+    display: none;
+  }
+
+  .chapter-rail-list {
+    flex-direction: row;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid var(--line);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+      0 8px 24px -12px rgba(10, 9, 8, 0.2);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .chapter-rail-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chapter-rail-item {
+    width: 28px;
+    height: 28px;
+    scroll-snap-align: center;
+  }
+
+  .chapter-rail-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .chapter-rail-item.is-active .chapter-rail-dot {
+    width: 9px;
+    height: 9px;
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent),
+      0 0 10px -1px var(--accent-glow);
+  }
+
+  /* Hide tooltip on mobile */
+  .chapter-rail-tooltip {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VERY SMALL MOBILE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .chapter-rail-list {
+    padding: 6px 10px;
+    gap: 2px;
+  }
+
+  .chapter-rail-item {
+    width: 26px;
+    height: 26px;
+  }
+
+  .chapter-rail-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .chapter-rail-item.is-active .chapter-rail-dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .chapter-rail,
+  .chapter-rail-item,
+  .chapter-rail-dot,
+  .chapter-rail-tooltip {
+    transition: none !important;
+  }
+
+  .chapter-rail-item.is-active .chapter-rail-dot {
+    animation: none !important;
+  }
+
+  .chapter-rail-item:hover .chapter-rail-dot,
+  .chapter-rail-item:hover .chapter-rail-tooltip,
+  .chapter-rail-item:focus-visible .chapter-rail-tooltip {
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT — hide
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+  .chapter-rail {
+    display: none !important;
+  }
+}

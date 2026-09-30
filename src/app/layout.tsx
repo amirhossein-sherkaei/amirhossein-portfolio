@@ -124,6 +124,8 @@ import "@/styles/contact-links.css";
 
 /* 40. Count Up */
 import "@/styles/count-up.css";
+/* 41. Chapter Rail */
+import "@/styles/chapter-rail.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
