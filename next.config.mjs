@@ -26,6 +26,23 @@ const nextConfig = {
     optimizePackageImports: ['shiki'],
   },
 
+  /* ── 301 Redirect — old domain → new domain ── */
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'amirhossein-portfolio.vercel.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
   /* ── Security headers ── */
   async headers() {
     return [
