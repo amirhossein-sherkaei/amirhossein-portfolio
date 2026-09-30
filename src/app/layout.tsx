@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 
 /* ═══════════════════════════════════════════════════════════
@@ -31,6 +31,9 @@ import "@/styles/mobile-typography.css";
 
 /* 9. Mobile nav v2 */
 import "@/styles/mobile-nav-v2.css";
+
+/* 9b. Section nav (mobile bottom pill) */
+import "@/styles/section-nav.css";
 
 /* 10. Perceived performance */
 import "@/styles/perceived-performance.css";
@@ -127,9 +130,6 @@ import "@/styles/count-up.css";
 
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
-
-/* 42. Performance Layer */
-import "@/styles/performance-layer.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
