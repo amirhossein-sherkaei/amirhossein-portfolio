@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
-import DrawingCursor from "@/components/DrawingCursor";
 
 type LivePost = {
   slug: string;
@@ -121,7 +120,7 @@ function usePersianDate() {
       });
     };
     update();
-    const id = window.setInterval(update, 60000);
+    const id = window.setInterval(update, 30000);
     return () => window.clearInterval(id);
   }, []);
 
@@ -604,8 +603,6 @@ export default function Hero({
           ))}
         </div>
       </div>
-
-      <DrawingCursor />
     </section>
   );
 }
