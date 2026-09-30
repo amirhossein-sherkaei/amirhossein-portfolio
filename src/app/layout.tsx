@@ -5,9 +5,6 @@ import { Vazirmatn } from "next/font/google";
    CSS — Order matters!
    ═══════════════════════════════════════════════════════════ */
 
-/* 0. Layer order declaration — MUST be first */
-import "@/styles/layers.css";
-
 /* 1. Design tokens */
 import "@/styles/tokens.css";
 
