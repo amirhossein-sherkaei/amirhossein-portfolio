@@ -1,6 +1,6 @@
 // postcss.config.mjs
 // ═══════════════════════════════════════════════════════════
-// POSTCSS CONFIG — Cascade Guardian Enabled
+// POSTCSS CONFIG — Cascade Guardian v2 Enabled
 // ═══════════════════════════════════════════════════════════
 
 import cascadeGuardian from "./cascade-guardian.js";
@@ -9,8 +9,11 @@ import cascadeGuardian from "./cascade-guardian.js";
 const config = {
   plugins: [
     cascadeGuardian({
-      // Optional: override any file mapping
-      // map: { "custom-file.css": "editorial" }
+      // Options can go here, OR in .cascade-guardian.json
+      // verbose: true,
+      // blacklist: ["_dev-.*\\.css$"],
+      // whitelist: [".*\\.css$"],
+      // writeReport: true,
     }),
   ],
 };

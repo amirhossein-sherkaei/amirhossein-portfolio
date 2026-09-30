@@ -1,0 +1,11 @@
+{
+  "verbose": true,
+  "writeReport": true,
+  "blacklist": [
+    "_debug-.*\\.css$",
+    ".*\\.test\\.css$"
+  ],
+  "layerMap": {
+    "custom-file.css": "editorial"
+  }
+}
