@@ -6085,3 +6085,26 @@
     transform: none;
   }
 }
+/* ============================================================
+   FIX — Services grid columns
+   ────────────────────────────────────────────────────────────
+   مشکل: `.service-item` سه ستون داشت ولی JSX چهار فرزند
+   می‌سازه (number, icon, title, arrow). نتیجه: عنوان توی
+   ستون ۲۴px گیر می‌کرد و کلمه‌به‌کلمه می‌شکست.
+   
+   راه‌حل: چهار ستون — به اندازه‌ی هر چهار فرزند.
+   ============================================================ */
+
+.service-item {
+  grid-template-columns: 40px 40px 1fr 24px;
+}
+
+@media (max-width: 900px) {
+  .service-item {
+    grid-template-columns: 34px 1fr 22px;
+  }
+
+  .service-item .service-icon {
+    display: none;
+  }
+}
