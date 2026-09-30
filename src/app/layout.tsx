@@ -5,6 +5,9 @@ import { Vazirmatn } from "next/font/google";
    CSS — Order matters!
    ═══════════════════════════════════════════════════════════ */
 
+/* 0. Layer order declaration — MUST be first */
+import "@/styles/layers.css";
+
 /* 1. Design tokens */
 import "@/styles/tokens.css";
 
@@ -124,9 +127,11 @@ import "@/styles/contact-links.css";
 
 /* 40. Count Up */
 import "@/styles/count-up.css";
+
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
-/* 42. Performance Layer — MUST BE LAST */
+
+/* 42. Performance Layer */
 import "@/styles/performance-layer.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
