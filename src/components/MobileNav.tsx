@@ -6,16 +6,17 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE BOTTOM NAV — Premium Glass Edition
+   ULTRA PREMIUM MOBILE BOTTOM NAV — World-Class Edition
    ────────────────────────────────────────────────────────────
-   - Multi-layer glassmorphism
-   - Sliding glass indicator (spring physics)
-   - Logo as home icon
-   - Premium CTA with shine sweep
+   - Custom iconography with personality
+   - Multi-layer glassmorphism (5 layers)
+   - Sliding glow indicator
+   - Logo as home icon (38px with halo)
+   - Ripple + haptic feedback
    - Full dark mode + reduced motion
    ═══════════════════════════════════════════════════════════ */
 
-type IconName = "logo" | "grid" | "image" | "user" | "spark";
+type IconName = "logo" | "services" | "portfolio" | "about" | "spark";
 
 const NAV_ITEMS: ReadonlyArray<{
   id: string;
@@ -24,10 +25,10 @@ const NAV_ITEMS: ReadonlyArray<{
   type: IconName;
   section: string;
 }> = [
-  { id: "home", label: "خانه", href: "/#home", type: "logo", section: "home" },
-  { id: "services", label: "خدمات", href: "/#services", type: "grid", section: "services" },
-  { id: "portfolio", label: "نمونه‌کار", href: "/#portfolio", type: "image", section: "portfolio" },
-  { id: "about", label: "درباره", href: "/#about", type: "user", section: "about" },
+  { id: "home",      label: "خانه",      href: "/#home",      type: "logo",      section: "home" },
+  { id: "services",  label: "خدمات",     href: "/#services",  type: "services",  section: "services" },
+  { id: "portfolio", label: "نمونه‌کار",  href: "/#portfolio", type: "portfolio", section: "portfolio" },
+  { id: "about",     label: "درباره",    href: "/#about",     type: "about",     section: "about" },
 ];
 
 const CTA = {
@@ -36,54 +37,71 @@ const CTA = {
   type: "spark" as const,
 };
 
-/* ─── SVG Icons ─── */
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM ICONS — هر آیکون با شخصیت خودش
+   ═══════════════════════════════════════════════════════════ */
 function Icon({ type }: { type: IconName }) {
   switch (type) {
-    case "grid":
+    case "services":
+      /* Grid با یه خانه بزرگ + ۳ تا کوچیک — مثل dashboard */
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
-          <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
-          <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
-          <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
+          <rect x="3" y="3" width="10" height="10" rx="2.5" />
+          <rect x="16" y="3" width="5" height="5" rx="1.8" />
+          <rect x="16" y="11" width="5" height="10" rx="1.8" />
+          <rect x="3" y="16" width="10" height="5" rx="1.8" />
         </svg>
       );
-    case "image":
+
+    case "portfolio":
+      /* قاب عکس با منظره — کوه + خورشید + پرنده */
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
-          <circle cx="9" cy="10" r="1.6" />
-          <path d="m4 17.5 4.5-4.2 3.5 3.2 3-2.8 5 4.8" />
+          <rect x="2.5" y="4" width="19" height="16" rx="3" />
+          <circle cx="8" cy="9.5" r="1.8" />
+          <path d="M2.5 17.5 7 13l3.2 2.8L13 13l8.5 6" />
+          <path d="M17.5 8.5c.8-.6 1.6-.6 2.4 0" strokeWidth="1.4" />
         </svg>
       );
-    case "user":
+
+    case "about":
+      /* آدم با شانه و کمی شخصیت — head + shoulders */
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="8" r="3.8" />
-          <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
+          <circle cx="12" cy="7.5" r="4" />
+          <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+          <path d="M9.5 7.5c.5-.5 1.4-.8 2.5-.8s2 .3 2.5.8" strokeWidth="1.3" />
         </svg>
       );
+
     case "spark":
+      /* ستاره درخشان + جرقه‌های جانبی */
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="m12 3 2 5.5L19.5 10 14 12l-2 5.5L10 12 4.5 10 10 8.5z" />
-          <path d="M19 4v3M17.5 5.5h3M5 17v2.5M3.75 18.25h2.5" />
+          <path d="M12 3.5 14 9l5.5 2-5.5 2-2 5.5-2-5.5L4.5 11 10 9z"
+                fill="currentColor" fillOpacity="0.15" />
+          <path d="M18.5 3v3M17 4.5h3" strokeWidth="1.5" />
+          <path d="M4 18.5v2.5M2.75 19.75h2.5" strokeWidth="1.5" />
         </svg>
       );
+
     default:
       return null;
   }
 }
 
-/* ─── Component ─── */
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT
+   ═══════════════════════════════════════════════════════════ */
 export default function MobileNav() {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [rippleKey, setRippleKey] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -119,16 +137,22 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  /* Haptic feedback on tap (mobile only) */
-  const handleTap = useCallback(() => {
-    if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-      try {
-        navigator.vibrate(8);
-      } catch {
-        /* ignore */
+  /* Haptic + ripple on tap */
+  const handleTap = useCallback(
+    (id: string) => {
+      setRippleKey(id);
+      window.setTimeout(() => setRippleKey(null), 600);
+
+      if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+        try {
+          navigator.vibrate(10);
+        } catch {
+          /* ignore */
+        }
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   /* Compute active index */
   const isOnHome = pathname === "/";
@@ -141,15 +165,19 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="mobile-bottom-nav"
+      className="mbn"
       aria-label="ناوبری موبایل"
+      data-hide-indicator={hideIndicator ? "true" : "false"}
+      style={{ "--mbn-index": indicatorIndex } as React.CSSProperties}
     >
-      <div
-        className="mobile-bottom-nav-items"
-        data-hide-indicator={hideIndicator ? "true" : "false"}
-        style={{ "--active-index": indicatorIndex } as React.CSSProperties}
-      >
-        <span className="mobile-bottom-nav-indicator" aria-hidden="true" />
+      {/* Ambient aura under the active item */}
+      <span className="mbn-aura" aria-hidden="true" />
+
+      <div className="mbn-items">
+        {/* Sliding glass indicator */}
+        <span className="mbn-slider" aria-hidden="true">
+          <span className="mbn-slider-glow" />
+        </span>
 
         {NAV_ITEMS.map((item, i) => {
           const isActive = i === activeIndex;
@@ -158,26 +186,29 @@ export default function MobileNav() {
               key={item.id}
               href={item.href}
               className={
-                "mobile-bottom-nav-item" + (isActive ? " is-active" : "")
+                "mbn-item" +
+                (isActive ? " is-active" : "") +
+                (rippleKey === item.id ? " is-rippling" : "")
               }
               aria-current={isActive ? "page" : undefined}
-              onClick={handleTap}
+              onClick={() => handleTap(item.id)}
             >
-              <span className="mobile-bottom-nav-icon" aria-hidden="true">
+              <span className="mbn-item-ripple" aria-hidden="true" />
+              <span className="mbn-item-icon" aria-hidden="true">
                 {item.type === "logo" ? (
                   <Image
                     src="/logo.png"
                     alt=""
-                    width={30}
-                    height={30}
-                    className="mobile-bottom-nav-logo"
+                    width={76}
+                    height={76}
+                    className="mbn-item-logo"
                     priority={false}
                   />
                 ) : (
                   <Icon type={item.type} />
                 )}
               </span>
-              <span className="mobile-bottom-nav-label">{item.label}</span>
+              <span className="mbn-item-label">{item.label}</span>
             </Link>
           );
         })}
@@ -185,16 +216,15 @@ export default function MobileNav() {
 
       <Link
         href={CTA.href}
-        className={
-          "mobile-bottom-nav-cta" + (isOrderPage ? " is-active" : "")
-        }
+        className={"mbn-cta" + (isOrderPage ? " is-active" : "")}
         aria-label={CTA.label}
-        onClick={handleTap}
+        onClick={() => handleTap("cta")}
       >
-        <span className="mobile-bottom-nav-icon" aria-hidden="true">
+        <span className="mbn-cta-shine" aria-hidden="true" />
+        <span className="mbn-item-icon" aria-hidden="true">
           <Icon type={CTA.type} />
         </span>
-        <span className="mobile-bottom-nav-label">{CTA.label}</span>
+        <span className="mbn-item-label">{CTA.label}</span>
       </Link>
     </nav>
   );
