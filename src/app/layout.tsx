@@ -31,6 +31,10 @@ import "@/styles/mobile-typography.css";
 
 /* 9. Mobile nav v2 */
 import "@/styles/mobile-nav-v2.css";
+
+/* 9b. Mobile bottom nav */
+import "@/styles/mobile-bottom-nav.css";
+
 /* 10. Perceived performance */
 import "@/styles/perceived-performance.css";
 
@@ -126,6 +130,9 @@ import "@/styles/count-up.css";
 
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
+
+/* 42. Performance Layer */
+import "@/styles/performance-layer.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
