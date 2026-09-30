@@ -1,5 +1,5 @@
 /* ============================================================
-   PROCESS SECTION — 4-step workflow (v3 — hard override)
+   PROCESS SECTION — 4-step workflow + scroll-driven timeline
    ============================================================ */
 
 .process-section {
@@ -63,6 +63,85 @@
   color: var(--ink-2);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   SCROLL-DRIVEN TIMELINE — the amber progress line
+   ────────────────────────────────────────────────────────────
+   A thin rail below the heading. Grows as user scrolls.
+   Each step's number activates when the line passes it.
+   ═══════════════════════════════════════════════════════════ */
+.process-timeline {
+  display: none;
+}
+
+@media (min-width: 721px) {
+  .process-timeline {
+    display: block;
+    position: relative;
+    height: 28px;
+    margin: 0 0 clamp(28px, 3.5vw, 40px);
+    padding-inline: 8px;
+  }
+
+  .process-timeline-track {
+    position: relative;
+    height: 1px;
+    background: color-mix(in srgb, var(--line) 90%, transparent);
+    border-radius: 1px;
+  }
+
+  /* The growing fill */
+  .process-timeline-fill {
+    position: absolute;
+    inset-block: -1px;
+    inset-inline-start: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 60%, transparent) 0%,
+      var(--accent) 20%,
+      var(--accent) 80%,
+      color-mix(in srgb, var(--accent) 60%, transparent) 100%
+    );
+    box-shadow:
+      0 0 12px -1px var(--accent-glow),
+      0 0 24px -6px var(--accent-glow);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+
+  /* Fallback for browsers without scroll-timeline */
+  @supports not (animation-timeline: view()) {
+    .process-timeline-fill {
+      transform: scaleX(0);
+      transition: transform 120ms linear;
+    }
+  }
+
+  /* Scroll-driven animation (Chrome 115+, Edge 115+, Safari 26+) */
+  @supports (animation-timeline: view()) {
+    .process-timeline-fill {
+      animation: process-scroll-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 60%;
+    }
+
+    @keyframes process-scroll-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  /* RTL: grow from the right */
+  [dir="rtl"] .process-timeline-fill {
+    transform-origin: right center;
+  }
+}
+
 /* ═══ GRID ═══ */
 .process-section .process-grid {
   display: grid !important;
@@ -75,7 +154,7 @@
   border: 0 !important;
 }
 
-/* ═══ CARD — HARD OVERRIDE against layout-more.css ═══ */
+/* ═══ CARD ═══ */
 .process-section .process-step {
   position: relative !important;
   display: flex !important;
@@ -104,6 +183,49 @@
     0 16px 40px -20px rgba(10, 9, 8, 0.12) !important;
 }
 
+/* Number badge glows when its step enters viewport */
+@supports (animation-timeline: view()) {
+  .process-section .process-step-num {
+    animation: step-num-activate linear both;
+    animation-timeline: view();
+    animation-range: entry 40% entry 80%;
+  }
+
+  @keyframes step-num-activate {
+    from {
+      background: var(--accent-tint);
+      color: var(--accent);
+      box-shadow:
+        0 0 0 0 transparent,
+        0 0 0 0 transparent;
+      transform: scale(0.94);
+    }
+    to {
+      background: var(--accent);
+      color: #fff;
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent),
+        0 0 20px -4px var(--accent-glow);
+      transform: scale(1);
+    }
+  }
+
+  .process-section .process-step-title {
+    animation: step-title-activate linear both;
+    animation-timeline: view();
+    animation-range: entry 45% entry 85%;
+  }
+
+  @keyframes step-title-activate {
+    from {
+      color: var(--ink-2);
+    }
+    to {
+      color: var(--ink);
+    }
+  }
+}
+
 /* ═══ Head ═══ */
 .process-section .process-step-head {
   display: flex !important;
@@ -128,6 +250,11 @@
   flex-shrink: 0 !important;
   padding: 0 !important;
   border: 0 !important;
+  transition:
+    background-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 400ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 .process-section .process-step-line {
@@ -329,9 +456,28 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   .process-section .process-step {
     transition: none !important;
     transform: none !important;
+  }
+
+  .process-section .process-step-num {
+    animation: none !important;
+    background: var(--accent) !important;
+    color: #fff !important;
+    transform: none !important;
+  }
+
+  .process-section .process-step-title {
+    animation: none !important;
+  }
+
+  .process-timeline-fill {
+    animation: none !important;
+    transform: scaleX(1) !important;
   }
 }

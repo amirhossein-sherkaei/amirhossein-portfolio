@@ -57,7 +57,6 @@ export default function Process() {
       aria-labelledby="process-title"
     >
       <div className="container">
-        {/* ═══════ Masthead ═══════ */}
         <div className="process-masthead reveal">
           <span className="process-masthead-left">
             CHAPTER&nbsp;·&nbsp;02&nbsp;—&nbsp;PROCESS
@@ -70,13 +69,12 @@ export default function Process() {
           </span>
         </div>
 
-        {/* ═══════ Heading ═══════ */}
         <div className="section-heading reveal">
           <div>
             <span className="section-index">03 — PROCESS</span>
             <h2 id="process-title">
               چهار قدم ساده
-              <em> تا پروژه‌ی تو.</em>
+              <em className="ink-word"> تا پروژه‌ی تو.</em>
             </h2>
           </div>
           <p>
@@ -85,7 +83,13 @@ export default function Process() {
           </p>
         </div>
 
-        {/* ═══════ Steps grid ═══════ */}
+        {/* ═══════ SCROLL-DRIVEN PROCESS TIMELINE ═══════ */}
+        <div className="process-timeline" aria-hidden="true">
+          <div className="process-timeline-track">
+            <div className="process-timeline-fill" />
+          </div>
+        </div>
+
         <ol className="process-grid">
           {steps.map((step, index) => (
             <li
@@ -106,7 +110,10 @@ export default function Process() {
               <ul className="process-step-list">
                 {step.details.map((detail) => (
                   <li key={detail}>
-                    <span className="process-step-bullet" aria-hidden="true" />
+                    <span
+                      className="process-step-bullet"
+                      aria-hidden="true"
+                    />
                     <span>{detail}</span>
                   </li>
                 ))}
@@ -115,7 +122,6 @@ export default function Process() {
           ))}
         </ol>
 
-        {/* ═══════ Footer note ═══════ */}
         <div className="process-footer reveal">
           <div className="process-footer-line" aria-hidden="true" />
           <p className="process-footer-text">
