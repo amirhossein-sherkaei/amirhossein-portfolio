@@ -126,6 +126,8 @@ import "@/styles/contact-links.css";
 import "@/styles/count-up.css";
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
+/* 42. Performance Layer — MUST BE LAST */
+import "@/styles/performance-layer.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

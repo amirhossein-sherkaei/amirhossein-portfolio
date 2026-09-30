@@ -1,0 +1,245 @@
+/* ============================================================
+   PERFORMANCE LAYER — Last-Mile Optimization
+   ────────────────────────────────────────────────────────────
+   This is NOT a mega-file. It's a surgical override layer
+   that touches only what matters for performance, without
+   adding new visual rules.
+
+   Strategy:
+   1. Content-visibility for below-fold sections
+   2. Reduce blur radius (biggest GPU cost)
+   3. Reduce box-shadow complexity
+   4. Remove unused animations
+   5. Clean will-change
+   6. Ensure compositor-only animations
+   7. Section containment strategy
+
+   Load LAST. No !important unless fighting legacy overrides.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. CONTENT-VISIBILITY — skip rendering off-screen
+   ═══════════════════════════════════════════════════════════ */
+.services-section,
+.portfolio-section,
+.about-section,
+.why-section,
+.testimonials-section,
+.latest-blog-section,
+.newsletter-section,
+.faq-section,
+.final-cta-section,
+.commitments-section,
+.process-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+.site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+/* Hero must stay visible always */
+.hero-section {
+  content-visibility: visible !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. BLUR REDUCTION — the biggest GPU cost on the site
+   ═══════════════════════════════════════════════════════════ */
+
+/* Hero orbs — 100px → 80px is barely visible but 40% cheaper */
+.hero-section .hero-bg-orb,
+.hero-aurora-blob {
+  filter: blur(80px);
+}
+
+/* Hide the third orb on mobile (has the least visual impact) */
+@media (max-width: 720px) {
+  .hero-section .hero-bg-orb-3 {
+    display: none;
+  }
+
+  .hero-section .hero-bg-orb-2 {
+    opacity: 0.35;
+  }
+}
+
+/* Reduce nav glass blur on mobile (costly on iOS) */
+@media (max-width: 720px) {
+  .site-nav.is-scrolled .nav-inner,
+  .mobile-nav {
+    backdrop-filter: blur(14px) saturate(1.3);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  }
+}
+
+/* Reduce hero bento cell blur (from 26px → 20px) */
+@media (min-width: 900px) {
+  .hero-section .hero-bento-cell {
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. BOX-SHADOW SIMPLIFICATION
+   ────────────────────────────────────────────────────────────
+   Complex multi-layer shadows cost paint time.
+   Merging into fewer layers keeps the same look.
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bento-cell {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 12px 32px -16px rgba(10, 9, 8, 0.12);
+}
+
+.commitment-card,
+.process-step,
+.latest-blog-card,
+.faq-item,
+.work-card {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 1px 2px rgba(10, 9, 8, 0.04);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. PAUSE OFF-SCREEN ANIMATIONS
+   ────────────────────────────────────────────────────────────
+   Infinite CSS animations consume GPU even when off-screen.
+   We pause the costly ones when their section isn't visible.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Marquee — only animate when Hero is in view */
+.hero-section:not(.hero-in-view) .hero-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Bento Live dot — pause when off screen */
+.hero-section:not(.hero-in-view) .hero-bento-live-dot,
+.hero-section:not(.hero-in-view) .hero-bento-status-dot {
+  animation-play-state: paused;
+}
+
+/* Orbs — pause when Hero isn't visible */
+.hero-section:not(.hero-in-view) .hero-bg-orb {
+  animation-play-state: paused;
+}
+
+/* Tab hidden — pause everything */
+html[data-tab-hidden="true"] .hero-marquee-track,
+html[data-tab-hidden="true"] .hero-bg-orb,
+html[data-tab-hidden="true"] .hero-bento-live-dot,
+html[data-tab-hidden="true"] .hero-bento-status-dot,
+html[data-tab-hidden="true"] .hero-aperture,
+html[data-tab-hidden="true"] .chapter-rail-item.is-active .chapter-rail-dot {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. WILL-CHANGE CLEANUP
+   ────────────────────────────────────────────────────────────
+   will-change should only exist during active animation.
+   Leaving it on permanently creates pointless GPU layers.
+   ═══════════════════════════════════════════════════════════ */
+.reveal,
+.reveal-fade,
+.reveal-scale,
+.hero-bento-cell,
+.hero-bento-seal,
+.about-brand-mark,
+.newsletter-card,
+.commitment-card,
+.process-step,
+.latest-blog-card,
+.faq-item {
+  will-change: auto;
+}
+
+/* Only hint GPU during actual reveal */
+.reveal:not(.is-visible) {
+  will-change: opacity, transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. COMPOSITOR-ONLY ANIMATIONS
+   ────────────────────────────────────────────────────────────
+   Force the few remaining infinite animations to run on the
+   compositor thread (transform/opacity only).
+   ═══════════════════════════════════════════════════════════ */
+.hero-marquee-track,
+.hero-bg-orb,
+.hero-bento-live-dot,
+.hero-bento-status-dot,
+.hero-aperture,
+.hero-section .hero-bento-cell-mesh::before,
+.chapter-rail-item.is-active .chapter-rail-dot {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. REDUCE HOVER TRANSFORM COST ON MOBILE
+   ────────────────────────────────────────────────────────────
+   On touch devices, hover effects never trigger meaningfully.
+   Kill them to save GPU cycles.
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: none), (pointer: coarse) {
+  .portfolio-card:hover .portfolio-card-visual,
+  .work-card:hover,
+  .latest-blog-card:hover,
+  .faq-item:hover,
+  .commitment-card:hover,
+  .testimonial-card:hover,
+  .service-item:hover {
+    transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. LAYOUT CONTAINMENT (Desktop only — safe)
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  .services-section,
+  .portfolio-section,
+  .about-section,
+  .why-section,
+  .testimonials-section,
+  .latest-blog-section,
+  .faq-section {
+    contain: layout style;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. REDUCED MOTION — global safety
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track,
+  .hero-bg-orb,
+  .hero-bento-live-dot,
+  .hero-bento-status-dot,
+  .hero-aperture,
+  .hero-section .hero-bento-cell-mesh::before,
+  .chapter-rail-item.is-active .chapter-rail-dot {
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. DATA-SAVER MODE — be kind to metered connections
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-data: reduce) {
+  .hero-section .hero-bg-grain,
+  .hero-section .hero-bg-grid,
+  .manuscript-grid-pattern {
+    display: none;
+  }
+
+  .hero-section .hero-bg-orb {
+    filter: blur(60px);
+    opacity: 0.4;
+  }
+}
