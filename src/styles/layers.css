@@ -1,1 +1,13 @@
-@layer reset, tokens, base, layout, components, editorial, overrides;
+/* ============================================================
+   LAYER ORDER DECLARATION
+   ────────────────────────────────────────────────────────────
+   CRITICAL NOTE:
+   In @layer, !important reverses priority:
+   - Normal declarations: LAST layer wins
+   - !important declarations: FIRST layer wins
+
+   So: files with heavy !important go into `critical` (first).
+   Files without !important cascade naturally through the rest.
+   ============================================================ */
+
+@layer critical, reset, tokens, base, layout, components, editorial, overrides;
