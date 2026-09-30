@@ -1,24 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE BOTTOM NAV
+   MOBILE BOTTOM NAV — Premium Glass Edition
    ────────────────────────────────────────────────────────────
-   - همیشه رندر می‌شه (SSR safe) — روی دسکتاپ با CSS مخفی می‌شه
-   - روی موبایل (≤ 900px) پایین صفحه ثابت
-   - هرگز محو نمی‌شه
-   - ۵ آیتم: خانه، خدمات، نمونه‌کار، درباره، شروع پروژه
+   - Multi-layer glassmorphism
+   - Sliding glass indicator (spring physics)
+   - Logo as home icon
+   - Premium CTA with shine sweep
+   - Full dark mode + reduced motion
    ═══════════════════════════════════════════════════════════ */
 
-const NAV_ITEMS = [
-  { id: "home",      label: "خانه",       href: "/#home",      type: "home"  },
-  { id: "services",  label: "خدمات",      href: "/#services",  type: "grid"  },
-  { id: "portfolio", label: "نمونه‌کار",   href: "/#portfolio", type: "image" },
-  { id: "about",     label: "درباره",     href: "/#about",     type: "user"  },
-] as const;
+type IconName = "logo" | "grid" | "image" | "user" | "spark";
+
+const NAV_ITEMS: ReadonlyArray<{
+  id: string;
+  label: string;
+  href: string;
+  type: IconName;
+  section: string;
+}> = [
+  { id: "home", label: "خانه", href: "/#home", type: "logo", section: "home" },
+  { id: "services", label: "خدمات", href: "/#services", type: "grid", section: "services" },
+  { id: "portfolio", label: "نمونه‌کار", href: "/#portfolio", type: "image", section: "portfolio" },
+  { id: "about", label: "درباره", href: "/#about", type: "user", section: "about" },
+];
 
 const CTA = {
   label: "شروع پروژه",
@@ -26,71 +36,66 @@ const CTA = {
   type: "spark" as const,
 };
 
-type IconName = "home" | "grid" | "image" | "user" | "spark";
-
+/* ─── SVG Icons ─── */
 function Icon({ type }: { type: IconName }) {
   switch (type) {
-    case "home":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 10.5 12 3l9 7.5" />
-          <path d="M5 9.5V21h14V9.5" />
-        </svg>
-      );
     case "grid":
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" />
-          <rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" />
-          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
+          <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
+          <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
+          <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
         </svg>
       );
     case "image":
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <circle cx="9" cy="10" r="1.8" />
-          <path d="m3 18 5-5 4 4 3-3 6 6" />
+             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+          <circle cx="9" cy="10" r="1.6" />
+          <path d="m4 17.5 4.5-4.2 3.5 3.2 3-2.8 5 4.8" />
         </svg>
       );
     case "user":
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21a8 8 0 0 1 16 0" />
+             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="3.8" />
+          <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
         </svg>
       );
     case "spark":
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round">
-          <path d="m12 3 1.9 5.6L19.5 10l-4.9 3.4L16.5 19 12 15.8 7.5 19l1.9-5.6L4.5 10l5.6-1.4z" />
+             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m12 3 2 5.5L19.5 10 14 12l-2 5.5L10 12 4.5 10 10 8.5z" />
+          <path d="M19 4v3M17.5 5.5h3M5 17v2.5M3.75 18.25h2.5" />
         </svg>
       );
+    default:
+      return null;
   }
 }
 
+/* ─── Component ─── */
 export default function MobileNav() {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
-  const [activeHash, setActiveHash] = useState("home");
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // track active section (only on home page)
+  /* Track active section on home page */
   useEffect(() => {
     if (!mounted) return;
     if (pathname !== "/") return;
     if (typeof IntersectionObserver === "undefined") return;
 
-    const ids = ["home", "services", "portfolio", "about"];
+    const ids = NAV_ITEMS.map((i) => i.section);
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -102,59 +107,95 @@ export default function MobileNav() {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveHash(visible.target.id);
+        if (visible?.target.id) setActiveSection(visible.target.id);
       },
       {
         rootMargin: "-30% 0px -55% 0px",
         threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
       }
     );
+
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [mounted, pathname]);
 
+  /* Haptic feedback on tap (mobile only) */
+  const handleTap = useCallback(() => {
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+      try {
+        navigator.vibrate(8);
+      } catch {
+        /* ignore */
+      }
+    }
+  }, []);
+
+  /* Compute active index */
+  const isOnHome = pathname === "/";
+  const activeIndex = isOnHome
+    ? NAV_ITEMS.findIndex((item) => item.section === activeSection)
+    : -1;
+  const indicatorIndex = activeIndex >= 0 ? activeIndex : 0;
+  const hideIndicator = activeIndex < 0;
   const isOrderPage = pathname?.startsWith("/order") ?? false;
 
   return (
-    <nav className="mobile-bottom-nav" aria-label="ناوبری موبایل">
-      <ul className="mobile-bottom-nav-list">
-        {NAV_ITEMS.map((item) => {
-          const sectionId = item.href.split("#")[1] ?? "";
-          const isActive =
-            !isOrderPage && pathname === "/" && activeHash === sectionId;
+    <nav
+      className="mobile-bottom-nav"
+      aria-label="ناوبری موبایل"
+    >
+      <div
+        className="mobile-bottom-nav-items"
+        data-hide-indicator={hideIndicator ? "true" : "false"}
+        style={{ "--active-index": indicatorIndex } as React.CSSProperties}
+      >
+        <span className="mobile-bottom-nav-indicator" aria-hidden="true" />
+
+        {NAV_ITEMS.map((item, i) => {
+          const isActive = i === activeIndex;
           return (
-            <li key={item.id}>
-              <Link
-                href={item.href}
-                className={
-                  "mobile-bottom-nav-item" + (isActive ? " is-active" : "")
-                }
-                aria-current={isActive ? "page" : undefined}
-              >
-                <span className="mobile-bottom-nav-icon" aria-hidden="true">
+            <Link
+              key={item.id}
+              href={item.href}
+              className={
+                "mobile-bottom-nav-item" + (isActive ? " is-active" : "")
+              }
+              aria-current={isActive ? "page" : undefined}
+              onClick={handleTap}
+            >
+              <span className="mobile-bottom-nav-icon" aria-hidden="true">
+                {item.type === "logo" ? (
+                  <Image
+                    src="/logo.png"
+                    alt=""
+                    width={30}
+                    height={30}
+                    className="mobile-bottom-nav-logo"
+                    priority={false}
+                  />
+                ) : (
                   <Icon type={item.type} />
-                </span>
-                <span className="mobile-bottom-nav-label">{item.label}</span>
-              </Link>
-            </li>
+                )}
+              </span>
+              <span className="mobile-bottom-nav-label">{item.label}</span>
+            </Link>
           );
         })}
+      </div>
 
-        <li className="mobile-bottom-nav-cta-wrap">
-          <Link
-            href={CTA.href}
-            className={
-              "mobile-bottom-nav-cta" + (isOrderPage ? " is-active" : "")
-            }
-            aria-label={CTA.label}
-          >
-            <span className="mobile-bottom-nav-icon" aria-hidden="true">
-              <Icon type={CTA.type} />
-            </span>
-            <span className="mobile-bottom-nav-label">{CTA.label}</span>
-          </Link>
-        </li>
-      </ul>
+      <Link
+        href={CTA.href}
+        className={
+          "mobile-bottom-nav-cta" + (isOrderPage ? " is-active" : "")
+        }
+        aria-label={CTA.label}
+        onClick={handleTap}
+      >
+        <span className="mobile-bottom-nav-icon" aria-hidden="true">
+          <Icon type={CTA.type} />
+        </span>
+        <span className="mobile-bottom-nav-label">{CTA.label}</span>
+      </Link>
     </nav>
   );
 }
