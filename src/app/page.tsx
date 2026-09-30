@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import MobileNav from "@/components/MobileNav";
-import SectionNav from "@/components/SectionNav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
@@ -68,7 +67,6 @@ export default function Home() {
     <>
       <Nav />
       <MobileNav />
-      <SectionNav />
 
       <main id="main">
         <Hero
