@@ -245,3 +245,19 @@
     transform: none !important;
   }
 }
+/* ============================================================
+   HIDE CHAPTER RAIL ON MOBILE
+   ────────────────────────────────────────────────────────────
+   ChapterRail روی موبایل با bottom nav تداخل داره و صفحه رو
+   به بخش‌های کوچیک تقسیم می‌کنه. روی موبایل مخفی می‌شه.
+   روی دسکتاپ دست‌نخورده می‌مونه.
+   ============================================================ */
+@media (max-width: 900px) {
+  .chapter-rail,
+  .chapter-rail.is-visible {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
