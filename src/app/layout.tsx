@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 
 /* ═══════════════════════════════════════════════════════════
@@ -31,10 +31,6 @@ import "@/styles/mobile-typography.css";
 
 /* 9. Mobile nav v2 */
 import "@/styles/mobile-nav-v2.css";
-
-/* 9b. Section nav (mobile bottom pill) */
-import "@/styles/section-nav.css";
-
 /* 10. Perceived performance */
 import "@/styles/perceived-performance.css";
 
