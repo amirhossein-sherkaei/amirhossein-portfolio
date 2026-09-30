@@ -109,18 +109,21 @@ import "@/styles/testimonials.css";
 
 /* 35. Brand Logo */
 import "@/styles/brand-logo.css";
+
 /* 36. Newsletter */
 import "@/styles/newsletter.css";
-/* 37. Performance Boost — must be last */
+
+/* 37. Performance Boost */
 import "@/styles/performance-boost.css";
-/* 38. Footer V2 — Editorial Masterpiece */
+
+/* 38. Footer V2 */
 import "@/styles/footer-v2.css";
+
 /* 39. Contact Links */
 import "@/styles/contact-links.css";
+
 /* 40. Count Up */
 import "@/styles/count-up.css";
-/* 41. Section Nav */
-import "@/styles/section-nav.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
