@@ -24,6 +24,7 @@ export default function ChapterRail() {
   const [activeId, setActiveId] = useState<string>("home");
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -85,43 +86,61 @@ export default function ChapterRail() {
     window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
   };
 
+  const activeChapter =
+    CHAPTERS.find((c) => c.id === activeId) ?? CHAPTERS[0];
+
   return (
     <nav
       className={`chapter-rail${visible ? " is-visible" : ""}`}
       aria-label="ناوبری فصول"
       aria-hidden={!visible}
     >
-      <span className="chapter-rail-line" aria-hidden="true" />
+      {/* ── Active label — always visible next to the rail ── */}
+      <div className="chapter-rail-active" aria-live="polite">
+        <span className="chapter-rail-active-num" aria-hidden="true">
+          {activeChapter.num}
+        </span>
+        <span className="chapter-rail-active-label">
+          {activeChapter.label}
+        </span>
+        <span className="chapter-rail-active-short" aria-hidden="true">
+          {activeChapter.short}
+        </span>
+      </div>
 
-      <ul className="chapter-rail-list">
-        {CHAPTERS.map((c) => {
-          const active = activeId === c.id;
-          return (
-            <li key={c.id} className="chapter-rail-item-wrap">
-              <button
-                type="button"
-                className={`chapter-rail-item${active ? " is-active" : ""}`}
-                onClick={() => handleClick(c.id)}
-                aria-label={`برو به بخش ${c.label}`}
-                aria-current={active ? "true" : undefined}
-              >
-                <span
-                  className="chapter-rail-dot"
-                  aria-hidden="true"
-                />
+      {/* ── Glass container with dots ── */}
+      <div className="chapter-rail-box">
+        <span className="chapter-rail-line" aria-hidden="true" />
 
-                <span
-                  className="chapter-rail-tooltip"
-                  aria-hidden="true"
+        <ul className="chapter-rail-list">
+          {CHAPTERS.map((c) => {
+            const active = activeId === c.id;
+            const hovered = hoveredId === c.id;
+            return (
+              <li key={c.id} className="chapter-rail-item-wrap">
+                <button
+                  type="button"
+                  className={`chapter-rail-item${
+                    active ? " is-active" : ""
+                  }${hovered ? " is-hovered" : ""}`}
+                  onClick={() => handleClick(c.id)}
+                  onMouseEnter={() => setHoveredId(c.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onFocus={() => setHoveredId(c.id)}
+                  onBlur={() => setHoveredId(null)}
+                  aria-label={`برو به بخش ${c.label}`}
+                  aria-current={active ? "true" : undefined}
                 >
-                  <span className="chapter-rail-tooltip-num">{c.num}</span>
-                  <span className="chapter-rail-tooltip-label">{c.label}</span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                  <span
+                    className="chapter-rail-dot"
+                    aria-hidden="true"
+                  />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </nav>
   );
 }
