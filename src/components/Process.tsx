@@ -83,17 +83,11 @@ export default function Process() {
           </p>
         </div>
 
-        {/* ═══════ SCROLL-DRIVEN PROCESS TIMELINE ═══════ */}
-        <div className="process-timeline" aria-hidden="true">
-          <div className="process-timeline-track">
-            <div className="process-timeline-fill" />
-          </div>
-        </div>
-
         <ol className="process-grid">
           {steps.map((step, index) => (
             <li
               key={step.num}
+              id={`process-step-${index + 1}`}
               className="process-step reveal"
               style={{ "--step-index": index } as React.CSSProperties}
             >

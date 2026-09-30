@@ -119,6 +119,8 @@ import "@/styles/footer-v2.css";
 import "@/styles/contact-links.css";
 /* 40. Count Up */
 import "@/styles/count-up.css";
+/* 41. Section Nav */
+import "@/styles/section-nav.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";

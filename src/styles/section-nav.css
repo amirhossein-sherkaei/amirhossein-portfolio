@@ -1,0 +1,264 @@
+/* ============================================================
+   SECTION NAV — Chapter Navigator
+   ────────────────────────────────────────────────────────────
+   A glass bar below the main nav that shows the current
+   section + its sub-items as clickable pills.
+   Desktop only. Auto-detects section via IntersectionObserver.
+   ============================================================ */
+
+.section-nav {
+  position: fixed;
+  top: 72px;
+  inset-inline: 0;
+  z-index: 90;
+  height: 54px;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 8px 24px -16px rgba(10, 9, 8, 0.12);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-theme="dark"] .section-nav {
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 24px -16px rgba(0, 0, 0, 0.4);
+}
+
+.section-nav.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INNER GRID
+   ═══════════════════════════════════════════════════════════ */
+.section-nav-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+  width: min(calc(100% - 48px), 1320px);
+  margin-inline: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CURRENT SECTION — left side
+   ═══════════════════════════════════════════════════════════ */
+.section-nav-current {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-shrink: 0;
+  animation: section-nav-swap 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-nav-num {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-nav-sep {
+  font-family: var(--font-mono);
+  color: var(--ink-muted);
+  opacity: 0.5;
+  font-size: 11px;
+}
+
+.section-nav-label {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+@keyframes section-nav-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SUB ITEMS — middle
+   ═══════════════════════════════════════════════════════════ */
+.section-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+}
+
+.section-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink-3);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.section-nav-item-num {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  opacity: 0.7;
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  transition: color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-nav-item-label {
+  color: inherit;
+}
+
+.section-nav-item:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.section-nav-item:hover .section-nav-item-num {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.section-nav-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.section-nav-item:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHORT LABEL — right side
+   ═══════════════════════════════════════════════════════════ */
+.section-nav-short {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0.45;
+  direction: ltr;
+  flex-shrink: 0;
+  animation: section-nav-swap 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROGRESS BAR — bottom edge
+   ═══════════════════════════════════════════════════════════ */
+.section-nav-progress {
+  position: absolute;
+  bottom: -1px;
+  inset-inline: 0;
+  height: 2px;
+  overflow: hidden;
+  background: transparent;
+  pointer-events: none;
+}
+
+.section-nav-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 60%, transparent) 0%,
+    var(--accent) 50%,
+    color-mix(in srgb, var(--accent-2) 80%, transparent) 100%
+  );
+  transform-origin: right center;
+  transform: scaleX(0);
+  transition: transform 120ms linear;
+  box-shadow: 0 0 8px var(--accent-glow);
+  will-change: transform;
+}
+
+[dir="rtl"] .section-nav-progress-fill {
+  transform-origin: right center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HIDE ON MOBILE — bottom nav handles it there
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .section-nav {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .section-nav,
+  .section-nav-current,
+  .section-nav-short,
+  .section-nav-item {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .section-nav-progress-fill {
+    transition: none !important;
+  }
+}
