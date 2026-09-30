@@ -18,12 +18,6 @@ type HeroProps = {
   totalProjects: number;
 };
 
-const ROLES = [
-  "طراح و توسعه‌دهنده‌ی وب",
-  "خلاق دیجیتال با کمک AI",
-  "سازنده‌ی سایت‌های سریع",
-];
-const ROLE_ROTATION_MS = 3600;
 const LIVE_ROTATION_MS = 5500;
 
 const MARQUEE_WORDS = [
@@ -162,7 +156,6 @@ export default function Hero({
 }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  const [roleIndex, setRoleIndex] = useState(0);
   const [liveIndex, setLiveIndex] = useState(0);
   const [livePaused, setLivePaused] = useState(false);
   const [heroInView, setHeroInView] = useState(true);
@@ -211,20 +204,6 @@ export default function Hero({
   }, [heroInView]);
 
   const shouldAnimate = heroInView && tabVisible;
-
-  /* ─── Role rotation ─── */
-  useEffect(() => {
-    if (!shouldAnimate) return;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reduced) return;
-    const id = window.setInterval(
-      () => setRoleIndex((i) => (i + 1) % ROLES.length),
-      ROLE_ROTATION_MS
-    );
-    return () => window.clearInterval(id);
-  }, [shouldAnimate]);
 
   /* ─── Live cell rotation ─── */
   useEffect(() => {
@@ -427,34 +406,20 @@ export default function Hero({
             </span>
 
             <h1 className="hero-title">
-              <span className="hero-title-line">برای برندهایی</span>
+              <span className="hero-title-line">سایت اختصاصی</span>
               <span className="hero-title-line hero-title-muted">
-                که به «قالب آماده»
+                برای کسب‌وکارهایی که
               </span>
               <span className="hero-title-line">
-                <span className="ink-word">راضی نمی‌شن</span>
+                {"می‌خوان "}
+                <span className="ink-word">حرفه‌ای دیده بشن</span>
                 <em className="hero-title-accent">.</em>
               </span>
             </h1>
 
-            <p className="hero-role">
-              <span className="hero-role-dot" aria-hidden="true" />
-              <span
-                key={roleIndex}
-                className="hero-role-text"
-                aria-hidden="true"
-              >
-                {ROLES[roleIndex]}
-              </span>
-              <span className="sr-only">
-                طراح و توسعه‌دهنده‌ی وب، خلاق دیجیتال با هوش مصنوعی،
-                سازنده‌ی سایت‌های سریع
-              </span>
-            </p>
-
             <p className="hero-description">
-              طراحی از صفر، سرعت لود زیر ۲ ثانیه، کد کامل به نام شما.
-              بدون وابستگی — بدون قالب آماده.
+              از طراحی UI/UX تا توسعه و انتشار نهایی؛ یک وب‌سایت سریع،
+              ریسپانسیو و متناسب با برند شما — بدون قالب تکراری.
             </p>
 
             <div className="hero-actions">
@@ -474,13 +439,28 @@ export default function Hero({
                   href="#portfolio"
                   className="hero-btn hero-btn-secondary"
                 >
-                  <span className="ink-word">دیدن نمونه‌کارها</span>
+                  <span className="ink-word">مشاهده نمونه‌کارها</span>
                   <span className="hero-btn-count" aria-hidden="true">
                     ۰۴
                   </span>
                 </a>
               </MagneticButton>
             </div>
+
+            <ul className="hero-trust" aria-label="تعهدهای کلیدی">
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۱۰۰٪</span>
+                <span className="hero-trust-label">طراحی اختصاصی</span>
+              </li>
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۲۴</span>
+                <span className="hero-trust-label">ساعت پاسخ</span>
+              </li>
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۳</span>
+                <span className="hero-trust-label">ماه پشتیبانی</span>
+              </li>
+            </ul>
           </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
