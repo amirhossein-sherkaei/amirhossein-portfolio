@@ -26,9 +26,21 @@ const nextConfig = {
     optimizePackageImports: ['shiki'],
   },
 
-  /* ── 301 Redirect — old domain → new domain ── */
+  /* ── 301 Redirects ──
+     Canonical domain: shorakaei.ir (without www)
+     All other hosts must 301-redirect here.
+  */
   async redirects() {
     return [
+      /* 1) www.shorakaei.ir  →  shorakaei.ir */
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.shorakaei.ir' }],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+
+      /* 2) Old Vercel domain  →  shorakaei.ir */
       {
         source: '/:path*',
         has: [
