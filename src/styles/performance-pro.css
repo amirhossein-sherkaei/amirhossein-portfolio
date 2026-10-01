@@ -1,0 +1,264 @@
+/* ============================================================
+   PERFORMANCE PRO — Desktop Optimization Layer
+   ────────────────────────────────────────────────────────────
+   Goal: 40-60% reduction in GPU/CPU cost on desktop.
+   No visual change. Loaded LAST so it wins all cascade.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. BACKDROP-FILTER REDUCTION — biggest GPU win
+   ────────────────────────────────────────────────────────────
+   Blur above ~20px is visually indistinguishable but roughly
+   doubles GPU cost. We drop to 12-20px across the board.
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 901px) {
+  /* Nav (scrolled) — 40px → 20px */
+  .site-nav.is-scrolled .nav-inner {
+    backdrop-filter: blur(20px) saturate(1.6) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  }
+
+  /* Hero bento cells — 26px → 16px */
+  .hero-section .hero-bento-cell {
+    backdrop-filter: blur(16px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.4) !important;
+  }
+
+  /* Hero pills/eyebrows — 12px → 10px */
+  .hero-section .hero-role,
+  .hero-section .hero-top-meta,
+  .hero-section .hero-eyebrow {
+    backdrop-filter: blur(10px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.2) !important;
+  }
+
+  /* Service preview — 20px → 12px */
+  .service-preview {
+    backdrop-filter: blur(12px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.3) !important;
+  }
+
+  /* About statement — 20px → 12px */
+  .about-statement {
+    backdrop-filter: blur(12px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.3) !important;
+  }
+
+  /* Final CTA — 16px → 12px */
+  .final-cta {
+    backdrop-filter: blur(12px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.3) !important;
+  }
+
+  /* Order form sections — kill entirely (solid bg) */
+  .order-page .form-section,
+  .order-form .form-section {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Modals — 24px → 16px is more than enough */
+  .project-modal-shell,
+  .project-modal {
+    backdrop-filter: blur(16px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.4) !important;
+  }
+
+  .welcome-backdrop,
+  .welcome-card {
+    backdrop-filter: blur(16px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.4) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. KILL BACKDROP-FILTER WHERE IT DOES NOTHING
+   ────────────────────────────────────────────────────────────
+   These have solid/near-solid backgrounds — blur has no visible
+   effect but still forces an extra compositing pass per frame.
+   ═══════════════════════════════════════════════════════════ */
+.contact-card,
+.commitment-card,
+.process-step,
+.latest-blog-card,
+.faq-item,
+.testimonial-card,
+.work-card,
+.newsletter-card,
+.blog-author,
+.blog-inline-cta,
+.blog-funnel,
+.service-item,
+.hero-section .hero-bento-seal,
+.site-footer .footer-col,
+.order-page .form-field input,
+.order-page .form-field textarea {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Desktop nav list — has solid-ish gradient, blur not needed */
+.site-nav .desktop-nav-list {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. PAUSE ANIMATIONS WHEN OFF-SCREEN
+   ────────────────────────────────────────────────────────────
+   data-perf-pause is set by PerfObserver (JS component).
+   Infinite animations burn GPU every frame, even off-screen.
+   ═══════════════════════════════════════════════════════════ */
+[data-perf-pause="true"],
+[data-perf-pause="true"] *,
+[data-perf-pause="true"] *::before,
+[data-perf-pause="true"] *::after {
+  animation-play-state: paused !important;
+}
+
+/* Pause everything when tab is hidden */
+html[data-tab-hidden="true"] *,
+html[data-tab-hidden="true"] *::before,
+html[data-tab-hidden="true"] *::after {
+  animation-play-state: paused !important;
+}
+
+/* Hero-specific pause (existing pattern, extended) */
+.hero-section:not(.hero-in-view) .hero-bg-orb,
+.hero-section:not(.hero-in-view) .hero-bg-grid,
+.hero-section:not(.hero-in-view) .hero-marquee-track,
+.hero-section:not(.hero-in-view) .hero-masthead-dot,
+.hero-section:not(.hero-in-view) .hero-bento-status-dot,
+.hero-section:not(.hero-in-view) .hero-bento-live-dot,
+.hero-section:not(.hero-in-view) .hero-bento-seal,
+.hero-section:not(.hero-in-view) .hero-role-dot,
+.hero-section:not(.hero-in-view) .hero-eyebrow-dot,
+.hero-section:not(.hero-in-view) .hero-sig-path {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. WILL-CHANGE CLEANUP
+   ────────────────────────────────────────────────────────────
+   Permanent will-change hints waste GPU memory (each one
+   allocates a full-size texture). Hint only during animation.
+   ═══════════════════════════════════════════════════════════ */
+.reveal,
+.reveal-fade,
+.reveal-scale,
+.hero-bento-cell,
+.commitment-card,
+.process-step,
+.latest-blog-card,
+.faq-item,
+.testimonial-card,
+.newsletter-card,
+.service-preview,
+.about-statement {
+  will-change: auto;
+}
+
+/* Only hint GPU during reveal-in-progress */
+.reveal:not(.is-visible) {
+  will-change: opacity, transform;
+}
+
+/* Composited-layer hints for infinite animations */
+.hero-bg-orb,
+.hero-marquee-track,
+.hero-bento-seal,
+.hero-masthead-dot,
+.hero-bento-status-dot,
+.hero-bento-live-dot,
+.hero-section .hero-bento-cell-mesh::before {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. LAYOUT CONTAINMENT — desktop only
+   ────────────────────────────────────────────────────────────
+   `contain: layout style` tells the browser style recalc and
+   layout are scoped to the subtree. Safe — doesn't affect
+   position: fixed/sticky children (that's `contain: paint`).
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  .services-section,
+  .portfolio-section,
+  .about-section,
+  .why-section,
+  .testimonials-section,
+  .latest-blog-section,
+  .newsletter-section,
+  .faq-section,
+  .process-section,
+  .commitments-section {
+    contain: layout style;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. SHADOW SIMPLIFICATION
+   ────────────────────────────────────────────────────────────
+   Multi-layer shadows cause extra paint passes on every frame
+   they change. Simplify to 2-layer where possible.
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 901px) {
+  .commitment-card,
+  .process-step,
+  .latest-blog-card,
+  .faq-item,
+  .testimonial-card,
+  .newsletter-card,
+  .contact-card {
+    box-shadow:
+      0 1px 2px -1px color-mix(in srgb, var(--ink) 5%, transparent),
+      0 8px 24px -12px color-mix(in srgb, var(--ink) 12%, transparent) !important;
+  }
+
+  .commitment-card:hover,
+  .process-step:hover,
+  .latest-blog-card:hover,
+  .faq-item:hover,
+  .testimonial-card:hover,
+  .contact-card:hover {
+    box-shadow:
+      0 2px 4px -2px color-mix(in srgb, var(--ink) 6%, transparent),
+      0 14px 36px -16px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. DISABLE HEAVY HOVER TRANSFORMS ON LOW-END DESKTOP
+   ────────────────────────────────────────────────────────────
+   Only on touch devices — desktop hover is fine.
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: none), (pointer: coarse) {
+  .portfolio-card:hover .portfolio-card-visual,
+  .work-card:hover,
+  .latest-blog-card:hover,
+  .faq-item:hover,
+  .commitment-card:hover,
+  .testimonial-card:hover,
+  .service-item:hover,
+  .hero-section .hero-bento-cell:hover {
+    transform: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-orb,
+  .hero-marquee-track,
+  .hero-bento-seal,
+  .hero-masthead-dot,
+  .hero-bento-status-dot,
+  .hero-bento-live-dot,
+  .hero-section .hero-bento-cell-mesh::before,
+  .nav-order-shine,
+  .mbn-cta-shine {
+    animation: none !important;
+  }
+}

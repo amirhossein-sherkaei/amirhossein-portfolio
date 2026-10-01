@@ -95,7 +95,7 @@ import "@/styles/theme-toggle.css";
 /* 29. Hero Editorial */
 import "@/styles/hero-editorial.css";
 
-/* 29b. Hero Premium (infinite edition) */
+/* 29b. Hero Premium */
 import "@/styles/hero-premium.css";
 
 /* 30. Signature Ink */
@@ -134,17 +134,21 @@ import "@/styles/count-up.css";
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
 
-/* 42b. Nav Premium (desktop infinite edition) */
-import "@/styles/nav-premium.css";
-
 /* 42. Performance Layer */
 import "@/styles/performance-layer.css";
+
+/* 42b. Nav Premium */
+import "@/styles/nav-premium.css";
+
+/* 43. Performance Pro (LAST) */
+import "@/styles/performance-pro.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
 import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
 import SignatureInk from "@/components/SignatureInk";
+import PerfObserver from "@/components/PerfObserver";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -313,6 +317,7 @@ export default function RootLayout({
         <TouchFeedback />
         <SensoryFeedback />
         <SignatureInk />
+        <PerfObserver />
         <Analytics />
         <SpeedInsights />
       </body>
