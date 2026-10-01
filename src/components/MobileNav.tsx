@@ -6,14 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   ULTRA PREMIUM MOBILE BOTTOM NAV — Fixed Edition
+   ULTRA PREMIUM MOBILE BOTTOM NAV — 6-Item Edition
    ────────────────────────────────────────────────────────────
-   - No auto-hide (always visible on mobile)
-   - Fully clickable (pointer-events fixed)
-   - 27 premium features
+   5 nav items + 1 CTA. Always visible. Fully clickable.
    ═══════════════════════════════════════════════════════════ */
 
-type IconName = "logo" | "services" | "portfolio" | "about" | "spark";
+type IconName = "logo" | "services" | "portfolio" | "about" | "blog" | "spark";
 
 const NAV_ITEMS: ReadonlyArray<{
   id: string;
@@ -49,6 +47,15 @@ const NAV_ITEMS: ReadonlyArray<{
     type: "portfolio",
     section: "portfolio",
     auraColor: "rgba(255, 106, 61, 0.5)",
+    haptic: [0, 10],
+  },
+  {
+    id: "blog",
+    label: "بلاگ",
+    href: "/blog",
+    type: "blog",
+    section: "blog",
+    auraColor: "rgba(255, 122, 69, 0.5)",
     haptic: [0, 10],
   },
   {
@@ -129,6 +136,31 @@ function IconPortfolio() {
   );
 }
 
+function IconBlog() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="mbnBlogDark" x1="16" y1="5" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#3E3630" />
+          <stop offset="1" stopColor="#18140F" />
+        </linearGradient>
+        <linearGradient id="mbnBlogWarm" x1="21" y1="4" x2="21" y2="15" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF9A55" />
+          <stop offset="1" stopColor="#E94B2C" />
+        </linearGradient>
+      </defs>
+      {/* Notebook body */}
+      <rect x="4.5" y="4" width="23" height="24" rx="3.5" fill="url(#mbnBlogDark)" />
+      {/* Spine line (left) */}
+      <path d="M9.5 4v24" stroke="#5A4E44" strokeWidth="1.4" strokeOpacity="0.9" />
+      {/* Orange bookmark */}
+      <path d="M19 4h5v11l-2.5-2-2.5 2z" fill="url(#mbnBlogWarm)" />
+      {/* Text lines */}
+      <path d="M13 12h5M13 16h5M13 20h5" stroke="#A89585" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.8" />
+    </svg>
+  );
+}
+
 function IconAbout() {
   return (
     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -194,6 +226,8 @@ function Icon({ type }: { type: IconName }) {
       return <IconServices />;
     case "portfolio":
       return <IconPortfolio />;
+    case "blog":
+      return <IconBlog />;
     case "about":
       return <IconAbout />;
     case "spark":
@@ -204,7 +238,7 @@ function Icon({ type }: { type: IconName }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SOUND — subtle tap tone
+   SOUND
    ═══════════════════════════════════════════════════════════ */
 let audioCtx: AudioContext | null = null;
 
@@ -237,7 +271,7 @@ function playTapTone() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MAIN COMPONENT
+   MAIN
    ═══════════════════════════════════════════════════════════ */
 export default function MobileNav() {
   const pathname = usePathname();
@@ -254,13 +288,13 @@ export default function MobileNav() {
     setMounted(true);
   }, []);
 
-  /* Track active section */
+  /* Active section (home page only) */
   useEffect(() => {
     if (!mounted) return;
     if (pathname !== "/") return;
     if (typeof IntersectionObserver === "undefined") return;
 
-    const ids = NAV_ITEMS.map((i) => i.section);
+    const ids = ["home", "services", "portfolio", "about"];
     const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -284,11 +318,10 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  /* Track scroll progress only (for logo ring) */
+  /* Scroll progress for logo ring */
   useEffect(() => {
     if (!mounted) return;
     let ticking = false;
-
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
@@ -300,13 +333,11 @@ export default function MobileNav() {
         ticking = false;
       });
     };
-
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [mounted]);
 
-  /* Load sound preference */
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -331,7 +362,6 @@ export default function MobileNav() {
     (id: string, hapticPattern: number[]) => {
       setRippleKey(id);
       window.setTimeout(() => setRippleKey(null), 700);
-
       haptic(hapticPattern);
 
       if (!soundEnabled) {
@@ -345,7 +375,6 @@ export default function MobileNav() {
         playTapTone();
       }
 
-      // Double-tap on home logo → scroll to top
       if (id === "home") {
         tapCount.current += 1;
         if (tapTimer.current) window.clearTimeout(tapTimer.current);
@@ -369,16 +398,14 @@ export default function MobileNav() {
       const total = NAV_ITEMS.length + 1;
       if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
         e.preventDefault();
-        const next = (current + 1) % total;
         document
           .querySelectorAll<HTMLElement>(".mbn-item, .mbn-cta")
-          [next]?.focus();
+          [(current + 1) % total]?.focus();
       } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
         e.preventDefault();
-        const prev = (current - 1 + total) % total;
         document
           .querySelectorAll<HTMLElement>(".mbn-item, .mbn-cta")
-          [prev]?.focus();
+          [(current - 1 + total) % total]?.focus();
       } else if (e.key === "Home") {
         e.preventDefault();
         document.querySelector<HTMLElement>(".mbn-item")?.focus();
@@ -393,9 +420,15 @@ export default function MobileNav() {
   if (!mounted) return null;
 
   const isOnHome = pathname === "/";
-  const activeIndex = isOnHome
-    ? NAV_ITEMS.findIndex((item) => item.section === activeSection)
-    : -1;
+  const isBlogPage = pathname?.startsWith("/blog") ?? false;
+
+  let activeIndex = -1;
+  if (isBlogPage) {
+    activeIndex = NAV_ITEMS.findIndex((item) => item.section === "blog");
+  } else if (isOnHome) {
+    activeIndex = NAV_ITEMS.findIndex((item) => item.section === activeSection);
+  }
+
   const indicatorIndex = activeIndex >= 0 ? activeIndex : 0;
   const hideIndicator = activeIndex < 0;
   const isOrderPage = pathname?.startsWith("/order") ?? false;
@@ -407,24 +440,26 @@ export default function MobileNav() {
 
   const RING_R = 14;
   const RING_C = 2 * Math.PI * RING_R;
+  const navCount = NAV_ITEMS.length;
 
   return (
     <nav
       className="mbn"
       aria-label="ناوبری موبایل"
       data-hide-indicator={hideIndicator ? "true" : "false"}
+      data-nav-count={navCount}
       style={
         {
           "--mbn-index": indicatorIndex,
           "--mbn-aura": activeAuraColor,
+          "--mbn-nav-count": navCount,
         } as React.CSSProperties
       }
     >
-      <span className="mbn-aurora" aria-hidden="true">
-        <span className="mbn-aurora-glow" />
-      </span>
-
       <div className="mbn-items">
+        <span className="mbn-aurora" aria-hidden="true">
+          <span className="mbn-aurora-glow" />
+        </span>
         <span className="mbn-slider" aria-hidden="true">
           <span className="mbn-slider-glow" />
         </span>

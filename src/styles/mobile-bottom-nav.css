@@ -1,9 +1,5 @@
 /* ============================================================
-   ULTRA PREMIUM MOBILE BOTTOM NAV — Fixed Edition
-   ────────────────────────────────────────────────────────────
-   - No auto-hide
-   - Explicit pointer-events everywhere
-   - Everything decorative = pointer-events: none
+   ULTRA PREMIUM MOBILE BOTTOM NAV — 6-Item Edition
    ============================================================ */
 
 .mbn {
@@ -23,27 +19,26 @@
 @media (max-width: 900px) {
 
   /* ───────────────────────────────────────────────────────
-     ROOT — always visible, always clickable
+     ROOT
      ─────────────────────────────────────────────────────── */
   .mbn {
     position: fixed;
     bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    left: 16px;
-    right: 16px;
+    left: 14px;
+    right: 14px;
     z-index: 90;
     display: flex;
     align-items: stretch;
     gap: 4px;
-    max-width: 540px;
-    height: 84px;
+    max-width: 560px;
+    height: 82px;
     margin: 0 auto;
     padding: 7px;
-    border-radius: 36px;
+    border-radius: 34px;
     box-sizing: border-box;
     direction: rtl;
     font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     isolation: isolate;
-
     pointer-events: auto;
 
     background:
@@ -65,9 +60,17 @@
       0 3px 8px -2px rgba(10, 9, 8, 0.1),
       0 16px 36px -12px rgba(10, 9, 8, 0.22),
       0 42px 96px -28px rgba(10, 9, 8, 0.42);
+
+    animation: mbn-enter 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 320ms;
   }
 
-  /* Top specular streak — decorative */
+  @keyframes mbn-enter {
+    0% { opacity: 0; transform: translateY(120%); }
+    60% { opacity: 1; }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
   .mbn::before {
     content: "";
     position: absolute;
@@ -88,7 +91,6 @@
     filter: blur(0.6px);
   }
 
-  /* Ambient underglow — decorative */
   .mbn::after {
     content: "";
     position: absolute;
@@ -108,7 +110,6 @@
     transition: background 640ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Dark mode */
   [data-theme="dark"] .mbn {
     background:
       linear-gradient(
@@ -138,13 +139,25 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     AURORA — decorative, no clicks
+     ITEMS WRAPPER
+     ─────────────────────────────────────────────────────── */
+  .mbn-items {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  /* ───────────────────────────────────────────────────────
+     AURORA (inside items wrapper now)
      ─────────────────────────────────────────────────────── */
   .mbn-aurora {
     position: absolute;
     top: 50%;
     left: 0;
-    width: calc(100% / 5);
+    width: calc(100% / var(--mbn-nav-count, 5));
     height: 100%;
     transform: translate3d(calc(-100% * var(--mbn-index, 0)), -50%, 0);
     transition: transform 640ms cubic-bezier(0.34, 1.15, 0.4, 1);
@@ -154,7 +167,7 @@
 
   .mbn-aurora-glow {
     position: absolute;
-    inset: 8% 14%;
+    inset: 8% 16%;
     border-radius: 50%;
     background: radial-gradient(
       circle at 50% 60%,
@@ -177,27 +190,15 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     ITEMS WRAPPER
-     ─────────────────────────────────────────────────────── */
-  .mbn-items {
-    position: relative;
-    display: flex;
-    flex: 1 1 auto;
-    min-width: 0;
-    z-index: 1;
-    pointer-events: auto;
-  }
-
-  /* ───────────────────────────────────────────────────────
-     SLIDING INDICATOR — decorative
+     SLIDING INDICATOR (inside items wrapper)
      ─────────────────────────────────────────────────────── */
   .mbn-slider {
     position: absolute;
     top: 0;
     bottom: 0;
     inset-inline-start: 0;
-    width: 25%;
-    border-radius: 30px;
+    width: calc(100% / var(--mbn-nav-count, 5));
+    border-radius: 28px;
     pointer-events: none;
     z-index: 0;
     transform: translate3d(calc(-100% * var(--mbn-index, 0)), 0, 0);
@@ -253,7 +254,7 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     ITEM — fully clickable
+     ITEM
      ─────────────────────────────────────────────────────── */
   .mbn-item {
     position: relative;
@@ -264,10 +265,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 12px 2px 10px;
-    min-height: 68px;
-    border-radius: 30px;
+    gap: 3px;
+    padding: 11px 1px 9px;
+    min-height: 66px;
+    border-radius: 28px;
     color: #6b6560;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
@@ -275,7 +276,6 @@
     touch-action: manipulation;
     overflow: hidden;
     isolation: isolate;
-
     pointer-events: auto;
 
     transition:
@@ -290,7 +290,7 @@
   .mbn-item:focus-visible {
     outline: 2px solid var(--accent, #e94b2c);
     outline-offset: 2px;
-    border-radius: 30px;
+    border-radius: 28px;
   }
 
   .mbn-item:active {
@@ -305,7 +305,6 @@
     color: #ff8050;
   }
 
-  /* Ripple — decorative, no clicks */
   .mbn-item-ripple {
     position: absolute;
     top: 50%;
@@ -329,19 +328,18 @@
   }
 
   .mbn-item.is-rippling .mbn-item-ripple {
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
     opacity: 1;
   }
 
-  /* Icon wrapper */
   .mbn-item-icon {
     position: relative;
     z-index: 1;
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
     pointer-events: none;
     transition:
@@ -356,7 +354,7 @@
   }
 
   .mbn-item.is-active .mbn-item-icon {
-    transform: translateY(-2px) scale(1.14);
+    transform: translateY(-2px) scale(1.12);
     filter: drop-shadow(0 3px 10px rgba(233, 75, 44, 0.5));
   }
 
@@ -364,9 +362,7 @@
     filter: drop-shadow(0 3px 12px rgba(255, 106, 61, 0.65));
   }
 
-  /* ───────────────────────────────────────────────────────
-     LOGO + RING
-     ─────────────────────────────────────────────────────── */
+  /* Logo + ring */
   .mbn-logo-wrap {
     position: relative;
     display: grid;
@@ -380,8 +376,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     transform: translate(-50%, -50%);
     pointer-events: none;
     color: #e94b2c;
@@ -398,9 +394,9 @@
 
   .mbn-item-logo {
     display: block;
-    width: 26px;
-    height: 26px;
-    border-radius: 9px;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
     object-fit: cover;
     background: #0a0908;
     box-shadow:
@@ -430,11 +426,10 @@
       0 0 32px -4px rgba(255, 106, 61, 0.78);
   }
 
-  /* Label */
   .mbn-item-label {
     position: relative;
     z-index: 1;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0;
@@ -455,7 +450,7 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     CTA — fully clickable
+     CTA
      ─────────────────────────────────────────────────────── */
   .mbn-cta {
     position: relative;
@@ -465,11 +460,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    min-height: 68px;
-    min-width: 112px;
-    padding: 12px 18px 10px;
-    border-radius: 30px;
+    gap: 3px;
+    min-height: 66px;
+    min-width: 92px;
+    padding: 11px 14px 9px;
+    border-radius: 28px;
     color: #ffffff;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
@@ -477,7 +472,6 @@
     touch-action: manipulation;
     overflow: hidden;
     isolation: isolate;
-
     pointer-events: auto;
 
     background: linear-gradient(
@@ -508,7 +502,6 @@
     transform: scale(0.93);
   }
 
-  /* Shine sweep — decorative */
   .mbn-cta-shine {
     position: absolute;
     top: -50%;
@@ -532,7 +525,6 @@
     85%, 100% { left: 150%; }
   }
 
-  /* Pulse ring — decorative */
   .mbn-cta-pulse {
     position: absolute;
     inset: -2px;
@@ -545,23 +537,14 @@
   }
 
   @keyframes mbn-cta-pulse {
-    0% {
-      opacity: 0.7;
-      transform: scale(1);
-    }
-    70% {
-      opacity: 0;
-      transform: scale(1.12);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.12);
-    }
+    0% { opacity: 0.7; transform: scale(1); }
+    70% { opacity: 0; transform: scale(1.12); }
+    100% { opacity: 0; transform: scale(1.12); }
   }
 
   .mbn-cta .mbn-item-icon {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     pointer-events: none;
   }
 
@@ -572,7 +555,7 @@
   .mbn-cta .mbn-item-label {
     color: #ffffff;
     font-weight: 800;
-    font-size: 11px;
+    font-size: 10px;
     pointer-events: none;
   }
 
@@ -585,90 +568,69 @@
       0 24px 56px -14px rgba(233, 75, 44, 0.64);
   }
 
-  /* Body padding */
   body {
-    padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
-  }
-
-  /* Entrance animation */
-  .mbn {
-    animation: mbn-enter 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 320ms;
-  }
-
-  @keyframes mbn-enter {
-    0% {
-      opacity: 0;
-      transform: translateY(120%);
-    }
-    60% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    padding-bottom: calc(126px + env(safe-area-inset-bottom, 0px));
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   VERY SMALL SCREENS (≤ 400px)
+   SMALL SCREENS (≤ 400px)
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 400px) {
   .mbn {
-    left: 10px;
-    right: 10px;
-    height: 78px;
+    left: 8px;
+    right: 8px;
+    height: 76px;
     padding: 6px;
-    border-radius: 32px;
-    gap: 3px;
+    border-radius: 30px;
+    gap: 2px;
   }
 
   .mbn-item {
-    min-height: 64px;
-    padding: 10px 2px 8px;
-    border-radius: 26px;
-    gap: 3px;
+    min-height: 62px;
+    padding: 9px 1px 7px;
+    border-radius: 24px;
+    gap: 2px;
   }
 
   .mbn-item-icon {
-    width: 30px;
-    height: 30px;
-  }
-
-  .mbn-item-logo {
-    width: 24px;
-    height: 24px;
-    border-radius: 8px;
-  }
-
-  .mbn-logo-ring {
-    width: 32px;
-    height: 32px;
-  }
-
-  .mbn-item-label {
-    font-size: 10px;
-  }
-
-  .mbn-slider {
-    border-radius: 26px;
-  }
-
-  .mbn-cta {
-    min-height: 64px;
-    min-width: 100px;
-    padding: 10px 14px 8px;
-    border-radius: 26px;
-  }
-
-  .mbn-cta .mbn-item-icon {
     width: 28px;
     height: 28px;
   }
 
+  .mbn-item-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+  }
+
+  .mbn-logo-ring {
+    width: 30px;
+    height: 30px;
+  }
+
+  .mbn-item-label {
+    font-size: 9px;
+  }
+
+  .mbn-slider {
+    border-radius: 24px;
+  }
+
+  .mbn-cta {
+    min-height: 62px;
+    min-width: 78px;
+    padding: 9px 10px 7px;
+    border-radius: 24px;
+  }
+
+  .mbn-cta .mbn-item-icon {
+    width: 26px;
+    height: 26px;
+  }
+
   .mbn-cta .mbn-item-label {
-    font-size: 10px;
+    font-size: 9px;
   }
 }
 
