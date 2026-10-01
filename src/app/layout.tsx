@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 
 /* ═══════════════════════════════════════════════════════════
@@ -6,8 +6,6 @@ import { Vazirmatn } from "next/font/google";
    ═══════════════════════════════════════════════════════════ */
 
 /* 0. Fonts (Display + Body @font-face) — جدید */
-import "@/styles/fonts.css";
-
 /* 1. Design tokens */
 import "@/styles/tokens.css";
 
@@ -163,8 +161,6 @@ import "@/styles/mobile-performance-fix.css";
 /* ═══════════════════════════════════════════════════════════
    45. TYPOGRAPHY 2026 — NEW (must load before grid)
    ═══════════════════════════════════════════════════════════ */
-import "@/styles/typography-2026.css";
-
 /* 46. GRID OVERLAY — NEW (design tool, hidden by default) */
 import "@/styles/grid-overlay.css";
 
