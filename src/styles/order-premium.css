@@ -1,0 +1,913 @@
+/* ============================================================
+   ORDER PREMIUM — Infinite Edition
+   ────────────────────────────────────────────────────────────
+   Visual upgrade layer for the order form.
+   Loaded AFTER order-form-v2.css so it wins the cascade.
+   No component changes needed — pure CSS transformation.
+   All animations GPU-composited. Full dark mode.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. AURORA BACKGROUND — behind the entire order page
+   ═══════════════════════════════════════════════════════════ */
+.order-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.order-page::before {
+  content: "";
+  position: absolute;
+  top: 5%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  height: 90vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3%, transparent) 30%,
+    transparent 65%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .order-page::before {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 5%, transparent) 30%,
+    transparent 65%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. HEADER — premium editorial
+   ═══════════════════════════════════════════════════════════ */
+.order-page .order-header {
+  position: relative;
+}
+
+.order-page .order-header .section-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 8px 16px 8px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  font-size: 10.5px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 60%, transparent),
+    0 1px 2px rgba(10, 9, 8, 0.03);
+}
+
+.order-page .order-header .section-index::before {
+  width: 6px;
+  height: 6px;
+  box-shadow:
+    0 0 0 3px var(--accent-tint),
+    0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.order-page .order-header h1 {
+  background: linear-gradient(
+    135deg,
+    var(--ink) 0%,
+    color-mix(in srgb, var(--ink) 75%, var(--accent)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.order-page .order-header h1 span {
+  -webkit-text-fill-color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. FORM SHELL — 6-layer premium glass
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform {
+  position: relative;
+  border-radius: 28px !important;
+  border: 1px solid transparent !important;
+  background-clip: padding-box !important;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 92%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 82%, transparent) 45%,
+      color-mix(in srgb, var(--surface) 88%, transparent) 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 95%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
+    inset 1px 0 0 color-mix(in srgb, #fff 55%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #fff 55%, transparent),
+    0 0 0 0.5px color-mix(in srgb, var(--ink) 5%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--ink) 8%, transparent),
+    0 20px 48px -16px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 48px 100px -32px color-mix(in srgb, var(--ink) 28%, transparent) !important;
+}
+
+[data-theme="dark"] .order-page .oform {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 95%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 85%, transparent) 45%,
+      color-mix(in srgb, var(--surface) 92%, transparent) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(255, 255, 255, 0.04),
+    0 0 0 0.5px rgba(0, 0, 0, 0.3),
+    0 2px 6px -2px rgba(0, 0, 0, 0.4),
+    0 20px 48px -16px rgba(0, 0, 0, 0.5),
+    0 48px 100px -32px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Top specular light streak */
+.order-page .oform::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, #fff 100%, transparent) 25%,
+    color-mix(in srgb, #fff 100%, transparent) 75%,
+    transparent
+  );
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 10;
+  filter: blur(0.5px);
+}
+
+[data-theme="dark"] .order-page .oform::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16) 25%,
+    rgba(255, 255, 255, 0.16) 75%,
+    transparent
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. PROGRESS BAR — premium glow
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-progress {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--paper-2) 100%, transparent) 0%,
+      color-mix(in srgb, var(--paper-2) 60%, var(--surface)) 100%
+    ) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent) !important;
+}
+
+.order-page .oform-progress-track {
+  height: 3.5px !important;
+  background: color-mix(in srgb, var(--ink) 6%, transparent) !important;
+}
+
+.order-page .oform-progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--accent-2) 0%,
+    var(--accent) 50%,
+    color-mix(in srgb, var(--accent) 70%, var(--accent-2)) 100%
+  ) !important;
+  box-shadow:
+    0 0 12px -1px color-mix(in srgb, var(--accent) 65%, transparent),
+    0 0 24px -4px color-mix(in srgb, var(--accent) 45%, transparent) !important;
+  transition: width 640ms cubic-bezier(0.34, 1.15, 0.4, 1) !important;
+}
+
+.order-page .oform-progress-badge {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 100%
+  ) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 40%, transparent) !important;
+  font-weight: 800 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. STEP PILLS (mobile) — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-step-pill {
+  padding: 9px 14px !important;
+  border-radius: 999px !important;
+  border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent) !important;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 70%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 55%, transparent) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 1px 2px rgba(10, 9, 8, 0.03) !important;
+  transition:
+    background 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-step-pill-num {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 10px !important;
+  background: color-mix(in srgb, var(--ink) 8%, transparent) !important;
+}
+
+.order-page .oform-step-pill.is-active {
+  background: linear-gradient(
+    135deg,
+    #ff9264 0%,
+    #ef5a35 40%,
+    #e94b2c 70%,
+    #c22e15 100%
+  ) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 8px 22px -6px rgba(233, 75, 44, 0.55) !important;
+}
+
+.order-page .oform-step-pill.is-active .oform-step-pill-num {
+  background: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+}
+
+.order-page .oform-step-pill.is-done {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+  color: color-mix(in srgb, var(--accent) 85%, var(--ink)) !important;
+}
+
+.order-page .oform-step-pill.is-done .oform-step-pill-num {
+  background: color-mix(in srgb, var(--accent) 15%, transparent) !important;
+  color: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. STEP HEADINGS — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-step-num {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 14%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 100%
+  ) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 35%, transparent) !important;
+}
+
+.order-page .oform-step-title {
+  letter-spacing: -0.015em !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. FIELDS — premium focus & validation states
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-input-wrap input,
+.order-page .oform-input-wrap textarea {
+  border-width: 1.5px !important;
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-input-wrap input:hover:not(:focus),
+.order-page .oform-input-wrap textarea:hover:not(:focus) {
+  border-color: color-mix(in srgb, var(--ink) 20%, transparent) !important;
+  background: color-mix(in srgb, var(--surface) 100%, transparent) !important;
+}
+
+.order-page .oform-input-wrap input:focus,
+.order-page .oform-input-wrap textarea:focus {
+  border-color: var(--accent) !important;
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      color-mix(in srgb, var(--surface) 96%, var(--accent)) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 60%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent),
+    0 12px 32px -12px color-mix(in srgb, var(--accent) 35%, transparent) !important;
+  transform: translateY(-1px);
+}
+
+/* Success state */
+.order-page .oform-field[data-state="success"] input,
+.order-page .oform-field[data-state="success"] textarea {
+  border-color: color-mix(in srgb, var(--success) 55%, var(--line)) !important;
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      color-mix(in srgb, var(--surface) 92%, var(--success)) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--success) 10%, transparent) !important;
+}
+
+/* Error state */
+.order-page .oform-field[data-state="error"] input,
+.order-page .oform-field[data-state="error"] textarea {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--line)) !important;
+  background:
+    linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      color-mix(in srgb, var(--surface) 94%, var(--danger)) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--danger) 10%, transparent) !important;
+}
+
+/* Field icons — bigger pulse */
+.order-page .oform-icon {
+  width: 24px !important;
+  height: 24px !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 30%, transparent),
+    0 2px 8px -2px currentColor !important;
+}
+
+.order-page .oform-field[data-state="success"] .oform-icon {
+  background: color-mix(in srgb, var(--success) 16%, transparent) !important;
+  color: var(--success) !important;
+}
+
+.order-page .oform-field[data-state="error"] .oform-icon {
+  background: color-mix(in srgb, var(--danger) 14%, transparent) !important;
+  color: var(--danger) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. LABELS — refined
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-label {
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  transition: color 260ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.order-page .oform-field:has(input:focus) .oform-label,
+.order-page .oform-field:has(textarea:focus) .oform-label {
+  color: var(--accent) !important;
+}
+
+.order-page .oform-req {
+  color: var(--accent) !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  display: inline-block;
+  transition: transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-field:has(input:focus) .oform-req,
+.order-page .oform-field:has(textarea:focus) .oform-req {
+  transform: scale(1.2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. CHECKBOX — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-check {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 60%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 45%, transparent) 100%
+    ) !important;
+  border: 1.5px dashed color-mix(in srgb, var(--ink) 18%, transparent) !important;
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-check:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important;
+  transform: translateY(-1px);
+}
+
+.order-page .oform-check:has(input:checked) {
+  border-style: solid !important;
+  border-color: var(--accent) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 5%, transparent) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent),
+    0 8px 24px -10px color-mix(in srgb, var(--accent) 40%, transparent) !important;
+}
+
+.order-page .oform-check-box {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 8px !important;
+  border-width: 1.8px !important;
+}
+
+.order-page .oform-check input:checked ~ .oform-check-box {
+  background: linear-gradient(135deg, #ff9264 0%, #e94b2c 100%) !important;
+  border-color: transparent !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.4),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 60%, transparent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. OPTION CARDS — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-option {
+  border-width: 1.5px !important;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 70%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 55%, transparent) 100%
+    ) !important;
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 280ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-option:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 50%, transparent),
+    0 6px 18px -6px rgba(10, 9, 8, 0.1) !important;
+}
+
+.order-page .oform-option.is-active {
+  border-color: var(--accent) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 5%, transparent) 100%
+    ) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 50%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent),
+    0 12px 32px -10px color-mix(in srgb, var(--accent) 45%, transparent) !important;
+}
+
+.order-page .oform-option-check {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 7px !important;
+  border-width: 1.8px !important;
+  transition:
+    background 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-option.is-active .oform-option-check {
+  background: linear-gradient(135deg, #ff9264 0%, #e94b2c 100%) !important;
+  border-color: transparent !important;
+  transform: scale(1.08);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.4),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 60%, transparent) !important;
+}
+
+.order-page .oform-option.is-active .oform-option-label {
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. CONTACT METHODS — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-contact {
+  border-width: 1.5px !important;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 70%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 55%, transparent) 100%
+    ) !important;
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 280ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-contact:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent) !important;
+  transform: translateY(-2px);
+}
+
+.order-page .oform-contact.is-active {
+  border-color: var(--accent) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 5%, transparent) 100%
+    ) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 50%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent),
+    0 12px 32px -10px color-mix(in srgb, var(--accent) 45%, transparent) !important;
+}
+
+.order-page .oform-contact-radio {
+  width: 22px !important;
+  height: 22px !important;
+  border-width: 1.8px !important;
+}
+
+.order-page .oform-contact.is-active .oform-contact-radio {
+  background: linear-gradient(135deg, #ff9264 0%, #e94b2c 100%) !important;
+  border-color: transparent !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 55%, transparent) !important;
+}
+
+.order-page .oform-contact.is-active .oform-contact-label {
+  color: var(--accent) !important;
+  font-weight: 800 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. SUMMARY CARD — premium
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-summary {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--paper-2) 60%, transparent) 0%,
+      color-mix(in srgb, var(--paper-2) 40%, var(--surface)) 100%
+    ) !important;
+  border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 1px 2px rgba(10, 9, 8, 0.03) !important;
+  border-radius: 16px !important;
+}
+
+.order-page .oform-summary-list strong {
+  color: var(--ink) !important;
+  font-weight: 800 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. SUBMIT BUTTON — premium gradient + shine
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-btn--primary {
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  color: #ffffff !important;
+  background: linear-gradient(
+    135deg,
+    #ff9264 0%,
+    #ef5a35 40%,
+    #e94b2c 70%,
+    #c22e15 100%
+  ) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.22),
+    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 8px 22px -6px rgba(233, 75, 44, 0.55),
+    0 20px 48px -14px rgba(233, 75, 44, 0.45) !important;
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.order-page .oform-btn--primary:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.5),
+    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 14px 32px -8px rgba(233, 75, 44, 0.68),
+    0 28px 60px -18px rgba(233, 75, 44, 0.55) !important;
+}
+
+.order-page .oform-btn--primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* Shine sweep */
+.order-page .oform-btn--primary::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -60% !important;
+  width: 50% !important;
+  height: 200% !important;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  ) !important;
+  transform: skewX(-20deg) !important;
+  animation: oformShine 5.5s ease-in-out infinite !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  opacity: 0 !important;
+  inset: unset !important;
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+.order-page .oform-btn--primary:hover:not(:disabled)::before {
+  opacity: 1 !important;
+  animation: oformShineHover 1.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes oformShineHover {
+  0% { left: -60%; }
+  100% { left: 160%; }
+}
+
+.order-page .oform-btn--primary svg {
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   14. GHOST BUTTON — refined
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-btn--ghost {
+  border-width: 1.5px !important;
+  background: color-mix(in srgb, var(--surface) 75%, transparent) !important;
+  transition:
+    background 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+}
+
+.order-page .oform-btn--ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 8%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important;
+  color: var(--accent) !important;
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   15. ERROR BANNER — refined
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-error {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--danger) 10%, transparent) 0%,
+      color-mix(in srgb, var(--danger) 6%, transparent) 100%
+    ) !important;
+  border-top: 1px solid color-mix(in srgb, var(--danger) 25%, transparent) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--danger) 25%, transparent) !important;
+  color: color-mix(in srgb, var(--danger) 95%, var(--ink)) !important;
+  font-weight: 600 !important;
+}
+
+.order-page .oform-error-icon {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 12px -4px color-mix(in srgb, var(--danger) 60%, transparent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   16. SUCCESS STATE — cinematic
+   ═══════════════════════════════════════════════════════════ */
+.order-page .oform-success-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.order-page .oform-success-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.order-page .oform-success-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.order-page .oform-success-icon {
+  width: 88px !important;
+  height: 88px !important;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 18%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 100%
+  ) !important;
+  color: var(--accent) !important;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 40%, transparent) !important;
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 50%, transparent),
+    0 0 0 10px color-mix(in srgb, var(--accent) 8%, transparent),
+    0 0 0 20px color-mix(in srgb, var(--accent) 4%, transparent),
+    0 20px 48px -12px color-mix(in srgb, var(--accent) 45%, transparent) !important;
+  animation:
+    oformSuccessPop 700ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    oformSuccessPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) 800ms infinite !important;
+}
+
+@keyframes oformSuccessPulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 1.5px 0 color-mix(in srgb, #fff 50%, transparent),
+      0 0 0 10px color-mix(in srgb, var(--accent) 8%, transparent),
+      0 0 0 20px color-mix(in srgb, var(--accent) 4%, transparent),
+      0 20px 48px -12px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  50% {
+    box-shadow:
+      inset 0 1.5px 0 color-mix(in srgb, #fff 50%, transparent),
+      0 0 0 14px color-mix(in srgb, var(--accent) 12%, transparent),
+      0 0 0 28px color-mix(in srgb, var(--accent) 6%, transparent),
+      0 24px 56px -12px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+}
+
+.order-page .oform-success-eyebrow {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent) !important;
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+.order-page .oform-success-title {
+  letter-spacing: -0.025em !important;
+}
+
+/* Success buttons */
+.order-page .oform-success-actions .oform-btn--primary {
+  background: linear-gradient(
+    135deg,
+    #ff9264 0%,
+    #ef5a35 40%,
+    #e94b2c 70%,
+    #c22e15 100%
+  ) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   17. SECTIONS — desktop spacing refinement
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 901px) {
+  .order-page .oform-section {
+    position: relative;
+  }
+
+  .order-page .oform-section::after {
+    content: "";
+    position: absolute;
+    inset-inline: 15%;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--ink) 8%, transparent) 50%,
+      transparent
+    );
+  }
+
+  .order-page .oform-section:last-child::after {
+    display: none;
+  }
+
+  .order-page .oform-section-head {
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .order-page .oform-step-num {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+
+  .order-page .oform-step-title {
+    font-size: 22px !important;
+  }
+
+  .order-page .oform-step-subtitle {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   18. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .order-page .oform-input-wrap input:focus,
+  .order-page .oform-input-wrap textarea:focus,
+  .order-page .oform-check:hover,
+  .order-page .oform-option:hover,
+  .order-page .oform-option.is-active,
+  .order-page .oform-contact:hover,
+  .order-page .oform-contact.is-active,
+  .order-page .oform-btn--primary:hover,
+  .order-page .oform-btn--ghost:hover,
+  .order-page .oform-step-pill.is-active {
+    transform: none !important;
+  }
+
+  .order-page .oform-btn--primary::before,
+  .order-page .oform-success-icon {
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   19. MOBILE — kill hover states, keep touch feedback
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px), (hover: none) {
+  .order-page .oform-option:hover,
+  .order-page .oform-contact:hover,
+  .order-page .oform-check:hover,
+  .order-page .oform-input-wrap input:hover:not(:focus),
+  .order-page .oform-input-wrap textarea:hover:not(:focus) {
+    transform: none !important;
+  }
+
+  .order-page .oform-option:active,
+  .order-page .oform-contact:active,
+  .order-page .oform-check:active {
+    transform: scale(0.98) !important;
+  }
+}
