@@ -106,6 +106,7 @@ import "@/styles/hero-editorial.css";
 
 /* 29b. Hero Premium */
 import "@/styles/hero-premium.css";
+import "@/styles/hero-double.css";
 
 /* 30. Signature Ink */
 import "@/styles/signature-ink.css";
@@ -118,6 +119,7 @@ import "@/styles/homepage-premium.css";
 
 /* 31c. Homepage Premium Batch 2 */
 import "@/styles/homepage-premium-2.css";
+import "@/styles/services-premium.css";
 
 /* 32. Manuscript Grid */
 import "@/styles/manuscript-grid.css";
@@ -167,7 +169,6 @@ import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
 import SignatureInk from "@/components/SignatureInk";
 import PerfObserver from "@/components/PerfObserver";
-import CustomCursor from "@/components/CustomCursor";
 import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -337,7 +338,6 @@ export default function RootLayout({
         <SensoryFeedback />
         <SignatureInk />
         <PerfObserver />
-        <CustomCursor />
         <PageTransition />
         <Analytics />
         <SpeedInsights />

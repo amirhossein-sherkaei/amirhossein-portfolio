@@ -147,51 +147,6 @@ function useRelativeTime(iso: string | null): string {
   return mounted ? text : "";
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CURSOR GLOW — desktop only, GPU-composited
-   ═══════════════════════════════════════════════════════════ */
-function useCursorGlow(ref: React.RefObject<HTMLElement | null>) {
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const el = ref.current;
-    if (!el) return;
-
-    // Skip on touch + reduced motion
-    const isTouch = window.matchMedia("(hover: none)").matches;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (isTouch || reduced) return;
-
-    let raf = 0;
-    let lastX = 0;
-    let lastY = 0;
-
-    const onMove = (e: PointerEvent) => {
-      lastX = e.clientX;
-      lastY = e.clientY;
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const rect = el.getBoundingClientRect();
-        const x = lastX - rect.left;
-        const y = lastY - rect.top;
-        el.style.setProperty("--hero-glow-x", `${x}px`);
-        el.style.setProperty("--hero-glow-y", `${y}px`);
-      });
-    };
-
-    el.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [ref]);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   LIVE CELL — rotates through 3 states
-   ═══════════════════════════════════════════════════════════ */
 export default function Hero({
   latestPost,
   archivePost,
@@ -210,9 +165,6 @@ export default function Hero({
   const latestAgo = useRelativeTime(latestPost?.date ?? null);
   const archiveAgo = useRelativeTime(archivePost?.date ?? null);
 
-  useCursorGlow(sectionRef);
-
-  /* Track hero visibility */
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
     const section = sectionRef.current;
@@ -226,7 +178,6 @@ export default function Hero({
     return () => io.disconnect();
   }, []);
 
-  /* Track tab visibility */
   useEffect(() => {
     const onVis = () => {
       setTabVisible(!document.hidden);
@@ -249,7 +200,6 @@ export default function Hero({
 
   const shouldAnimate = heroInView && tabVisible;
 
-  /* Live cell rotation */
   useEffect(() => {
     if (livePaused || !shouldAnimate) return;
     const reduced = window.matchMedia(
@@ -290,20 +240,7 @@ export default function Hero({
               ←
             </span>
             {latestAgo && (
-              <span
-                className="hero-bento-live-label"
-                style={{
-                  gridColumn: "1 / -1",
-                  marginTop: 2,
-                  opacity: 0.6,
-                  letterSpacing: 0,
-                  direction: "rtl",
-                  fontFamily: "inherit",
-                  textTransform: "none",
-                }}
-              >
-                {latestAgo}
-              </span>
+              <span className="hero-bento-live-ago">{latestAgo}</span>
             )}
           </Link>
         ),
@@ -357,20 +294,7 @@ export default function Hero({
               ←
             </span>
             {archiveAgo && (
-              <span
-                className="hero-bento-live-label"
-                style={{
-                  gridColumn: "1 / -1",
-                  marginTop: 2,
-                  opacity: 0.6,
-                  letterSpacing: 0,
-                  direction: "rtl",
-                  fontFamily: "inherit",
-                  textTransform: "none",
-                }}
-              >
-                {archiveAgo}
-              </span>
+              <span className="hero-bento-live-ago">{archiveAgo}</span>
             )}
           </Link>
         ),
@@ -396,19 +320,16 @@ export default function Hero({
       className="hero-section hero-in-view"
       data-hero
     >
-      {/* Background layers */}
+      {/* ─── Background ─── */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
         <span className="hero-bg-orb hero-bg-orb-3" />
         <span className="hero-bg-grid" />
         <span className="hero-bg-grain" />
-        <span className="hero-bg-glow" />
       </div>
 
-      {/* Cursor-reactive halo */}
-      <span className="hero-cursor-halo" aria-hidden="true" />
-
+      {/* ─── Rulers ─── */}
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">
         {Array.from({ length: 13 }).map((_, i) => (
           <span key={i}>{toPersian(String(i).padStart(2, "0"))}</span>
@@ -420,6 +341,7 @@ export default function Hero({
         ))}
       </div>
 
+      {/* ─── Crosshairs ─── */}
       <span className="hero-crosshair hero-crosshair-tl" aria-hidden="true">
         <CrosshairMark />
       </span>
@@ -434,24 +356,27 @@ export default function Hero({
       </span>
 
       <div className="hero-inner">
-        <div className="hero-masthead">
-          <span className="hero-masthead-cell">
-            <span className="hero-masthead-dot" aria-hidden="true" />
-            <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
-          </span>
-          <span className="hero-masthead-cell hero-masthead-cell--center">
-            AMIRHOSSEIN&nbsp;SHORAKAEI
-          </span>
-          <span className="hero-masthead-cell hero-masthead-cell--latin">
-            <span className="hero-masthead-coord">
-              35.6892°N · 51.3890°E
+        {/* ═══════════════════════════════════════════════
+            HERO #1 — THE STATEMENT
+            ═══════════════════════════════════════════════ */}
+        <div className="hero-act hero-act-1">
+          <div className="hero-masthead">
+            <span className="hero-masthead-cell">
+              <span className="hero-masthead-dot" aria-hidden="true" />
+              <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
             </span>
-            <span className="hero-masthead-clock">{clock}</span>
-          </span>
-        </div>
+            <span className="hero-masthead-cell hero-masthead-cell--center">
+              AMIRHOSSEIN&nbsp;SHORAKAEI
+            </span>
+            <span className="hero-masthead-cell hero-masthead-cell--latin">
+              <span className="hero-masthead-coord">
+                35.6892°N · 51.3890°E
+              </span>
+              <span className="hero-masthead-clock">{clock}</span>
+            </span>
+          </div>
 
-        <div className="hero-grid">
-          <div className="hero-main">
+          <div className="hero-statement">
             <span className="hero-kicker" aria-hidden="true">
               <span className="hero-kicker-line" />
               <span className="hero-kicker-text">
@@ -519,8 +444,26 @@ export default function Hero({
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════════
+            HERO #2 — THE SHOWCASE
+            ═══════════════════════════════════════════════ */}
+        <div className="hero-act hero-act-2">
+          <div className="hero-showcase-head">
+            <span className="hero-kicker" aria-hidden="true">
+              <span className="hero-kicker-line" />
+              <span className="hero-kicker-text">
+                SECTION&nbsp;·&nbsp;02&nbsp;·&nbsp;SHOWCASE
+              </span>
+            </span>
+            <span className="hero-showcase-title">
+              یک نگاه به <em>جزئیات</em> کاری که می‌سازم
+            </span>
+          </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
+            {/* Cell 1 — Name */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -531,8 +474,8 @@ export default function Hero({
                 <Image
                   src="/logo.png"
                   alt=""
-                  width={44}
-                  height={44}
+                  width={52}
+                  height={52}
                   className="hero-bento-seal-img"
                 />
               </span>
@@ -557,6 +500,7 @@ export default function Hero({
               </div>
             </article>
 
+            {/* Cell 2 — Clock */}
             <article className="hero-bento-cell hero-bento-cell--clock">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۲
@@ -572,6 +516,7 @@ export default function Hero({
               </span>
             </article>
 
+            {/* Cell 3 — Date */}
             <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
@@ -594,6 +539,7 @@ export default function Hero({
               </div>
             </article>
 
+            {/* Cell 4 — Score */}
             <article className="hero-bento-cell hero-bento-cell--num">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -608,6 +554,7 @@ export default function Hero({
               </span>
             </article>
 
+            {/* Cell 5 — Live */}
             <article className="hero-bento-cell hero-bento-cell--live">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۵
@@ -630,6 +577,7 @@ export default function Hero({
         </div>
       </div>
 
+      {/* ─── Marquee ─── */}
       <div className="hero-marquee" aria-hidden="true">
         <div className="hero-marquee-track">
           {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (

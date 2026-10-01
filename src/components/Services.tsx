@@ -82,13 +82,146 @@ const services: Service[] = [
   },
 ];
 
-/* سال شمسی جاری — خودکار از تاریخ سیستم محاسبه می‌شود */
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
 })
   .format(new Date())
   .replace(/[^\u06F0-\u06F9]/g, "")
   .slice(0, 4);
+
+/* ═══════════════════════════════════════════════════════════
+   PREMIUM ICONS — colorful gradient with signature orange
+   ═══════════════════════════════════════════════════════════ */
+function ServiceIconLarge({ type }: { type: Service["icon"] }) {
+  switch (type) {
+    case "web":
+      return (
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="svcWebDark" x1="32" y1="8" x2="32" y2="56" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#3E3630" />
+              <stop offset="1" stopColor="#18140F" />
+            </linearGradient>
+            <linearGradient id="svcWebWarm" x1="20" y1="14" x2="44" y2="26" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#FF9A55" />
+              <stop offset="1" stopColor="#E94B2C" />
+            </linearGradient>
+          </defs>
+          {/* Browser window */}
+          <rect x="8" y="12" width="48" height="40" rx="6" fill="url(#svcWebDark)" />
+          {/* Top bar with orange tab */}
+          <rect x="8" y="12" width="48" height="10" rx="6" fill="url(#svcWebWarm)" />
+          <rect x="8" y="18" width="48" height="4" fill="url(#svcWebWarm)" />
+          {/* Dots */}
+          <circle cx="15" cy="17" r="1.4" fill="#fff" fillOpacity="0.7" />
+          <circle cx="20" cy="17" r="1.4" fill="#fff" fillOpacity="0.7" />
+          <circle cx="25" cy="17" r="1.4" fill="#fff" fillOpacity="0.7" />
+          {/* Content blocks */}
+          <rect x="14" y="28" width="14" height="14" rx="2.5" fill="#8A7D70" fillOpacity="0.5" />
+          <rect x="32" y="28" width="18" height="3" rx="1.5" fill="#8A7D70" fillOpacity="0.7" />
+          <rect x="32" y="34" width="18" height="3" rx="1.5" fill="#8A7D70" fillOpacity="0.5" />
+          <rect x="32" y="40" width="12" height="3" rx="1.5" fill="#8A7D70" fillOpacity="0.4" />
+        </svg>
+      );
+
+    case "ai":
+      return (
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="svcAiWarm" x1="32" y1="8" x2="32" y2="56" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#FF9A55" />
+              <stop offset="1" stopColor="#E94B2C" />
+            </linearGradient>
+          </defs>
+          {/* Central spark */}
+          <path
+            d="M32 10 L36 24 L50 28 L36 32 L32 46 L28 32 L14 28 L28 24 Z"
+            fill="url(#svcAiWarm)"
+          />
+          {/* Orbiting nodes */}
+          <circle cx="48" cy="16" r="3" fill="url(#svcAiWarm)" />
+          <circle cx="16" cy="48" r="2.4" fill="url(#svcAiWarm)" />
+          <circle cx="50" cy="46" r="2.4" fill="url(#svcAiWarm)" />
+          {/* Neural connections */}
+          <path
+            d="M32 28 L48 16 M32 32 L16 48 M32 32 L50 46"
+            stroke="url(#svcAiWarm)"
+            strokeWidth="1.4"
+            strokeOpacity="0.5"
+            strokeDasharray="2 3"
+          />
+        </svg>
+      );
+
+    case "banner":
+      return (
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="svcBanDark" x1="32" y1="14" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#3E3630" />
+              <stop offset="1" stopColor="#18140F" />
+            </linearGradient>
+            <linearGradient id="svcBanWarm" x1="16" y1="10" x2="48" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#FF9A55" />
+              <stop offset="1" stopColor="#E94B2C" />
+            </linearGradient>
+          </defs>
+          {/* Frame */}
+          <rect x="6" y="14" width="52" height="36" rx="5" fill="url(#svcBanDark)" />
+          <rect x="6" y="14" width="52" height="36" rx="5" stroke="url(#svcBanWarm)" strokeWidth="1.4" strokeOpacity="0.4" />
+          {/* Interior */}
+          <rect x="10" y="18" width="44" height="28" rx="3" fill="#2A241E" />
+          {/* Sun */}
+          <circle cx="40" cy="28" r="3.5" fill="url(#svcBanWarm)" />
+          {/* Mountains */}
+          <path
+            d="M10 42 L20 32 L27 38 L34 31 L54 46 Z"
+            fill="#8A7D70"
+            fillOpacity="0.7"
+          />
+          {/* Orange accent brush */}
+          <path
+            d="M10 12 Q20 8 32 12 T54 12"
+            stroke="url(#svcBanWarm)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            fill="none"
+          />
+        </svg>
+      );
+
+    case "video":
+      return (
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="svcVidDark" x1="32" y1="14" x2="32" y2="50" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#3E3630" />
+              <stop offset="1" stopColor="#18140F" />
+            </linearGradient>
+            <linearGradient id="svcVidWarm" x1="26" y1="22" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#FF9A55" />
+              <stop offset="1" stopColor="#E94B2C" />
+            </linearGradient>
+          </defs>
+          {/* Video frame */}
+          <rect x="6" y="14" width="40" height="36" rx="5" fill="url(#svcVidDark)" />
+          {/* Right side triangle */}
+          <path
+            d="M46 22 L58 18 L58 46 L46 42 Z"
+            fill="url(#svcVidDark)"
+          />
+          {/* Play button */}
+          <circle cx="26" cy="32" r="9" fill="url(#svcVidWarm)" />
+          <path
+            d="M23 28 L33 32 L23 36 Z"
+            fill="#ffffff"
+          />
+          {/* Timeline dots */}
+          <circle cx="46" cy="32" r="1.4" fill="url(#svcVidWarm)" />
+        </svg>
+      );
+  }
+}
 
 export default function Services() {
   const [active, setActive] = useState(0);
@@ -129,7 +262,7 @@ export default function Services() {
   return (
     <section id="services" className="services-section section">
       <div className="container">
-        {/* ═══════ EDITORIAL MASTHEAD ═══════ */}
+        {/* ═══════ MASTHEAD ═══════ */}
         <div className="services-masthead reveal">
           <span className="services-masthead-left">
             CHAPTER&nbsp;·&nbsp;01&nbsp;—&nbsp;SERVICES
@@ -157,13 +290,13 @@ export default function Services() {
         </div>
 
         <div className="services-layout">
+          {/* ═══════ LIST ═══════ */}
           <div
             className="services-list reveal"
             role="tablist"
             aria-label="فهرست خدمات"
             aria-orientation="vertical"
           >
-            {/* ── Editorial list header ── */}
             <div className="services-list-header" aria-hidden="true">
               <span className="services-list-header-label">INDEX</span>
               <span className="services-list-header-count">
@@ -183,19 +316,18 @@ export default function Services() {
                 aria-selected={active === index}
                 aria-controls={`service-panel-${index}`}
                 tabIndex={active === index ? 0 : -1}
-                className={`service-item ${
-                  active === index ? "is-active" : ""
-                }`}
+                className={
+                  "service-item" + (active === index ? " is-active" : "")
+                }
                 onClick={() => setActive(index)}
                 onKeyDown={(event) => handleKeyDown(event, index)}
               >
-                {/* Editorial dot — fills on active */}
                 <span className="service-item-dot" aria-hidden="true" />
 
                 <span className="service-number">{service.number}</span>
 
                 <span className="service-icon" aria-hidden="true">
-                  <ServiceIcon type={service.icon} />
+                  <ServiceIconLarge type={service.icon} />
                 </span>
 
                 <span className="service-title">{service.shortTitle}</span>
@@ -207,29 +339,17 @@ export default function Services() {
             ))}
           </div>
 
+          {/* ═══════ PREVIEW ═══════ */}
           <div
             className="service-preview reveal"
             role="tabpanel"
             id={`service-panel-${active}`}
             aria-labelledby={`service-tab-${active}`}
           >
-            {/* ═══════ CORNER MARKS ═══════ */}
-            <span
-              className="service-preview-corner service-preview-corner-tl"
-              aria-hidden="true"
-            />
-            <span
-              className="service-preview-corner service-preview-corner-tr"
-              aria-hidden="true"
-            />
-            <span
-              className="service-preview-corner service-preview-corner-bl"
-              aria-hidden="true"
-            />
-            <span
-              className="service-preview-corner service-preview-corner-br"
-              aria-hidden="true"
-            />
+            <span className="service-preview-corner service-preview-corner-tl" aria-hidden="true" />
+            <span className="service-preview-corner service-preview-corner-tr" aria-hidden="true" />
+            <span className="service-preview-corner service-preview-corner-bl" aria-hidden="true" />
+            <span className="service-preview-corner service-preview-corner-br" aria-hidden="true" />
 
             <div className="service-preview-top">
               <span>
@@ -239,6 +359,10 @@ export default function Services() {
             </div>
 
             <div className="service-preview-content">
+              <span className="service-preview-icon" aria-hidden="true">
+                <ServiceIconLarge type={current.icon} />
+              </span>
+
               <span className="service-preview-label">
                 {current.shortTitle}
               </span>
@@ -283,71 +407,4 @@ export default function Services() {
       </div>
     </section>
   );
-}
-
-/* ------------------------------------------------------------
-   Small inline icons for each service — no external icon library
-   ------------------------------------------------------------ */
-function ServiceIcon({ type }: { type: Service["icon"] }) {
-  switch (type) {
-    case "web":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <path d="M3 9h18" />
-          <circle cx="6" cy="6.5" r="0.6" fill="currentColor" />
-          <circle cx="8.5" cy="6.5" r="0.6" fill="currentColor" />
-        </svg>
-      );
-    case "ai":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
-        </svg>
-      );
-    case "banner":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <circle cx="8" cy="10" r="2" />
-          <path d="M3 17l5-4 4 3 3-2 6 4" />
-        </svg>
-      );
-    case "video":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="6" width="14" height="12" rx="2" />
-          <path d="M17 9l4-2v10l-4-2" />
-        </svg>
-      );
-  }
 }

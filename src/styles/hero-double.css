@@ -1,0 +1,279 @@
+/* ============================================================
+   HERO DOUBLE — Two Acts in One Section
+   ============================================================ */
+
+.hero-section .hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(72px, 10vw, 140px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACT 1 — THE STATEMENT
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-act-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hero-section .hero-statement {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 920px;
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+.hero-section .hero-title {
+  margin: clamp(20px, 2.6vw, 32px) 0 0;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hero-section .hero-title-line {
+  display: block;
+  font-size: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+  line-height: 1.08;
+  font-weight: 600;
+}
+
+.hero-section .hero-title-line + .hero-title-line {
+  margin-top: 0.02em;
+}
+
+.hero-section .hero-title-muted {
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.hero-section .hero-title-em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+  margin-inline-start: 0.02em;
+}
+
+.hero-section .hero-description {
+  max-width: 62ch;
+  margin-top: clamp(24px, 3vw, 36px);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.1875rem);
+  line-height: 1.8;
+  font-weight: 400;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.hero-section .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.hero-section .hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(20px, 3vw, 44px);
+  margin-top: clamp(40px, 5vw, 60px);
+  padding-top: clamp(22px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+
+/* ─── Act 1 entry animation ─── */
+@keyframes heroAct1In {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-section .hero-act-1 .hero-masthead {
+  animation: heroAct1In 720ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
+}
+
+.hero-section .hero-act-1 .hero-kicker {
+  animation: heroAct1In 720ms cubic-bezier(0.16, 1, 0.3, 1) 220ms both;
+}
+
+.hero-section .hero-act-1 .hero-title-line:nth-child(1) {
+  animation: heroAct1In 800ms cubic-bezier(0.16, 1, 0.3, 1) 340ms both;
+}
+
+.hero-section .hero-act-1 .hero-title-line:nth-child(2) {
+  animation: heroAct1In 800ms cubic-bezier(0.16, 1, 0.3, 1) 440ms both;
+}
+
+.hero-section .hero-act-1 .hero-title-line:nth-child(3) {
+  animation: heroAct1In 800ms cubic-bezier(0.16, 1, 0.3, 1) 540ms both;
+}
+
+.hero-section .hero-act-1 .hero-description {
+  animation: heroAct1In 720ms cubic-bezier(0.16, 1, 0.3, 1) 660ms both;
+}
+
+.hero-section .hero-act-1 .hero-actions {
+  animation: heroAct1In 720ms cubic-bezier(0.16, 1, 0.3, 1) 780ms both;
+}
+
+.hero-section .hero-act-1 .hero-trust {
+  animation: heroAct1In 720ms cubic-bezier(0.16, 1, 0.3, 1) 900ms both;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACT 2 — THE SHOWCASE
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-act-2 {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3vw, 40px);
+}
+
+.hero-section .hero-showcase-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-section .hero-showcase-title {
+  font-size: clamp(0.9375rem, 0.85rem + 0.4vw, 1.1875rem);
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+.hero-section .hero-showcase-title em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ─── Bento Grid — 5 columns full width ─── */
+.hero-section .hero-act-2 .hero-bento {
+  display: grid !important;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr 1.6fr !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  position: static !important;
+}
+
+/* Act 2 entry animation */
+@keyframes heroAct2In {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-section .hero-act-2 .hero-showcase-head {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1050ms;
+}
+
+.hero-section .hero-act-2 .hero-bento-cell:nth-child(1) {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1120ms;
+}
+
+.hero-section .hero-act-2 .hero-bento-cell:nth-child(2) {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1200ms;
+}
+
+.hero-section .hero-act-2 .hero-bento-cell:nth-child(3) {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1280ms;
+}
+
+.hero-section .hero-act-2 .hero-bento-cell:nth-child(4) {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1360ms;
+}
+
+.hero-section .hero-act-2 .hero-bento-cell:nth-child(5) {
+  animation: heroAct2In 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 1440ms;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1200px) {
+  .hero-section .hero-act-2 .hero-bento {
+    grid-template-columns: 1.4fr 1fr 1fr 1.4fr !important;
+  }
+  .hero-section .hero-act-2 .hero-bento-cell:nth-child(5) {
+    grid-column: span 4 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-section .hero-act-2 .hero-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .hero-section .hero-act-2 .hero-bento-cell:nth-child(1),
+  .hero-section .hero-act-2 .hero-bento-cell:nth-child(5) {
+    grid-column: span 2 !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-section .hero-inner {
+    gap: clamp(56px, 12vw, 80px);
+  }
+
+  .hero-section .hero-title-line {
+    font-size: clamp(1.75rem, 8.5vw, 2.5rem);
+    line-height: 1.2;
+  }
+
+  .hero-section .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-section .hero-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-section .hero-act-2 .hero-bento {
+    gap: 10px !important;
+  }
+
+  .hero-section .hero-showcase-title {
+    font-size: 0.875rem;
+  }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .hero-act-1 *,
+  .hero-section .hero-act-2 * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
