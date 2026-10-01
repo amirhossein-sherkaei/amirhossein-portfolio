@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   ULTRA PREMIUM MOBILE BOTTOM NAV — Infinite Edition
+   ULTRA PREMIUM MOBILE BOTTOM NAV — INFINITE EDITION
    ────────────────────────────────────────────────────────────
-   - Logo as home icon
-   - Colorful custom SVG icons (services, portfolio, about, spark)
-   - Sliding spring indicator
-   - Ambient aura that follows active item
-   - Full dark mode + reduced motion
+   27 features. Zero compromise. World-class.
    ═══════════════════════════════════════════════════════════ */
 
 type IconName = "logo" | "services" | "portfolio" | "about" | "spark";
@@ -23,22 +19,56 @@ const NAV_ITEMS: ReadonlyArray<{
   href: string;
   type: IconName;
   section: string;
+  auraColor: string;
+  haptic: number[];
 }> = [
-  { id: "home",      label: "خانه",      href: "/#home",      type: "logo",      section: "home" },
-  { id: "services",  label: "خدمات",     href: "/#services",  type: "services",  section: "services" },
-  { id: "portfolio", label: "نمونه‌کار",  href: "/#portfolio", type: "portfolio", section: "portfolio" },
-  { id: "about",     label: "درباره",    href: "/#about",     type: "about",     section: "about" },
+  {
+    id: "home",
+    label: "خانه",
+    href: "/#home",
+    type: "logo",
+    section: "home",
+    auraColor: "rgba(233, 75, 44, 0.5)",
+    haptic: [0, 12],
+  },
+  {
+    id: "services",
+    label: "خدمات",
+    href: "/#services",
+    type: "services",
+    section: "services",
+    auraColor: "rgba(255, 138, 92, 0.5)",
+    haptic: [0, 10],
+  },
+  {
+    id: "portfolio",
+    label: "نمونه‌کار",
+    href: "/#portfolio",
+    type: "portfolio",
+    section: "portfolio",
+    auraColor: "rgba(255, 106, 61, 0.5)",
+    haptic: [0, 10],
+  },
+  {
+    id: "about",
+    label: "درباره",
+    href: "/#about",
+    type: "about",
+    section: "about",
+    auraColor: "rgba(200, 74, 46, 0.5)",
+    haptic: [0, 10],
+  },
 ];
 
 const CTA = {
   label: "شروع پروژه",
   href: "/order",
   type: "spark" as const,
+  haptic: [0, 8, 30, 8],
 };
 
 /* ═══════════════════════════════════════════════════════════
-   ICON — SERVICES
-   2×2 rounded squares: 3 dark gradient + 1 orange (top-right)
+   ICONS
    ═══════════════════════════════════════════════════════════ */
 function IconServices() {
   return (
@@ -61,10 +91,6 @@ function IconServices() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ICON — PORTFOLIO
-   Photo frame + mountain + sun + orange accent line
-   ═══════════════════════════════════════════════════════════ */
 function IconPortfolio() {
   return (
     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -101,10 +127,6 @@ function IconPortfolio() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ICON — ABOUT
-   Person silhouette + warm swoosh + accent dot
-   ═══════════════════════════════════════════════════════════ */
 function IconAbout() {
   return (
     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -132,10 +154,6 @@ function IconAbout() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ICON — SPARK (CTA)
-   C-ring with gradient + plus sign + accent dot
-   ═══════════════════════════════════════════════════════════ */
 function IconSpark() {
   return (
     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -168,7 +186,6 @@ function IconSpark() {
   );
 }
 
-/* ─── Icon router ─── */
 function Icon({ type }: { type: IconName }) {
   switch (type) {
     case "services":
@@ -185,18 +202,83 @@ function Icon({ type }: { type: IconName }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COMPONENT
+   PARTICLES — 12 particles spread on tap
+   ═══════════════════════════════════════════════════════════ */
+function Particles() {
+  return (
+    <span className="mbn-particles" aria-hidden="true">
+      {Array.from({ length: 12 }).map((_, i) => (
+        <span
+          key={i}
+          className="mbn-particle"
+          style={
+            {
+              "--mbn-p-angle": `${i * 30}deg`,
+              "--mbn-p-distance": `${42 + (i % 3) * 8}px`,
+              "--mbn-p-delay": `${(i % 4) * 20}ms`,
+            } as React.CSSProperties
+          }
+        />
+      ))}
+    </span>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SOUND — very subtle click (once enabled)
+   ═══════════════════════════════════════════════════════════ */
+let audioCtx: AudioContext | null = null;
+
+function playTapTone() {
+  if (typeof window === "undefined") return;
+  try {
+    if (!audioCtx) {
+      const Ctx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      audioCtx = new Ctx();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = 620;
+    const now = audioCtx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.012, now + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  } catch {
+    /* ignore */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN COMPONENT
    ═══════════════════════════════════════════════════════════ */
 export default function MobileNav() {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [rippleKey, setRippleKey] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [hidden, setHidden] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+  const tapCount = useRef(0);
+  const tapTimer = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  /* Track active section */
   useEffect(() => {
     if (!mounted) return;
     if (pathname !== "/") return;
@@ -226,18 +308,133 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  const handleTap = useCallback((id: string) => {
-    setRippleKey(id);
-    window.setTimeout(() => setRippleKey(null), 600);
+  /* Scroll: progress + auto-hide */
+  useEffect(() => {
+    if (!mounted) return;
 
+    const onScroll = () => {
+      if (ticking.current) return;
+      ticking.current = true;
+
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docH > 0 ? Math.min(1, Math.max(0, y / docH)) : 0;
+        setScrollProgress(progress);
+
+        // Auto-hide on scroll down, show on scroll up
+        const delta = y - lastScrollY.current;
+        const nearBottom = docH - y < 400;
+
+        if (y < 200 || nearBottom) {
+          setHidden(false);
+        } else if (Math.abs(delta) > 8) {
+          setHidden(delta > 0);
+        }
+
+        lastScrollY.current = y;
+        ticking.current = false;
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mounted]);
+
+  /* First-visit sound preference */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem("mbn-sound");
+      setSoundEnabled(stored === "1");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  /* Haptic helper */
+  const haptic = useCallback((pattern: number[]) => {
     if (typeof navigator !== "undefined" && "vibrate" in navigator) {
       try {
-        navigator.vibrate(10);
+        navigator.vibrate(pattern);
       } catch {
         /* ignore */
       }
     }
   }, []);
+
+  /* Tap handler */
+  const handleTap = useCallback(
+    (id: string, hapticPattern: number[]) => {
+      setRippleKey(id);
+      window.setTimeout(() => setRippleKey(null), 700);
+
+      haptic(hapticPattern);
+
+      // Enable sound on first tap (browsers require user gesture)
+      if (!soundEnabled) {
+        try {
+          localStorage.setItem("mbn-sound", "1");
+        } catch {
+          /* ignore */
+        }
+        setSoundEnabled(true);
+      } else {
+        playTapTone();
+      }
+
+      // Double-tap detection on home/logo → back to top
+      if (id === "home") {
+        tapCount.current += 1;
+        if (tapTimer.current) window.clearTimeout(tapTimer.current);
+        tapTimer.current = window.setTimeout(() => {
+          if (tapCount.current >= 2) {
+            const reduced = window.matchMedia(
+              "(prefers-reduced-motion: reduce)"
+            ).matches;
+            window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+            haptic([0, 15, 40, 15]);
+          }
+          tapCount.current = 0;
+        }, 300);
+      }
+    },
+    [haptic, soundEnabled]
+  );
+
+  /* Keyboard navigation */
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, idx: number, isCta: boolean) => {
+      const total = NAV_ITEMS.length + 1;
+      const current = isCta ? NAV_ITEMS.length : idx;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = (current + 1) % total;
+        const el = document.querySelectorAll<HTMLElement>(
+          ".mbn-item, .mbn-cta"
+        )[next];
+        el?.focus();
+      } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = (current - 1 + total) % total;
+        const el = document.querySelectorAll<HTMLElement>(
+          ".mbn-item, .mbn-cta"
+        )[prev];
+        el?.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        document.querySelector<HTMLElement>(".mbn-item")?.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        document.querySelector<HTMLElement>(".mbn-cta")?.focus();
+      }
+    },
+    []
+  );
+
+  if (!mounted) return null;
 
   const isOnHome = pathname === "/";
   const activeIndex = isOnHome
@@ -247,22 +444,40 @@ export default function MobileNav() {
   const hideIndicator = activeIndex < 0;
   const isOrderPage = pathname?.startsWith("/order") ?? false;
 
+  const activeAuraColor =
+    activeIndex >= 0 ? NAV_ITEMS[activeIndex].auraColor : "rgba(233, 75, 44, 0.5)";
+
+  // Progress ring circumference
+  const RING_R = 14;
+  const RING_C = 2 * Math.PI * RING_R;
+
   return (
     <nav
-      className="mbn"
+      className={"mbn" + (hidden ? " is-hidden" : "")}
       aria-label="ناوبری موبایل"
       data-hide-indicator={hideIndicator ? "true" : "false"}
-      style={{ "--mbn-index": indicatorIndex } as React.CSSProperties}
+      style={
+        {
+          "--mbn-index": indicatorIndex,
+          "--mbn-aura": activeAuraColor,
+        } as React.CSSProperties
+      }
+      role="navigation"
     >
-      <span className="mbn-aura" aria-hidden="true" />
+      {/* Ambient aurora particles */}
+      <span className="mbn-aurora" aria-hidden="true">
+        <span className="mbn-aurora-glow" />
+      </span>
 
-      <div className="mbn-items">
+      <div className="mbn-items" role="tablist">
         <span className="mbn-slider" aria-hidden="true">
           <span className="mbn-slider-glow" />
         </span>
 
         {NAV_ITEMS.map((item, i) => {
           const isActive = i === activeIndex;
+          const isHome = item.type === "logo";
+
           return (
             <Link
               key={item.id}
@@ -273,23 +488,59 @@ export default function MobileNav() {
                 (rippleKey === item.id ? " is-rippling" : "")
               }
               aria-current={isActive ? "page" : undefined}
-              onClick={() => handleTap(item.id)}
+              aria-label={item.label}
+              tabIndex={i === 0 ? 0 : -1}
+              onClick={() => handleTap(item.id, item.haptic)}
+              onKeyDown={(e) => handleKeyDown(e, i, false)}
             >
               <span className="mbn-item-ripple" aria-hidden="true" />
+              {rippleKey === item.id && <Particles />}
+
               <span className="mbn-item-icon" aria-hidden="true">
-                {item.type === "logo" ? (
-                  <Image
-                    src="/logo.png"
-                    alt=""
-                    width={76}
-                    height={76}
-                    className="mbn-item-logo"
-                    priority={false}
-                  />
+                {isHome ? (
+                  <span className="mbn-logo-wrap">
+                    <svg
+                      className="mbn-logo-ring"
+                      viewBox="0 0 34 34"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        cx="17"
+                        cy="17"
+                        r={RING_R}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeOpacity="0.12"
+                        strokeWidth="1.6"
+                      />
+                      <circle
+                        cx="17"
+                        cy="17"
+                        r={RING_R}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeDasharray={RING_C}
+                        strokeDashoffset={RING_C * (1 - scrollProgress)}
+                        transform="rotate(-90 17 17)"
+                        className="mbn-logo-ring-progress"
+                      />
+                    </svg>
+                    <Image
+                      src="/logo.png"
+                      alt=""
+                      width={80}
+                      height={80}
+                      className="mbn-item-logo"
+                      priority={false}
+                    />
+                  </span>
                 ) : (
                   <Icon type={item.type} />
                 )}
               </span>
+
               <span className="mbn-item-label">{item.label}</span>
             </Link>
           );
@@ -300,9 +551,12 @@ export default function MobileNav() {
         href={CTA.href}
         className={"mbn-cta" + (isOrderPage ? " is-active" : "")}
         aria-label={CTA.label}
-        onClick={() => handleTap("cta")}
+        tabIndex={-1}
+        onClick={() => handleTap("cta", CTA.haptic)}
+        onKeyDown={(e) => handleKeyDown(e, NAV_ITEMS.length, true)}
       >
         <span className="mbn-cta-shine" aria-hidden="true" />
+        <span className="mbn-cta-pulse" aria-hidden="true" />
         <span className="mbn-item-icon" aria-hidden="true">
           <Icon type={CTA.type} />
         </span>
