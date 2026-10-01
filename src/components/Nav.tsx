@@ -8,13 +8,12 @@ import { useTheme } from "@/components/ThemeProvider";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ═══════════════════════════════════════════════════════════
-   DESKTOP NAV — Always Visible Edition
+   NARRATIVE GLASS NAV — Always Visible Edition
    ────────────────────────────────────────────────────────────
-   - Single unified glass pill
+   - Full creativity: preview cards + icon rotation + pulse
+   - No hide-on-scroll — nav always visible
    - Colorful gradient icons
-   - Sliding orange indicator
-   - Never hides on scroll
-   - Full dark mode + reduced motion
+   - Sliding orange indicator with pulse
    ═══════════════════════════════════════════════════════════ */
 
 type NavItem = {
@@ -22,14 +21,49 @@ type NavItem = {
   href: string;
   icon: "home" | "services" | "portfolio" | "blog" | "about";
   section?: string;
+  preview: {
+    title: string;
+    description: string;
+    stat: string;
+    statLabel: string;
+  };
 };
 
 const navItems: NavItem[] = [
-  { label: "خانه",       href: "#home",      icon: "home",      section: "home" },
-  { label: "خدمات",      href: "#services",  icon: "services",  section: "services" },
-  { label: "نمونه‌کارها", href: "#portfolio", icon: "portfolio", section: "portfolio" },
-  { label: "بلاگ",       href: "/blog",      icon: "blog" },
-  { label: "درباره من",  href: "#about",     icon: "about",     section: "about" },
+  {
+    label: "خانه",
+    href: "#home",
+    icon: "home",
+    section: "home",
+    preview: { title: "بازگشت به شروع", description: "معرفی کوتاه و مسیرهای اصلی", stat: "۰۱", statLabel: "بخش" },
+  },
+  {
+    label: "خدمات",
+    href: "#services",
+    icon: "services",
+    section: "services",
+    preview: { title: "چهار مسیر همکاری", description: "وب، AI، تبلیغات، ویدیو", stat: "۰۴", statLabel: "خدمت" },
+  },
+  {
+    label: "نمونه‌کارها",
+    href: "#portfolio",
+    icon: "portfolio",
+    section: "portfolio",
+    preview: { title: "پروژه‌های واقعی", description: "آرکا، نیلا، ویرا، لومن", stat: "۰۴", statLabel: "پروژه" },
+  },
+  {
+    label: "بلاگ",
+    href: "/blog",
+    icon: "blog",
+    preview: { title: "مقالات و یادداشت‌ها", description: "درباره طراحی، سئو و UX", stat: "۲۰", statLabel: "مقاله" },
+  },
+  {
+    label: "درباره من",
+    href: "#about",
+    icon: "about",
+    section: "about",
+    preview: { title: "امیرحسین شرکائی", description: "طراح و توسعه‌دهنده وب", stat: "۰۵", statLabel: "سال تجربه" },
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -129,6 +163,30 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   PREVIEW CARD
+   ═══════════════════════════════════════════════════════════ */
+function PreviewCard({ item }: { item: NavItem }) {
+  return (
+    <div className="nav-preview" aria-hidden="true">
+      <span className="nav-preview-arrow" />
+      <div className="nav-preview-inner">
+        <span className="nav-preview-icon">
+          <NavIcon type={item.icon} />
+        </span>
+        <div className="nav-preview-body">
+          <strong className="nav-preview-title">{item.preview.title}</strong>
+          <span className="nav-preview-desc">{item.preview.description}</span>
+        </div>
+        <div className="nav-preview-stat">
+          <strong>{item.preview.stat}</strong>
+          <span>{item.preview.statLabel}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
    COMPONENT
    ═══════════════════════════════════════════════════════════ */
 export default function Nav() {
@@ -137,6 +195,7 @@ export default function Nav() {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const ticking = useRef(false);
 
@@ -201,88 +260,102 @@ export default function Nav() {
     if (found >= 0) activeIndex = found;
   }
 
+  const previewItem = hoveredIndex !== null ? navItems[hoveredIndex] : null;
+
   return (
     <header className={"site-nav" + (scrolled ? " is-scrolled" : "")}>
       <div className="container">
         <div className="nav-inner">
-          <a href="/#home" className="brand" aria-label="بازگشت به بالای صفحه">
-            <span className="brand-mark-wrap">
-              <Image src="/logo.png" alt="" width={72} height={72}
-                className="brand-mark brand-logo" aria-hidden="true" priority />
-            </span>
-            <span className="brand-text">
-              <strong>امیرحسین شرکائی</strong>
-              <small>Amirhossein Shorakaei</small>
-            </span>
-          </a>
-
-          <nav className="desktop-nav" aria-label="منوی اصلی سایت"
-            style={{ "--nav-index": activeIndex, "--nav-total": navItems.length } as React.CSSProperties}>
-            <div className="desktop-nav-list">
-              <span className="desktop-nav-slider" aria-hidden="true">
-                <span className="desktop-nav-slider-glow" />
+          <div className="nav-pill">
+            <a href="/#home" className="brand" aria-label="بازگشت به بالای صفحه">
+              <span className="brand-mark-wrap">
+                <Image src="/logo.png" alt="" width={72} height={72}
+                  className="brand-mark brand-logo" aria-hidden="true" priority />
               </span>
-              {navItems.map((item) => {
-                const isHash = item.href.startsWith("#");
-                const isBlogLink = item.href === "/blog";
-                const sectionId = item.section ?? "";
-                const isActive = isBlogLink
-                  ? isBlogPage
-                  : isHash && pathname === "/" && activeSection === sectionId;
+              <span className="brand-text">
+                <strong>امیرحسین شرکائی</strong>
+                <small>Amirhossein Shorakaei</small>
+              </span>
+            </a>
 
-                const content = (
-                  <>
-                    <span className="desktop-nav-icon" aria-hidden="true">
-                      <NavIcon type={item.icon} />
-                    </span>
-                    <span className="desktop-nav-text">{item.label}</span>
-                  </>
-                );
+            <nav className="desktop-nav" aria-label="منوی اصلی سایت">
+              <div className="desktop-nav-list">
+                <span className="desktop-nav-slider" aria-hidden="true">
+                  <span className="desktop-nav-slider-pulse" />
+                </span>
+                {navItems.map((item, i) => {
+                  const isHash = item.href.startsWith("#");
+                  const isBlogLink = item.href === "/blog";
+                  const sectionId = item.section ?? "";
+                  const isActive = isBlogLink
+                    ? isBlogPage
+                    : isHash && pathname === "/" && activeSection === sectionId;
 
-                if (isHash) {
-                  return (
-                    <a key={item.href}
-                      href={pathname === "/" ? item.href : `/${item.href}`}
-                      className={"desktop-nav-item" + (isActive ? " is-active" : "")}
-                      aria-current={isActive ? "true" : undefined}>
-                      {content}
-                    </a>
+                  const content = (
+                    <>
+                      <span className="desktop-nav-icon" aria-hidden="true">
+                        <NavIcon type={item.icon} />
+                      </span>
+                      <span className="desktop-nav-text">{item.label}</span>
+                    </>
                   );
-                }
-                return (
-                  <Link key={item.href} href={item.href}
-                    className={"desktop-nav-item" + (isActive ? " is-active" : "")}
-                    aria-current={isActive ? "page" : undefined}>
-                    {content}
-                  </Link>
-                );
-              })}
-            </div>
-          </nav>
 
-          <div className="nav-actions">
-            <MagneticButton strength={0.15} radius={50}>
-              <Link href="/order" className="nav-order-button">
-                <span className="nav-order-shine" aria-hidden="true" />
-                <span>شروع پروژه</span>
-                <span className="nav-order-arrow" aria-hidden="true">←</span>
-              </Link>
-            </MagneticButton>
-            <button type="button" className="theme-toggle"
-              aria-label={theme === "dark" ? "حالت روشن" : "حالت تاریک"}
-              aria-pressed={theme === "dark"} onClick={toggleTheme}>
-              <span className="theme-toggle-inner" aria-hidden="true">
-                <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-                <svg className="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              </span>
-            </button>
+                  const linkProps = {
+                    className: "desktop-nav-item" + (isActive ? " is-active" : ""),
+                    onMouseEnter: () => setHoveredIndex(i),
+                    onMouseLeave: () => setHoveredIndex(null),
+                    onFocus: () => setHoveredIndex(i),
+                    onBlur: () => setHoveredIndex(null),
+                    style: { "--nav-i": i } as React.CSSProperties,
+                  };
+
+                  if (isHash) {
+                    return (
+                      <a key={item.href}
+                        href={pathname === "/" ? item.href : `/${item.href}`}
+                        aria-current={isActive ? "true" : undefined}
+                        {...linkProps}>
+                        {content}
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link key={item.href} href={item.href}
+                      aria-current={isActive ? "page" : undefined}
+                      {...linkProps}>
+                      {content}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {previewItem && <PreviewCard item={previewItem} />}
+            </nav>
+
+            <div className="nav-actions">
+              <MagneticButton strength={0.15} radius={50}>
+                <Link href="/order" className="nav-order-button">
+                  <span className="nav-order-shine" aria-hidden="true" />
+                  <span>شروع پروژه</span>
+                  <span className="nav-order-arrow" aria-hidden="true">←</span>
+                </Link>
+              </MagneticButton>
+              <button type="button" className="theme-toggle"
+                aria-label={theme === "dark" ? "حالت روشن" : "حالت تاریک"}
+                aria-pressed={theme === "dark"} onClick={toggleTheme}>
+                <span className="theme-toggle-inner" aria-hidden="true">
+                  <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  </svg>
+                  <svg className="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
