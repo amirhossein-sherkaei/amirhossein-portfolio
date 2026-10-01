@@ -1,0 +1,486 @@
+/* ============================================================
+   PREMIUM DESKTOP NAV — Infinite Edition
+   ────────────────────────────────────────────────────────────
+   6-layer glassmorphism for nav list + brand + actions
+   All transforms are GPU-composited
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. NAV INNER — glass shell (scrolled)
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .nav-inner {
+  padding-inline: 10px !important;
+  gap: 12px !important;
+}
+
+.site-nav.is-scrolled .nav-inner {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(252, 246, 240, 0.66) 45%,
+      rgba(255, 249, 244, 0.78) 100%
+    ) !important;
+  backdrop-filter: blur(40px) saturate(2) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.92) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(10, 9, 8, 0.045),
+    inset 1px 0 0 rgba(255, 255, 255, 0.55),
+    inset -1px 0 0 rgba(255, 255, 255, 0.55),
+    0 0 0 0.5px rgba(10, 9, 8, 0.05),
+    0 2px 6px -2px rgba(10, 9, 8, 0.08),
+    0 14px 32px -12px rgba(10, 9, 8, 0.18),
+    0 36px 80px -28px rgba(10, 9, 8, 0.32) !important;
+}
+
+[data-theme="dark"] .site-nav.is-scrolled .nav-inner {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(52, 46, 40, 0.92) 0%,
+      rgba(28, 24, 20, 0.8) 45%,
+      rgba(20, 17, 14, 0.9) 100%
+    ) !important;
+  border-color: rgba(255, 255, 255, 0.11) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 0 0 0.5px rgba(0, 0, 0, 0.35),
+    0 2px 6px -2px rgba(0, 0, 0, 0.55),
+    0 14px 32px -12px rgba(0, 0, 0, 0.65),
+    0 36px 80px -28px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. BRAND — logo wrap with subtle ring
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .brand {
+  padding: 4px 6px !important;
+  gap: 12px !important;
+  border-radius: 14px;
+  transition: background-color 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav .brand:hover {
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.site-nav .brand-mark-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.site-nav .brand-mark-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 22%, transparent) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  filter: blur(6px);
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.site-nav .brand:hover .brand-mark-wrap::before {
+  opacity: 1;
+}
+
+.site-nav .brand-logo {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 10px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 2px 8px -2px rgba(10, 9, 8, 0.42),
+    0 0 0 1px rgba(10, 9, 8, 0.06) !important;
+  transition:
+    transform 480ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 480ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.site-nav .brand:hover .brand-logo {
+  transform: scale(1.06) rotate(-3deg) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 6px 16px -3px rgba(233, 75, 44, 0.55),
+    0 0 0 2px rgba(233, 75, 44, 0.55) !important;
+}
+
+.site-nav.is-scrolled .brand-logo {
+  transform: scale(0.94) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. DESKTOP NAV — glass pill with icons + sliding indicator
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .desktop-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-inline: auto;
+  padding: 4px;
+  border-radius: 999px;
+}
+
+.site-nav .desktop-nav-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0.55;
+  padding-inline-end: 10px;
+  border-inline-end: 1px solid var(--line);
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* ─── NAV LIST (glass container) ─── */
+.site-nav .desktop-nav-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, auto));
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 55%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 40%, transparent) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 70%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 3%, transparent),
+    0 1px 2px rgba(10, 9, 8, 0.03);
+}
+
+[data-theme="dark"] .site-nav .desktop-nav-list {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── SLIDING INDICATOR ─── */
+.site-nav .desktop-nav-slider {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  inset-inline-start: 3px;
+  width: calc((100% - 6px) / var(--nav-total, 5) - 2px);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate3d(
+    calc(-100% * var(--nav-index, 0) - var(--nav-index, 0) * 2px),
+    0,
+    0
+  );
+  transition: transform 620ms cubic-bezier(0.34, 1.15, 0.4, 1);
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 250, 242, 0.9) 100%
+  );
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(10, 9, 8, 0.05),
+    0 1px 2px rgba(10, 9, 8, 0.06),
+    0 8px 24px -8px rgba(233, 75, 44, 0.26),
+    0 2px 8px -3px rgba(10, 9, 8, 0.1);
+}
+
+[data-theme="dark"] .site-nav .desktop-nav-slider {
+  background: linear-gradient(
+    180deg,
+    rgba(72, 62, 52, 0.98) 0%,
+    rgba(48, 40, 34, 0.94) 100%
+  );
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 8px 26px -8px rgba(255, 106, 61, 0.35);
+}
+
+/* Slider glow */
+.site-nav .desktop-nav-slider-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent) 22%, transparent) 0%,
+    transparent 65%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* ─── NAV ITEM ─── */
+.site-nav .desktop-nav-item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  isolation: isolate;
+  transition:
+    color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.site-nav .desktop-nav-item:hover {
+  color: var(--ink);
+}
+
+.site-nav .desktop-nav-item.is-active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Icon */
+.site-nav .desktop-nav-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  transition:
+    transform 420ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    filter 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav .desktop-nav-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.site-nav .desktop-nav-item.is-active .desktop-nav-icon {
+  transform: translateY(-1px) scale(1.1);
+  filter: drop-shadow(0 2px 5px rgba(233, 75, 44, 0.42));
+}
+
+.site-nav .desktop-nav-item:hover:not(.is-active) .desktop-nav-icon {
+  transform: scale(1.06);
+}
+
+[data-theme="dark"] .site-nav .desktop-nav-item.is-active .desktop-nav-icon {
+  filter: drop-shadow(0 2px 6px rgba(255, 106, 61, 0.55));
+}
+
+/* Text */
+.site-nav .desktop-nav-text {
+  display: inline-block;
+  transition: color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. COUNTER
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .desktop-nav-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-inline-start: 6px;
+  padding-inline-start: 12px;
+  border-inline-start: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+.site-nav .desktop-nav-counter-current {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.site-nav .desktop-nav-counter-sep {
+  opacity: 0.4;
+}
+
+.site-nav .desktop-nav-counter-total {
+  opacity: 0.55;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. NAV ORDER BUTTON — premium CTA
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .nav-order-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px !important;
+  padding-inline: 18px !important;
+  border-radius: 999px !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  overflow: hidden;
+  isolation: isolate;
+
+  background: linear-gradient(
+    135deg,
+    #ff9264 0%,
+    #ef5a35 40%,
+    #e94b2c 70%,
+    #c22e15 100%
+  ) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 6px 18px -4px rgba(233, 75, 44, 0.55),
+    0 16px 40px -12px rgba(233, 75, 44, 0.48) !important;
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.site-nav .nav-order-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.48),
+    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 10px 26px -6px rgba(233, 75, 44, 0.65),
+    0 22px 52px -14px rgba(233, 75, 44, 0.55) !important;
+}
+
+.site-nav .nav-order-button:active {
+  transform: translateY(0) scale(0.97) !important;
+}
+
+/* Shine sweep */
+.site-nav .nav-order-shine {
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: navShine 5.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes navShine {
+  0%, 62% { left: -60%; }
+  82%, 100% { left: 150%; }
+}
+
+.site-nav .nav-order-arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.site-nav .nav-order-button:hover .nav-order-arrow {
+  transform: translateX(-4px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. NAV PROGRESS BAR — subtle refinement
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .nav-progress {
+  background: color-mix(in srgb, var(--ink) 6%, transparent) !important;
+}
+
+.site-nav .nav-progress-bar {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 70%, transparent) 0%,
+    var(--accent) 50%,
+    var(--accent-2) 100%
+  ) !important;
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 0 2px color-mix(in srgb, var(--accent) 85%, transparent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. RESPONSIVE — hide desktop nav when narrow
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .site-nav .desktop-nav-label {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .site-nav .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav .desktop-nav-slider {
+    transition: opacity 200ms ease !important;
+  }
+
+  .site-nav .desktop-nav-item,
+  .site-nav .desktop-nav-icon,
+  .site-nav .brand-logo,
+  .site-nav .nav-order-button,
+  .site-nav .nav-order-arrow,
+  .site-nav .nav-order-shine {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .site-nav .desktop-nav-item.is-active .desktop-nav-icon {
+    filter: none;
+  }
+}

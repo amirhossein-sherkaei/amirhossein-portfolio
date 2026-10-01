@@ -134,6 +134,9 @@ import "@/styles/count-up.css";
 /* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
 
+/* 42b. Nav Premium (desktop infinite edition) */
+import "@/styles/nav-premium.css";
+
 /* 42. Performance Layer */
 import "@/styles/performance-layer.css";
 
