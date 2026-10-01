@@ -1,0 +1,474 @@
+/* ============================================================
+   TYPOGRAPHY 2026 — Bold Editorial System
+   ────────────────────────────────────────────────────────────
+   هدف: جسورانه، ادیتوریال، Persian-first
+   - Hero: تا ۱۴۴px
+   - Section titles: تا ۶۴px
+   - Line-height مخصوص فارسی
+   - letter-spacing صفر (طبق ALReq)
+   - weight range کامل (۲۰۰ تا ۹۰۰)
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. TOKENS — مقیاس جدید
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* ── Font Stacks ── */
+  --font-display: 'Estedad', 'Estedad Fallback', var(--font-vazirmatn), 'Vazirmatn', system-ui, sans-serif;
+  --font-body:    var(--font-vazirmatn), 'Vazirmatn', system-ui, sans-serif;
+
+  /* ── Type Scale (Perfect Fourth, fluid) ── */
+  --fs-hero:      clamp(2.5rem, 0.5rem + 9.5vw, 9rem);      /* 40 → 144px */
+  --fs-display:   clamp(2rem, 1rem + 5.5vw, 6rem);          /* 32 → 96px */
+  --fs-h1:        clamp(1.875rem, 1rem + 3.5vw, 4.5rem);    /* 30 → 72px */
+  --fs-h2:        clamp(1.625rem, 1rem + 2.5vw, 3.5rem);    /* 26 → 56px */
+  --fs-h3:        clamp(1.25rem, 1rem + 1.2vw, 2rem);       /* 20 → 32px */
+  --fs-h4:        clamp(1.125rem, 1rem + 0.5vw, 1.375rem);  /* 18 → 22px */
+  --fs-h5:        clamp(1rem, 0.95rem + 0.25vw, 1.125rem);  /* 16 → 18px */
+  --fs-body:      clamp(1rem, 0.96rem + 0.2vw, 1.125rem);   /* 16 → 18px */
+  --fs-body-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem); /* 17 → 20px */
+  --fs-small:     clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --fs-caption:   clamp(0.75rem, 0.72rem + 0.1vw, 0.8125rem);
+  --fs-mono:      clamp(0.75rem, 0.72rem + 0.15vw, 0.875rem);
+
+  /* ── Weight Scale (فقط 4 سطح، استاندارد ۲۰۲۶) ── */
+  --fw-body:      400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+  --fw-heavy:     800;
+  --fw-black:     900;
+
+  /* ── Line Heights (فارسی) ── */
+  --lh-hero:      1.05;
+  --lh-display:   1.08;
+  --lh-heading:   1.15;
+  --lh-subhead:   1.35;
+  --lh-body:      1.85;
+  --lh-relaxed:   1.95;
+  --lh-caption:   1.55;
+
+  /* ── Letter Spacing ── */
+  --tracking-tight:  -0.03em;  /* فقط برای Hero در ابعاد خیلی بزرگ */
+  --tracking-normal: 0;
+  --tracking-wide:   0.08em;   /* فقط Latin */
+  --tracking-wider:  0.16em;   /* فقط Latin mono */
+
+  /* ── Layout ── */
+  --container:            1280px;
+  --container-narrow:     780px;
+  --container-wide:       1440px;
+  --grid-columns:         12;
+  --grid-gutter:          clamp(16px, 1.5vw, 32px);
+  --grid-margin:          clamp(20px, 3vw, 64px);
+  --baseline:             8px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. RESET — قواعد پایه
+   ═══════════════════════════════════════════════════════════ */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: "ss01", "ss02", "ss03";
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-body);
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. HEADINGS — عمومی
+   ═══════════════════════════════════════════════════════════ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0;
+  color: var(--ink);
+  text-wrap: balance;
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  font-weight: var(--fw-heavy);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  font-weight: var(--fw-bold);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-subhead);
+  font-weight: var(--fw-semibold);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+  line-height: var(--lh-subhead);
+  font-weight: var(--fw-semibold);
+}
+
+h5, h6 {
+  font-size: var(--fs-h5);
+  line-height: var(--lh-subhead);
+  font-weight: var(--fw-semibold);
+}
+
+p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-2);
+  max-width: 65ch;
+  text-wrap: pretty;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. HERO — تیتر اصلی (جسورانه‌ترین)
+   ────────────────────────────────────────────────────────────
+   !important لازمه چون density-standardization و hero-editorial
+   با specificity بالا روی همین سلکتور حکومت می‌کنن.
+   ═══════════════════════════════════════════════════════════ */
+
+.hero-section .hero-title {
+  font-family: var(--font-display) !important;
+  font-weight: var(--fw-heavy) !important;
+  line-height: var(--lh-hero) !important;
+  letter-spacing: var(--tracking-tight) !important;
+  color: var(--ink) !important;
+  margin: 0 !important;
+  text-wrap: balance !important;
+}
+
+.hero-section .hero-title-line {
+  display: block !important;
+  font-size: var(--fs-hero) !important;
+  line-height: var(--lh-hero) !important;
+  font-weight: var(--fw-heavy) !important;
+  letter-spacing: var(--tracking-tight) !important;
+}
+
+.hero-section .hero-title-line + .hero-title-line {
+  margin-top: 0.02em !important;
+}
+
+.hero-section .hero-title-muted {
+  color: var(--ink-3) !important;
+  font-weight: var(--fw-medium) !important;
+}
+
+.hero-section .hero-title-accent,
+.hero-section .hero-title-em {
+  font-style: normal !important;
+  color: var(--accent) !important;
+  font-weight: var(--fw-heavy) !important;
+  position: relative;
+  display: inline-block;
+}
+
+/* ─── نقش «امضا»: underline طلایی ─── */
+.hero-section .hero-title-em::after {
+  content: "" !important;
+  position: absolute !important;
+  inset-inline: -0.02em !important;
+  bottom: 0.02em !important;
+  height: 0.06em !important;
+  background: var(--accent) !important;
+  opacity: 0.28 !important;
+  border-radius: 2px !important;
+  z-index: -1;
+}
+
+/* ─── Role Pill بزرگ‌تر ─── */
+.hero-section .hero-role {
+  font-family: var(--font-body) !important;
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem) !important;
+  line-height: 1.5 !important;
+  font-weight: var(--fw-medium) !important;
+  letter-spacing: 0 !important;
+  padding: 9px 18px !important;
+  margin-top: clamp(24px, 3vw, 36px) !important;
+  border-radius: 999px !important;
+}
+
+/* ─── Description ─── */
+.hero-section .hero-description {
+  font-family: var(--font-body) !important;
+  font-size: var(--fs-body-lead) !important;
+  line-height: var(--lh-body) !important;
+  font-weight: var(--fw-body) !important;
+  letter-spacing: 0 !important;
+  max-width: 56ch !important;
+  margin-top: clamp(20px, 2.4vw, 28px) !important;
+  color: var(--ink-2) !important;
+}
+
+/* ─── Eyebrow ─── */
+.hero-section .hero-eyebrow,
+.hero-section .hero-kicker {
+  font-family: var(--font-body) !important;
+  font-size: clamp(0.75rem, 0.7rem + 0.15vw, 0.8125rem) !important;
+  font-weight: var(--fw-medium) !important;
+  letter-spacing: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. SECTION HEADINGS — تیتر بخش‌ها
+   ═══════════════════════════════════════════════════════════ */
+
+.section-heading h2 {
+  font-family: var(--font-display) !important;
+  font-size: var(--fs-h1) !important;
+  line-height: var(--lh-heading) !important;
+  font-weight: var(--fw-heavy) !important;
+  letter-spacing: var(--tracking-tight) !important;
+  margin-top: 16px !important;
+  max-width: 18ch;
+}
+
+.section-heading > p {
+  font-family: var(--font-body) !important;
+  font-size: var(--fs-body) !important;
+  line-height: var(--lh-body) !important;
+  color: var(--ink-2) !important;
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+/* ─── موبایل: تیترها هنوز بزرگ ─── */
+@media (max-width: 720px) {
+  .section-heading h2 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    max-width: 100%;
+  }
+
+  .hero-section .hero-title-line {
+    line-height: 1.12 !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. TYPE UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.type-hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-heavy);
+  line-height: var(--lh-hero);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+}
+
+.type-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-heavy);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+}
+
+.type-h1 { font-size: var(--fs-h1); line-height: var(--lh-heading); font-weight: var(--fw-heavy); font-family: var(--font-display); }
+.type-h2 { font-size: var(--fs-h2); line-height: var(--lh-heading); font-weight: var(--fw-bold); font-family: var(--font-display); }
+.type-h3 { font-size: var(--fs-h3); line-height: var(--lh-subhead); font-weight: var(--fw-semibold); font-family: var(--font-display); }
+.type-h4 { font-size: var(--fs-h4); line-height: var(--lh-subhead); font-weight: var(--fw-semibold); font-family: var(--font-display); }
+
+.type-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-body);
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.type-lead {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-lead);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.type-small {
+  font-size: var(--fs-small);
+  line-height: var(--lh-caption);
+}
+
+.type-caption {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink-3);
+}
+
+.type-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. PROSE — متن مقالات
+   ═══════════════════════════════════════════════════════════ */
+
+.blog-post-content,
+.prose {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--ink-2);
+  max-width: 65ch;
+  margin-inline: auto;
+}
+
+.blog-post-content > p,
+.prose > p {
+  margin-bottom: 1.4em;
+  text-wrap: pretty;
+}
+
+.blog-post-content h2,
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  line-height: var(--lh-heading);
+  font-weight: var(--fw-heavy);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+  margin-top: 2.4em;
+  margin-bottom: 0.9em;
+}
+
+.blog-post-content h3,
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem);
+  line-height: var(--lh-subhead);
+  font-weight: var(--fw-bold);
+  color: var(--ink);
+  margin-top: 1.8em;
+  margin-bottom: 0.7em;
+}
+
+.blog-post-content blockquote,
+.prose blockquote {
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  line-height: 1.7;
+  font-weight: var(--fw-medium);
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. HEADINGS در صفحات داخلی
+   ═══════════════════════════════════════════════════════════ */
+
+.work-title,
+.blog-header h1,
+.order-header h1,
+.not-found-center h1,
+.work-detail-title {
+  font-family: var(--font-display) !important;
+  font-weight: var(--fw-heavy) !important;
+  letter-spacing: var(--tracking-tight) !important;
+  line-height: var(--lh-heading) !important;
+}
+
+.work-title {
+  font-size: clamp(2rem, 1rem + 4vw, 5rem) !important;
+}
+
+.work-detail-title {
+  font-size: clamp(2rem, 1rem + 4.5vw, 5.5rem) !important;
+}
+
+.blog-header h1 {
+  font-size: clamp(2rem, 1rem + 4vw, 4.5rem) !important;
+}
+
+.order-header h1 {
+  font-size: clamp(2rem, 1rem + 4vw, 5rem) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. FAQ / Accordion — سؤال‌ها بزرگ‌تر
+   ═══════════════════════════════════════════════════════════ */
+
+.faq-question {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem) !important;
+  font-weight: var(--fw-semibold) !important;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.faq-answer-inner p {
+  font-family: var(--font-body) !important;
+  font-size: var(--fs-body) !important;
+  line-height: var(--lh-body) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. NAV / BUTTONS — fix خانواده فونت
+   ═══════════════════════════════════════════════════════════ */
+
+.button,
+.btn,
+button,
+input,
+textarea,
+select,
+.nav-order-button,
+.oform-btn,
+.welcome-nav-btn {
+  font-family: var(--font-body);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. RTL FIXES
+   ═══════════════════════════════════════════════════════════ */
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+[dir="rtl"] .hero-title,
+[dir="rtl"] .section-heading h2 {
+  letter-spacing: var(--tracking-tight);
+}
+
+/* متن‌های Latin درون متن فارسی */
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .hero-title-em::after {
+    transition: none !important;
+  }
+}

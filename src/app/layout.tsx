@@ -5,6 +5,9 @@ import { Vazirmatn } from "next/font/google";
    CSS — Order matters!
    ═══════════════════════════════════════════════════════════ */
 
+/* 0. Fonts (Display + Body @font-face) — جدید */
+import "@/styles/fonts.css";
+
 /* 1. Design tokens */
 import "@/styles/tokens.css";
 
@@ -106,6 +109,7 @@ import "@/styles/hero-editorial.css";
 
 /* 29b. Hero Premium */
 import "@/styles/hero-premium.css";
+
 /* 30. Signature Ink */
 import "@/styles/signature-ink.css";
 
@@ -152,10 +156,21 @@ import "@/styles/nav-premium.css";
 /* 43. Performance Pro */
 import "@/styles/performance-pro.css";
 
-/* 44. Final Polish (LAST) */
+/* 44. Final Polish */
 import "@/styles/final-polish.css";
 import "@/styles/mobile-performance-fix.css";
 
+/* ═══════════════════════════════════════════════════════════
+   45. TYPOGRAPHY 2026 — NEW (must load before grid)
+   ═══════════════════════════════════════════════════════════ */
+import "@/styles/typography-2026.css";
+
+/* 46. GRID OVERLAY — NEW (design tool, hidden by default) */
+import "@/styles/grid-overlay.css";
+
+/* ═══════════════════════════════════════════════════════════
+   Components
+   ═══════════════════════════════════════════════════════════ */
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
 import TouchFeedback from "@/components/TouchFeedback";
@@ -163,10 +178,14 @@ import SensoryFeedback from "@/components/SensoryFeedback";
 import SignatureInk from "@/components/SignatureInk";
 import PerfObserver from "@/components/PerfObserver";
 import PageTransition from "@/components/PageTransition";
+import GridOverlay from "@/components/GridOverlay";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 
+/* ═══════════════════════════════════════════════════════════
+   Fonts
+   ═══════════════════════════════════════════════════════════ */
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin"],
   variable: "--font-vazirmatn",
@@ -176,6 +195,9 @@ const vazirmatn = Vazirmatn({
   fallback: ["system-ui", "arial"],
 });
 
+/* ═══════════════════════════════════════════════════════════
+   Metadata
+   ═══════════════════════════════════════════════════════════ */
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 
@@ -332,6 +354,7 @@ export default function RootLayout({
         <SignatureInk />
         <PerfObserver />
         <PageTransition />
+        <GridOverlay />
         <Analytics />
         <SpeedInsights />
       </body>

@@ -1,0 +1,28 @@
+/* ============================================================
+   FONTS — Display + Body
+   ────────────────────────────────────────────────────────────
+   Body:    Vazirmatn (via next/font/google, موجود در پروژه)
+   Display: Estedad Variable (۹ وزن، OFL) — از CDN jsDelivr
+   ============================================================ */
+
+@font-face {
+  font-family: 'Estedad';
+  src:
+    url('https://cdn.jsdelivr.net/gh/aminabedi68/Estedad@v9.5.0/webfonts/Estedad-Variable.woff2') format('woff2-variations'),
+    url('https://cdn.jsdelivr.net/gh/aminabedi68/Estedad@v9.5.0/dist/webfonts/Estedad-Variable.woff2') format('woff2-variations'),
+    url('https://cdn.jsdelivr.net/npm/estedad-font@9.5.0/webfonts/Estedad-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF, U+0020-007E;
+}
+
+/* Fallback شبیه‌سازی برای زمانی که Estedad لود نشده */
+@font-face {
+  font-family: 'Estedad Fallback';
+  src: local('Tahoma'), local('Arial');
+  size-adjust: 100%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
