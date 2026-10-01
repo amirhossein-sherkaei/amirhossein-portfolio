@@ -8,13 +8,14 @@ import { useTheme } from "@/components/ThemeProvider";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ═══════════════════════════════════════════════════════════
-   PREMIUM DESKTOP NAV — Infinite Edition
+   DESKTOP NAV — Infinite Edition
    ────────────────────────────────────────────────────────────
-   - Custom colorful icons for each nav item
-   - 6-layer glassmorphism nav list
+   - Colorful gradient icons (18px) per item
+   - 6-layer glass pill with specular streak
    - Sliding glass indicator (spring physics)
-   - Premium brand pill with logo ring
-   - Full dark mode + reduced motion
+   - Logo ring on brand hover
+   - Premium CTA with shine sweep
+   - Staggered entry + full dark mode
    ═══════════════════════════════════════════════════════════ */
 
 type NavItem = {
@@ -36,7 +37,7 @@ const SCROLL_HIDE_THRESHOLD = 120;
 const SCROLL_DELTA = 8;
 
 /* ═══════════════════════════════════════════════════════════
-   ICONS — 18px optimized for desktop nav
+   ICONS — colorful gradient SVG (18px optimized)
    ═══════════════════════════════════════════════════════════ */
 function NavIcon({ type }: { type: NavItem["icon"] }) {
   switch (type) {
@@ -64,7 +65,6 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
           <circle cx="26" cy="6.75" r="2.6" fill="url(#navHomeWarm)" />
         </svg>
       );
-
     case "services":
       return (
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -84,7 +84,6 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
           <rect x="17" y="20" width="11" height="10.5" rx="3.5" fill="url(#navSrvDark)" />
         </svg>
       );
-
     case "portfolio":
       return (
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -102,24 +101,13 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop offset="1" stopColor="#FF7043" />
             </linearGradient>
           </defs>
-          <path
-            d="M8 4h14a3 3 0 0 1 3 3v2"
-            stroke="url(#navPortWarm)"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            fill="none"
-          />
+          <path d="M8 4h14a3 3 0 0 1 3 3v2" stroke="url(#navPortWarm)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
           <rect x="4" y="8" width="24" height="20" rx="3.5" fill="url(#navPortDark)" />
           <rect x="6.5" y="10.5" width="19" height="15" rx="2" fill="#2A241E" />
           <circle cx="20" cy="15.5" r="2.2" fill="url(#navPortSun)" />
-          <path
-            d="M7.5 24.5l4.5-5 3.5 3.4 2.5-2.6 6 4.2z"
-            fill="#8A7D70"
-            fillOpacity="0.85"
-          />
+          <path d="M7.5 24.5l4.5-5 3.5 3.4 2.5-2.6 6 4.2z" fill="#8A7D70" fillOpacity="0.85" />
         </svg>
       );
-
     case "blog":
       return (
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -136,16 +124,9 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
           <rect x="4.5" y="4" width="23" height="24" rx="3.5" fill="url(#navBlogDark)" />
           <path d="M9.5 4v24" stroke="#5A4E44" strokeWidth="1.4" strokeOpacity="0.9" />
           <path d="M19 4h5v11l-2.5-2-2.5 2z" fill="url(#navBlogWarm)" />
-          <path
-            d="M13 12h5M13 16h5M13 20h5"
-            stroke="#A89585"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeOpacity="0.8"
-          />
+          <path d="M13 12h5M13 16h5M13 20h5" stroke="#A89585" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.8" />
         </svg>
       );
-
     case "about":
       return (
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -160,25 +141,16 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
             </linearGradient>
           </defs>
           <circle cx="16" cy="9.5" r="5.5" fill="url(#navAboutDark)" />
-          <path
-            d="M4.5 27a11.5 11.5 0 0 1 22.5-2.5c-1.5 1.3-5 1.5-8.5-.5s-7.5-2.5-11.5-1z"
-            fill="url(#navAboutDark)"
-          />
-          <path
-            d="M22 25.5c2.5-1 4.5-3 5-5.5.4 2.8-.4 5.3-2.5 6.5-1 .6-2 .6-2.5-1z"
-            fill="url(#navAboutWarm)"
-          />
+          <path d="M4.5 27a11.5 11.5 0 0 1 22.5-2.5c-1.5 1.3-5 1.5-8.5-.5s-7.5-2.5-11.5-1z" fill="url(#navAboutDark)" />
+          <path d="M22 25.5c2.5-1 4.5-3 5-5.5.4 2.8-.4 5.3-2.5 6.5-1 .6-2 .6-2.5-1z" fill="url(#navAboutWarm)" />
           <circle cx="26.5" cy="6.5" r="2.2" fill="url(#navAboutWarm)" />
         </svg>
       );
-
-    default:
-      return null;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MAIN COMPONENT
+   COMPONENT
    ═══════════════════════════════════════════════════════════ */
 export default function Nav() {
   const { theme, toggleTheme } = useTheme();
@@ -196,20 +168,14 @@ export default function Nav() {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? Math.min(1, y / docHeight) : 0;
       setScrollProgress(pct);
 
       const delta = y - lastScrollY.current;
-
       if (Math.abs(delta) > SCROLL_DELTA) {
-        if (y > SCROLL_HIDE_THRESHOLD && delta > 0) {
-          setHeaderHidden(true);
-        } else if (delta < 0) {
-          setHeaderHidden(false);
-        }
+        if (y > SCROLL_HIDE_THRESHOLD && delta > 0) setHeaderHidden(true);
+        else if (delta < 0) setHeaderHidden(false);
         lastScrollY.current = y;
       }
     };
@@ -226,7 +192,6 @@ export default function Nav() {
     handleScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", handleScroll);
@@ -236,11 +201,8 @@ export default function Nav() {
   useEffect(() => {
     const handleBottom = () => {
       const y = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight - y < 200) {
-        setHeaderHidden(false);
-      }
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight - y < 200) setHeaderHidden(false);
     };
     window.addEventListener("scroll", handleBottom, { passive: true });
     return () => window.removeEventListener("scroll", handleBottom);
@@ -262,15 +224,11 @@ export default function Nav() {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
         if (visible?.target instanceof Element && visible.target.id) {
           setActiveSection(visible.target.id);
         }
       },
-      {
-        rootMargin: "-25% 0px -55% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      }
+      { rootMargin: "-25% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -280,17 +238,13 @@ export default function Nav() {
   const isBlogPage = pathname?.startsWith("/blog") ?? false;
   const shouldHide = !isBlogPage && headerHidden;
 
-  /* Compute active index for slider */
-  const sectionItems = navItems.filter((item) => item.section);
-  let activeIndex = -1;
+  let activeIndex = 0;
   if (isBlogPage) {
     activeIndex = navItems.findIndex((item) => item.icon === "blog");
   } else if (pathname === "/") {
-    activeIndex = navItems.findIndex(
-      (item) => item.section === activeSection
-    );
+    const found = navItems.findIndex((item) => item.section === activeSection);
+    if (found >= 0) activeIndex = found;
   }
-  if (activeIndex < 0) activeIndex = 0;
 
   const activeNumber = String(activeIndex + 1).padStart(2, "0");
   const totalNumber = String(navItems.length).padStart(2, "0");
@@ -305,71 +259,39 @@ export default function Nav() {
     >
       <div className="container">
         <div className="nav-inner">
-          {/* ═══ BRAND ═══ */}
-          <a
-            href="/#home"
-            className="brand"
-            aria-label="امیرحسین شرکائی — بازگشت به بالای صفحه"
-          >
+          <a href="/#home" className="brand" aria-label="امیرحسین شرکائی — بازگشت به بالای صفحه">
             <span className="brand-mark-wrap">
-              <Image
-                src="/logo.png"
-                alt=""
-                width={72}
-                height={72}
-                className="brand-mark brand-logo"
-                aria-hidden="true"
-                priority
-              />
+              <Image src="/logo.png" alt="" width={72} height={72}
+                className="brand-mark brand-logo" aria-hidden="true" priority />
             </span>
             <span className="brand-text">
               <strong>امیرحسین شرکائی</strong>
               <small>Amirhossein Shorakaei</small>
             </span>
-
             <span className="brand-issue" aria-hidden="true">
               <span className="brand-issue-sep">/</span>
               <span className="brand-issue-num">Nº 01</span>
             </span>
           </a>
 
-          {/* ═══ DESKTOP NAV ═══ */}
-          <nav
-            className="desktop-nav"
-            aria-label="منوی اصلی سایت"
-            data-nav-count={navItems.length}
-            style={
-              {
-                "--nav-index": activeIndex,
-                "--nav-total": navItems.length,
-              } as React.CSSProperties
-            }
-          >
-            <span className="desktop-nav-label" aria-hidden="true">
-              MENU
-            </span>
-
+          <nav className="desktop-nav" aria-label="منوی اصلی سایت"
+            style={{ "--nav-index": activeIndex, "--nav-total": navItems.length } as React.CSSProperties}>
+            <span className="desktop-nav-label" aria-hidden="true">MENU</span>
             <div className="desktop-nav-list">
-              {/* Sliding glass indicator */}
               <span className="desktop-nav-slider" aria-hidden="true">
                 <span className="desktop-nav-slider-glow" />
               </span>
-
               {navItems.map((item, i) => {
                 const isHash = item.href.startsWith("#");
                 const isBlogLink = item.href === "/blog";
                 const sectionId = item.section ?? "";
-
                 const isActive = isBlogLink
                   ? isBlogPage
                   : isHash && pathname === "/" && activeSection === sectionId;
 
                 const content = (
                   <>
-                    <span
-                      className="desktop-nav-icon"
-                      aria-hidden="true"
-                    >
+                    <span className="desktop-nav-icon" aria-hidden="true">
                       <NavIcon type={item.icon} />
                     </span>
                     <span className="desktop-nav-text">{item.label}</span>
@@ -378,87 +300,50 @@ export default function Nav() {
 
                 if (isHash) {
                   return (
-                    <a
-                      key={item.href}
+                    <a key={item.href}
                       href={pathname === "/" ? item.href : `/${item.href}`}
-                      className={
-                        "desktop-nav-item" + (isActive ? " is-active" : "")
-                      }
-                      aria-current={isActive ? "true" : undefined}
-                    >
+                      className={"desktop-nav-item" + (isActive ? " is-active" : "")}
+                      aria-current={isActive ? "true" : undefined}>
                       {content}
                     </a>
                   );
                 }
-
                 return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={
-                      "desktop-nav-item" + (isActive ? " is-active" : "")
-                    }
-                    aria-current={isActive ? "page" : undefined}
-                  >
+                  <Link key={item.href} href={item.href}
+                    className={"desktop-nav-item" + (isActive ? " is-active" : "")}
+                    aria-current={isActive ? "page" : undefined}>
                     {content}
                   </Link>
                 );
               })}
             </div>
-
             <span className="desktop-nav-counter" aria-hidden="true">
-              <span className="desktop-nav-counter-current">
-                {activeNumber}
-              </span>
+              <span className="desktop-nav-counter-current">{activeNumber}</span>
               <span className="desktop-nav-counter-sep">/</span>
               <span className="desktop-nav-counter-total">{totalNumber}</span>
             </span>
           </nav>
 
-          {/* ═══ ACTIONS ═══ */}
           <div className="nav-actions">
             <MagneticButton strength={0.15} radius={50}>
               <Link href="/order" className="nav-order-button">
                 <span className="nav-order-shine" aria-hidden="true" />
                 <span>شروع پروژه</span>
-                <span className="nav-order-arrow" aria-hidden="true">
-                  ←
-                </span>
+                <span className="nav-order-arrow" aria-hidden="true">←</span>
               </Link>
             </MagneticButton>
 
-            <button
-              type="button"
-              className="theme-toggle"
-              aria-label={
-                theme === "dark"
-                  ? "حالت روشن رو فعال کن"
-                  : "حالت تاریک رو فعال کن"
-              }
-              aria-pressed={theme === "dark"}
-              onClick={toggleTheme}
-            >
+            <button type="button" className="theme-toggle"
+              aria-label={theme === "dark" ? "حالت روشن رو فعال کن" : "حالت تاریک رو فعال کن"}
+              aria-pressed={theme === "dark"} onClick={toggleTheme}>
               <span className="theme-toggle-inner" aria-hidden="true">
-                <svg
-                  className="theme-icon theme-icon-sun"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                >
+                <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
                 </svg>
-                <svg
-                  className="theme-icon theme-icon-moon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg className="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               </span>
@@ -467,11 +352,8 @@ export default function Nav() {
         </div>
       </div>
 
-      <div
-        className="nav-progress"
-        style={{ "--nav-progress": scrollProgress } as React.CSSProperties}
-        aria-hidden="true"
-      >
+      <div className="nav-progress"
+        style={{ "--nav-progress": scrollProgress } as React.CSSProperties} aria-hidden="true">
         <span className="nav-progress-bar" />
       </div>
     </header>
