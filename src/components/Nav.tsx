@@ -8,14 +8,14 @@ import { useTheme } from "@/components/ThemeProvider";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ═══════════════════════════════════════════════════════════
-   DESKTOP NAV — Infinite Edition
+   NARRATIVE GLASS NAV — Infinite Edition
    ────────────────────────────────────────────────────────────
-   - Colorful gradient icons (18px) per item
-   - 6-layer glass pill with specular streak
-   - Sliding glass indicator (spring physics)
-   - Logo ring on brand hover
-   - Premium CTA with shine sweep
-   - Staggered entry + full dark mode
+   - Single unified navbar (no dual navs)
+   - Live preview card on hover (Storytelling Navigation)
+   - Colorful gradient icons with rotation on hover
+   - Pulsing orange indicator (Liquid Glass)
+   - Staggered entrance animation
+   - Full dark mode + reduced motion
    ═══════════════════════════════════════════════════════════ */
 
 type NavItem = {
@@ -23,21 +23,81 @@ type NavItem = {
   href: string;
   icon: "home" | "services" | "portfolio" | "blog" | "about";
   section?: string;
+  preview: {
+    title: string;
+    description: string;
+    stat: string;
+    statLabel: string;
+  };
 };
 
 const navItems: NavItem[] = [
-  { label: "خانه",       href: "#home",      icon: "home",      section: "home" },
-  { label: "خدمات",      href: "#services",  icon: "services",  section: "services" },
-  { label: "نمونه‌کارها", href: "#portfolio", icon: "portfolio", section: "portfolio" },
-  { label: "بلاگ",       href: "/blog",      icon: "blog" },
-  { label: "درباره من",  href: "#about",     icon: "about",     section: "about" },
+  {
+    label: "خانه",
+    href: "#home",
+    icon: "home",
+    section: "home",
+    preview: {
+      title: "بازگشت به شروع",
+      description: "معرفی کوتاه و مسیرهای اصلی سایت",
+      stat: "۰۱",
+      statLabel: "بخش",
+    },
+  },
+  {
+    label: "خدمات",
+    href: "#services",
+    icon: "services",
+    section: "services",
+    preview: {
+      title: "چهار مسیر همکاری",
+      description: "وب اختصاصی، AI، تبلیغات هوشمند، ویدیو",
+      stat: "۰۴",
+      statLabel: "خدمت",
+    },
+  },
+  {
+    label: "نمونه‌کارها",
+    href: "#portfolio",
+    icon: "portfolio",
+    section: "portfolio",
+    preview: {
+      title: "پروژه‌های واقعی",
+      description: "آرکا، نیلا، ویرا، لومن",
+      stat: "۰۴",
+      statLabel: "پروژه",
+    },
+  },
+  {
+    label: "بلاگ",
+    href: "/blog",
+    icon: "blog",
+    preview: {
+      title: "مقالات و یادداشت‌ها",
+      description: "درباره طراحی، سئو و تجربه کاربری",
+      stat: "۲۰",
+      statLabel: "مقاله",
+    },
+  },
+  {
+    label: "درباره من",
+    href: "#about",
+    icon: "about",
+    section: "about",
+    preview: {
+      title: "امیرحسین شرکائی",
+      description: "طراح و توسعه‌دهنده وب",
+      stat: "۰۵",
+      statLabel: "سال تجربه",
+    },
+  },
 ];
 
 const SCROLL_HIDE_THRESHOLD = 120;
 const SCROLL_DELTA = 8;
 
 /* ═══════════════════════════════════════════════════════════
-   ICONS — colorful gradient SVG (18px optimized)
+   ICONS — Colorful gradient SVG with hover rotation
    ═══════════════════════════════════════════════════════════ */
 function NavIcon({ type }: { type: NavItem["icon"] }) {
   switch (type) {
@@ -46,22 +106,14 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="navHomeDark" x1="16" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#3E3630" />
-              <stop offset="1" stopColor="#18140F" />
+              <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navHomeWarm" x1="16" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
             </linearGradient>
           </defs>
-          <path
-            d="M15.15 4.4a1.5 1.5 0 0 1 1.7 0l9.5 6.35a1.6 1.6 0 0 1 .65 1.3V25a2.5 2.5 0 0 1-2.5 2.5H7.5A2.5 2.5 0 0 1 5 25V12.05a1.6 1.6 0 0 1 .65-1.3z"
-            fill="url(#navHomeDark)"
-          />
-          <path
-            d="M11.75 27.5V19a4.25 4.25 0 0 1 8.5 0v8.5z"
-            fill="url(#navHomeWarm)"
-          />
+          <path d="M15.15 4.4a1.5 1.5 0 0 1 1.7 0l9.5 6.35a1.6 1.6 0 0 1 .65 1.3V25a2.5 2.5 0 0 1-2.5 2.5H7.5A2.5 2.5 0 0 1 5 25V12.05a1.6 1.6 0 0 1 .65-1.3z" fill="url(#navHomeDark)" />
+          <path d="M11.75 27.5V19a4.25 4.25 0 0 1 8.5 0v8.5z" fill="url(#navHomeWarm)" />
           <circle cx="26" cy="6.75" r="2.6" fill="url(#navHomeWarm)" />
         </svg>
       );
@@ -70,12 +122,10 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="navSrvDark" x1="10" y1="8" x2="10" y2="26" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#3E3630" />
-              <stop offset="1" stopColor="#18140F" />
+              <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navSrvWarm" x1="22" y1="6" x2="22" y2="14" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
             </linearGradient>
           </defs>
           <rect x="4" y="7" width="10.5" height="10.5" rx="3.2" fill="url(#navSrvDark)" />
@@ -89,16 +139,13 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="navPortDark" x1="16" y1="8" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#3E3630" />
-              <stop offset="1" stopColor="#18140F" />
+              <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navPortWarm" x1="16" y1="3" x2="16" y2="8" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
             </linearGradient>
             <linearGradient id="navPortSun" x1="20" y1="14" x2="20" y2="18" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FFB07A" />
-              <stop offset="1" stopColor="#FF7043" />
+              <stop stopColor="#FFB07A" /><stop offset="1" stopColor="#FF7043" />
             </linearGradient>
           </defs>
           <path d="M8 4h14a3 3 0 0 1 3 3v2" stroke="url(#navPortWarm)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
@@ -113,12 +160,10 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="navBlogDark" x1="16" y1="5" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#3E3630" />
-              <stop offset="1" stopColor="#18140F" />
+              <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navBlogWarm" x1="21" y1="4" x2="21" y2="15" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
             </linearGradient>
           </defs>
           <rect x="4.5" y="4" width="23" height="24" rx="3.5" fill="url(#navBlogDark)" />
@@ -132,12 +177,10 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="navAboutDark" x1="16" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#3E3630" />
-              <stop offset="1" stopColor="#18140F" />
+              <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navAboutWarm" x1="24" y1="18" x2="30" y2="24" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
             </linearGradient>
           </defs>
           <circle cx="16" cy="9.5" r="5.5" fill="url(#navAboutDark)" />
@@ -150,6 +193,30 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   PREVIEW CARD — shown on hover
+   ═══════════════════════════════════════════════════════════ */
+function PreviewCard({ item }: { item: NavItem }) {
+  return (
+    <div className="nav-preview" aria-hidden="true">
+      <span className="nav-preview-arrow" />
+      <div className="nav-preview-inner">
+        <span className="nav-preview-icon">
+          <NavIcon type={item.icon} />
+        </span>
+        <div className="nav-preview-body">
+          <strong className="nav-preview-title">{item.preview.title}</strong>
+          <span className="nav-preview-desc">{item.preview.description}</span>
+        </div>
+        <div className="nav-preview-stat">
+          <strong>{item.preview.stat}</strong>
+          <span>{item.preview.statLabel}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
    COMPONENT
    ═══════════════════════════════════════════════════════════ */
 export default function Nav() {
@@ -158,8 +225,8 @@ export default function Nav() {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [headerHidden, setHeaderHidden] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
@@ -168,10 +235,6 @@ export default function Nav() {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? Math.min(1, y / docHeight) : 0;
-      setScrollProgress(pct);
-
       const delta = y - lastScrollY.current;
       if (Math.abs(delta) > SCROLL_DELTA) {
         if (y > SCROLL_HIDE_THRESHOLD && delta > 0) setHeaderHidden(true);
@@ -179,7 +242,6 @@ export default function Nav() {
         lastScrollY.current = y;
       }
     };
-
     const onScroll = () => {
       if (ticking.current) return;
       ticking.current = true;
@@ -188,7 +250,6 @@ export default function Nav() {
         ticking.current = false;
       });
     };
-
     handleScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
@@ -211,14 +272,11 @@ export default function Nav() {
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
     if (pathname !== "/") return;
-
     const sections = navItems
       .filter((item) => item.section)
       .map((item) => document.getElementById(item.section!))
       .filter((el): el is HTMLElement => el !== null);
-
     if (!sections.length) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -230,7 +288,6 @@ export default function Nav() {
       },
       { rootMargin: "-25% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
     );
-
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, [pathname]);
@@ -246,115 +303,114 @@ export default function Nav() {
     if (found >= 0) activeIndex = found;
   }
 
-  const activeNumber = String(activeIndex + 1).padStart(2, "0");
-  const totalNumber = String(navItems.length).padStart(2, "0");
+  const previewItem = hoveredIndex !== null ? navItems[hoveredIndex] : null;
 
   return (
     <header
       className={
         "site-nav" +
         (scrolled ? " is-scrolled" : "") +
-        (shouldHide ? " is-hidden" : "")
+        (shouldHide ? " is-hidden" : "") +
+        (hoveredIndex !== null ? " has-hover" : "")
       }
     >
       <div className="container">
         <div className="nav-inner">
-          <a href="/#home" className="brand" aria-label="امیرحسین شرکائی — بازگشت به بالای صفحه">
-            <span className="brand-mark-wrap">
-              <Image src="/logo.png" alt="" width={72} height={72}
-                className="brand-mark brand-logo" aria-hidden="true" priority />
-            </span>
-            <span className="brand-text">
-              <strong>امیرحسین شرکائی</strong>
-              <small>Amirhossein Shorakaei</small>
-            </span>
-            <span className="brand-issue" aria-hidden="true">
-              <span className="brand-issue-sep">/</span>
-              <span className="brand-issue-num">Nº 01</span>
-            </span>
-          </a>
-
-          <nav className="desktop-nav" aria-label="منوی اصلی سایت"
-            style={{ "--nav-index": activeIndex, "--nav-total": navItems.length } as React.CSSProperties}>
-            <span className="desktop-nav-label" aria-hidden="true">MENU</span>
-            <div className="desktop-nav-list">
-              <span className="desktop-nav-slider" aria-hidden="true">
-                <span className="desktop-nav-slider-glow" />
+          {/* ─── UNIFIED GLASS PILL ─── */}
+          <div className="nav-pill">
+            {/* Brand */}
+            <a href="/#home" className="brand" aria-label="امیرحسین شرکائی — بازگشت به بالای صفحه">
+              <span className="brand-mark-wrap">
+                <Image src="/logo.png" alt="" width={72} height={72}
+                  className="brand-mark brand-logo" aria-hidden="true" priority />
               </span>
-              {navItems.map((item, i) => {
-                const isHash = item.href.startsWith("#");
-                const isBlogLink = item.href === "/blog";
-                const sectionId = item.section ?? "";
-                const isActive = isBlogLink
-                  ? isBlogPage
-                  : isHash && pathname === "/" && activeSection === sectionId;
+              <span className="brand-text">
+                <strong>امیرحسین شرکائی</strong>
+                <small>Amirhossein Shorakaei</small>
+              </span>
+            </a>
 
-                const content = (
-                  <>
-                    <span className="desktop-nav-icon" aria-hidden="true">
-                      <NavIcon type={item.icon} />
-                    </span>
-                    <span className="desktop-nav-text">{item.label}</span>
-                  </>
-                );
+            {/* Navigation Links */}
+            <nav className="desktop-nav" aria-label="منوی اصلی سایت">
+              <div className="desktop-nav-list">
+                <span className="desktop-nav-slider" aria-hidden="true">
+                  <span className="desktop-nav-slider-pulse" />
+                </span>
+                {navItems.map((item, i) => {
+                  const isHash = item.href.startsWith("#");
+                  const isBlogLink = item.href === "/blog";
+                  const sectionId = item.section ?? "";
+                  const isActive = isBlogLink
+                    ? isBlogPage
+                    : isHash && pathname === "/" && activeSection === sectionId;
 
-                if (isHash) {
-                  return (
-                    <a key={item.href}
-                      href={pathname === "/" ? item.href : `/${item.href}`}
-                      className={"desktop-nav-item" + (isActive ? " is-active" : "")}
-                      aria-current={isActive ? "true" : undefined}>
-                      {content}
-                    </a>
+                  const content = (
+                    <>
+                      <span className="desktop-nav-icon" aria-hidden="true">
+                        <NavIcon type={item.icon} />
+                      </span>
+                      <span className="desktop-nav-text">{item.label}</span>
+                    </>
                   );
-                }
-                return (
-                  <Link key={item.href} href={item.href}
-                    className={"desktop-nav-item" + (isActive ? " is-active" : "")}
-                    aria-current={isActive ? "page" : undefined}>
-                    {content}
-                  </Link>
-                );
-              })}
+
+                  const linkProps = {
+                    className: "desktop-nav-item" + (isActive ? " is-active" : ""),
+                    onMouseEnter: () => setHoveredIndex(i),
+                    onMouseLeave: () => setHoveredIndex(null),
+                    onFocus: () => setHoveredIndex(i),
+                    onBlur: () => setHoveredIndex(null),
+                    style: { "--nav-i": i } as React.CSSProperties,
+                  };
+
+                  if (isHash) {
+                    return (
+                      <a key={item.href}
+                        href={pathname === "/" ? item.href : `/${item.href}`}
+                        aria-current={isActive ? "true" : undefined}
+                        {...linkProps}>
+                        {content}
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link key={item.href} href={item.href}
+                      aria-current={isActive ? "page" : undefined}
+                      {...linkProps}>
+                      {content}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Preview card — absolute positioned below nav */}
+              {previewItem && <PreviewCard item={previewItem} />}
+            </nav>
+
+            {/* Actions */}
+            <div className="nav-actions">
+              <MagneticButton strength={0.15} radius={50}>
+                <Link href="/order" className="nav-order-button">
+                  <span className="nav-order-shine" aria-hidden="true" />
+                  <span>شروع پروژه</span>
+                  <span className="nav-order-arrow" aria-hidden="true">←</span>
+                </Link>
+              </MagneticButton>
+              <button type="button" className="theme-toggle"
+                aria-label={theme === "dark" ? "حالت روشن" : "حالت تاریک"}
+                aria-pressed={theme === "dark"} onClick={toggleTheme}>
+                <span className="theme-toggle-inner" aria-hidden="true">
+                  <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  </svg>
+                  <svg className="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                </span>
+              </button>
             </div>
-            <span className="desktop-nav-counter" aria-hidden="true">
-              <span className="desktop-nav-counter-current">{activeNumber}</span>
-              <span className="desktop-nav-counter-sep">/</span>
-              <span className="desktop-nav-counter-total">{totalNumber}</span>
-            </span>
-          </nav>
-
-          <div className="nav-actions">
-            <MagneticButton strength={0.15} radius={50}>
-              <Link href="/order" className="nav-order-button">
-                <span className="nav-order-shine" aria-hidden="true" />
-                <span>شروع پروژه</span>
-                <span className="nav-order-arrow" aria-hidden="true">←</span>
-              </Link>
-            </MagneticButton>
-
-            <button type="button" className="theme-toggle"
-              aria-label={theme === "dark" ? "حالت روشن رو فعال کن" : "حالت تاریک رو فعال کن"}
-              aria-pressed={theme === "dark"} onClick={toggleTheme}>
-              <span className="theme-toggle-inner" aria-hidden="true">
-                <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-                <svg className="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              </span>
-            </button>
           </div>
         </div>
-      </div>
-
-      <div className="nav-progress"
-        style={{ "--nav-progress": scrollProgress } as React.CSSProperties} aria-hidden="true">
-        <span className="nav-progress-bar" />
       </div>
     </header>
   );
