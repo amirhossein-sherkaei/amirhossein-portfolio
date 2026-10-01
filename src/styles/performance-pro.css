@@ -182,20 +182,7 @@ html[data-tab-hidden="true"] *::after {
    layout are scoped to the subtree. Safe — doesn't affect
    position: fixed/sticky children (that's `contain: paint`).
    ═══════════════════════════════════════════════════════════ */
-@media (min-width: 1025px) {
-  .services-section,
-  .portfolio-section,
-  .about-section,
-  .why-section,
-  .testimonials-section,
-  .latest-blog-section,
-  .newsletter-section,
-  .faq-section,
-  .process-section,
-  .commitments-section {
-    contain: layout style;
-  }
-}
+
 
 /* ═══════════════════════════════════════════════════════════
    6. SHADOW SIMPLIFICATION

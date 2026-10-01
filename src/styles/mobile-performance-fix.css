@@ -1,0 +1,234 @@
+/* ============================================================
+   MOBILE PERFORMANCE FIX
+   ────────────────────────────────────────────────────────────
+   Fixes mobile scroll lag + layout breaks caused by
+   content-visibility and contain rules.
+   ============================================================ */
+
+/* ─── Remove ALL content-visibility + contain on mobile ─── */
+@media (max-width: 900px) {
+  .services-section,
+  .portfolio-section,
+  .about-section,
+  .why-section,
+  .testimonials-section,
+  .latest-blog-section,
+  .newsletter-section,
+  .faq-section,
+  .final-cta-section,
+  .commitments-section,
+  .process-section,
+  .site-footer,
+  .hero-section {
+    content-visibility: visible !important;
+    contain-intrinsic-size: none !important;
+    contain: none !important;
+  }
+}
+
+/* ─── Smooth scroll on mobile ─── */
+@media (max-width: 900px) {
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Remove backdrop-filter that slows scroll on mobile */
+  .site-nav.is-scrolled .nav-inner {
+    backdrop-filter: blur(14px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.4) !important;
+  }
+
+  /* Reduce heavy shadows on mobile */
+  .hero-section .hero-bento-cell {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, #fff 60%, transparent),
+      0 2px 8px -2px rgba(10, 9, 8, 0.08) !important;
+  }
+
+  /* Remove heavy animations on mobile for smooth scroll */
+  .hero-section .hero-bg-orb-3 {
+    display: none !important;
+  }
+
+  .hero-section .hero-bg-orb-2 {
+    opacity: 0.3 !important;
+    filter: blur(60px) !important;
+  }
+
+  .hero-section .hero-bg-orb-1 {
+    opacity: 0.45 !important;
+    filter: blur(60px) !important;
+  }
+
+  /* Grain off on mobile — biggest paint cost */
+  .hero-section .hero-bg-grain {
+    display: none !important;
+  }
+
+  .hero-section .hero-bg-grid {
+    opacity: 0.15 !important;
+  }
+
+  /* Marquee off on mobile — saves continuous GPU */
+  .hero-section .hero-marquee {
+    display: none !important;
+  }
+}
+
+/* ─── Services section mobile fix ─── */
+@media (max-width: 900px) {
+  .services-section .services-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .services-section .services-list {
+    gap: 6px !important;
+  }
+
+  .services-section .service-item {
+    grid-template-columns: 34px 38px 1fr 20px !important;
+    gap: 10px !important;
+    padding: 14px 12px !important;
+    min-height: 60px !important;
+    border-radius: 12px !important;
+  }
+
+  .services-section .service-icon {
+    display: grid !important;
+    width: 34px !important;
+    height: 34px !important;
+    padding: 4px !important;
+    border-radius: 9px !important;
+  }
+
+  .services-section .service-number {
+    font-size: 10px !important;
+  }
+
+  .services-section .service-title {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    min-width: 0 !important;
+  }
+
+  .services-section .service-arrow {
+    font-size: 12px !important;
+  }
+
+  .services-section .service-preview {
+    padding: 20px !important;
+    min-height: auto !important;
+    border-radius: 14px !important;
+  }
+
+  .services-section .service-preview-top {
+    font-size: 9px !important;
+  }
+
+  .services-section .service-preview-icon {
+    width: 56px !important;
+    height: 56px !important;
+    padding: 6px !important;
+    border-radius: 14px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .services-section .service-preview-content {
+    margin-top: 24px !important;
+  }
+
+  .services-section .service-preview-label {
+    font-size: 10px !important;
+    padding: 4px 10px !important;
+  }
+
+  .services-section .service-preview-content h3 {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+    margin: 10px 0 10px !important;
+  }
+
+  .services-section .service-preview-content p {
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+  }
+
+  .services-section .service-features {
+    margin-top: 14px !important;
+    padding-top: 12px !important;
+    gap: 6px !important;
+  }
+
+  .services-section .service-feature {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+  }
+
+  .services-section .service-meta {
+    margin-top: 14px !important;
+    padding-top: 12px !important;
+    gap: 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .services-section .service-meta-item span {
+    font-size: 9px !important;
+  }
+
+  .services-section .service-meta-item strong {
+    font-size: 12.5px !important;
+  }
+
+  .services-section .service-tags {
+    margin-top: 14px !important;
+    gap: 5px !important;
+  }
+
+  .services-section .service-tags span {
+    padding: 4px 9px !important;
+    font-size: 9px !important;
+  }
+
+  .services-section .service-visual {
+    display: none !important;
+  }
+}
+
+/* ─── Very small mobile ─── */
+@media (max-width: 400px) {
+  .services-section .service-item {
+    grid-template-columns: 30px 32px 1fr 18px !important;
+    gap: 8px !important;
+    padding: 12px 10px !important;
+  }
+
+  .services-section .service-icon {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 3px !important;
+  }
+
+  .services-section .service-title {
+    font-size: 12.5px !important;
+  }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}

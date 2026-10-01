@@ -201,17 +201,7 @@ html[data-tab-hidden="true"] .chapter-rail-item.is-active .chapter-rail-dot {
 /* ═══════════════════════════════════════════════════════════
    8. LAYOUT CONTAINMENT (Desktop only — safe)
    ═══════════════════════════════════════════════════════════ */
-@media (min-width: 1025px) {
-  .services-section,
-  .portfolio-section,
-  .about-section,
-  .why-section,
-  .testimonials-section,
-  .latest-blog-section,
-  .faq-section {
-    contain: layout style;
-  }
-}
+
 
 /* ═══════════════════════════════════════════════════════════
    9. REDUCED MOTION — global safety

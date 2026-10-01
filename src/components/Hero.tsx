@@ -320,7 +320,6 @@ export default function Hero({
       className="hero-section hero-in-view"
       data-hero
     >
-      {/* ─── Background ─── */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
@@ -329,7 +328,6 @@ export default function Hero({
         <span className="hero-bg-grain" />
       </div>
 
-      {/* ─── Rulers ─── */}
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">
         {Array.from({ length: 13 }).map((_, i) => (
           <span key={i}>{toPersian(String(i).padStart(2, "0"))}</span>
@@ -341,7 +339,6 @@ export default function Hero({
         ))}
       </div>
 
-      {/* ─── Crosshairs ─── */}
       <span className="hero-crosshair hero-crosshair-tl" aria-hidden="true">
         <CrosshairMark />
       </span>
@@ -356,27 +353,24 @@ export default function Hero({
       </span>
 
       <div className="hero-inner">
-        {/* ═══════════════════════════════════════════════
-            HERO #1 — THE STATEMENT
-            ═══════════════════════════════════════════════ */}
-        <div className="hero-act hero-act-1">
-          <div className="hero-masthead">
-            <span className="hero-masthead-cell">
-              <span className="hero-masthead-dot" aria-hidden="true" />
-              <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
+        <div className="hero-masthead">
+          <span className="hero-masthead-cell">
+            <span className="hero-masthead-dot" aria-hidden="true" />
+            <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
+          </span>
+          <span className="hero-masthead-cell hero-masthead-cell--center">
+            AMIRHOSSEIN&nbsp;SHORAKAEI
+          </span>
+          <span className="hero-masthead-cell hero-masthead-cell--latin">
+            <span className="hero-masthead-coord">
+              35.6892°N · 51.3890°E
             </span>
-            <span className="hero-masthead-cell hero-masthead-cell--center">
-              AMIRHOSSEIN&nbsp;SHORAKAEI
-            </span>
-            <span className="hero-masthead-cell hero-masthead-cell--latin">
-              <span className="hero-masthead-coord">
-                35.6892°N · 51.3890°E
-              </span>
-              <span className="hero-masthead-clock">{clock}</span>
-            </span>
-          </div>
+            <span className="hero-masthead-clock">{clock}</span>
+          </span>
+        </div>
 
-          <div className="hero-statement">
+        <div className="hero-grid">
+          <div className="hero-main">
             <span className="hero-kicker" aria-hidden="true">
               <span className="hero-kicker-line" />
               <span className="hero-kicker-text">
@@ -444,26 +438,8 @@ export default function Hero({
               </li>
             </ul>
           </div>
-        </div>
-
-        {/* ═══════════════════════════════════════════════
-            HERO #2 — THE SHOWCASE
-            ═══════════════════════════════════════════════ */}
-        <div className="hero-act hero-act-2">
-          <div className="hero-showcase-head">
-            <span className="hero-kicker" aria-hidden="true">
-              <span className="hero-kicker-line" />
-              <span className="hero-kicker-text">
-                SECTION&nbsp;·&nbsp;02&nbsp;·&nbsp;SHOWCASE
-              </span>
-            </span>
-            <span className="hero-showcase-title">
-              یک نگاه به <em>جزئیات</em> کاری که می‌سازم
-            </span>
-          </div>
 
           <aside className="hero-bento" aria-label="کارت هویت">
-            {/* Cell 1 — Name */}
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -474,8 +450,8 @@ export default function Hero({
                 <Image
                   src="/logo.png"
                   alt=""
-                  width={52}
-                  height={52}
+                  width={44}
+                  height={44}
                   className="hero-bento-seal-img"
                 />
               </span>
@@ -500,7 +476,6 @@ export default function Hero({
               </div>
             </article>
 
-            {/* Cell 2 — Clock */}
             <article className="hero-bento-cell hero-bento-cell--clock">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۲
@@ -516,7 +491,6 @@ export default function Hero({
               </span>
             </article>
 
-            {/* Cell 3 — Date */}
             <article className="hero-bento-cell hero-bento-cell--date">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۳
@@ -539,7 +513,6 @@ export default function Hero({
               </div>
             </article>
 
-            {/* Cell 4 — Score */}
             <article className="hero-bento-cell hero-bento-cell--num">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-num" aria-hidden="true">
@@ -554,7 +527,6 @@ export default function Hero({
               </span>
             </article>
 
-            {/* Cell 5 — Live */}
             <article className="hero-bento-cell hero-bento-cell--live">
               <span className="hero-bento-num" aria-hidden="true">
                 ۰۵
@@ -577,7 +549,6 @@ export default function Hero({
         </div>
       </div>
 
-      {/* ─── Marquee ─── */}
       <div className="hero-marquee" aria-hidden="true">
         <div className="hero-marquee-track">
           {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
@@ -599,29 +570,9 @@ function CrosshairMark() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1="12"
-        y1="0"
-        x2="12"
-        y2="24"
-        stroke="currentColor"
-        strokeWidth="0.7"
-      />
-      <line
-        x1="0"
-        y1="12"
-        x2="24"
-        y2="12"
-        stroke="currentColor"
-        strokeWidth="0.7"
-      />
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-        stroke="currentColor"
-        strokeWidth="0.7"
-      />
+      <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" strokeWidth="0.7" />
+      <line x1="0" y1="12" x2="24" y2="12" stroke="currentColor" strokeWidth="0.7" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="0.7" />
     </svg>
   );
 }

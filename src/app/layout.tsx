@@ -106,19 +106,11 @@ import "@/styles/hero-editorial.css";
 
 /* 29b. Hero Premium */
 import "@/styles/hero-premium.css";
-import "@/styles/hero-double.css";
-
 /* 30. Signature Ink */
 import "@/styles/signature-ink.css";
 
 /* 31. Density Standardization */
 import "@/styles/density-standardization.css";
-
-/* 31b. Homepage Premium Batch 1 */
-import "@/styles/homepage-premium.css";
-
-/* 31c. Homepage Premium Batch 2 */
-import "@/styles/homepage-premium-2.css";
 import "@/styles/services-premium.css";
 
 /* 32. Manuscript Grid */
@@ -162,6 +154,7 @@ import "@/styles/performance-pro.css";
 
 /* 44. Final Polish (LAST) */
 import "@/styles/final-polish.css";
+import "@/styles/mobile-performance-fix.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
