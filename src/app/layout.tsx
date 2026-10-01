@@ -50,7 +50,7 @@ import "@/styles/welcome-onboarding.css";
 /* 14. Order form v2 */
 import "@/styles/order-form-v2.css";
 
-/* 14b. Order Premium (infinite edition) */
+/* 14b. Order Premium */
 import "@/styles/order-premium.css";
 
 /* 15. Mobile declutter */
@@ -59,7 +59,7 @@ import "@/styles/mobile-declutter.css";
 /* 16. Work pages */
 import "@/styles/work-pages.css";
 
-/* 16b. Work Premium (infinite batch 3) */
+/* 16b. Work Premium */
 import "@/styles/work-premium.css";
 
 /* 17. Layout */
@@ -95,7 +95,7 @@ import "@/styles/mobile-polish-v2.css";
 /* 27. Blog */
 import "@/app/blog/blog.css";
 
-/* 27b. Blog Premium (infinite edition) */
+/* 27b. Blog Premium */
 import "@/styles/blog-premium.css";
 
 /* 28. Theme toggle */
@@ -113,10 +113,10 @@ import "@/styles/signature-ink.css";
 /* 31. Density Standardization */
 import "@/styles/density-standardization.css";
 
-/* 31b. Homepage Premium (infinite batch 1) */
+/* 31b. Homepage Premium Batch 1 */
 import "@/styles/homepage-premium.css";
 
-/* 31c. Homepage Premium 2 (infinite batch 2) */
+/* 31c. Homepage Premium Batch 2 */
 import "@/styles/homepage-premium-2.css";
 
 /* 32. Manuscript Grid */
@@ -155,8 +155,11 @@ import "@/styles/performance-layer.css";
 /* 42b. Nav Premium */
 import "@/styles/nav-premium.css";
 
-/* 43. Performance Pro (LAST) */
+/* 43. Performance Pro */
 import "@/styles/performance-pro.css";
+
+/* 44. Final Polish (LAST) */
+import "@/styles/final-polish.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
@@ -164,6 +167,8 @@ import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
 import SignatureInk from "@/components/SignatureInk";
 import PerfObserver from "@/components/PerfObserver";
+import CustomCursor from "@/components/CustomCursor";
+import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -178,8 +183,7 @@ const vazirmatn = Vazirmatn({
 });
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://shorakaei.ir";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 
 const siteName = "امیرحسین شرکائی";
 const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
@@ -333,6 +337,8 @@ export default function RootLayout({
         <SensoryFeedback />
         <SignatureInk />
         <PerfObserver />
+        <CustomCursor />
+        <PageTransition />
         <Analytics />
         <SpeedInsights />
       </body>
