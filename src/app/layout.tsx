@@ -113,6 +113,9 @@ import "@/styles/density-standardization.css";
 /* 31b. Homepage Premium (infinite batch 1) */
 import "@/styles/homepage-premium.css";
 
+/* 31c. Homepage Premium 2 (infinite batch 2) */
+import "@/styles/homepage-premium-2.css";
+
 /* 32. Manuscript Grid */
 import "@/styles/manuscript-grid.css";
 
