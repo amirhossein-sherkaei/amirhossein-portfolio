@@ -1,7 +1,9 @@
 /* ============================================================
-   ULTRA PREMIUM MOBILE BOTTOM NAV — INFINITE EDITION
+   ULTRA PREMIUM MOBILE BOTTOM NAV — Fixed Edition
    ────────────────────────────────────────────────────────────
-   27 features. World-class. No room for improvement.
+   - No auto-hide
+   - Explicit pointer-events everywhere
+   - Everything decorative = pointer-events: none
    ============================================================ */
 
 .mbn {
@@ -21,7 +23,7 @@
 @media (max-width: 900px) {
 
   /* ───────────────────────────────────────────────────────
-     ROOT
+     ROOT — always visible, always clickable
      ─────────────────────────────────────────────────────── */
   .mbn {
     position: fixed;
@@ -41,8 +43,8 @@
     direction: rtl;
     font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
     isolation: isolate;
-    transform: translateZ(0);
-    will-change: transform, opacity;
+
+    pointer-events: auto;
 
     background:
       linear-gradient(
@@ -63,20 +65,9 @@
       0 3px 8px -2px rgba(10, 9, 8, 0.1),
       0 16px 36px -12px rgba(10, 9, 8, 0.22),
       0 42px 96px -28px rgba(10, 9, 8, 0.42);
-
-    transition:
-      transform 520ms cubic-bezier(0.32, 0.72, 0, 1),
-      opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Auto-hide state */
-  .mbn.is-hidden {
-    transform: translateY(140%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Top specular streak */
+  /* Top specular streak — decorative */
   .mbn::before {
     content: "";
     position: absolute;
@@ -97,7 +88,7 @@
     filter: blur(0.6px);
   }
 
-  /* Ambient underglow */
+  /* Ambient underglow — decorative */
   .mbn::after {
     content: "";
     position: absolute;
@@ -147,7 +138,7 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     AURORA
+     AURORA — decorative, no clicks
      ─────────────────────────────────────────────────────── */
   .mbn-aurora {
     position: absolute;
@@ -173,6 +164,7 @@
     filter: blur(20px);
     animation: mbn-aura-pulse 3.8s ease-in-out infinite;
     transition: background 640ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
 
   @keyframes mbn-aura-pulse {
@@ -193,10 +185,11 @@
     flex: 1 1 auto;
     min-width: 0;
     z-index: 1;
+    pointer-events: auto;
   }
 
   /* ───────────────────────────────────────────────────────
-     SLIDING INDICATOR
+     SLIDING INDICATOR — decorative
      ─────────────────────────────────────────────────────── */
   .mbn-slider {
     position: absolute;
@@ -260,11 +253,11 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     ITEM
+     ITEM — fully clickable
      ─────────────────────────────────────────────────────── */
   .mbn-item {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     flex: 1 1 0;
     min-width: 0;
     display: flex;
@@ -278,8 +271,13 @@
     color: #6b6560;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
     overflow: hidden;
     isolation: isolate;
+
+    pointer-events: auto;
+
     transition:
       color 380ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 240ms cubic-bezier(0.34, 1.4, 0.64, 1);
@@ -307,7 +305,7 @@
     color: #ff8050;
   }
 
-  /* Ripple */
+  /* Ripple — decorative, no clicks */
   .mbn-item-ripple {
     position: absolute;
     top: 50%;
@@ -336,51 +334,6 @@
     opacity: 1;
   }
 
-  /* Particles */
-  .mbn-particles {
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .mbn-particle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 138, 92, 1) 0%,
-      rgba(233, 75, 44, 0.6) 60%,
-      transparent 100%
-    );
-    box-shadow: 0 0 6px rgba(233, 75, 44, 0.8);
-    animation: mbn-particle-burst 700ms cubic-bezier(0.16, 1, 0.3, 1)
-      var(--mbn-p-delay, 0ms) both;
-  }
-
-  @keyframes mbn-particle-burst {
-    0% {
-      transform: translate(-50%, -50%) rotate(var(--mbn-p-angle, 0deg))
-        translateX(0) scale(1);
-      opacity: 1;
-    }
-    70% {
-      opacity: 0.9;
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(var(--mbn-p-angle, 0deg))
-        translateX(var(--mbn-p-distance, 48px)) scale(0.2);
-      opacity: 0;
-    }
-  }
-
   /* Icon wrapper */
   .mbn-item-icon {
     position: relative;
@@ -390,6 +343,7 @@
     width: 32px;
     height: 32px;
     flex-shrink: 0;
+    pointer-events: none;
     transition:
       transform 500ms cubic-bezier(0.34, 1.4, 0.64, 1),
       filter 400ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -411,7 +365,7 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     LOGO + PROGRESS RING
+     LOGO + RING
      ─────────────────────────────────────────────────────── */
   .mbn-logo-wrap {
     position: relative;
@@ -419,6 +373,7 @@
     place-items: center;
     width: 100%;
     height: 100%;
+    pointer-events: none;
   }
 
   .mbn-logo-ring {
@@ -452,6 +407,7 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.18),
       0 2px 8px -2px rgba(10, 9, 8, 0.42),
       0 0 0 1px rgba(10, 9, 8, 0.06);
+    pointer-events: none;
     transition:
       transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
       box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -486,6 +442,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    pointer-events: none;
     transition:
       font-weight 380ms cubic-bezier(0.22, 1, 0.36, 1),
       color 380ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -498,11 +455,11 @@
   }
 
   /* ───────────────────────────────────────────────────────
-     CTA
+     CTA — fully clickable
      ─────────────────────────────────────────────────────── */
   .mbn-cta {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
@@ -516,8 +473,12 @@
     color: #ffffff;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
     overflow: hidden;
     isolation: isolate;
+
+    pointer-events: auto;
 
     background: linear-gradient(
       135deg,
@@ -545,14 +506,9 @@
 
   .mbn-cta:active {
     transform: scale(0.93);
-    box-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-      0 2px 8px -2px rgba(233, 75, 44, 0.72),
-      0 6px 20px -6px rgba(233, 75, 44, 0.58);
   }
 
-  /* Shine sweep */
+  /* Shine sweep — decorative */
   .mbn-cta-shine {
     position: absolute;
     top: -50%;
@@ -576,7 +532,7 @@
     85%, 100% { left: 150%; }
   }
 
-  /* Pulse ring under CTA */
+  /* Pulse ring — decorative */
   .mbn-cta-pulse {
     position: absolute;
     inset: -2px;
@@ -606,6 +562,7 @@
   .mbn-cta .mbn-item-icon {
     width: 30px;
     height: 30px;
+    pointer-events: none;
   }
 
   .mbn-cta .mbn-item-icon svg {
@@ -616,6 +573,7 @@
     color: #ffffff;
     font-weight: 800;
     font-size: 11px;
+    pointer-events: none;
   }
 
   .mbn-cta.is-active {
@@ -632,9 +590,7 @@
     padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
   }
 
-  /* ───────────────────────────────────────────────────────
-     ENTRANCE ANIMATION (first mount)
-     ─────────────────────────────────────────────────────── */
+  /* Entrance animation */
   .mbn {
     animation: mbn-enter 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: 320ms;
@@ -724,12 +680,6 @@
     animation: none !important;
   }
 
-  .mbn.is-hidden {
-    transform: none;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
   .mbn-slider,
   .mbn-aurora,
   .mbn-aurora-glow {
@@ -742,7 +692,6 @@
   .mbn-item-label,
   .mbn-cta,
   .mbn-item-ripple,
-  .mbn-particle,
   .mbn-cta-shine,
   .mbn-cta-pulse {
     transition: none !important;
@@ -750,8 +699,7 @@
     transform: none !important;
   }
 
-  .mbn-item.is-rippling .mbn-item-ripple,
-  .mbn-particles {
+  .mbn-item.is-rippling .mbn-item-ripple {
     display: none;
   }
 }

@@ -6,9 +6,11 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   ULTRA PREMIUM MOBILE BOTTOM NAV — INFINITE EDITION
+   ULTRA PREMIUM MOBILE BOTTOM NAV — Fixed Edition
    ────────────────────────────────────────────────────────────
-   27 features. Zero compromise. World-class.
+   - No auto-hide (always visible on mobile)
+   - Fully clickable (pointer-events fixed)
+   - 27 premium features
    ═══════════════════════════════════════════════════════════ */
 
 type IconName = "logo" | "services" | "portfolio" | "about" | "spark";
@@ -202,30 +204,7 @@ function Icon({ type }: { type: IconName }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PARTICLES — 12 particles spread on tap
-   ═══════════════════════════════════════════════════════════ */
-function Particles() {
-  return (
-    <span className="mbn-particles" aria-hidden="true">
-      {Array.from({ length: 12 }).map((_, i) => (
-        <span
-          key={i}
-          className="mbn-particle"
-          style={
-            {
-              "--mbn-p-angle": `${i * 30}deg`,
-              "--mbn-p-distance": `${42 + (i % 3) * 8}px`,
-              "--mbn-p-delay": `${(i % 4) * 20}ms`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-    </span>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SOUND — very subtle click (once enabled)
+   SOUND — subtle tap tone
    ═══════════════════════════════════════════════════════════ */
 let audioCtx: AudioContext | null = null;
 
@@ -266,11 +245,8 @@ export default function MobileNav() {
   const [activeSection, setActiveSection] = useState("home");
   const [rippleKey, setRippleKey] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [hidden, setHidden] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(false);
 
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
   const tapCount = useRef(0);
   const tapTimer = useRef<number | null>(null);
 
@@ -308,32 +284,20 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  /* Scroll: progress + auto-hide */
+  /* Track scroll progress only (for logo ring) */
   useEffect(() => {
     if (!mounted) return;
+    let ticking = false;
 
     const onScroll = () => {
-      if (ticking.current) return;
-      ticking.current = true;
-
+      if (ticking) return;
+      ticking = true;
       window.requestAnimationFrame(() => {
         const y = window.scrollY;
         const docH = document.documentElement.scrollHeight - window.innerHeight;
         const progress = docH > 0 ? Math.min(1, Math.max(0, y / docH)) : 0;
         setScrollProgress(progress);
-
-        // Auto-hide on scroll down, show on scroll up
-        const delta = y - lastScrollY.current;
-        const nearBottom = docH - y < 400;
-
-        if (y < 200 || nearBottom) {
-          setHidden(false);
-        } else if (Math.abs(delta) > 8) {
-          setHidden(delta > 0);
-        }
-
-        lastScrollY.current = y;
-        ticking.current = false;
+        ticking = false;
       });
     };
 
@@ -342,7 +306,7 @@ export default function MobileNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [mounted]);
 
-  /* First-visit sound preference */
+  /* Load sound preference */
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -353,7 +317,6 @@ export default function MobileNav() {
     }
   }, []);
 
-  /* Haptic helper */
   const haptic = useCallback((pattern: number[]) => {
     if (typeof navigator !== "undefined" && "vibrate" in navigator) {
       try {
@@ -364,7 +327,6 @@ export default function MobileNav() {
     }
   }, []);
 
-  /* Tap handler */
   const handleTap = useCallback(
     (id: string, hapticPattern: number[]) => {
       setRippleKey(id);
@@ -372,7 +334,6 @@ export default function MobileNav() {
 
       haptic(hapticPattern);
 
-      // Enable sound on first tap (browsers require user gesture)
       if (!soundEnabled) {
         try {
           localStorage.setItem("mbn-sound", "1");
@@ -384,7 +345,7 @@ export default function MobileNav() {
         playTapTone();
       }
 
-      // Double-tap detection on home/logo → back to top
+      // Double-tap on home logo → scroll to top
       if (id === "home") {
         tapCount.current += 1;
         if (tapTimer.current) window.clearTimeout(tapTimer.current);
@@ -403,26 +364,21 @@ export default function MobileNav() {
     [haptic, soundEnabled]
   );
 
-  /* Keyboard navigation */
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, idx: number, isCta: boolean) => {
+    (e: React.KeyboardEvent, current: number) => {
       const total = NAV_ITEMS.length + 1;
-      const current = isCta ? NAV_ITEMS.length : idx;
-
       if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
         e.preventDefault();
         const next = (current + 1) % total;
-        const el = document.querySelectorAll<HTMLElement>(
-          ".mbn-item, .mbn-cta"
-        )[next];
-        el?.focus();
+        document
+          .querySelectorAll<HTMLElement>(".mbn-item, .mbn-cta")
+          [next]?.focus();
       } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
         e.preventDefault();
         const prev = (current - 1 + total) % total;
-        const el = document.querySelectorAll<HTMLElement>(
-          ".mbn-item, .mbn-cta"
-        )[prev];
-        el?.focus();
+        document
+          .querySelectorAll<HTMLElement>(".mbn-item, .mbn-cta")
+          [prev]?.focus();
       } else if (e.key === "Home") {
         e.preventDefault();
         document.querySelector<HTMLElement>(".mbn-item")?.focus();
@@ -445,15 +401,16 @@ export default function MobileNav() {
   const isOrderPage = pathname?.startsWith("/order") ?? false;
 
   const activeAuraColor =
-    activeIndex >= 0 ? NAV_ITEMS[activeIndex].auraColor : "rgba(233, 75, 44, 0.5)";
+    activeIndex >= 0
+      ? NAV_ITEMS[activeIndex].auraColor
+      : "rgba(233, 75, 44, 0.5)";
 
-  // Progress ring circumference
   const RING_R = 14;
   const RING_C = 2 * Math.PI * RING_R;
 
   return (
     <nav
-      className={"mbn" + (hidden ? " is-hidden" : "")}
+      className="mbn"
       aria-label="ناوبری موبایل"
       data-hide-indicator={hideIndicator ? "true" : "false"}
       style={
@@ -462,14 +419,12 @@ export default function MobileNav() {
           "--mbn-aura": activeAuraColor,
         } as React.CSSProperties
       }
-      role="navigation"
     >
-      {/* Ambient aurora particles */}
       <span className="mbn-aurora" aria-hidden="true">
         <span className="mbn-aurora-glow" />
       </span>
 
-      <div className="mbn-items" role="tablist">
+      <div className="mbn-items">
         <span className="mbn-slider" aria-hidden="true">
           <span className="mbn-slider-glow" />
         </span>
@@ -491,10 +446,9 @@ export default function MobileNav() {
               aria-label={item.label}
               tabIndex={i === 0 ? 0 : -1}
               onClick={() => handleTap(item.id, item.haptic)}
-              onKeyDown={(e) => handleKeyDown(e, i, false)}
+              onKeyDown={(e) => handleKeyDown(e, i)}
             >
               <span className="mbn-item-ripple" aria-hidden="true" />
-              {rippleKey === item.id && <Particles />}
 
               <span className="mbn-item-icon" aria-hidden="true">
                 {isHome ? (
@@ -553,7 +507,7 @@ export default function MobileNav() {
         aria-label={CTA.label}
         tabIndex={-1}
         onClick={() => handleTap("cta", CTA.haptic)}
-        onKeyDown={(e) => handleKeyDown(e, NAV_ITEMS.length, true)}
+        onKeyDown={(e) => handleKeyDown(e, NAV_ITEMS.length)}
       >
         <span className="mbn-cta-shine" aria-hidden="true" />
         <span className="mbn-cta-pulse" aria-hidden="true" />
