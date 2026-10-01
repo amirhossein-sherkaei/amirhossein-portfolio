@@ -12,12 +12,6 @@
   will-change: transform, opacity;
 }
 
-.site-nav.is-hidden {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-}
-
 /* ─── Unified Glass Pill ─── */
 .site-nav .nav-pill {
   position: relative;
