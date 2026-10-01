@@ -8,12 +8,13 @@ import { useTheme } from "@/components/ThemeProvider";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ═══════════════════════════════════════════════════════════
-   NARRATIVE GLASS NAV — Always Visible Edition
+   NARRATIVE GLASS NAV — Infinite Debugged Edition
    ────────────────────────────────────────────────────────────
-   - Full creativity: preview cards + icon rotation + pulse
-   - No hide-on-scroll — nav always visible
-   - Colorful gradient icons
-   - Sliding orange indicator with pulse
+   - Sliding indicator with correct CSS vars (FIXED)
+   - Larger icons (22px) with rotation
+   - Preview cards on hover
+   - Staggered entrance
+   - Never hides on scroll
    ═══════════════════════════════════════════════════════════ */
 
 type NavItem = {
@@ -261,6 +262,7 @@ export default function Nav() {
   }
 
   const previewItem = hoveredIndex !== null ? navItems[hoveredIndex] : null;
+  const totalCount = navItems.length;
 
   return (
     <header className={"site-nav" + (scrolled ? " is-scrolled" : "")}>
@@ -278,7 +280,16 @@ export default function Nav() {
               </span>
             </a>
 
-            <nav className="desktop-nav" aria-label="منوی اصلی سایت">
+            <nav
+              className="desktop-nav"
+              aria-label="منوی اصلی سایت"
+              style={
+                {
+                  "--nav-index": activeIndex,
+                  "--nav-total": totalCount,
+                } as React.CSSProperties
+              }
+            >
               <div className="desktop-nav-list">
                 <span className="desktop-nav-slider" aria-hidden="true">
                   <span className="desktop-nav-slider-pulse" />
@@ -300,8 +311,9 @@ export default function Nav() {
                     </>
                   );
 
-                  const linkProps = {
-                    className: "desktop-nav-item" + (isActive ? " is-active" : ""),
+                  const commonProps = {
+                    className:
+                      "desktop-nav-item" + (isActive ? " is-active" : ""),
                     onMouseEnter: () => setHoveredIndex(i),
                     onMouseLeave: () => setHoveredIndex(null),
                     onFocus: () => setHoveredIndex(i),
@@ -311,18 +323,23 @@ export default function Nav() {
 
                   if (isHash) {
                     return (
-                      <a key={item.href}
+                      <a
+                        key={item.href}
                         href={pathname === "/" ? item.href : `/${item.href}`}
                         aria-current={isActive ? "true" : undefined}
-                        {...linkProps}>
+                        {...commonProps}
+                      >
                         {content}
                       </a>
                     );
                   }
                   return (
-                    <Link key={item.href} href={item.href}
+                    <Link
+                      key={item.href}
+                      href={item.href}
                       aria-current={isActive ? "page" : undefined}
-                      {...linkProps}>
+                      {...commonProps}
+                    >
                       {content}
                     </Link>
                   );
@@ -340,9 +357,13 @@ export default function Nav() {
                   <span className="nav-order-arrow" aria-hidden="true">←</span>
                 </Link>
               </MagneticButton>
-              <button type="button" className="theme-toggle"
+              <button
+                type="button"
+                className="theme-toggle"
                 aria-label={theme === "dark" ? "حالت روشن" : "حالت تاریک"}
-                aria-pressed={theme === "dark"} onClick={toggleTheme}>
+                aria-pressed={theme === "dark"}
+                onClick={toggleTheme}
+              >
                 <span className="theme-toggle-inner" aria-hidden="true">
                   <svg className="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
