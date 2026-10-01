@@ -1,0 +1,398 @@
+/* ============================================================
+   EDITORIAL STRUCTURE — Magazine System
+   ────────────────────────────────────────────────────────────
+   - Big section numerals (۰۱، ۰۲، ۰۳)
+   - Pull quotes with editorial line
+   - Figure captions (magazine style)
+   - Ornamental section dividers
+   - Editorial meta rows
+   No changes to existing typography sizes.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. SECTION NUMBER — numeral + label + rule
+   ═══════════════════════════════════════════════════════════ */
+
+.section-num {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.section-num-figure {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-num-value {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  display: inline-block;
+  background: linear-gradient(
+    180deg,
+    var(--accent) 0%,
+    color-mix(in srgb, var(--accent) 55%, var(--accent-2)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.section-num-rule {
+  flex: 0 0 auto;
+  display: block;
+  width: clamp(40px, 6vw, 80px);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    transparent 100%
+  );
+  border-radius: 1px;
+}
+
+.section-num-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0.8;
+  direction: ltr;
+}
+
+/* ─── Layout integration: وقتی SectionNumber بالای heading هست ─── */
+.section-heading .section-num,
+.why-header .section-num {
+  margin-bottom: 20px;
+}
+
+/* ─── Mobile: کوچک‌تر ─── */
+@media (max-width: 720px) {
+  .section-num-value {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .section-num-rule {
+    width: 40px;
+    height: 1.5px;
+  }
+
+  .section-num-label {
+    font-size: 0.625rem;
+    letter-spacing: 0.22em;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. EDITORIAL DIVIDER — ✦ ✦ ✦
+   ═══════════════════════════════════════════════════════════ */
+
+.editorial-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: clamp(56px, 7vw, 88px) auto;
+  max-width: 720px;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.editorial-divider::before,
+.editorial-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 40%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+.editorial-divider::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 40%, transparent) 100%
+  );
+}
+
+.editorial-divider::after {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 40%, transparent) 0%,
+    transparent 100%
+  );
+}
+
+.editorial-divider-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+  color: var(--accent);
+  padding-inline-start: 0.5em;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. FIGURE & CAPTION — magazine style
+   ═══════════════════════════════════════════════════════════ */
+
+.editorial-figure {
+  display: grid;
+  gap: 14px;
+  margin-block: clamp(32px, 4vw, 48px);
+}
+
+.editorial-figure img,
+.editorial-figure picture,
+.editorial-figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+}
+
+.editorial-caption {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  text-wrap: pretty;
+}
+
+.editorial-caption::before {
+  content: "—";
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.editorial-caption strong {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. PULL QUOTE — برجسته‌تر از blockquote معمولی
+   ═══════════════════════════════════════════════════════════ */
+
+.editorial-pullquote {
+  position: relative;
+  margin: clamp(40px, 5vw, 64px) auto;
+  padding: clamp(24px, 3vw, 36px) clamp(28px, 4vw, 48px);
+  max-width: 720px;
+  border-radius: 4px 20px 20px 4px;
+  border-inline-start: 4px solid var(--accent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 40%, transparent),
+    0 8px 28px -16px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.editorial-pullquote p {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.125rem, 1rem + 0.9vw, 1.5rem);
+  line-height: 1.55;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: pretty;
+  font-style: italic;
+}
+
+.editorial-pullquote cite {
+  display: block;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-style: normal;
+  direction: ltr;
+}
+
+/* ─── Mark روی گوشه ─── */
+.editorial-pullquote::before {
+  content: "\201C";
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(56px, 7vw, 88px);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. EDITORIAL META ROW — بالای بخش‌ها
+   ═══════════════════════════════════════════════════════════ */
+
+.editorial-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 14px 0;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+.editorial-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editorial-meta-item::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.editorial-meta-item:first-child::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. SIDE NOTE — Margin note (desktop only)
+   ═══════════════════════════════════════════════════════════ */
+
+.editorial-aside {
+  position: relative;
+  float: inline-end;
+  clear: inline-end;
+  width: 100%;
+  max-width: 240px;
+  margin-inline-start: 32px;
+  margin-block-end: 24px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--paper-2);
+  border-inline-start: 3px solid var(--accent);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.editorial-aside-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  direction: ltr;
+}
+
+/* روی موبایل به block تبدیل می‌شه */
+@media (max-width: 900px) {
+  .editorial-aside {
+    float: none;
+    max-width: 100%;
+    margin-inline: 0;
+    margin-block: 24px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. BLOG POST — تزریق خودکار در مقاله
+   ═══════════════════════════════════════════════════════════ */
+
+/* Drop Cap فقط برای مقالات با محتوای Latin */
+.blog-post-content[data-lang="en"] > p:first-of-type::first-letter {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 4em;
+  font-weight: 800;
+  line-height: 0.85;
+  float: right;
+  margin-inline-end: 10px;
+  margin-top: 6px;
+  color: var(--accent);
+  padding: 2px 8px 2px 0;
+}
+
+/* برای فارسی، هیچ drop cap نمی‌ذاریم — چون حروف متصل هستن */
+
+/* ─── شماره‌گذاری H2 در مقالات ─── */
+.blog-post-content h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.blog-post-content h2::before {
+  content: counter(h2-counter, persian) " ·";
+  counter-increment: h2-counter;
+  font-family: var(--font-mono);
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.75;
+  transform: translateY(-0.08em);
+}
+
+.blog-post-content {
+  counter-reset: h2-counter;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .section-num-value,
+  .editorial-pullquote,
+  .editorial-divider,
+  .editorial-caption {
+    transition: none !important;
+  }
+}

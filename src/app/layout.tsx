@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 
 /* ═══════════════════════════════════════════════════════════
@@ -157,6 +157,9 @@ import "@/styles/performance-pro.css";
 /* 44. Final Polish */
 import "@/styles/final-polish.css";
 import "@/styles/mobile-performance-fix.css";
+
+/* 45. Editorial Structure */
+import "@/styles/editorial-structure.css";
 
 /* ═══════════════════════════════════════════════════════════
    45. TYPOGRAPHY 2026 — NEW (must load before grid)
