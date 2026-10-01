@@ -95,6 +95,9 @@ import "@/styles/theme-toggle.css";
 /* 29. Hero Editorial */
 import "@/styles/hero-editorial.css";
 
+/* 29b. Hero Premium (infinite edition) */
+import "@/styles/hero-premium.css";
+
 /* 30. Signature Ink */
 import "@/styles/signature-ink.css";
 

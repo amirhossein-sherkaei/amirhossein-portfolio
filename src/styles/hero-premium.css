@@ -1,0 +1,619 @@
+/* ============================================================
+   HERO PREMIUM — Infinite Edition
+   ────────────────────────────────────────────────────────────
+   Visual upgrades layered on top of hero-editorial.css
+   ALL animations are GPU-composited (transform + opacity only)
+   Zero layout thrash. Zero speed loss.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. CURSOR HALO — desktop only
+   ═══════════════════════════════════════════════════════════ */
+.hero-section {
+  --hero-glow-x: 50%;
+  --hero-glow-y: 40%;
+}
+
+.hero-cursor-halo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  background: radial-gradient(
+    600px circle at var(--hero-glow-x) var(--hero-glow-y),
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 5%, transparent) 25%,
+    transparent 55%
+  );
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-section:hover .hero-cursor-halo {
+    opacity: 1;
+  }
+}
+
+[data-theme="dark"] .hero-cursor-halo {
+  background: radial-gradient(
+    600px circle at var(--hero-glow-x) var(--hero-glow-y),
+    color-mix(in srgb, var(--accent) 18%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 6%, transparent) 25%,
+    transparent 55%
+  );
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .hero-cursor-halo {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. BACKGROUND GLOW LAYER
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bg-glow {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at center bottom,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .hero-section .hero-bg-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+    transparent 60%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. ENTRY ANIMATIONS — staggered reveal
+   ═══════════════════════════════════════════════════════════ */
+@keyframes heroPremiumIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-section .hero-masthead {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 100ms;
+}
+
+.hero-section .hero-kicker {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 220ms;
+}
+
+.hero-section .hero-title-line:nth-child(1) {
+  animation: heroPremiumIn 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 340ms;
+}
+
+.hero-section .hero-title-line:nth-child(2) {
+  animation: heroPremiumIn 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 440ms;
+}
+
+.hero-section .hero-title-line:nth-child(3) {
+  animation: heroPremiumIn 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 540ms;
+}
+
+.hero-section .hero-description {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 660ms;
+}
+
+.hero-section .hero-actions {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 780ms;
+}
+
+.hero-section .hero-trust {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 900ms;
+}
+
+.hero-section .hero-bento-cell:nth-child(1) {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 480ms;
+}
+
+.hero-section .hero-bento-cell:nth-child(2) {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 560ms;
+}
+
+.hero-section .hero-bento-cell:nth-child(3) {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 640ms;
+}
+
+.hero-section .hero-bento-cell:nth-child(4) {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 720ms;
+}
+
+.hero-section .hero-bento-cell:nth-child(5) {
+  animation: heroPremiumIn 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 800ms;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. BENTO CELLS — 6-layer premium glass
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bento-cell {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 88%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 70%, transparent) 45%,
+      color-mix(in srgb, var(--surface) 82%, transparent) 100%
+    ) !important;
+  border: 1px solid transparent !important;
+  background-clip: padding-box !important;
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 95%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
+    inset 1px 0 0 color-mix(in srgb, #fff 55%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #fff 55%, transparent),
+    0 0 0 0.5px color-mix(in srgb, var(--ink) 5%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--ink) 8%, transparent),
+    0 16px 36px -14px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 40px 88px -32px color-mix(in srgb, var(--ink) 28%, transparent) !important;
+  transition:
+    transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.hero-section .hero-bento-cell:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, #fff 98%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
+    inset 1px 0 0 color-mix(in srgb, #fff 65%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #fff 65%, transparent),
+    0 0 0 0.5px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 2px 8px -2px color-mix(in srgb, var(--ink) 10%, transparent),
+    0 20px 44px -14px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 48px 100px -32px color-mix(in srgb, var(--ink) 32%, transparent) !important;
+}
+
+[data-theme="dark"] .hero-section .hero-bento-cell {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--surface) 92%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 80%, transparent) 45%,
+      color-mix(in srgb, var(--surface) 88%, transparent) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(255, 255, 255, 0.04),
+    0 0 0 0.5px rgba(0, 0, 0, 0.3),
+    0 2px 6px -2px rgba(0, 0, 0, 0.4),
+    0 16px 36px -14px rgba(0, 0, 0, 0.5),
+    0 40px 88px -32px rgba(0, 0, 0, 0.7) !important;
+}
+
+[data-theme="dark"] .hero-section .hero-bento-cell:hover {
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+    inset 1px 0 0 rgba(255, 255, 255, 0.06),
+    inset -1px 0 0 rgba(255, 255, 255, 0.06),
+    0 0 0 0.5px color-mix(in srgb, var(--accent) 40%, transparent),
+    0 2px 8px -2px rgba(0, 0, 0, 0.5),
+    0 20px 44px -14px color-mix(in srgb, var(--accent) 40%, transparent),
+    0 48px 100px -32px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Top specular light streak on each cell */
+.hero-section .hero-bento-cell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, #fff 100%, transparent) 25%,
+    color-mix(in srgb, #fff 100%, transparent) 75%,
+    transparent
+  );
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .hero-section .hero-bento-cell::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14) 25%,
+    rgba(255, 255, 255, 0.14) 75%,
+    transparent
+  );
+  opacity: 0.9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. BUTTONS — premium upgrade
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-section .hero-btn-primary {
+  background: linear-gradient(
+    145deg,
+    #100e0c 0%,
+    #26201b 45%,
+    #100e0c 100%
+  ) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(10, 9, 8, 0.1),
+    0 8px 24px -8px rgba(10, 9, 8, 0.38),
+    0 20px 48px -16px rgba(233, 75, 44, 0.28) !important;
+}
+
+.hero-section .hero-btn-primary:hover {
+  transform: translateY(-3px) !important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(10, 9, 8, 0.1),
+    0 12px 32px -10px rgba(10, 9, 8, 0.42),
+    0 28px 60px -18px rgba(233, 75, 44, 0.55) !important;
+}
+
+.hero-section .hero-btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    #ff9264 0%,
+    #e94b2c 50%,
+    #c22e15 100%
+  );
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-section .hero-btn-primary:hover::before {
+  opacity: 1;
+}
+
+/* Shine sweep */
+.hero-section .hero-btn-shine {
+  position: absolute;
+  top: -50%;
+  left: -70%;
+  width: 55%;
+  height: 200%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-section .hero-btn-primary:hover .hero-btn-shine {
+  opacity: 1;
+  animation: heroBtnShine 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes heroBtnShine {
+  0% { left: -70%; }
+  100% { left: 160%; }
+}
+
+/* Secondary button — softer glass */
+.hero-section .hero-btn-secondary {
+  background: color-mix(in srgb, var(--surface) 85%, transparent) !important;
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border-color: color-mix(in srgb, var(--ink) 14%, transparent) !important;
+}
+
+[data-theme="dark"] .hero-section .hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+}
+
+.hero-section .hero-btn-secondary:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. TRUST ROW — premium refinement
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-trust-item {
+  position: relative;
+  padding-inline-start: 14px;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-section .hero-trust-item::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.hero-section .hero-trust-item:first-child::before {
+  display: none;
+}
+
+.hero-section .hero-trust-item:first-child {
+  padding-inline-start: 0;
+}
+
+.hero-section .hero-trust-value {
+  background: linear-gradient(
+    180deg,
+    var(--ink) 0%,
+    color-mix(in srgb, var(--ink) 70%, var(--accent)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. MARQUEE — refined
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-marquee {
+  background: color-mix(in srgb, var(--paper-2) 40%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-section .hero-marquee-item {
+  color: color-mix(in srgb, var(--ink) 65%, transparent);
+  transition: color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-section .hero-marquee-track:hover .hero-marquee-item {
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. MASTHEAD — refined
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-masthead {
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+  backdrop-filter: blur(8px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+  margin-inline: -18px;
+  padding-inline: 18px;
+}
+
+.hero-section .hero-masthead-dot {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--success) 18%, transparent),
+    0 0 12px color-mix(in srgb, var(--success) 55%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. BENTO NUMBER — count-up feel
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bento-bignum {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--ink) 0%,
+    color-mix(in srgb, var(--ink) 70%, var(--accent)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero-section .hero-bento-bignum em {
+  -webkit-text-fill-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. LIVE DOT — refined pulse
+   ═══════════════════════════════════════════════════════════ */
+@keyframes heroDotSoftPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--success) 18%, transparent),
+      0 0 10px color-mix(in srgb, var(--success) 50%, transparent);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(0.92);
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--success) 8%, transparent),
+      0 0 14px color-mix(in srgb, var(--success) 65%, transparent);
+  }
+}
+
+.hero-section .hero-masthead-dot,
+.hero-section .hero-bento-status-dot,
+.hero-section .hero-bento-live-dot {
+  animation: heroDotSoftPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. LIVE STACK — smooth crossfade between states
+   ═══════════════════════════════════════════════════════════ */
+@keyframes heroLiveStateIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-section .hero-bento-live-stack > div {
+  animation: heroLiveStateIn 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. SEAL — subtle float
+   ═══════════════════════════════════════════════════════════ */
+@keyframes heroSealFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-3px) rotate(-2deg); }
+}
+
+.hero-section .hero-bento-seal {
+  animation: heroSealFloat 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. ORBS — softer, layered
+   ═══════════════════════════════════════════════════════════ */
+.hero-section .hero-bg-orb-1 {
+  filter: blur(90px) !important;
+  opacity: 0.55 !important;
+}
+
+.hero-section .hero-bg-orb-2 {
+  filter: blur(90px) !important;
+  opacity: 0.4 !important;
+}
+
+.hero-section .hero-bg-orb-3 {
+  filter: blur(80px) !important;
+  opacity: 0.25 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   14. PAUSE OFF-SCREEN — performance
+   ═══════════════════════════════════════════════════════════ */
+.hero-section:not(.hero-in-view) .hero-bento-seal,
+.hero-section:not(.hero-in-view) .hero-masthead-dot,
+.hero-section:not(.hero-in-view) .hero-bento-status-dot,
+.hero-section:not(.hero-in-view) .hero-bento-live-dot {
+  animation-play-state: paused;
+}
+
+html[data-tab-hidden="true"] .hero-bento-seal,
+html[data-tab-hidden="true"] .hero-masthead-dot,
+html[data-tab-hidden="true"] .hero-bento-status-dot,
+html[data-tab-hidden="true"] .hero-bento-live-dot {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   15. REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section .hero-masthead,
+  .hero-section .hero-kicker,
+  .hero-section .hero-title-line,
+  .hero-section .hero-description,
+  .hero-section .hero-actions,
+  .hero-section .hero-trust,
+  .hero-section .hero-bento-cell,
+  .hero-section .hero-bento-seal,
+  .hero-section .hero-masthead-dot,
+  .hero-section .hero-bento-status-dot,
+  .hero-section .hero-bento-live-dot,
+  .hero-section .hero-bento-live-stack > div,
+  .hero-section .hero-btn-shine {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .hero-section .hero-bento-cell:hover {
+    transform: none;
+  }
+
+  .hero-cursor-halo {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   16. MOBILE — disable cursor-halo + hover transforms
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-cursor-halo {
+    display: none;
+  }
+
+  .hero-section .hero-bento-cell:hover {
+    transform: none;
+    box-shadow:
+      inset 0 1.5px 0 color-mix(in srgb, #fff 95%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
+      0 0 0 0.5px color-mix(in srgb, var(--ink) 5%, transparent),
+      0 2px 6px -2px color-mix(in srgb, var(--ink) 8%, transparent),
+      0 16px 36px -14px color-mix(in srgb, var(--ink) 18%, transparent) !important;
+  }
+
+  .hero-section .hero-btn-primary:hover,
+  .hero-section .hero-btn-secondary:hover {
+    transform: none !important;
+  }
+}

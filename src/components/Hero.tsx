@@ -49,7 +49,6 @@ function useTehranClock() {
 
   useEffect(() => {
     setMounted(true);
-
     const onVis = () => setVisible(!document.hidden);
     document.addEventListener("visibilitychange", onVis);
 
@@ -148,6 +147,51 @@ function useRelativeTime(iso: string | null): string {
   return mounted ? text : "";
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CURSOR GLOW — desktop only, GPU-composited
+   ═══════════════════════════════════════════════════════════ */
+function useCursorGlow(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const el = ref.current;
+    if (!el) return;
+
+    // Skip on touch + reduced motion
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (isTouch || reduced) return;
+
+    let raf = 0;
+    let lastX = 0;
+    let lastY = 0;
+
+    const onMove = (e: PointerEvent) => {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const rect = el.getBoundingClientRect();
+        const x = lastX - rect.left;
+        const y = lastY - rect.top;
+        el.style.setProperty("--hero-glow-x", `${x}px`);
+        el.style.setProperty("--hero-glow-y", `${y}px`);
+      });
+    };
+
+    el.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIVE CELL — rotates through 3 states
+   ═══════════════════════════════════════════════════════════ */
 export default function Hero({
   latestPost,
   archivePost,
@@ -166,7 +210,9 @@ export default function Hero({
   const latestAgo = useRelativeTime(latestPost?.date ?? null);
   const archiveAgo = useRelativeTime(archivePost?.date ?? null);
 
-  /* ─── Track hero visibility ─── */
+  useCursorGlow(sectionRef);
+
+  /* Track hero visibility */
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
     const section = sectionRef.current;
@@ -177,11 +223,10 @@ export default function Hero({
       { threshold: 0.1 }
     );
     io.observe(section);
-
     return () => io.disconnect();
   }, []);
 
-  /* ─── Track tab visibility ─── */
+  /* Track tab visibility */
   useEffect(() => {
     const onVis = () => {
       setTabVisible(!document.hidden);
@@ -195,7 +240,6 @@ export default function Hero({
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
-  /* ─── Update section class for CSS-driven pausing ─── */
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -205,7 +249,7 @@ export default function Hero({
 
   const shouldAnimate = heroInView && tabVisible;
 
-  /* ─── Live cell rotation ─── */
+  /* Live cell rotation */
   useEffect(() => {
     if (livePaused || !shouldAnimate) return;
     const reduced = window.matchMedia(
@@ -346,14 +390,24 @@ export default function Hero({
   const activeLive = liveStates[liveIndex % liveStates.length];
 
   return (
-    <section ref={sectionRef} id="home" className="hero-section hero-in-view">
+    <section
+      ref={sectionRef}
+      id="home"
+      className="hero-section hero-in-view"
+      data-hero
+    >
+      {/* Background layers */}
       <div className="hero-bg" aria-hidden="true">
         <span className="hero-bg-orb hero-bg-orb-1" />
         <span className="hero-bg-orb hero-bg-orb-2" />
         <span className="hero-bg-orb hero-bg-orb-3" />
         <span className="hero-bg-grid" />
         <span className="hero-bg-grain" />
+        <span className="hero-bg-glow" />
       </div>
+
+      {/* Cursor-reactive halo */}
+      <span className="hero-cursor-halo" aria-hidden="true" />
 
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">
         {Array.from({ length: 13 }).map((_, i) => (
@@ -412,7 +466,9 @@ export default function Hero({
               </span>
               <span className="hero-title-line">
                 {"می‌خوان "}
-                <span className="ink-word">حرفه‌ای دیده بشن</span>
+                <span className="ink-word hero-title-em">
+                  حرفه‌ای دیده بشن
+                </span>
                 <em className="hero-title-accent">.</em>
               </span>
             </h1>
@@ -425,6 +481,7 @@ export default function Hero({
             <div className="hero-actions">
               <MagneticButton strength={0.18} radius={80}>
                 <Link href="/order" className="hero-btn hero-btn-primary">
+                  <span className="hero-btn-shine" aria-hidden="true" />
                   <span className="ink-word ink-word--on-dark">
                     شروع پروژه
                   </span>
