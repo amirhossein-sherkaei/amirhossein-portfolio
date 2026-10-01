@@ -92,6 +92,9 @@ import "@/styles/mobile-polish-v2.css";
 /* 27. Blog */
 import "@/app/blog/blog.css";
 
+/* 27b. Blog Premium (infinite edition) */
+import "@/styles/blog-premium.css";
+
 /* 28. Theme toggle */
 import "@/styles/theme-toggle.css";
 
