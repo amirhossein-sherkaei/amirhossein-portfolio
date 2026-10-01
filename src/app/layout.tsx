@@ -110,6 +110,9 @@ import "@/styles/signature-ink.css";
 /* 31. Density Standardization */
 import "@/styles/density-standardization.css";
 
+/* 31b. Homepage Premium (infinite batch 1) */
+import "@/styles/homepage-premium.css";
+
 /* 32. Manuscript Grid */
 import "@/styles/manuscript-grid.css";
 
