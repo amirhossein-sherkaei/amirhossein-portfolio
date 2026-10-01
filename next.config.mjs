@@ -32,7 +32,7 @@ const nextConfig = {
   */
   async redirects() {
     return [
-      /* 1) www.shorakaei.ir  →  shorakaei.ir */
+      /* 1) www.shorakaei.ir → shorakaei.ir */
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.shorakaei.ir' }],
@@ -40,7 +40,7 @@ const nextConfig = {
         permanent: true,
       },
 
-      /* 2) Old Vercel domain  →  shorakaei.ir */
+      /* 2) Old Vercel domain → shorakaei.ir */
       {
         source: '/:path*',
         has: [

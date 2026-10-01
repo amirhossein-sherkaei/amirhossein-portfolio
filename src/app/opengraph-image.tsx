@@ -13,7 +13,7 @@ export const contentType = "image/png";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://amirhossein-portfolio.vercel.app";
+  "https://shorakaei.ir";
 
 function getPersianYear(locale: "fa" | "en" = "fa"): string {
   const persianDigits = new Intl.DateTimeFormat("fa-IR", {
@@ -60,7 +60,7 @@ async function loadFont(): Promise<ArrayBuffer | null> {
 async function loadLogoDataUrl(): Promise<string | null> {
   const urls = [
     `${SITE_URL}/logo.png`,
-    "https://amirhossein-portfolio.vercel.app/logo.png",
+    "https://shorakaei.ir/logo.png",
   ];
 
   for (const url of urls) {

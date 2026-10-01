@@ -4,7 +4,7 @@ import { getAllProjectSlugs } from "@/content/projects";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://amirhossein-portfolio.vercel.app";
+  "https://shorakaei.ir";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();

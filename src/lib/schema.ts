@@ -7,7 +7,7 @@ import { projects } from "@/content/projects";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://amirhossein-portfolio.vercel.app";
+  "https://shorakaei.ir";
 
 const PERSON_NAME = "امیرحسین شرکائی";
 const PERSON_NAME_EN = "Amirhossein Shorakaei";

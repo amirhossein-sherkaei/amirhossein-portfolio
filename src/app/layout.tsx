@@ -154,7 +154,7 @@ const vazirmatn = Vazirmatn({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://amirhossein-portfolio.vercel.app";
+  "https://shorakaei.ir";
 
 const siteName = "امیرحسین شرکائی";
 const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
