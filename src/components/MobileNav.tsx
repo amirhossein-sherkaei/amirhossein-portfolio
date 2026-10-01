@@ -6,13 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════
-   ULTRA PREMIUM MOBILE BOTTOM NAV — World-Class Edition
+   ULTRA PREMIUM MOBILE BOTTOM NAV — Infinite Edition
    ────────────────────────────────────────────────────────────
-   - Custom iconography with personality
-   - Multi-layer glassmorphism (5 layers)
-   - Sliding glow indicator
-   - Logo as home icon (38px with halo)
-   - Ripple + haptic feedback
+   - Logo as home icon
+   - Colorful custom SVG icons (services, portfolio, about, spark)
+   - Sliding spring indicator
+   - Ambient aura that follows active item
    - Full dark mode + reduced motion
    ═══════════════════════════════════════════════════════════ */
 
@@ -38,57 +37,148 @@ const CTA = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   CUSTOM ICONS — هر آیکون با شخصیت خودش
+   ICON — SERVICES
+   2×2 rounded squares: 3 dark gradient + 1 orange (top-right)
    ═══════════════════════════════════════════════════════════ */
+function IconServices() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="mbnSrvDark" x1="10" y1="8" x2="10" y2="26" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#3E3630" />
+          <stop offset="1" stopColor="#18140F" />
+        </linearGradient>
+        <linearGradient id="mbnSrvWarm" x1="22" y1="6" x2="22" y2="14" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF9A55" />
+          <stop offset="1" stopColor="#E94B2C" />
+        </linearGradient>
+      </defs>
+      <rect x="4" y="7" width="10.5" height="10.5" rx="3.2" fill="url(#mbnSrvDark)" />
+      <rect x="17" y="5" width="11" height="11" rx="3.5" fill="url(#mbnSrvWarm)" />
+      <rect x="4" y="20" width="10.5" height="10.5" rx="3.2" fill="url(#mbnSrvDark)" />
+      <rect x="17" y="20" width="11" height="10.5" rx="3.5" fill="url(#mbnSrvDark)" />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ICON — PORTFOLIO
+   Photo frame + mountain + sun + orange accent line
+   ═══════════════════════════════════════════════════════════ */
+function IconPortfolio() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="mbnPortDark" x1="16" y1="8" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#3E3630" />
+          <stop offset="1" stopColor="#18140F" />
+        </linearGradient>
+        <linearGradient id="mbnPortWarm" x1="16" y1="3" x2="16" y2="8" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF9A55" />
+          <stop offset="1" stopColor="#E94B2C" />
+        </linearGradient>
+        <linearGradient id="mbnPortSun" x1="20" y1="14" x2="20" y2="18" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FFB07A" />
+          <stop offset="1" stopColor="#FF7043" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M8 4h14a3 3 0 0 1 3 3v2"
+        stroke="url(#mbnPortWarm)"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <rect x="4" y="8" width="24" height="20" rx="3.5" fill="url(#mbnPortDark)" />
+      <rect x="6.5" y="10.5" width="19" height="15" rx="2" fill="#2A241E" />
+      <circle cx="20" cy="15.5" r="2.2" fill="url(#mbnPortSun)" />
+      <path
+        d="M7.5 24.5l4.5-5 3.5 3.4 2.5-2.6 6 4.2z"
+        fill="#8A7D70"
+        fillOpacity="0.85"
+      />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ICON — ABOUT
+   Person silhouette + warm swoosh + accent dot
+   ═══════════════════════════════════════════════════════════ */
+function IconAbout() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="mbnAboutDark" x1="16" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#3E3630" />
+          <stop offset="1" stopColor="#18140F" />
+        </linearGradient>
+        <linearGradient id="mbnAboutWarm" x1="24" y1="18" x2="30" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF9A55" />
+          <stop offset="1" stopColor="#E94B2C" />
+        </linearGradient>
+      </defs>
+      <circle cx="16" cy="9.5" r="5.5" fill="url(#mbnAboutDark)" />
+      <path
+        d="M4.5 27a11.5 11.5 0 0 1 22.5-2.5c-1.5 1.3-5 1.5-8.5-.5s-7.5-2.5-11.5-1z"
+        fill="url(#mbnAboutDark)"
+      />
+      <path
+        d="M22 25.5c2.5-1 4.5-3 5-5.5.4 2.8-.4 5.3-2.5 6.5-1 .6-2 .6-2.5-1z"
+        fill="url(#mbnAboutWarm)"
+      />
+      <circle cx="26.5" cy="6.5" r="2.2" fill="url(#mbnAboutWarm)" />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ICON — SPARK (CTA)
+   C-ring with gradient + plus sign + accent dot
+   ═══════════════════════════════════════════════════════════ */
+function IconSpark() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="mbnSparkRing" x1="4" y1="16" x2="28" y2="16" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#18140F" />
+          <stop offset="0.55" stopColor="#7A3D22" />
+          <stop offset="1" stopColor="#FF7043" />
+        </linearGradient>
+        <linearGradient id="mbnSparkPlus" x1="16" y1="10" x2="16" y2="22" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF9A55" />
+          <stop offset="1" stopColor="#E94B2C" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M24.4 7.6a11 11 0 1 0 3.1 7.4"
+        stroke="url(#mbnSparkRing)"
+        strokeWidth="3.8"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <path
+        d="M16 11.5v9M11.5 16h9"
+        stroke="url(#mbnSparkPlus)"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <circle cx="26.5" cy="6.5" r="2.2" fill="url(#mbnSparkPlus)" />
+    </svg>
+  );
+}
+
+/* ─── Icon router ─── */
 function Icon({ type }: { type: IconName }) {
   switch (type) {
     case "services":
-      /* Grid با یه خانه بزرگ + ۳ تا کوچیک — مثل dashboard */
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="3" y="3" width="10" height="10" rx="2.5" />
-          <rect x="16" y="3" width="5" height="5" rx="1.8" />
-          <rect x="16" y="11" width="5" height="10" rx="1.8" />
-          <rect x="3" y="16" width="10" height="5" rx="1.8" />
-        </svg>
-      );
-
+      return <IconServices />;
     case "portfolio":
-      /* قاب عکس با منظره — کوه + خورشید + پرنده */
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="2.5" y="4" width="19" height="16" rx="3" />
-          <circle cx="8" cy="9.5" r="1.8" />
-          <path d="M2.5 17.5 7 13l3.2 2.8L13 13l8.5 6" />
-          <path d="M17.5 8.5c.8-.6 1.6-.6 2.4 0" strokeWidth="1.4" />
-        </svg>
-      );
-
+      return <IconPortfolio />;
     case "about":
-      /* آدم با شانه و کمی شخصیت — head + shoulders */
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="7.5" r="4" />
-          <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-          <path d="M9.5 7.5c.5-.5 1.4-.8 2.5-.8s2 .3 2.5.8" strokeWidth="1.3" />
-        </svg>
-      );
-
+      return <IconAbout />;
     case "spark":
-      /* ستاره درخشان + جرقه‌های جانبی */
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M12 3.5 14 9l5.5 2-5.5 2-2 5.5-2-5.5L4.5 11 10 9z"
-                fill="currentColor" fillOpacity="0.15" />
-          <path d="M18.5 3v3M17 4.5h3" strokeWidth="1.5" />
-          <path d="M4 18.5v2.5M2.75 19.75h2.5" strokeWidth="1.5" />
-        </svg>
-      );
-
+      return <IconSpark />;
     default:
       return null;
   }
@@ -107,7 +197,6 @@ export default function MobileNav() {
     setMounted(true);
   }, []);
 
-  /* Track active section on home page */
   useEffect(() => {
     if (!mounted) return;
     if (pathname !== "/") return;
@@ -137,24 +226,19 @@ export default function MobileNav() {
     return () => io.disconnect();
   }, [mounted, pathname]);
 
-  /* Haptic + ripple on tap */
-  const handleTap = useCallback(
-    (id: string) => {
-      setRippleKey(id);
-      window.setTimeout(() => setRippleKey(null), 600);
+  const handleTap = useCallback((id: string) => {
+    setRippleKey(id);
+    window.setTimeout(() => setRippleKey(null), 600);
 
-      if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-        try {
-          navigator.vibrate(10);
-        } catch {
-          /* ignore */
-        }
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+      try {
+        navigator.vibrate(10);
+      } catch {
+        /* ignore */
       }
-    },
-    []
-  );
+    }
+  }, []);
 
-  /* Compute active index */
   const isOnHome = pathname === "/";
   const activeIndex = isOnHome
     ? NAV_ITEMS.findIndex((item) => item.section === activeSection)
@@ -170,11 +254,9 @@ export default function MobileNav() {
       data-hide-indicator={hideIndicator ? "true" : "false"}
       style={{ "--mbn-index": indicatorIndex } as React.CSSProperties}
     >
-      {/* Ambient aura under the active item */}
       <span className="mbn-aura" aria-hidden="true" />
 
       <div className="mbn-items">
-        {/* Sliding glass indicator */}
         <span className="mbn-slider" aria-hidden="true">
           <span className="mbn-slider-glow" />
         </span>
