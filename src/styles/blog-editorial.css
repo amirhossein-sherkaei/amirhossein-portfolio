@@ -1,0 +1,1087 @@
+/* ============================================================
+   BLOG EDITORIAL — Infinite Edition
+   ────────────────────────────────────────────────────────────
+   سیستم ادیتوریال کامل برای مقالات بلاگ
+   
+   مبانی طراحی:
+   - Perfect Fourth scale (1.333) برای بدنه، Golden Ratio (1.618) برای تیترها[reference:0]
+   - Measure: 50-75 کاراکتر (هدف 66)[reference:1]
+   - Line-height بدنه: 1.5-1.6 دسکتاپ، 1.3-1.45 موبایل[reference:2]
+   - خط‌چین تیترها: 1.1-1.2، تیترهای بزرگ ~1.0 با tracking منفی[reference:3]
+   - اندازه فونت بدنه: حداقل 16px، ایده‌آل 18px برای long-form[reference:4]
+   - RTL: استفاده از logical properties (start/end) به جای left/right[reference:5]
+   - بدون letter-spacing منفی روی فارسی (اتصال حروف را می‌شکند)[reference:6]
+   - کاهش انیمیشن در محتوای متنی[reference:7]
+   
+   ساختار:
+   1. Design Tokens (متغیرهای محلی)
+   2. Layout & Container
+   3. H2 Numbering (شماره‌گذاری خودکار)
+   4. H3 & H4
+   5. Paragraphs & Lead
+   6. Lists
+   7. Pull Quote & Blockquote
+   8. Code & Pre
+   9. Tables
+   10. Figure & Caption
+   11. Links
+   12. HR & Dividers
+   13. Editorial Marks
+   14. Sidebar Notes
+   15. Responsive
+   16. Dark Mode
+   17. Reduced Motion
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. DESIGN TOKENS — متغیرهای محلی ادیتوریال
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content {
+  /* ─── Type Scale (Perfect Fourth) ─── */
+  --ed-scale: 1.333;
+  
+  --ed-fs-body:   1.0625rem;   /* 17px */
+  --ed-fs-body-lg: 1.125rem;   /* 18px */
+  --ed-fs-lead:   clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --ed-fs-h3:     calc(var(--ed-fs-body) * var(--ed-scale));
+  --ed-fs-h2:     calc(var(--ed-fs-h3) * var(--ed-scale));
+  --ed-fs-h1:     calc(var(--ed-fs-h2) * var(--ed-scale));
+  --ed-fs-small:  calc(var(--ed-fs-body) / var(--ed-scale));
+  --ed-fs-micro:  calc(var(--ed-fs-small) / var(--ed-scale));
+  
+  /* ─── Line Heights ─── */
+  --ed-lh-body:    1.85;
+  --ed-lh-heading: 1.25;
+  --ed-lh-tight:   1.15;
+  --ed-lh-lead:    1.75;
+  
+  /* ─── Measure ─── */
+  --ed-measure:      65ch;
+  --ed-measure-wide:  75ch;
+  --ed-measure-narrow: 55ch;
+  
+  /* ─── Spacing (baseline: 8px) ─── */
+  --ed-space-1:  0.25rem;  /* 4px */
+  --ed-space-2:  0.5rem;   /* 8px */
+  --ed-space-3:  0.75rem;  /* 12px */
+  --ed-space-4:  1rem;     /* 16px */
+  --ed-space-5:  1.5rem;   /* 24px */
+  --ed-space-6:  2rem;     /* 32px */
+  --ed-space-7:  3rem;     /* 48px */
+  --ed-space-8:  4rem;     /* 64px */
+  --ed-space-9:  5rem;     /* 80px */
+  
+  /* ─── Editorial Spacing (special) ─── */
+  --ed-heading-top:    var(--ed-space-7);
+  --ed-heading-bottom: var(--ed-space-4);
+  --ed-paragraph-gap:  1.4em;
+  --ed-block-gap:      var(--ed-space-6);
+  
+  /* ─── Colors ─── */
+  --ed-accent:       var(--accent);
+  --ed-accent-soft:  color-mix(in srgb, var(--accent) 8%, transparent);
+  --ed-accent-faint: color-mix(in srgb, var(--accent) 4%, transparent);
+  --ed-ink:          var(--ink);
+  --ed-ink-2:        var(--ink-2);
+  --ed-ink-3:        var(--ink-3);
+  --ed-line:         var(--line);
+  --ed-surface:      var(--surface);
+  --ed-paper:        var(--paper-2);
+  
+  /* ─── Motion ─── */
+  --ed-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ed-duration: 320ms;
+  
+  /* ─── Counter ─── */
+  counter-reset: ed-h2 ed-h3 ed-pullquote;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. LAYOUT & CONTAINER
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content {
+  font-size: var(--ed-fs-body);
+  line-height: var(--ed-lh-body);
+  color: var(--ed-ink-2);
+  max-width: var(--ed-measure);
+  margin-inline: auto;
+  text-wrap: pretty;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual;
+}
+
+/* ─── تمام فرزندان مستقیم ─── */
+.blog-post-content > * {
+  max-width: 100%;
+}
+
+/* ─── وقتی داخل grid layout هستیم ─── */
+.blog-post-layout .blog-post-content {
+  max-width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. H2 — شماره‌گذاری خودکار + تزئین
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content h2 {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  font-weight: 800;
+  line-height: var(--ed-lh-heading);
+  letter-spacing: -0.02em;
+  color: var(--ed-ink);
+  margin-block: var(--ed-heading-top) var(--ed-heading-bottom);
+  padding-block-start: var(--ed-space-2);
+  scroll-margin-top: 100px;
+  text-wrap: balance;
+}
+
+/* ─── شماره فارسی ─── */
+.blog-post-content h2::before {
+  content: counter(ed-h2, persian) " ·";
+  counter-increment: ed-h2;
+  flex-shrink: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ed-accent);
+  opacity: 0.85;
+  transform: translateY(-0.05em);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+}
+
+/* ─── خط تزئینی بالای H2 ─── */
+.blog-post-content h2::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 48px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--ed-accent) 0%,
+    color-mix(in srgb, var(--ed-accent) 30%, transparent) 100%
+  );
+  opacity: 0.6;
+}
+
+/* ─── ریست شماره H3 وقتی H2 جدید میاد ─── */
+.blog-post-content h2 + h3 {
+  counter-reset: ed-h3;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. H3 & H4
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content h3 {
+  position: relative;
+  font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--ed-ink);
+  margin-block: var(--ed-space-6) var(--ed-space-3);
+  scroll-margin-top: 100px;
+  text-wrap: balance;
+}
+
+/* ─── نقطه شماره H3 ─── */
+.blog-post-content h3::before {
+  content: counter(ed-h3);
+  counter-increment: ed-h3;
+  position: absolute;
+  inset-inline-start: calc(var(--ed-space-5) * -1);
+  top: 0.15em;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.625em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ed-accent);
+  opacity: 0.5;
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── H4 ─── */
+.blog-post-content h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ed-ink);
+  margin-block: var(--ed-space-5) var(--ed-space-2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. PARAGRAPHS & LEAD
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content p {
+  margin-block: 0 var(--ed-paragraph-gap);
+  text-wrap: pretty;
+}
+
+/* ─── پاراگراف اول (Lead) ─── */
+.blog-post-content > p:first-of-type {
+  font-size: var(--ed-fs-lead);
+  line-height: var(--ed-lh-lead);
+  font-weight: 450;
+  color: var(--ed-ink);
+  margin-block-end: 1.6em;
+}
+
+/* ─── پاراگراف آخر ─── */
+.blog-post-content > p:last-of-type {
+  margin-block-end: 0;
+}
+
+/* ─── پاراگرافی که بعد از تیتر میاد ─── */
+.blog-post-content h2 + p,
+.blog-post-content h3 + p,
+.blog-post-content h4 + p {
+  margin-block-start: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. LISTS — لیست‌های مرتب و نامرتب
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content ul,
+.blog-post-content ol {
+  margin-block: var(--ed-space-4) var(--ed-space-5);
+  padding-inline-start: 1.5em;
+}
+
+.blog-post-content li {
+  padding-inline-start: 0.35em;
+  margin-block: 0.55em;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
+/* ─── Marker ─── */
+.blog-post-content ul li::marker {
+  color: var(--ed-accent);
+  font-size: 1.1em;
+}
+
+.blog-post-content ol li::marker {
+  color: var(--ed-accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── لیست تودرتو ─── */
+.blog-post-content li > ul,
+.blog-post-content li > ol {
+  margin-block: 0.4em 0.6em;
+  margin-inline-start: 0.5em;
+}
+
+/* ─── لیستی که بعد از تیتر میاد ─── */
+.blog-post-content h2 + ul,
+.blog-post-content h2 + ol,
+.blog-post-content h3 + ul,
+.blog-post-content h3 + ol {
+  margin-block-start: var(--ed-space-3);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. PULL QUOTE & BLOCKQUOTE
+   ────────────────────────────────────────────────────────────
+   Pull quote یک "visual event" است، نه heading[reference:8]
+   باید ریتم بدنه را بشکند
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content blockquote {
+  position: relative;
+  margin: clamp(32px, 4vw, 48px) 0;
+  padding: clamp(22px, 2.8vw, 30px) clamp(24px, 3.4vw, 36px);
+  border: none;
+  border-inline-start: 4px solid var(--ed-accent);
+  border-radius: 4px 18px 18px 4px;
+  
+  /* پس‌زمینه گرادیانی ظریف */
+  background:
+    linear-gradient(
+      135deg,
+      var(--ed-accent-soft) 0%,
+      var(--ed-accent-faint) 100%
+    );
+  
+  /* عمق */
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 45%, transparent),
+    0 12px 32px -20px color-mix(in srgb, var(--ed-accent) 30%, transparent);
+  
+  font-style: italic;
+  counter-increment: ed-pullquote;
+}
+
+/* ─── علامت نقل‌قول تزئینی ─── */
+.blog-post-content blockquote::before {
+  content: "\201C";
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--ed-accent);
+  opacity: 0.1;
+  pointer-events: none;
+  font-style: normal;
+}
+
+/* ─── پاراگراف داخل ─── */
+.blog-post-content blockquote p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  line-height: 1.75;
+  font-weight: 500;
+  color: var(--ed-ink);
+  font-style: italic;
+  text-wrap: pretty;
+}
+
+.blog-post-content blockquote p + p {
+  margin-block-start: 0.8em;
+}
+
+/* ─── Cite / Author ─── */
+.blog-post-content blockquote cite {
+  display: block;
+  margin-block-start: var(--ed-space-4);
+  padding-block-start: var(--ed-space-3);
+  border-block-start: 1px solid
+    color-mix(in srgb, var(--ed-accent) 20%, transparent);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ed-ink-3);
+  font-style: normal;
+  direction: ltr;
+  text-align: start;
+}
+
+.blog-post-content blockquote cite::before {
+  content: "— ";
+  color: var(--ed-accent);
+  opacity: 0.7;
+}
+
+/* ─── Pull Quote بزرگ (برای نقل‌قول‌های برجسته) ─── */
+.blog-post-content blockquote.is-pull {
+  margin-inline: calc(var(--ed-space-6) * -1);
+  border-inline-start-width: 6px;
+  border-radius: 6px 24px 24px 6px;
+  padding: clamp(28px, 3.5vw, 40px) clamp(28px, 4vw, 48px);
+}
+
+.blog-post-content blockquote.is-pull p {
+  font-size: clamp(1.25rem, 1.1rem + 1vw, 1.75rem);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Pull Quote وسط‌چین ─── */
+.blog-post-content blockquote.is-centered {
+  border-inline-start: none;
+  border-inline-end: none;
+  border-block-start: 3px solid var(--ed-accent);
+  border-block-end: 3px solid var(--ed-accent);
+  border-radius: 0;
+  text-align: center;
+  padding-block: clamp(32px, 4vw, 48px);
+}
+
+.blog-post-content blockquote.is-centered::before {
+  inset-inline: 0;
+  top: -32px;
+  text-align: center;
+  opacity: 0.15;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. CODE & PRE
+   ────────────────────────────────────────────────────────────
+   کد باید LTR بمونه، حتی در متن RTL[reference:9]
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Inline Code ─── */
+.blog-post-content code {
+  font-family: var(--font-mono, "SF Mono", Menlo, monospace);
+  font-size: 0.9em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--ed-paper);
+  border: 1px solid color-mix(in srgb, var(--ed-ink) 6%, transparent);
+  color: color-mix(in srgb, var(--ed-accent) 80%, var(--ed-ink));
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  font-variant-ligatures: none;
+}
+
+/* ─── Code Block ─── */
+.blog-post-content pre {
+  position: relative;
+  margin: clamp(24px, 3vw, 36px) 0;
+  padding: 22px 24px;
+  border-radius: 16px;
+  background: #0a0908;
+  color: #f5efe6;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  direction: ltr;
+  text-align: left;
+  tab-size: 2;
+  
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 20px 48px -24px rgba(10, 9, 8, 0.5);
+}
+
+/* ─── Terminal Dots ─── */
+.blog-post-content pre::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  inset-inline-start: 18px;
+  width: 46px;
+  height: 10px;
+  background:
+    radial-gradient(circle at 5px 5px, #ff5f57 4px, transparent 4.5px),
+    radial-gradient(circle at 17px 5px, #febc2e 4px, transparent 4.5px),
+    radial-gradient(circle at 29px 5px, #28c840 4px, transparent 4.5px);
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ─── Code داخل Pre ─── */
+.blog-post-content pre code {
+  background: transparent;
+  border: none;
+  padding: 14px 0 0;
+  color: inherit;
+  display: block;
+  font-size: inherit;
+  white-space: pre;
+  word-break: normal;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. TABLES
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content table {
+  width: 100%;
+  margin: clamp(24px, 3vw, 36px) 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid color-mix(in srgb, var(--ed-ink) 8%, transparent);
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: 0.9375rem;
+}
+
+/* ─── Header ─── */
+.blog-post-content thead th {
+  padding: 14px 18px;
+  background: color-mix(in srgb, var(--ed-accent) 10%, transparent);
+  color: var(--ed-ink);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  text-align: start;
+  border-block-end: 1px solid
+    color-mix(in srgb, var(--ed-ink) 6%, transparent);
+  white-space: nowrap;
+}
+
+/* ─── Cells ─── */
+.blog-post-content tbody td {
+  padding: 14px 18px;
+  text-align: start;
+  border-block-end: 1px solid
+    color-mix(in srgb, var(--ed-ink) 6%, transparent);
+  line-height: 1.6;
+  color: var(--ed-ink-2);
+}
+
+/* ─── آخرین ردیف ─── */
+.blog-post-content tbody tr:last-child td {
+  border-block-end: none;
+}
+
+/* ─── Zebra Stripe ─── */
+.blog-post-content tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--ed-paper) 40%, transparent);
+}
+
+/* ─── Hover ─── */
+.blog-post-content tbody tr:hover td {
+  background: color-mix(in srgb, var(--ed-accent) 4%, transparent);
+  transition: background 160ms var(--ed-ease);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. FIGURE & CAPTION
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content figure {
+  display: grid;
+  gap: 0;
+  margin: clamp(28px, 3.5vw, 44px) 0;
+}
+
+/* ─── Image ─── */
+.blog-post-content figure img,
+.blog-post-content > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid var(--ed-line);
+  background: var(--ed-paper);
+  box-shadow:
+    0 4px 12px -6px rgba(10, 9, 8, 0.06),
+    0 16px 40px -24px rgba(10, 9, 8, 0.15);
+}
+
+/* ─── Caption ─── */
+.blog-post-content figcaption {
+  margin-block-start: 12px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--ed-line);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ed-ink-3);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  text-wrap: pretty;
+}
+
+/* ─── خط تزئینی قبل از caption ─── */
+.blog-post-content figcaption::before {
+  content: "—";
+  color: var(--ed-accent);
+  font-weight: 700;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* ─── Strong در caption ─── */
+.blog-post-content figcaption strong {
+  color: var(--ed-ink-2);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. LINKS
+   ────────────────────────────────────────────────────────────
+   Underline انیمیت‌شده، از راست به چپ (RTL native)[reference:10]
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content a {
+  color: var(--ed-accent);
+  text-decoration: none;
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ed-accent) 60%, transparent) 0%,
+    color-mix(in srgb, var(--ed-accent) 60%, transparent) 100%
+  );
+  background-size: 100% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-block-end: 1px;
+  transition: background-size var(--ed-duration) var(--ed-ease);
+}
+
+.blog-post-content a:hover {
+  background-size: 0 1.5px;
+  background-position: 100% 100%;
+}
+
+/* ─── External Links ─── */
+.blog-post-content a[target="_blank"]::after {
+  content: " ↗";
+  font-size: 0.8em;
+  opacity: 0.7;
+  display: inline-block;
+  transform: translateY(-0.1em);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. HR & DIVIDERS
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-content hr {
+  margin: clamp(40px, 5vw, 64px) auto;
+  max-width: 320px;
+  height: auto;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* ─── خط چپ ─── */
+.blog-post-content hr::before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--ed-accent) 45%, transparent) 100%
+  );
+}
+
+/* ─── خط راست ─── */
+.blog-post-content hr::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ed-accent) 45%, transparent) 0%,
+    transparent 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. EDITORIAL MARKS — نشانه‌های ادیتوریال
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Definition Lists ─── */
+.blog-post-content dl {
+  margin-block: var(--ed-space-5);
+}
+
+.blog-post-content dt {
+  font-weight: 700;
+  color: var(--ed-ink);
+  margin-block-start: var(--ed-space-4);
+}
+
+.blog-post-content dd {
+  margin-inline-start: 0;
+  margin-block-start: var(--ed-space-2);
+  padding-inline-start: var(--ed-space-4);
+  border-inline-start: 2px solid
+    color-mix(in srgb, var(--ed-accent) 20%, transparent);
+  color: var(--ed-ink-2);
+}
+
+/* ─── Mark (هایلایت) ─── */
+.blog-post-content mark {
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    color-mix(in srgb, var(--ed-accent) 22%, transparent) 40%
+  );
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ─── KBD ─── */
+.blog-post-content kbd {
+  display: inline-block;
+  padding: 3px 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8125em;
+  font-weight: 600;
+  color: var(--ed-ink);
+  background: linear-gradient(
+    180deg,
+    var(--ed-surface) 0%,
+    color-mix(in srgb, var(--ed-paper) 60%, var(--ed-surface)) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--ed-ink) 12%, transparent);
+  border-block-end-width: 2px;
+  border-radius: 6px;
+  direction: ltr;
+  unicode-bidi: isolate;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 70%, transparent);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ─── Abbr ─── */
+.blog-post-content abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+/* ─── Small ─── */
+.blog-post-content small {
+  font-size: var(--ed-fs-small);
+  line-height: 1.6;
+  color: var(--ed-ink-3);
+}
+
+/* ─── Strong & Em ─── */
+.blog-post-content strong {
+  font-weight: 700;
+  color: var(--ed-ink);
+}
+
+.blog-post-content em {
+  font-style: italic;
+  color: var(--ed-ink);
+}
+
+/* ─── Sup & Sub ─── */
+.blog-post-content sup,
+.blog-post-content sub {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.blog-post-content sup { top: -0.5em; }
+.blog-post-content sub { bottom: -0.25em; }
+
+/* ═══════════════════════════════════════════════════════════
+   14. SIDEBAR NOTES — یادداشت‌های کناری
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Aside داخل محتوا ─── */
+.blog-post-content aside {
+  margin-block: var(--ed-space-6);
+  padding: var(--ed-space-5) var(--ed-space-5);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ed-paper) 60%, transparent);
+  border: 1px solid var(--ed-line);
+  border-inline-start: 3px solid var(--ed-accent);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--ed-ink-2);
+}
+
+.blog-post-content aside p:last-child {
+  margin-block-end: 0;
+}
+
+/* ─── Callout / Note ─── */
+.blog-post-content .callout {
+  padding: var(--ed-space-5) var(--ed-space-5);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ed-accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ed-accent) 15%, transparent);
+  margin-block: var(--ed-space-6);
+}
+
+.blog-post-content .callout-title {
+  display: block;
+  margin-block-end: var(--ed-space-2);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ed-accent);
+  direction: ltr;
+}
+
+/* ─── Warning ─── */
+.blog-post-content .callout.is-warning {
+  background: color-mix(in srgb, #f59e0b 8%, transparent);
+  border-color: color-mix(in srgb, #f59e0b 20%, transparent);
+}
+
+.blog-post-content .callout.is-warning .callout-title {
+  color: #b45309;
+}
+
+/* ─── Success ─── */
+.blog-post-content .callout.is-success {
+  background: color-mix(in srgb, #10b981 8%, transparent);
+  border-color: color-mix(in srgb, #10b981 20%, transparent);
+}
+
+.blog-post-content .callout.is-success .callout-title {
+  color: #047857;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   15. RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── تبلت (≤ 900px) ─── */
+@media (max-width: 900px) {
+  .blog-post-content {
+    --ed-measure: 100%;
+    --ed-heading-top: 2.5rem;
+  }
+
+  .blog-post-content h3::before {
+    position: static;
+    inset-inline-start: auto;
+    margin-inline-end: 8px;
+  }
+}
+
+/* ─── موبایل (≤ 720px) ─── */
+@media (max-width: 720px) {
+  .blog-post-content {
+    --ed-fs-body: 1rem;
+    --ed-fs-lead: 1.0625rem;
+    --ed-lh-body: 1.85;
+    --ed-heading-top: 2rem;
+    --ed-heading-bottom: 0.75rem;
+    --ed-paragraph-gap: 1.3em;
+  }
+
+  /* ─── H2 ─── */
+  .blog-post-content h2 {
+    font-size: clamp(1.25rem, 5.5vw, 1.5rem);
+    line-height: 1.3;
+    gap: 10px;
+    padding-block-start: 0;
+  }
+
+  .blog-post-content h2::before {
+    font-size: 0.7em;
+  }
+
+  .blog-post-content h2::after {
+    width: 32px;
+    height: 1.5px;
+  }
+
+  /* ─── H3 ─── */
+  .blog-post-content h3 {
+    font-size: 1.125rem;
+    margin-block: 1.6em 0.6em;
+  }
+
+  .blog-post-content h3::before {
+    display: none;
+  }
+
+  /* ─── Paragraph ─── */
+  .blog-post-content > p:first-of-type {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  /* ─── Blockquote ─── */
+  .blog-post-content blockquote {
+    padding: 18px 20px;
+    border-radius: 4px 14px 14px 4px;
+  }
+
+  .blog-post-content blockquote::before {
+    font-size: 56px;
+    inset-inline-end: 14px;
+  }
+
+  .blog-post-content blockquote p {
+    font-size: 1rem;
+  }
+
+  .blog-post-content blockquote.is-pull {
+    margin-inline: 0;
+    padding: 20px 22px;
+  }
+
+  .blog-post-content blockquote.is-pull p {
+    font-size: 1.125rem;
+  }
+
+  /* ─── Code ─── */
+  .blog-post-content pre {
+    padding: 18px 16px;
+    font-size: 0.8125rem;
+    border-radius: 12px;
+  }
+
+  .blog-post-content code {
+    font-size: 0.85em;
+    padding: 2px 6px;
+  }
+
+  /* ─── Table ─── */
+  .blog-post-content table {
+    font-size: 0.875rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+  }
+
+  .blog-post-content th,
+  .blog-post-content td {
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  /* ─── Figure ─── */
+  .blog-post-content figure {
+    margin-block: 24px;
+  }
+
+  .blog-post-content figure img,
+  .blog-post-content > img {
+    border-radius: 12px;
+  }
+
+  .blog-post-content figcaption {
+    font-size: 0.75rem;
+    margin-block-start: 10px;
+    padding-block-start: 10px;
+  }
+
+  /* ─── Lists ─── */
+  .blog-post-content ul,
+  .blog-post-content ol {
+    padding-inline-start: 1.25em;
+  }
+
+  /* ─── Aside ─── */
+  .blog-post-content aside,
+  .blog-post-content .callout {
+    padding: 16px 18px;
+    border-radius: 12px;
+  }
+}
+
+/* ─── موبایل کوچک (≤ 400px) ─── */
+@media (max-width: 400px) {
+  .blog-post-content {
+    --ed-fs-body: 0.9375rem;
+    --ed-heading-top: 1.75rem;
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1.0625rem;
+  }
+
+  .blog-post-content blockquote {
+    padding: 16px 16px;
+  }
+
+  .blog-post-content pre {
+    padding: 16px 14px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   16. DARK MODE
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="dark"] .blog-post-content {
+  --ed-accent: #ff6a3d;
+  --ed-accent-soft: color-mix(in srgb, #ff6a3d 12%, transparent);
+  --ed-accent-faint: color-mix(in srgb, #ff6a3d 6%, transparent);
+  --ed-ink: #f5efe6;
+  --ed-ink-2: #c9c2b8;
+  --ed-ink-3: #a9a296;
+  --ed-line: rgba(245, 239, 230, 0.08);
+  --ed-surface: #14120f;
+  --ed-paper: #11100e;
+}
+
+[data-theme="dark"] .blog-post-content code {
+  background: #1a1815;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .blog-post-content pre {
+  background: #050505;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 20px 48px -24px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .blog-post-content kbd {
+  background: linear-gradient(180deg, #1a1815 0%, #11100e 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .blog-post-content mark {
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    color-mix(in srgb, #ff6a3d 30%, transparent) 40%
+  );
+}
+
+[data-theme="dark"] .blog-post-content .callout.is-warning {
+  background: color-mix(in srgb, #f59e0b 12%, transparent);
+}
+
+[data-theme="dark"] .blog-post-content .callout.is-success {
+  background: color-mix(in srgb, #10b981 12%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   17. REDUCED MOTION
+   ────────────────────────────────────────────────────────────
+   خوانندگان انیمیشن را در محتوای متنی آزاردهنده می‌دانند[reference:11]
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .blog-post-content a {
+    transition: none !important;
+  }
+
+  .blog-post-content a:hover {
+    background-size: 100% 1.5px;
+    background-position: 0 100%;
+  }
+
+  .blog-post-content tbody tr:hover td {
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   18. PRINT
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+  .blog-post-content {
+    --ed-measure: 100%;
+    --ed-fs-body: 11pt;
+    color: #000;
+  }
+
+  .blog-post-content blockquote,
+  .blog-post-content pre,
+  .blog-post-content figure img {
+    box-shadow: none;
+    border-color: #ccc;
+  }
+
+  .blog-post-content a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .blog-post-content a[target="_blank"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}

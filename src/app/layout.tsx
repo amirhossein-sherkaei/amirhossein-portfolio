@@ -5,7 +5,6 @@ import { Vazirmatn } from "next/font/google";
    CSS — Order matters!
    ═══════════════════════════════════════════════════════════ */
 
-/* 0. Fonts (Display + Body @font-face) — جدید */
 /* 1. Design tokens */
 import "@/styles/tokens.css";
 
@@ -161,10 +160,13 @@ import "@/styles/mobile-performance-fix.css";
 /* 45. Editorial Structure */
 import "@/styles/editorial-structure.css";
 
-/* ═══════════════════════════════════════════════════════════
-   45. TYPOGRAPHY 2026 — NEW (must load before grid)
-   ═══════════════════════════════════════════════════════════ */
-/* 46. GRID OVERLAY — NEW (design tool, hidden by default) */
+/* 46. Blog Editorial */
+import "@/styles/blog-editorial.css";
+
+/* 47. Blog Article Premium */
+import "@/styles/blog-article-premium.css";
+
+/* 48. Grid Overlay (design tool, hidden by default) */
 import "@/styles/grid-overlay.css";
 
 /* ═══════════════════════════════════════════════════════════

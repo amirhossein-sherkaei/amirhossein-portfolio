@@ -7,6 +7,9 @@ import TableOfContents from "@/components/TableOfContents";
 import MarkdownContent from "@/components/MarkdownContent";
 import BlogAuthorBox from "@/components/BlogAuthorBox";
 import BlogEndCTA from "@/components/BlogEndCTA";
+import BlogShare from "@/components/BlogShare";
+import BlogBreadcrumb from "@/components/BlogBreadcrumb";
+import BlogPrevNext from "@/components/BlogPrevNext";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -24,8 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "مقاله یافت نشد" };
 
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://amirhossein-portfolio.vercel.app";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 
   return {
     title: post.title,
@@ -67,6 +69,9 @@ export default async function BlogPostPage({ params }: Props) {
             بازگشت به بلاگ
           </Link>
 
+          {/* ─── Breadcrumb ─── */}
+          <BlogBreadcrumb title={post.title} />
+
           <article className="blog-post">
             <header className="blog-post-header">
               <div className="blog-post-meta">
@@ -89,12 +94,18 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </header>
 
+            {/* ─── Share (top) ─── */}
+            <BlogShare title={post.title} />
+
             {post.toc && post.toc.length > 0 && (
               <TableOfContents items={post.toc} variant="inline" />
             )}
 
             <MarkdownContent content={post.content || ""} />
           </article>
+
+          {/* ─── Prev / Next ─── */}
+          <BlogPrevNext currentSlug={post.slug} />
 
           {/* ─── About Author ─── */}
           <BlogAuthorBox />
