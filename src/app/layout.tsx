@@ -170,6 +170,11 @@ import "@/styles/blog-article-premium.css";
 import "@/styles/grid-overlay.css";
 
 /* ═══════════════════════════════════════════════════════════
+   49. FINAL POLISH 2026 — باید آخرین CSS باشه
+   ═══════════════════════════════════════════════════════════ */
+import "@/styles/final-polish-2026.css";
+
+/* ═══════════════════════════════════════════════════════════
    Components
    ═══════════════════════════════════════════════════════════ */
 import { ThemeProvider } from "@/components/ThemeProvider";
