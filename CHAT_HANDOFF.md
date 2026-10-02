@@ -89,22 +89,13 @@
 
 ## Ø¢Ø®Ø±ÛŒÙ† ÙˆØ¶Ø¹ÛŒØª (Auto-Save)
 
-**ØªØ§Ø±ÛŒØ®:** 2026-10-02 11:46
+**ØªØ§Ø±ÛŒØ®:** 2026-10-02 11:57
 **Branch:** feature/lost-garden
-**Ø¢Ø®Ø±ÛŒÙ† Commit:** 886dc85
+**Ø¢Ø®Ø±ÛŒÙ† Commit:** 3e993d2
 
 ### ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ ØªØºÛŒÛŒØ±â€ŒÛŒØ§ÙØªÙ‡:
 
- M .gitignore
- M package-lock.json
- M package.json
- M src/app/layout.tsx
- M src/components/Hero.tsx
- M src/components/PerfObserver.tsx
- M src/components/ThemeProvider.tsx
-?? scripts/save-progress.ps1
-?? src/components/lost-garden/
-?? src/styles/liquid-veil.css
+(no changes)
 
 ### Ø¨Ø±Ø§ÛŒ Ø§Ø¯Ø§Ù…Ù‡ Ø¯Ø± Ú†Øª Ø¬Ø¯ÛŒØ¯:
 
