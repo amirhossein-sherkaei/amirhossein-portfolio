@@ -1,0 +1,33 @@
+/* ═══════════════════════════════════════════════════════════
+   GARDEN DOME — Lost Garden Phase 2
+   ═══════════════════════════════════════════════════════════ */
+
+.garden-dome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.92;
+  contain: strict;
+  will-change: opacity;
+}
+
+[data-theme="dark"] .garden-dome {
+  opacity: 0.78;
+}
+
+@media (max-width: 720px) {
+  .garden-dome {
+    opacity: 0.7;
+  }
+
+  [data-theme="dark"] .garden-dome {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garden-dome {
+    display: none;
+  }
+}

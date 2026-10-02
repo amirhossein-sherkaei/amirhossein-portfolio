@@ -7,10 +7,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 
 /* ═══════════════════════════════════════════════════════════
-   LOST GARDEN — Phase 1: Liquid Veil
+   LOST GARDEN — Phase 2: Garden Dome
    ═══════════════════════════════════════════════════════════ */
-const LiquidVeil = dynamic(
-  () => import("@/components/lost-garden/LiquidVeil"),
+const GardenDome = dynamic(
+  () => import("@/components/lost-garden/GardenDome"),
   { ssr: false }
 );
 
@@ -336,8 +336,8 @@ export default function Hero({
         <span className="hero-bg-grid" />
         <span className="hero-bg-grain" />
 
-        {/* ═══════ LOST GARDEN · Phase 1 ═══════ */}
-        <LiquidVeil />
+        {/* ═══════ LOST GARDEN · Phase 2 · Garden Dome ═══════ */}
+        <GardenDome />
       </div>
 
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">

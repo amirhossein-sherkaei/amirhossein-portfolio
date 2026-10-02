@@ -173,7 +173,12 @@ import "@/styles/grid-overlay.css";
    49. FINAL POLISH 2026 — باید آخرین CSS باشه
    ═══════════════════════════════════════════════════════════ */
 import "@/styles/final-polish-2026.css";
+
+/* 50. Lost Garden — Phase 1 (Liquid Veil) */
 import "@/styles/liquid-veil.css";
+
+/* 51. Lost Garden — Phase 2 (Garden Dome) */
+import "@/styles/garden-dome.css";
 
 /* ═══════════════════════════════════════════════════════════
    Components

@@ -3,30 +3,47 @@
 import { useEffect } from "react";
 
 /* ═══════════════════════════════════════════════════════════
-   PERF OBSERVER
+   PERF OBSERVER — v3 (interaction-deferred · hydration-proof)
    ────────────────────────────────────────────────────────────
    Watches every top-level section/footer. When a section is
-   off-screen, sets data-perf-pause="true" so all its
-   animations pause.
+   off-screen, sets data-perf-pause="true" so its animations
+   pause.
 
-   IMPORTANT: We delay the observer setup by 100ms after mount
-   to avoid hydration mismatch — React needs time to complete
-   hydration before we start modifying the DOM.
+   v3 CHANGES:
+   - Defers setup until the FIRST user interaction OR 2s
+     timeout, whichever comes first. This guarantees all
+     Suspense boundaries have finished hydrating before we
+     start mutating the DOM — eliminates the mismatch that
+     even requestIdleCallback could not prevent.
    ═══════════════════════════════════════════════════════════ */
 
 export default function PerfObserver() {
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
+    if (typeof window === "undefined") return;
     if (typeof document === "undefined") return;
+    if (typeof IntersectionObserver === "undefined") return;
 
     let io: IntersectionObserver | null = null;
+    let started = false;
+    let timer: number | null = null;
 
-    /* ── Delay setup until after hydration completes ── */
-    const timer = window.setTimeout(() => {
+    const start = () => {
+      if (started) return;
+      started = true;
+
+      /* Clean up the one-shot listeners now that we are running */
+      window.removeEventListener("scroll", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      window.removeEventListener("touchstart", start);
+      if (timer !== null) {
+        window.clearTimeout(timer);
+        timer = null;
+      }
+
       const blocks = document.querySelectorAll<HTMLElement>(
         "section, footer.site-footer"
       );
-
       if (!blocks.length) return;
 
       io = new IntersectionObserver(
@@ -47,10 +64,21 @@ export default function PerfObserver() {
       );
 
       blocks.forEach((el) => io!.observe(el));
-    }, 100);
+    };
+
+    /* ── Defer until first interaction OR 2s timeout ── */
+    window.addEventListener("scroll", start, { once: true, passive: true });
+    window.addEventListener("pointerdown", start, { once: true, passive: true });
+    window.addEventListener("keydown", start, { once: true });
+    window.addEventListener("touchstart", start, { once: true, passive: true });
+    timer = window.setTimeout(start, 2000);
 
     return () => {
-      window.clearTimeout(timer);
+      window.removeEventListener("scroll", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      window.removeEventListener("touchstart", start);
+      if (timer !== null) window.clearTimeout(timer);
       io?.disconnect();
     };
   }, []);
