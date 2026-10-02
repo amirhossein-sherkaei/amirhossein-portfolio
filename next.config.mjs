@@ -15,10 +15,12 @@ const nextConfig = {
 
   /* ── Image optimization ── */
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    formats: ['image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    unoptimized: true,
+    dangerouslyAllowSVG: false,
   },
 
   /* ── Modules & packages ── */
@@ -26,38 +28,72 @@ const nextConfig = {
     optimizePackageImports: ['shiki'],
   },
 
-  /* ── 301 Redirects ──
-     Canonical domain: shorakaei.ir (without www)
-     All other hosts must 301-redirect here.
-  */
-  async redirects() {
-    return [
-      /* 1) www.shorakaei.ir → shorakaei.ir */
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.shorakaei.ir' }],
-        destination: 'https://shorakaei.ir/:path*',
-        permanent: true,
-      },
-
-      /* 2) Old Vercel domain → shorakaei.ir */
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'amirhossein-portfolio.vercel.app',
-          },
-        ],
-        destination: 'https://shorakaei.ir/:path*',
-        permanent: true,
-      },
-    ];
-  },
-
-  /* ── Security headers ── */
+  /* ── HTTP Headers: Cache + Security ── */
   async headers() {
     return [
+      /* 1) Immutable static assets */
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+
+      /* 2) Optimized images - 30 days */
+      {
+        source: '/_next/image/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, stale-while-revalidate=86400',
+          },
+        ],
+      },
+
+      /* 3) Static public assets (fonts, images, etc.) */
+      {
+        source: '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+
+      /* 4) HTML pages - short browser cache, long CDN cache */
+      {
+        source: '/((?!api|_next|_vercel|.*\\..*).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=120, s-maxage=86400, stale-while-revalidate=604800',
+          },
+          {
+            key: 'Vercel-CDN-Cache-Control',
+            value:
+              'public, s-maxage=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+
+      /* 5) Blog posts - longer cache */
+      {
+        source: '/blog/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=300, s-maxage=604800, stale-while-revalidate=2592000',
+          },
+        ],
+      },
+
+      /* 6) Security headers */
       {
         source: '/(.*)',
         headers: [
@@ -81,6 +117,40 @@ const nextConfig = {
             value: 'same-origin',
           },
         ],
+      },
+    ];
+  },
+
+  /* ── 301 Redirects ── */
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.shorakaei.ir' }],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'amirhossein-portfolio.vercel.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: '.*\\.vercel\\.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
       },
     ];
   },

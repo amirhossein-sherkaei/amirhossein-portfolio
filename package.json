@@ -1,49 +1,49 @@
-{
-  "name": "amirhossein-sherkaei-portfolio",
-  "version": "1.0.0",
-  "private": true,
-  "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=10"
-  },
-  "browserslist": [
-    "chrome >= 115",
-    "edge >= 115",
-    "firefox >= 115",
-    "safari >= 16.4",
-    "ios_saf >= 16.4",
-    "not dead"
-  ],
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "seed:blog": "node scripts/seed-blogs.js"
-  },
-  "dependencies": {
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "gray-matter": "^4.0.3",
-    "marked": "^18.0.13",
-    "next": "16.3.6",
-    "next-mdx-remote": "^6.0.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "rehype-pretty-code": "^0.14.5",
-    "shiki": "^4.4.3"
-  },
-  "devDependencies": {
-    "@types/node": "^20.19.43",
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0",
-    "eslint": "9.39.5",
-    "eslint-config-next": "16.3.6",
-    "typescript": "^5.5.3"
-  },
-  "overrides": {
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0"
-  }
+﻿{
+    "name":  "amirhossein-sherkaei-portfolio",
+    "version":  "1.0.0",
+    "private":  true,
+    "engines":  {
+                    "node":  "\u003e=20.0.0",
+                    "npm":  "\u003e=10"
+                },
+    "browserslist":  [
+                         "chrome \u003e= 115",
+                         "edge \u003e= 115",
+                         "firefox \u003e= 115",
+                         "safari \u003e= 16.4",
+                         "ios_saf \u003e= 16.4",
+                         "not dead"
+                     ],
+    "scripts":  {
+                    "dev":  "next dev",
+                    "build":  "next build",
+                    "start":  "next start",
+                    "lint":  "next lint",
+                    "typecheck":  "tsc --noEmit",
+                    "seed:blog":  "node scripts/seed-blogs.js"
+                },
+    "dependencies":  {
+                         "@vercel/analytics":  "^2.0.1",
+                         "@vercel/speed-insights":  "^2.0.0",
+                         "gray-matter":  "^4.0.3",
+                         "marked":  "^18.0.13",
+                         "next":  "16.3.6",
+                         "next-mdx-remote":  "^6.0.0",
+                         "react":  "19.3.0",
+                         "react-dom":  "19.3.0",
+                         "rehype-pretty-code":  "^0.14.5",
+                         "shiki":  "^4.4.3"
+                     },
+    "devDependencies":  {
+                            "@types/node":  "^20.19.43",
+                            "@types/react":  "19.3.0",
+                            "@types/react-dom":  "19.3.0",
+                            "eslint":  "9.39.5",
+                            "eslint-config-next":  "16.3.6",
+                            "typescript":  "^5.5.3"
+                        },
+    "overrides":  {
+                      "@types/react":  "19.3.0",
+                      "@types/react-dom":  "19.3.0"
+                  }
 }
