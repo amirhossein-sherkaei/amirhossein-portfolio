@@ -1,3 +1,5 @@
+import SectionNumber from "@/components/SectionNumber";
+
 const reasons = [
   {
     number: "01",
@@ -22,7 +24,7 @@ export default function WhyMe() {
       <div className="container">
         <div className="why-header reveal">
           <div>
-            <span className="section-index">04 — WHY ME</span>
+            <SectionNumber num="۰۵" label="WHY ME" />
 
             <h2 id="why-title">
               متفاوت فکر می‌کنم،

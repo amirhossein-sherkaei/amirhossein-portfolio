@@ -1,3 +1,5 @@
+import SectionNumber from "@/components/SectionNumber";
+
 const steps = [
   {
     num: "01",
@@ -71,7 +73,7 @@ export default function Process() {
 
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">03 — PROCESS</span>
+            <SectionNumber num="۰۲" label="PROCESS" />
             <h2 id="process-title">
               چهار قدم ساده
               <em className="ink-word"> تا پروژه‌ی تو.</em>

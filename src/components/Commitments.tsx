@@ -1,3 +1,5 @@
+import SectionNumber from "@/components/SectionNumber";
+
 const commitments = [
   {
     num: "01",
@@ -67,7 +69,7 @@ export default function Commitments() {
         {/* ═══════ Heading ═══════ */}
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">05 — COMMITMENTS</span>
+            <SectionNumber num="۰۷" label="COMMITMENTS" />
             <h2 id="commitments-title">
               چیزهایی که
               <em> تضمین می‌کنم.</em>

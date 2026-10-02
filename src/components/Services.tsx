@@ -1,5 +1,7 @@
 "use client";
 
+
+import SectionNumber from "@/components/SectionNumber";
 import { useRef, useState } from "react";
 
 type Service = {
@@ -277,7 +279,7 @@ export default function Services() {
 
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">01 — SERVICES</span>
+            <SectionNumber num="۰۱" label="SERVICES" />
             <h2>
               از ایده تا یک
               <em> حضور دیجیتالِ دقیق</em>

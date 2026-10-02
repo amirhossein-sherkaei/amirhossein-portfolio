@@ -1,3 +1,5 @@
+import SectionNumber from "@/components/SectionNumber";
+
 const testimonials = [
   {
     num: "01",
@@ -46,7 +48,7 @@ export default function Testimonials() {
         {/* ═══════ Heading ═══════ */}
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">05 — TESTIMONIALS</span>
+            <SectionNumber num="۰۶" label="TESTIMONIALS" />
             <h2 id="testimonials-title">
               از زبان
               <em className="ink-word"> کسانی که تجربه کردن</em>

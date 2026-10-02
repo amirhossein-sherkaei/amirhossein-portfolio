@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { projects } from "@/content/projects";
 import CountUp from "@/components/CountUp";
+import SectionNumber from "@/components/SectionNumber";
 
 /* سال شمسی جاری — خودکار از تاریخ سیستم محاسبه می‌شود */
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
@@ -78,7 +79,7 @@ export default function About() {
     <section id="about" className="about-section section">
       <div className="container">
         <div className="about-identity reveal">
-          <span className="section-index">03 — ABOUT</span>
+          <SectionNumber num="۰۴" label="ABOUT" />
 
           <h2 className="about-identity-title">
             <span>I&apos;m Amirhossein.</span>

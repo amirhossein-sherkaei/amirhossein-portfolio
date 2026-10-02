@@ -1,3 +1,5 @@
+import SectionNumber from "@/components/SectionNumber";
+
 import Link from "next/link";
 import { getLatestPosts } from "@/lib/blog";
 
@@ -14,7 +16,7 @@ export default function LatestBlogPosts() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">06 — BLOG</span>
+            <SectionNumber num="۰۹" label="BLOG" />
             <h2 id="latest-blog-title">
               مقالات و
               <em className="ink-word"> یادداشت‌ها</em>

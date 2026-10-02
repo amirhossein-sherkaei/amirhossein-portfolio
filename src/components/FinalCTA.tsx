@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MagneticButton from "@/components/MagneticButton";
 import ContactLinks from "@/components/ContactLinks";
+import SectionNumber from "@/components/SectionNumber";
 
 export default function FinalCTA() {
   const contactEmail = process.env.PROJECT_CONTACT_EMAIL;
@@ -13,7 +14,7 @@ export default function FinalCTA() {
       <div className="container">
         <div className="final-cta reveal">
           <div className="final-cta-content">
-            <span className="section-index">09 — START A PROJECT</span>
+            <SectionNumber num="۱۰" label="START A PROJECT" />
 
             <h2 id="final-cta-title">
               ایده‌ای داری؟

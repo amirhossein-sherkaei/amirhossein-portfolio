@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import ProjectViewer from "@/components/ProjectViewer";
+import SectionNumber from "@/components/SectionNumber";
 import { projects, type Project } from "@/content/projects";
 
 export default function Portfolio() {
@@ -16,7 +17,7 @@ export default function Portfolio() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <span className="section-index">02 — PORTFOLIO</span>
+            <SectionNumber num="۰۳" label="PORTFOLIO" />
             <h2>
               پروژه‌هایی با
               <em className="ink-word"> جزئیات متفاوت</em>
