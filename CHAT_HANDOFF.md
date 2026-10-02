@@ -43,3 +43,42 @@
 1. PROJECT_STATE.md رو بخون
 2. بگو "کجاییم و چی باید بکنیم؟"
 3. شروع کن از فاز 1
+---
+
+## 📌 آخرین بروزرسانی — لحظه‌ی شروع Lost Garden
+
+**تاریخ:** 2026-10-02
+**Branch فعال:** feature/lost-garden
+**وضعیت:** در حال ساخت فاز ۱
+
+### کارهای انجام‌شده در این لحظه:
+- ✅ Backup کامل (ZIP + branch + tag)
+- ✅ branch `feature/lost-garden` ساخته شد
+- ✅ Three.js + React Three Fiber نصب شد
+- ✅ `@types/three` نصب شد
+
+### کارهای در حال انجام:
+- 🔄 ساخت `src/components/lost-garden/LiquidVeil.tsx`
+- 🔄 ساخت `src/styles/liquid-veil.css`
+- 🔄 اضافه‌کردن به `Hero.tsx`
+- 🔄 اضافه‌کردن import به `layout.tsx`
+
+### فایل‌هایی که باید ساخته بشن (کد کامل در چت موجود است):
+1. `src/components/lost-garden/LiquidVeil.tsx` — شیدر سیال WebGL
+2. `src/styles/liquid-veil.css` — استایل canvas
+3. آپدیت `src/app/layout.tsx` — import
+4. آپدیت `src/components/Hero.tsx` — اضافه‌کردن `<LiquidVeil />`
+
+### اگر چت بسته شد، به چت جدید این رو بگو:
+"من در حال ساخت پروژه‌ی Lost Garden هستم. Phase 1 (Liquid Veil شیدر WebGL) رو شروع کردم. Three.js نصب شده. فایل `LiquidVeil.tsx` رو باید بسازم. کد کاملش رو از من بخواه."
+
+### هدف فاز ۱:
+- سیال زنده با شیدر GLSL
+- تعامل با موس (کشیده شدن به سمت pointer)
+- پالت رنگ: شنگرف + زر (نارنجی و طلایی)
+- 60fps روی GPU
+- احترام به prefers-reduced-motion
+
+### هدف فاز ۲ (بعد از فاز ۱):
+- هندسه‌ی گنبدی (Dome geometry) با tessellation
+- جایگزینی سیال 2D با مش سه‌بعدی
