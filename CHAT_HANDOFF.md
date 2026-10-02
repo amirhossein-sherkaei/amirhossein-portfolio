@@ -82,3 +82,34 @@
 ### هدف فاز ۲ (بعد از فاز ۱):
 - هندسه‌ی گنبدی (Dome geometry) با tessellation
 - جایگزینی سیال 2D با مش سه‌بعدی
+
+
+<!-- AUTO-SAVE-START -->
+---
+
+## Ø¢Ø®Ø±ÛŒÙ† ÙˆØ¶Ø¹ÛŒØª (Auto-Save)
+
+**ØªØ§Ø±ÛŒØ®:** 2026-10-02 11:46
+**Branch:** feature/lost-garden
+**Ø¢Ø®Ø±ÛŒÙ† Commit:** 886dc85
+
+### ÙØ§ÛŒÙ„â€ŒÙ‡Ø§ÛŒ ØªØºÛŒÛŒØ±â€ŒÛŒØ§ÙØªÙ‡:
+
+ M .gitignore
+ M package-lock.json
+ M package.json
+ M src/app/layout.tsx
+ M src/components/Hero.tsx
+ M src/components/PerfObserver.tsx
+ M src/components/ThemeProvider.tsx
+?? scripts/save-progress.ps1
+?? src/components/lost-garden/
+?? src/styles/liquid-veil.css
+
+### Ø¨Ø±Ø§ÛŒ Ø§Ø¯Ø§Ù…Ù‡ Ø¯Ø± Ú†Øª Ø¬Ø¯ÛŒØ¯:
+
+1. Ø§ÛŒÙ† ÙØ§ÛŒÙ„ + PROJECT_STATE.md Ø±Ùˆ Ø¨Ù‡ AI Ø¬Ø¯ÛŒØ¯ Ù†Ø´ÙˆÙ† Ø¨Ø¯Ù‡
+2. Ø¨Ú¯Ùˆ: Â«Ù…Ù† Ø¯Ø± Ø­Ø§Ù„ Ø³Ø§Ø®Øª Lost Garden Ù‡Ø³ØªÙ…. Ø¨Ø±ÛŒÙ… Ø§Ø¯Ø§Ù…Ù‡Â»
+3. AI Ø¬Ø¯ÛŒØ¯ Ø§Ø² Ù‡Ù…ÛŒÙ† Ù†Ù‚Ø·Ù‡ Ø§Ø¯Ø§Ù…Ù‡ Ù…ÛŒâ€ŒØ¯Ù‡
+
+<!-- AUTO-SAVE-END -->

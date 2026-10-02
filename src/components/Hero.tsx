@@ -2,8 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
+
+/* ═══════════════════════════════════════════════════════════
+   LOST GARDEN — Phase 1: Liquid Veil
+   ═══════════════════════════════════════════════════════════ */
+const LiquidVeil = dynamic(
+  () => import("@/components/lost-garden/LiquidVeil"),
+  { ssr: false }
+);
 
 type LivePost = {
   slug: string;
@@ -326,6 +335,9 @@ export default function Hero({
         <span className="hero-bg-orb hero-bg-orb-3" />
         <span className="hero-bg-grid" />
         <span className="hero-bg-grain" />
+
+        {/* ═══════ LOST GARDEN · Phase 1 ═══════ */}
+        <LiquidVeil />
       </div>
 
       <div className="hero-ruler hero-ruler-top" aria-hidden="true">

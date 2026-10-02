@@ -7,8 +7,11 @@ import { useEffect } from "react";
    ────────────────────────────────────────────────────────────
    Watches every top-level section/footer. When a section is
    off-screen, sets data-perf-pause="true" so all its
-   animations (infinite or not) pause. Saves GPU/CPU cycles.
-   Zero visual impact — animations resume when scrolling back.
+   animations pause.
+
+   IMPORTANT: We delay the observer setup by 100ms after mount
+   to avoid hydration mismatch — React needs time to complete
+   hydration before we start modifying the DOM.
    ═══════════════════════════════════════════════════════════ */
 
 export default function PerfObserver() {
@@ -16,33 +19,40 @@ export default function PerfObserver() {
     if (typeof IntersectionObserver === "undefined") return;
     if (typeof document === "undefined") return;
 
-    const blocks = document.querySelectorAll<HTMLElement>(
-      "section, footer.site-footer"
-    );
+    let io: IntersectionObserver | null = null;
 
-    if (!blocks.length) return;
+    /* ── Delay setup until after hydration completes ── */
+    const timer = window.setTimeout(() => {
+      const blocks = document.querySelectorAll<HTMLElement>(
+        "section, footer.site-footer"
+      );
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const el = entry.target as HTMLElement;
-          if (entry.isIntersecting) {
-            el.removeAttribute("data-perf-pause");
-          } else {
-            el.setAttribute("data-perf-pause", "true");
+      if (!blocks.length) return;
+
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const el = entry.target as HTMLElement;
+            if (entry.isIntersecting) {
+              el.removeAttribute("data-perf-pause");
+            } else {
+              el.setAttribute("data-perf-pause", "true");
+            }
           }
+        },
+        {
+          rootMargin: "300px 0px 300px 0px",
+          threshold: 0,
         }
-      },
-      {
-        // Start/stop animations 300px outside the viewport
-        // so they're already running by the time user sees them.
-        rootMargin: "300px 0px 300px 0px",
-        threshold: 0,
-      }
-    );
+      );
 
-    blocks.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+      blocks.forEach((el) => io!.observe(el));
+    }, 100);
+
+    return () => {
+      window.clearTimeout(timer);
+      io?.disconnect();
+    };
   }, []);
 
   return null;

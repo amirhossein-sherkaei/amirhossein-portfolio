@@ -31,11 +31,13 @@ export function ThemeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  /* ── تم اولیه را از DOM می‌خوانیم (اسکریپت head قبلاً set کرده) ── */
-  const [theme, setTheme] = useState<Theme>(readThemeFromDOM);
+  /* ── همیشه با light شروع می‌کنیم تا hydration mismatch نداشته باشیم ── */
+  const [theme, setTheme] = useState<Theme>("light");
+  const [mounted, setMounted] = useState(false);
 
-  /* ── همگام‌سازی با DOM در mount (محض اطمینان) ── */
+  /* ── بعد از mount، مقدار واقعی رو از DOM می‌خونیم ── */
   useEffect(() => {
+    setMounted(true);
     const current = readThemeFromDOM();
     setTheme(current);
   }, []);
@@ -51,7 +53,7 @@ export function ThemeProvider({
       try {
         localStorage.setItem("theme", next);
       } catch {
-        /* localStorage ممکن است در حالت private مسدود باشد */
+        /* ignore */
       }
 
       window.setTimeout(() => {
