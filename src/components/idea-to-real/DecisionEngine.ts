@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════════
    IDEA → REAL — DECISION ENGINE
    ────────────────────────────────────────────────────────────
-   موتور تصمیمگیری کاملاً محلی و deterministic.
-   بدون API، بدون LLM — فقط منطق شفاف و قابل پیشبینی.
+   موتور تصمیم‌گیری محلی، deterministic، بدون API.
+   خروجی شامل خدمات + دلایل انتخاب (Why This Recommendation).
    ═══════════════════════════════════════════════════════════ */
 
 import {
@@ -13,8 +13,18 @@ import {
 } from './data';
 
 /* ───────────────────────────────────────────────────────────
+   Types
+   ─────────────────────────────────────────────────────────── */
+
+export type DecisionResult = {
+  readonly services: readonly ServiceId[];
+  readonly domain: Domain;
+  readonly matchedKeywords: readonly string[];
+  readonly reasons: Readonly<Record<ServiceId, readonly string[]>>;
+};
+
+/* ───────────────────────────────────────────────────────────
    Normalization
-   ZWNJ، LRM، RLM و نشانهها به فاصله تبدیل میشن.
    ─────────────────────────────────────────────────────────── */
 
 function normalize(input: string): string {
@@ -28,37 +38,42 @@ function normalize(input: string): string {
 
 /* ───────────────────────────────────────────────────────────
    تشخیص دامنه
-   امتیاز = مجموع طول کلیدواژههای مطبوق
-   (کلیدواژههای بلندتر وزن بیشتری دارند)
    ─────────────────────────────────────────────────────────── */
 
-function detectDomain(idea: string): Domain {
+function detectDomain(
+  idea: string,
+): { domain: Domain; matched: readonly string[] } {
   const text = normalize(idea);
   const fallback = DOMAINS[DOMAINS.length - 1];
 
-  if (!text) return fallback;
+  if (!text) return { domain: fallback, matched: [] };
 
   let bestDomain: Domain = fallback;
   let bestScore = 0;
+  let bestMatched: string[] = [];
 
   for (const domain of DOMAINS) {
     if (domain.keywords.length === 0) continue;
 
     let score = 0;
+    const matched: string[] = [];
+
     for (const keyword of domain.keywords) {
       const k = normalize(keyword);
       if (k.length > 0 && text.includes(k)) {
         score += k.length;
+        matched.push(keyword);
       }
     }
 
     if (score > bestScore) {
       bestScore = score;
       bestDomain = domain;
+      bestMatched = matched;
     }
   }
 
-  return bestDomain;
+  return { domain: bestDomain, matched: bestMatched };
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -69,10 +84,7 @@ function selectServices(
   domain: Domain,
   goals: readonly GoalId[],
 ): readonly ServiceId[] {
-  const set = new Set<ServiceId>();
-
-  // پایه — همیشه
-  set.add('website');
+  const set = new Set<ServiceId>([ 'website' ]);
 
   const has = (g: GoalId): boolean => goals.includes(g);
 
@@ -100,13 +112,89 @@ function selectServices(
 }
 
 /* ───────────────────────────────────────────────────────────
-   API عمومی
+   ساخت دلایل («چرا این؟»)
+   ─────────────────────────────────────────────────────────── */
+
+function buildReasons(
+  domain: Domain,
+  goals: readonly GoalId[],
+  services: readonly ServiceId[],
+): Record<ServiceId, readonly string[]> {
+  const has = (g: GoalId): boolean => goals.includes(g);
+
+  const reasons: Record<ServiceId, string[]> = {
+    website: [],
+    'ai-content': [],
+    'cinematic-video': [],
+  };
+
+  if (services.includes('website')) {
+    reasons.website.push('پایه‌ی هر حضور دیجیتال');
+    reasons.website.push('سرعت و تجربه‌ی کاربری بهتر از قالب آماده');
+    if (has('credibility')) {
+      reasons.website.push('چون اعتبار حرفه‌ای برات مهمه');
+    }
+  }
+
+  if (services.includes('ai-content')) {
+    if (domain.contentHeavy) {
+      reasons['ai-content'].push(
+        `چون کارت محتوا‌محوره (حوزه‌ی ${domain.label})`,
+      );
+    }
+    if (has('customers')) {
+      reasons['ai-content'].push('چون می‌خوای مشتری جذب کنی');
+    }
+    if (has('brand')) {
+      reasons['ai-content'].push('چون برندت باید دیده بشه');
+    }
+    if (has('product')) {
+      reasons['ai-content'].push('چون می‌خوای محصولت معرفی بشه');
+    }
+  }
+
+  if (services.includes('cinematic-video')) {
+    if (domain.visualHeavy) {
+      reasons['cinematic-video'].push(
+        `چون کارت بصری و حسی‌ه (حوزه‌ی ${domain.label})`,
+      );
+    }
+    if (has('brand')) {
+      reasons['cinematic-video'].push(
+        'چون می‌خوای برندت متمایز و ماندگار باشه',
+      );
+    }
+    if (has('credibility')) {
+      reasons['cinematic-video'].push(
+        'چون اعتماد و ماندگاری مهمه',
+      );
+    }
+  }
+
+  // Cap at 3 reasons
+  return {
+    website: reasons.website.slice(0, 3),
+    'ai-content': reasons['ai-content'].slice(0, 3),
+    'cinematic-video': reasons['cinematic-video'].slice(0, 3),
+  };
+}
+
+/* ───────────────────────────────────────────────────────────
+   API
    ─────────────────────────────────────────────────────────── */
 
 export function decide(
   idea: string,
   goals: readonly GoalId[],
-): readonly ServiceId[] {
-  const domain = detectDomain(idea);
-  return selectServices(domain, goals);
+): DecisionResult {
+  const { domain, matched } = detectDomain(idea);
+  const services = selectServices(domain, goals);
+  const reasons = buildReasons(domain, goals, services);
+
+  return {
+    services,
+    domain,
+    matchedKeywords: matched,
+    reasons,
+  };
 }
