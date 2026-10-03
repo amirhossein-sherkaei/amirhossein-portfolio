@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["dxb1"],
-  "functionFailoverRegions": ["fra1"],
+  "regions": ["fra1"],
+  "functionFailoverRegions": ["bom1"],
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
