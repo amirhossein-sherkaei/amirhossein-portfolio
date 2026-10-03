@@ -1,10 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — KNOWLEDGE BASE v2
+   CHATBOT — DATA v3 (Production)
    ────────────────────────────────────────────────────────────
-   • 30+ intents
-   • Actions (لینک‌های کلیک‌پذیر) در هر پاسخ
-   • FAQ + پاسخ‌های فنی + نقشه‌ی سایت
-   • بدون API، بدون LLM
+   • 40+ intents
+   • Actions + QuickReplies
+   • Mapping KnowledgeCategory → Intent
    ═══════════════════════════════════════════════════════════ */
 
 export type IntentType =
@@ -69,22 +68,22 @@ export type ChatMessage = {
 };
 
 /* ───────────────────────────────────────────────────────────
-   INTENT KEYWORDS
+   INTENT KEYWORDS — عمومی‌های خطرناک حذف شدند
    ─────────────────────────────────────────────────────────── */
 
 export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
   greeting: ['سلام', 'درود', 'وقت بخیر', 'روز بخیر', 'شب بخیر', 'hi', 'hello', 'hey', 'خوبی', 'چطوری'],
-  ask_about: ['تو کی هستی', 'شما کی هستید', 'کی هستی', 'خودت رو معرفی', 'درباره ات', 'بیشتر بدونم', 'معرفی کن', 'کی هست', 'who are you'],
-  ask_services: ['خدمات', 'چیکار می‌کنی', 'چیکار میکنی', 'چه کاری', 'سرویس', 'می‌تونی چیکار', 'میتونی چیکار', 'چه خدماتی', 'services', 'what do you do', 'چه کارها'],
-  ask_service_web: ['طراحی سایت', 'وبسایت', 'وب سایت', 'website', 'سایت'],
+  ask_about: ['تو کی هستی', 'شما کی هستید', 'کی هستی', 'خودت رو معرفی', 'درباره ات', 'بیشتر بدونم', 'معرفی کن', 'who are you'],
+  ask_services: ['خدمات', 'چیکار می‌کنی', 'چیکار میکنی', 'چه کاری', 'سرویس', 'می‌تونی چیکار', 'چه خدماتی', 'services', 'what do you do', 'چه کارها'],
+  ask_service_web: ['طراحی سایت', 'وبسایت', 'وب سایت', 'website'],
   ask_service_ai: ['محتوای هوشمند', 'محتوای ai', 'هوش مصنوعی', 'ai content', 'محتوای مصنوعی'],
   ask_service_video: ['ویدیو', 'ویدئو', 'فیلم تبلیغاتی', 'ویدیوی سینمایی', 'video', 'کمپین'],
-  ask_pricing: ['قیمت', 'هزینه', 'چقدر', 'تعرفه', 'پول', 'گرون', 'ارزون', 'بودجه', 'price', 'cost', 'چند'],
+  ask_pricing: ['قیمت', 'هزینه', 'تعرفه', 'پول', 'گرون', 'ارزون', 'بودجه', 'price', 'cost'],
   ask_pricing_landing: ['قیمت لندینگ', 'لندینگ چقدر', 'قیمت لندینگ پیج'],
   ask_pricing_corporate: ['قیمت سایت شرکتی', 'سایت شرکتی چقدر', 'قیمت شرکت'],
   ask_pricing_shop: ['قیمت فروشگاه', 'فروشگاه چقدر', 'قیمت ای کامرس'],
   ask_portfolio: ['نمونه کار', 'پروژه', 'کارهای قبلی', 'پورتفولیو', 'چیکار کردی', 'نمونه', 'case study', 'portfolio', 'کارهات'],
-  ask_portfolio_arka: ['آرکا', 'arka', 'سس', 'saas'],
+  ask_portfolio_arka: ['آرکا', 'arka'],
   ask_portfolio_nila: ['نیلا', 'nila', 'فروشگاه پوشاک', 'پوشاک'],
   ask_portfolio_vira: ['ویرا', 'vira', 'برندبوک', 'هویت بصری'],
   ask_portfolio_lumen: ['لومن', 'lumen', 'کمپین سینمایی', 'استوری بورد'],
@@ -93,7 +92,7 @@ export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
   ask_contact: ['تماس', 'ارتباط', 'شماره', 'ایمیل', 'چطور تماس', 'contact', 'راه ارتباطی', 'تلفن'],
   ask_blog: ['بلاگ', 'مقاله', 'مطلب', 'یادداشت', 'بخونم', 'blog', 'post', 'article'],
   ask_faq: ['سوال', 'سؤال', 'پرسش', 'faq', 'ابهام'],
-  ask_about_person: ['امیرحسین', 'شرکائی', 'شورکائی', 'کی هست', 'چه کسی', 'سازنده'],
+  ask_about_person: ['امیرحسین', 'شرکائی', 'شورکائی', 'چه کسی', 'سازنده'],
   ask_stack: ['تکنولوژی', 'با چی میسازی', 'فریمورک', 'زبان برنامه', 'next', 'react', 'استک'],
   ask_availability: ['آزادی', 'وقت داری', 'مشغولی', 'پذیرش پروژه', 'ظرفیت', 'آماده'],
   ask_testimonials: ['نظر', 'رضایت', 'بازخورد', 'testimonial', 'مشتری‌ها چی میگن'],
@@ -102,12 +101,8 @@ export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
   ask_revision: ['بازبینی', 'اصلاح', 'تغییر', 'ریویژن', 'revision'],
   ask_ownership: ['کد مال کی', 'مالکیت', 'صاحب کد', 'ownership'],
   start_project: ['شروع پروژه', 'می‌خوام پروژه', 'سفارش', 'می‌خوام بسازی', 'شروع کنیم', 'بزن بریم', 'start project', 'order', 'سفارش بدم'],
-  describe_project: [
-    'کفش فروشی', 'رستوران', 'کافه', 'آموزشگاه', 'کلینیک', 'فروشگاه', 'پوشاک',
-    'لباس', 'آرایشگاه', 'دندانپزشک', 'باشگاه', 'هتل', 'تور', 'شرکت',
-    'استارتاپ', 'پلتفرم', 'دارم', 'داشتم', 'می‌خوام', 'مایلم', 'باز کردم',
-  ],
-  compliment: ['عالی', 'خوبه', 'قشنگ', 'دوستم داشت', 'لذت بخش', 'awesome', 'great', 'nice', 'خوب'],
+  describe_project: [],
+  compliment: ['عالی', 'خوبه', 'قشنگ', 'دوستم داشت', 'لذت بخش', 'awesome', 'great', 'nice'],
   complaint: ['بد', 'مشکل', 'ایراد', 'خرابه', 'کند', 'زشت', 'کار نمی‌کنه', 'bad', 'issue', 'problem'],
   help: ['کمک', 'راهنما', 'چیکار کنم', 'چطور', 'help', 'نمی‌دونم'],
   thanks: ['ممنون', 'مرسی', 'سپاس', 'دستت درد نکنه', 'thanks', 'thank you', 'لطف کردی'],
@@ -116,7 +111,50 @@ export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
 };
 
 /* ───────────────────────────────────────────────────────────
-   RESPONSES — با actions
+   KNOWLEDGE CATEGORY → INTENT
+   ─────────────────────────────────────────────────────────── */
+
+export const CATEGORY_TO_INTENT: Record<string, IntentType> = {
+  'before-start': 'ask_faq',
+  'process': 'ask_process',
+  'pricing': 'ask_pricing',
+  'timeline': 'ask_timeline',
+  'design': 'ask_faq',
+  'tech': 'ask_stack',
+  'content': 'ask_faq',
+  'seo': 'ask_faq',
+  'hosting': 'ask_faq',
+  'maintenance': 'ask_guarantee',
+  'ownership': 'ask_ownership',
+  'marketing': 'ask_faq',
+  'ecommerce': 'ask_faq',
+  'ai': 'ask_service_ai',
+  'mobile': 'ask_faq',
+  'accessibility': 'ask_faq',
+  'branding': 'ask_faq',
+  'video': 'ask_service_video',
+  'photography': 'ask_faq',
+  'security': 'ask_guarantee',
+  'legal': 'ask_ownership',
+  'social': 'ask_faq',
+  'email-marketing': 'ask_faq',
+  'automation': 'ask_faq',
+  'tools': 'ask_stack',
+  'career': 'ask_about_person',
+  'industry-food': 'describe_project',
+  'industry-shop': 'describe_project',
+  'industry-edu': 'describe_project',
+  'industry-health': 'describe_project',
+  'industry-service': 'describe_project',
+  'analytics': 'ask_faq',
+  'performance': 'ask_stack',
+  'ux-writing': 'ask_faq',
+  'conversion': 'ask_faq',
+  'customer': 'ask_faq',
+};
+
+/* ───────────────────────────────────────────────────────────
+   RESPONSES — با actions (خلاصه، چون KB بیشتر کار رو می‌کنه)
    ─────────────────────────────────────────────────────────── */
 
 type ResponseTemplate = {
@@ -126,359 +164,225 @@ type ResponseTemplate = {
 };
 
 export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
-  greeting: [
-    {
-      text: 'سلام! 👋 خوشحالم که اینجایی.\n\nمی‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، فرآیند کار یا هر چیز دیگه‌ای راهنماییت کنم. حتی اگه فقط یه ایده‌ی خام داری، بگو تا با هم شکلش بدیم.',
-      quickReplies: [
-        { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
-        { label: 'نمونه‌کار نشونم بده', value: 'نمونه کار نشونم بده' },
-        { label: 'قیمت‌ها چطوره؟', value: 'قیمت‌ها چطوره؟' },
-      ],
-    },
-  ],
+  greeting: [{
+    text: 'سلام! 👋 خوشحالم که اینجایی.\n\nمی‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، فرآیند کار یا هر چیز دیگه‌ای راهنماییت کنم.',
+    quickReplies: [
+      { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
+      { label: 'نمونه‌کار نشونم بده', value: 'نمونه کار نشونم بده' },
+      { label: 'قیمت‌ها چطوره؟', value: 'قیمت‌ها چطوره؟' },
+    ],
+  }],
 
-  ask_about: [
-    {
-      text: 'من دستیار دیجیتال **امیرحسین شرکائی**‌ام — طراح و توسعه‌دهنده‌ی وب.\n\nاینجام تا:\n• سؤالاتت رو جواب بدم\n• پروژه‌ات رو بشنوم و راهنماییت کنم\n• بهترین مسیر رو برات پیشنهاد بدم\n\nچی می‌خوای بدونی؟',
-      actions: [
-        { label: 'درباره‌ی امیرحسین', href: '/#about', icon: 'arrow' },
-        { label: 'نمونه‌کارها', href: '/work', icon: 'arrow', primary: true },
-      ],
-      quickReplies: [
-        { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
-        { label: 'بریم سراغ پروژه', value: 'می‌خوام پروژه سفارش بدم' },
-      ],
-    },
-  ],
+  ask_about: [{
+    text: 'من دستیار دیجیتال **امیرحسین شرکائی**‌ام — طراح و توسعه‌دهنده‌ی وب.\n\nاینجام تا سؤالاتت رو جواب بدم و پروژه‌ات رو بشنوم.',
+    actions: [
+      { label: 'درباره‌ی امیرحسین', href: '/#about', icon: 'arrow' },
+      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow', primary: true },
+    ],
+  }],
 
-  ask_services: [
-    {
-      text: 'سه خدمت اصلی داریم:\n\n**۱. وب‌سایت اختصاصی** — از طراحی UI/UX تا توسعه با Next.js، بدون قالب آماده.\n\n**۲. محتوای هوشمند** — متن، تصویر، المان بصری با هوش مصنوعی.\n\n**۳. ویدیوی سینمایی** — روایت کوتاه تبلیغاتی با کیفیت سینمایی.\n\nکدومش برات جالب‌تره؟',
-      actions: [
-        { label: 'دیدن همه‌ی خدمات', href: '/#services', icon: 'arrow', primary: true },
-        { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
-      ],
-      quickReplies: [
-        { label: 'درباره‌ی وب‌سایت', value: 'درباره‌ی وب‌سایت بیشتر بگو' },
-        { label: 'درباره‌ی AI', value: 'درباره‌ی محتوای هوشمند بگو' },
-        { label: 'درباره‌ی ویدیو', value: 'درباره‌ی ویدیو بگو' },
-        { label: 'قیمت‌ها', value: 'قیمت‌ها چطوره؟' },
-      ],
-    },
-  ],
+  ask_services: [{
+    text: 'سه خدمت اصلی داریم:\n\n**۱. وب‌سایت اختصاصی** — از طراحی UI/UX تا توسعه با Next.js.\n\n**۲. محتوای هوشمند** — متن، تصویر، المان بصری با AI.\n\n**۳. ویدیوی سینمایی** — روایت کوتاه تبلیغاتی.\n\nکدومش برات جالب‌تره؟',
+    actions: [
+      { label: 'دیدن همه‌ی خدمات', href: '/#services', icon: 'arrow', primary: true },
+      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
+    ],
+    quickReplies: [
+      { label: 'درباره‌ی وب‌سایت', value: 'درباره‌ی وب‌سایت بیشتر بگو' },
+      { label: 'درباره‌ی AI', value: 'درباره‌ی محتوای هوشمند بگو' },
+      { label: 'درباره‌ی ویدیو', value: 'درباره‌ی ویدیو بگو' },
+      { label: 'قیمت‌ها', value: 'قیمت‌ها چطوره؟' },
+    ],
+  }],
 
-  ask_service_web: [
-    {
-      text: '**وب‌سایت اختصاصی** — از صفر، بدون قالب.\n\nطراحی UI/UX، پیاده‌سازی با Next.js و React، بهینه برای موبایل، سرعت لود زیر ۲ ثانیه. کد کامل به نام خودت تحویل داده می‌شه.\n\nمدت: ۲ تا ۴ هفته.\nشروع قیمت: از ۱۵ میلیون تومان.',
-      actions: [
-        { label: 'دیدن خدمات وب', href: '/#services', icon: 'arrow', primary: true },
-        { label: 'شروع پروژه', href: '/order', icon: 'spark' },
-      ],
-    },
-  ],
+  ask_service_web: [{
+    text: '**وب‌سایت اختصاصی** — از صفر، بدون قالب.\n\nطراحی UI/UX، پیاده‌سازی با Next.js، بهینه برای موبایل، سرعت لود زیر ۲ ثانیه.',
+    actions: [
+      { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
+    ],
+  }],
 
-  ask_service_ai: [
-    {
-      text: '**محتوای هوشمند با AI** — متن، تصویر، المان بصری.\n\nتولید محتوای هدفمند متناسب با لحن و مخاطب تو. نه تولید انبوه، بلکه با نظارت کامل انسانی روی هر خروجی.\n\nمدت: ۱ تا ۲ هفته.\nمناسب برای: جذب مشتری، برندسازی، معرفی محصول.',
-      actions: [
-        { label: 'دیدن خدمات', href: '/#services', icon: 'arrow', primary: true },
-        { label: 'شروع پروژه', href: '/order', icon: 'spark' },
-      ],
-    },
-  ],
+  ask_service_ai: [{
+    text: '**محتوای هوشمند با AI** — متن، تصویر، المان بصری.\n\nتولید محتوای هدفمند با نظارت کامل انسانی.',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_service_video: [
-    {
-      text: '**ویدیوی سینمایی** — روایت کوتاه تبلیغاتی.\n\nاز ایده و استوری‌بورد تا صداگذاری و نسخه‌ی نهایی. بدون نیاز به تیم فیلم‌برداری و بودجه‌ی سنگین.\n\nمدت: ۱ تا ۲ هفته.\nمناسب برای: معرفی برند، کمپین، اینستاگرام، تلویزیون.',
-      actions: [
-        { label: 'دیدن خدمات', href: '/#services', icon: 'arrow', primary: true },
-        { label: 'شروع پروژه', href: '/order', icon: 'spark' },
-      ],
-    },
-  ],
+  ask_service_video: [{
+    text: '**ویدیوی سینمایی** — روایت کوتاه تبلیغاتی.\n\nاز ایده و استوری‌بورد تا صداگذاری و نسخه‌ی نهایی.',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_pricing: [
-    {
-      text: 'تعرفه‌ها بر اساس نوع پروژه:\n\n• **لندینگ تک‌صفحه‌ای:** از ۸ میلیون تومان\n• **سایت شرکتی:** از ۱۵ میلیون تومان\n• **فروشگاه آنلاین:** از ۳۰ میلیون تومان\n• **پروژه‌های AI:** بر اساس پیچیدگی\n\nقیمت دقیق بعد از بررسی پروژه مشخص می‌شه — **بدون هزینه‌ی پنهان**. همه‌ی پروژه‌ها شامل ۳ ماه پشتیبانی رایگان + کد کامل به نام شماست.',
-      actions: [
-        { label: 'ارسال پروژه برای قیمت دقیق', href: '/order', icon: 'spark', primary: true },
-      ],
-      quickReplies: [
-        { label: 'قیمت لندینگ', value: 'قیمت لندینگ چقدره؟' },
-        { label: 'قیمت سایت شرکتی', value: 'قیمت سایت شرکتی چقدره؟' },
-        { label: 'قیمت فروشگاه', value: 'قیمت فروشگاه چقدره؟' },
-      ],
-    },
-  ],
+  ask_pricing: [{
+    text: 'تعرفه‌ها:\n\n• **لندینگ:** از ۸ میلیون\n• **سایت شرکتی:** از ۱۵ میلیون\n• **فروشگاه:** از ۳۰ میلیون\n\nقیمت دقیق بعد از بررسی — بدون هزینه‌ی پنهان.',
+    actions: [{ label: 'دریافت پیش‌فاکتور', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_pricing_landing: [
-    {
-      text: '**لندینگ تک‌صفحه‌ای:** از ۸ میلیون تومان.\n\nمناسب برای: معرفی محصول، کمپین تبلیغاتی، فرم ثبت‌نام.\nمدت تحویل: ۳ تا ۷ روز.\n\nشامل: طراحی اختصاصی، موبایل‌فرندلی، سرعت لود زیر ۲ ثانیه.',
-      actions: [{ label: 'سفارش لندینگ', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
+  ask_pricing_landing: [{
+    text: '**لندینگ:** از ۸ میلیون تومان.\n\nمدت: ۳ تا ۷ روز.',
+    actions: [{ label: 'سفارش لندینگ', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_pricing_corporate: [
-    {
-      text: '**سایت شرکتی:** از ۱۵ میلیون تومان.\n\nمناسب برای: شرکت‌ها، استارتاپ‌ها، دفاتر خدماتی.\nمدت تحویل: ۲ تا ۴ هفته.\n\nشامل: طراحی اختصاصی چند صفحه، وبلاگ، فرم تماس، پنل مدیریت ساده.',
-      actions: [{ label: 'سفارش سایت شرکتی', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
+  ask_pricing_corporate: [{
+    text: '**سایت شرکتی:** از ۱۵ میلیون تومان.\n\nمدت: ۲ تا ۴ هفته.',
+    actions: [{ label: 'سفارش سایت شرکتی', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_pricing_shop: [
-    {
-      text: '**فروشگاه آنلاین:** از ۳۰ میلیون تومان.\n\nمناسب برای: فروشگاه پوشاک، لوازم، محصولات دیجیتال.\nمدت تحویل: ۴ تا ۸ هفته.\n\nشامل: طراحی اختصاصی، سبد خرید، درگاه پرداخت، پنل مدیریت محصولات.',
-      actions: [{ label: 'سفارش فروشگاه', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
+  ask_pricing_shop: [{
+    text: '**فروشگاه آنلاین:** از ۳۰ میلیون تومان.\n\nمدت: ۴ تا ۸ هفته.',
+    actions: [{ label: 'سفارش فروشگاه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_portfolio: [
-    {
-      text: 'چهار پروژه‌ی منتخب، هر کدوم با دموی زنده و مطالعه‌ی موردی کامل:\n\n• **آرکا** — پلتفرم SaaS\n• **نیلا** — فروشگاه پوشاک آنلاین\n• **ویرا** — برندبوک استودیو با AI\n• **لومن** — کمپین سینمایی\n\nکدوم رو می‌خوای ببینی؟',
-      actions: [
-        { label: 'دیدن همه‌ی نمونه‌کارها', href: '/work', icon: 'arrow', primary: true },
-      ],
-      quickReplies: [
-        { label: 'درباره‌ی آرکا', value: 'درباره‌ی آرکا بگو' },
-        { label: 'درباره‌ی نیلا', value: 'درباره‌ی نیلا بگو' },
-        { label: 'درباره‌ی ویرا', value: 'درباره‌ی ویرا بگو' },
-        { label: 'درباره‌ی لومن', value: 'درباره‌ی لومن بگو' },
-      ],
-    },
-  ],
+  ask_portfolio: [{
+    text: 'چهار پروژه‌ی منتخب:\n\n• **آرکا** — SaaS\n• **نیلا** — فروشگاه پوشاک\n• **ویرا** — برندبوک\n• **لومن** — کمپین سینمایی',
+    actions: [{ label: 'دیدن همه', href: '/work', icon: 'arrow', primary: true }],
+  }],
 
-  ask_portfolio_arka: [
-    {
-      text: '**آرکا** — پلتفرم SaaS.\n\nچالش: انتقال ارزش محصول در ۳ ثانیه، بدون متن‌های طولانی.\nرویکرد: ساده‌سازی معماری اطلاعات، دیزاین سیستم مینیمال، تست سه نسخه‌ی مختلف از Hero.\n\nنتیجه: صفحه‌ای که در ۳ ثانیه پیام رو منتقل می‌کنه.',
-      actions: [
-        { label: 'دیدن پروژه‌ی آرکا', href: '/work/arka', icon: 'external', primary: true },
-      ],
-    },
-  ],
+  ask_portfolio_arka: [{
+    text: '**آرکا** — پلتفرم SaaS با معماری مینیمال.',
+    actions: [{ label: 'دیدن آرکا', href: '/work/arka', icon: 'external', primary: true }],
+  }],
+  ask_portfolio_nila: [{
+    text: '**نیلا** — فروشگاه پوشاک با مسیر خرید ۴ مرحله‌ای.',
+    actions: [{ label: 'دیدن نیلا', href: '/work/nila', icon: 'external', primary: true }],
+  }],
+  ask_portfolio_vira: [{
+    text: '**ویرا** — برندبوک با پالت تعاملی و ۲۴۰+ asset.',
+    actions: [{ label: 'دیدن ویرا', href: '/work/vira', icon: 'external', primary: true }],
+  }],
+  ask_portfolio_lumen: [{
+    text: '**لومن** — کمپین سینمایی ۴۸ ثانیه‌ای بدون دیالوگ.',
+    actions: [{ label: 'دیدن لومن', href: '/work/lumen', icon: 'external', primary: true }],
+  }],
 
-  ask_portfolio_nila: [
-    {
-      text: '**نیلا** — فروشگاه پوشاک آنلاین.\n\nچالش: کاهش سبدهای رهاشده و ایجاد اطمینان در مسیر خرید.\nرویکرد: مسیر خرید ۴ مرحله‌ای، سبد خرید drawer، Quick View modal، فیلترهای هوشمند.\n\nنتیجه: تجربه‌ی روان از دیدن محصول تا پرداخت.',
-      actions: [
-        { label: 'دیدن پروژه‌ی نیلا', href: '/work/nila', icon: 'external', primary: true },
-      ],
-    },
-  ],
+  ask_process: [{
+    text: 'فرآیند در چهار قدم:\n\n**۰۱. کشف** (۱ هفته)\n**۰۲. طراحی** (۱-۲ هفته)\n**۰۳. توسعه** (۱-۲ هفته)\n**۰۴. تحویل و پشتیبانی** (۳ ماه رایگان)',
+    actions: [{ label: 'شروع گفت‌وگو', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_portfolio_vira: [
-    {
-      text: '**ویرا** — برندبوک استودیو با AI.\n\nچالش: ساخت هویت بصری کامل در زمان کم، بدون کاهش کیفیت.\nرویکرد: پالت رنگی تعاملی، سیستم تایپوگرافی سه‌فونته، ۶ واریاسیون لوگو، ۲۴۰+ asset.\n\nنتیجه: کاهش ۶۰٪ هزینه، افزایش سرعت اجرا.',
-      actions: [
-        { label: 'دیدن پروژه‌ی ویرا', href: '/work/vira', icon: 'external', primary: true },
-      ],
-    },
-  ],
+  ask_timeline: [{
+    text: 'زمان‌بندی:\n\n• **لندینگ:** ۳-۷ روز\n• **شرکتی:** ۲-۴ هفته\n• **فروشگاه:** ۴-۸ هفته',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_portfolio_lumen: [
-    {
-      text: '**لومن** — کمپین سینمایی.\n\nچالش: ساخت تجربه‌ی روایی بدون دیالوگ، فقط با تصویر، نور و ریتم.\nرویکرد: ساختار سه‌پرده‌ای، استوری‌بورد ۶ فریم، فیلم‌گرین و vignette.\n\nنتیجه: روایت ۴۸ ثانیه‌ای، کاهش ۸۰٪ هزینه تولید.',
-      actions: [
-        { label: 'دیدن پروژه‌ی لومن', href: '/work/lumen', icon: 'external', primary: true },
-      ],
-    },
-  ],
+  ask_contact: [{
+    text: 'راه‌های تماس:\n\n• فرم سفارش (توصیه می‌شه)\n• پیامک: ۰۹۳۷ ۱۹۳ ۲۵۴۹\n• روبیکا: @Amirhosein2076',
+    actions: [
+      { label: 'فرم سفارش', href: '/order', icon: 'spark', primary: true },
+      { label: 'پیامک', href: 'sms:+989371932549', icon: 'chat', external: true },
+    ],
+  }],
 
-  ask_process: [
-    {
-      text: 'فرآیند کار در چهار قدم شفاف:\n\n**۰۱. گفت‌وگو و کشف** — جلسه‌ی ۳۰ دقیقه‌ای رایگان، تحلیل نیاز و رقبا.\n\n**۰۲. طراحی و ساختار** — wireframe، طراحی UI اختصاصی، دو مرحله بازبینی.\n\n**۰۳. توسعه و کد** — پیاده‌سازی با Next.js، بهینه‌سازی سرعت و سئو.\n\n**۰۴. تحویل و پشتیبانی** — انتشار + ۳ ماه پشتیبانی رایگان.',
-      actions: [
-        { label: 'شروع گفت‌وگو', href: '/order', icon: 'spark', primary: true },
-      ],
-      quickReplies: [
-        { label: 'زمان‌بندی چقدره؟', value: 'چقدر طول می‌کشه؟' },
-        { label: 'هزینه چقدره؟', value: 'قیمت‌ها چطوره؟' },
-      ],
-    },
-  ],
+  ask_blog: [{
+    text: 'بلاگ پر از یادداشت‌های عملی درباره طراحی، سئو، UX و AI.',
+    actions: [{ label: 'دیدن مقالات', href: '/blog', icon: 'arrow', primary: true }],
+  }],
 
-  ask_timeline: [
-    {
-      text: 'زمان‌بندی تقریبی:\n\n• **لندینگ:** ۳ تا ۷ روز\n• **سایت شرکتی:** ۲ تا ۴ هفته\n• **فروشگاه:** ۴ تا ۸ هفته\n• **پروژه‌های AI:** ۱ تا ۲ هفته\n\nتاریخ دقیق تحویل در قرارداد نوشته می‌شه — به تأخیر پایبند نیستیم.',
-      actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
+  ask_faq: [{
+    text: 'سؤالات پرتکرار درباره‌ی قیمت، زمان، تکنولوژی و پشتیبانی.\n\nچه چیزی می‌خوای بدونی؟',
+    quickReplies: [
+      { label: 'قیمت', value: 'قیمت‌ها چطوره؟' },
+      { label: 'زمان', value: 'چقدر طول می‌کشه؟' },
+      { label: 'پشتیبانی', value: 'پشتیبانی چطوره؟' },
+    ],
+  }],
 
-  ask_contact: [
-    {
-      text: 'راه‌های تماس:\n\n• **فرم سفارش** (توصیه می‌شه) — پاسخ حداکثر ۲۴ ساعت\n• **پیامک:** ۰۹۳۷ ۱۹۳ ۲۵۴۹\n• **روبیکا:** @Amirhosein2076\n• **ایتا:** @AmirHosseinsherakaei\n\nمی‌تونی از فرم استفاده کنی تا جزئیات پروژه رو هم بفرستی.',
-      actions: [
-        { label: 'فرم سفارش', href: '/order', icon: 'spark', primary: true },
-        { label: 'پیامک', href: 'sms:+989371932549', icon: 'chat', external: true },
-      ],
-    },
-  ],
+  ask_about_person: [{
+    text: '**امیرحسین شرکائی** — طراح و توسعه‌دهنده‌ی وب.\n\nسه اصل: طراحی قبل از کد، جزئیات کوچک اثر بزرگ، سرعت بخشی از طراحی.',
+    actions: [{ label: 'بیشتر بدون', href: '/#about', icon: 'arrow', primary: true }],
+  }],
 
-  ask_blog: [
-    {
-      text: 'بلاگ پر از یادداشت‌های عملی درباره‌ی:\n\n• طراحی وب و UI/UX\n• افزایش فروش و سئو\n• تجربه‌ی کاربری\n• خلاقیت با AI\n\n۲۲ مقاله منتشر شده. کدوم موضوع برات جالب‌تره؟',
-      actions: [
-        { label: 'دیدن همه‌ی مقالات', href: '/blog', icon: 'arrow', primary: true },
-      ],
-      quickReplies: [
-        { label: 'مقالات سئو', value: 'مقالات سئو' },
-        { label: 'مقالات UX', value: 'مقالات UX' },
-        { label: 'مقالات AI', value: 'مقالات AI' },
-      ],
-    },
-  ],
+  ask_stack: [{
+    text: 'استک فنی:\n\n• **Next.js 16** + **React 19**\n• **TypeScript** (strict)\n• **CSS Variables**\n• **Vercel**',
+    actions: [{ label: 'دیدن نمونه‌کارها', href: '/work', icon: 'arrow', primary: true }],
+  }],
 
-  ask_faq: [
-    {
-      text: 'سؤالات پرتکرار:\n\n• طراحی سایت چقدر طول می‌کشه؟\n• هزینه چقدره؟\n• با چه تکنولوژی‌هایی کار می‌کنی؟\n• چرا سایت اختصاصی بهتر از قالب آماده‌ست؟\n• پشتیبانی چطوره؟\n• آیا سئو هم انجام می‌دی؟\n\nکدومش برات مهم‌تره؟',
-      actions: [
-        { label: 'دیدن همه‌ی سؤالات', href: '/#faq', icon: 'arrow', primary: true },
-      ],
-    },
-  ],
+  ask_availability: [{
+    text: 'بله، آماده‌ی پذیرش پروژه‌های جدیدم. ✨',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_about_person: [
-    {
-      text: '**امیرحسین شرکائی** — طراح و توسعه‌دهنده‌ی وب.\n\nسه اصل کاری:\n• طراحی، قبل از کد\n• جزئیات کوچک، اثر بزرگ\n• سرعت، بخشی از طراحی\n\nترکیبی از سلیقه، دقت و کاربرد در هر پروژه.',
-      actions: [
-        { label: 'بیشتر بدون', href: '/#about', icon: 'arrow', primary: true },
-      ],
-    },
-  ],
+  ask_testimonials: [{
+    text: 'بازخورد مشتری‌ها:\n\n> «دقیق گوش داد، سؤال‌های درست پرسید.»\n\n> «توجهش به جزئیات ریز من رو متعجب کرد.»',
+    actions: [{ label: 'دیدن نظرها', href: '/#testimonials', icon: 'arrow', primary: true }],
+  }],
 
-  ask_stack: [
-    {
-      text: 'استک فنی:\n\n• **Next.js 16** و **React 19**\n• **TypeScript** (strict)\n• **CSS Variables** — بدون Tailwind یا کتابخانه‌ی UI\n• **MDX** برای بلاگ\n• **Vercel** برای میزبانی\n\nتمرکز روی سرعت، دسترسی‌پذیری (WCAG 2.2) و استانداردهای وب.',
-      actions: [
-        { label: 'دیدن نمونه‌کارها', href: '/work', icon: 'arrow', primary: true },
-      ],
-    },
-  ],
+  ask_location: [{
+    text: 'ایران — از راه دور.',
+    actions: [{ label: 'فرم تماس', href: '/order', icon: 'arrow', primary: true }],
+  }],
 
-  ask_availability: [
-    {
-      text: 'بله، آماده‌ی پذیرش پروژه‌های جدیدم. ✨\n\nبرای شروع، فرم سفارش رو پر کن — جزئیات پروژه رو بنویس. حداکثر ۲۴ ساعت بعد بررسی می‌کنم و پاسخ می‌دم.',
-      actions: [
-        { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
-      ],
-    },
-  ],
+  ask_guarantee: [{
+    text: 'سه تعهد:\n\n• ۳ ماه پشتیبانی رایگان\n• دو مرحله بازبینی\n• تحویل در تاریخ توافق',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_testimonials: [
-    {
-      text: 'بازخورد مشتری‌ها:\n\n> «دقیق گوش داد، سؤال‌های درست پرسید، و چیزی تحویل داد که دقیقاً همون بود.»\n\n> «توجهش به جزئیات ریز من رو متعجب کرد.»\n\n> «روند کار کاملاً شفاف بود؛ هر مرحله می‌دونستم کجای کاریم.»',
-      actions: [
-        { label: 'دیدن نظرها', href: '/#testimonials', icon: 'arrow', primary: true },
-      ],
-    },
-  ],
+  ask_revision: [{
+    text: 'دو مرحله بازبینی رایگان: بعد از طراحی و بعد از توسعه.',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_location: [
-    {
-      text: 'ایران — از راه دور.\n\nبا همه‌ی شهرها و حتی مشتری‌های بین‌المللی کار می‌کنم. ارتباط از طریق پیامک، روبیکا، ایتا یا ایمیل.',
-      actions: [{ label: 'فرم تماس', href: '/order', icon: 'arrow', primary: true }],
-    },
-  ],
+  ask_ownership: [{
+    text: '**کد کامل به نام خودت.**\n\nبدون وابستگی به من — می‌تونی هر کسی رو برای توسعه استخدام کنی.',
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
+  }],
 
-  ask_guarantee: [
-    {
-      text: 'سه تعهد اصلی:\n\n• **۳ ماه پشتیبانی رایگان** — شامل رفع باگ، به‌روزرسانی جزئی، پاسخ به سؤالات فنی.\n• **دو مرحله بازبینی** — در طول پروژه دو فرصت داری تغییرات درخواست کنی، بدون هزینه‌ی اضافه.\n• **تحویل در تاریخ توافق** — تاریخ دقیق در قرارداد نوشته می‌شه.',
-      actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
-
-  ask_revision: [
-    {
-      text: 'در طول پروژه، **دو مرحله بازبینی** داری:\n\n• مرحله‌ی اول: بعد از طراحی اولیه\n• مرحله‌ی دوم: بعد از توسعه\n\nدر هر مرحله می‌تونی تغییرات درخواست کنی، بدون هزینه‌ی اضافه.',
-      actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
-
-  ask_ownership: [
-    {
-      text: '**کد کامل به نام خودت.**\n\nبعد از تحویل:\n• کد منبع روی گیت‌هاب یا سرور خودت\n• بدون وابستگی به من\n• می‌تونی بعداً هر کسی رو برای توسعه استخدام کنی\n\nهیچ‌وقت کد رو «اجاره» نمی‌دم.',
-      actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
-    },
-  ],
-
-  start_project: [
-    {
-      text: 'عالی! برای شروع، فرم سفارش رو پر کن.\n\nچند دقیقه وقت بذار و جزئیات رو بنویس — حتی اگه کامل نیست. حداکثر ۲۴ ساعت بعد باهات تماس می‌گیرم.',
-      actions: [
-        { label: 'بازکردن فرم سفارش', href: '/order', icon: 'spark', primary: true },
-      ],
-    },
-  ],
+  start_project: [{
+    text: 'عالی! برای شروع، فرم سفارش رو پر کن.\n\nحداکثر ۲۴ ساعت بعد باهات تماس می‌گیرم.',
+    actions: [{ label: 'بازکردن فرم سفارش', href: '/order', icon: 'spark', primary: true }],
+  }],
 
   describe_project: [],
 
-  compliment: [
-    {
-      text: 'ممنون! 🙏 اگه سؤال دیگه‌ای داری، بپرس.',
-      quickReplies: [
-        { label: 'خدمات', value: 'خدماتت چیه؟' },
-        { label: 'نمونه‌کار', value: 'نمونه کار نشونم بده' },
-      ],
-    },
-  ],
+  compliment: [{
+    text: 'ممنون! 🙏 اگه سؤال دیگه‌ای داری، بپرس.',
+    quickReplies: [
+      { label: 'خدمات', value: 'خدماتت چیه؟' },
+      { label: 'نمونه‌کار', value: 'نمونه کار نشونم بده' },
+    ],
+  }],
 
-  complaint: [
-    {
-      text: 'متأسفم که تجربه‌ی خوبی نداشتی. می‌تونی دقیق‌تر بگی مشکل کجاست؟ اگه چیز خاصی روی سایت به نظرت ایراد داره، همین‌جا بگو.',
-      quickReplies: [
-        { label: 'تماس با پشتیبانی', value: 'چطور تماس بگیرم؟' },
-      ],
-    },
-  ],
+  complaint: [{
+    text: 'متأسفم که تجربه‌ی خوبی نداشتی. می‌تونی دقیق‌تر بگی مشکل کجاست؟',
+    quickReplies: [{ label: 'تماس با پشتیبانی', value: 'چطور تماس بگیرم؟' }],
+  }],
 
-  help: [
-    {
-      text: 'می‌تونم درباره‌ی این موضوعات کمکت کنم:\n\n• خدمات و قیمت‌ها\n• نمونه‌کارها\n• فرآیند و زمان‌بندی\n• مشاوره‌ی پروژه\n\nیا اگه ایده‌ات رو بگی، مسیرش رو برات می‌چینم.',
-      actions: [
-        { label: 'دیدن خدمات', href: '/#services', icon: 'arrow' },
-        { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
-        { label: 'فرم سفارش', href: '/order', icon: 'spark', primary: true },
-      ],
-    },
-  ],
+  help: [{
+    text: 'می‌تونم درباره‌ی این موضوعات کمکت کنم:\n\n• خدمات و قیمت‌ها\n• نمونه‌کارها\n• فرآیند و زمان‌بندی\n• مشاوره‌ی پروژه',
+    actions: [
+      { label: 'خدمات', href: '/#services', icon: 'arrow' },
+      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
+      { label: 'فرم سفارش', href: '/order', icon: 'spark', primary: true },
+    ],
+  }],
 
-  thanks: [
-    {
-      text: 'خواهش می‌کنم! 😊 اگه بعداً سؤالی داشتی، همیشه اینجام.',
-      quickReplies: [
-        { label: 'فرم سفارش', value: 'می‌خوام پروژه سفارش بدم' },
-      ],
-    },
-  ],
+  thanks: [{
+    text: 'خواهش می‌کنم! 😊',
+    quickReplies: [{ label: 'فرم سفارش', value: 'می‌خوام پروژه سفارش بدم' }],
+  }],
 
-  goodbye: [
-    {
-      text: 'خدانگهدار! 👋 روز خوبی داشته باشی.',
-      quickReplies: [
-        { label: 'دوباره سلام', value: 'سلام' },
-      ],
-    },
-  ],
+  goodbye: [{
+    text: 'خدانگهدار! 👋',
+    quickReplies: [{ label: 'دوباره سلام', value: 'سلام' }],
+  }],
 
-  unknown: [
-    {
-      text: 'سؤالت رو دقیق متوجه نشدم. ولی اینجا یه نقشه از همه‌چیز هست — می‌تونی مستقیم بری سراغش:',
-      actions: [
-        { label: 'خدمات', href: '/#services', icon: 'arrow' },
-        { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
-        { label: 'بلاگ', href: '/blog', icon: 'arrow' },
-        { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
-      ],
-      quickReplies: [
-        { label: 'قیمت‌ها', value: 'قیمت‌ها چطوره؟' },
-        { label: 'فرآیند کار', value: 'فرآیند کار چطوره؟' },
-        { label: 'درباره‌ی من', value: 'درباره ات بگو' },
-      ],
-    },
-  ],
+  unknown: [{
+    text: 'سؤالت رو دقیق متوجه نشدم. یه نقشه از همه‌چیز هست:',
+    actions: [
+      { label: 'خدمات', href: '/#services', icon: 'arrow' },
+      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
+      { label: 'بلاگ', href: '/blog', icon: 'arrow' },
+      { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
+    ],
+    quickReplies: [
+      { label: 'قیمت‌ها', value: 'قیمت‌ها چطوره؟' },
+      { label: 'فرآیند کار', value: 'فرآیند کار چطوره؟' },
+      { label: 'درباره‌ی من', value: 'درباره ات بگو' },
+    ],
+  }],
 };
 
 /* ───────────────────────────────────────────────────────────
-   BUSINESS KEYWORDS for describe_project
+   BUSINESS KEYWORDS
    ─────────────────────────────────────────────────────────── */
 
 export const BUSINESS_KEYWORDS: Record<string, string> = {
@@ -503,18 +407,38 @@ export const BUSINESS_KEYWORDS: Record<string, string> = {
   'شرکت': 'شرکت',
   'عکاسی': 'عکاسی',
   'مشاور': 'مشاور',
+  'وکیل': 'دفتر وکالت',
+  'پزشک': 'مطب پزشکی',
+  'دکتر': 'مطب پزشکی',
+  'لوازم خانگی': 'فروشگاه لوازم خانگی',
+  'موبایل': 'فروشگاه موبایل',
+  'لوازم یدکی': 'فروشگاه لوازم یدکی',
+  'گل': 'گل‌فروشی',
+  'کتاب': 'فروشگاه کتاب',
+  'ابزار': 'فروشگاه ابزار',
+  'ورزشی': 'فروشگاه ورزشی',
+  'آرایشی': 'فروشگاه آرایشی',
+  'سوپرمارکت': 'سوپرمارکت',
+  'نانوایی': 'نانوایی',
+  'قنادی': 'قنادی',
+  'آتلیه': 'آتلیه',
+  'دفتر بیمه': 'بیمه',
+  'بیمه': 'بیمه',
+  'حسابداری': 'حسابداری',
+  'طلا': 'طلا و جواهر',
+  'جواهری': 'طلا و جواهر',
 };
 
 /* ───────────────────────────────────────────────────────────
-   SITE SECTIONS — for fallback navigation
+   SITE SECTIONS
    ─────────────────────────────────────────────────────────── */
 
 export const SITE_SECTIONS = [
   { id: 'home', label: 'خانه', href: '/', keywords: ['خانه', 'صفحه اصلی', 'شروع سایت'] },
-  { id: 'services', label: 'خدمات', href: '/#services', keywords: ['خدمات', 'سرویس', 'قیمت'] },
+  { id: 'services', label: 'خدمات', href: '/#services', keywords: ['خدمات', 'سرویس'] },
   { id: 'process', label: 'فرآیند', href: '/#process', keywords: ['فرآیند', 'مراحل', 'روش کار'] },
   { id: 'portfolio', label: 'نمونه‌کارها', href: '/work', keywords: ['نمونه کار', 'پروژه', 'پورتفولیو'] },
-  { id: 'about', label: 'درباره‌ی من', href: '/#about', keywords: ['درباره', 'من', 'امیرحسین'] },
+  { id: 'about', label: 'درباره‌ی من', href: '/#about', keywords: ['درباره', 'امیرحسین'] },
   { id: 'blog', label: 'بلاگ', href: '/blog', keywords: ['بلاگ', 'مقاله', 'یادداشت'] },
   { id: 'faq', label: 'سؤالات', href: '/#faq', keywords: ['سؤال', 'سوال', 'پرسش'] },
   { id: 'order', label: 'سفارش', href: '/order', keywords: ['سفارش', 'فرم', 'شروع'] },
