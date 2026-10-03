@@ -174,10 +174,15 @@ import "@/styles/grid-overlay.css";
    ═══════════════════════════════════════════════════════════ */
 import "@/styles/final-polish-2026.css";
 
+/* 50. AI Companion — Lost Garden (revival) */
+import "@/components/ai-companion/ai-companion.css";
+
 /* ═══════════════════════════════════════════════════════════
    Components
    ═══════════════════════════════════════════════════════════ */
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CompanionProvider } from "@/components/ai-companion/CompanionProvider";
+import Companion from "@/components/ai-companion/Companion";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
 import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
@@ -353,7 +358,12 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           پرش به محتوای اصلی
         </a>
-        <ThemeProvider>{children}</ThemeProvider>
+
+        <CompanionProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+          <Companion />
+        </CompanionProvider>
+
         <WelcomeOnboarding />
         <TouchFeedback />
         <SensoryFeedback />
