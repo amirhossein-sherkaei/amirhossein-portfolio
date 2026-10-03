@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
+import { IdeaToReal } from "@/components/idea-to-real/IdeaToReal";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import WhyMe from "@/components/WhyMe";
@@ -114,6 +115,7 @@ export default function Home() {
           totalPosts={allPosts.length}
           totalProjects={projects.length}
         />
+        <IdeaToReal />
         <Services />
         <Process />
         <Portfolio />
