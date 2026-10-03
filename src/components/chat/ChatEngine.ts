@@ -1,27 +1,27 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — DECISION ENGINE
+   CHATBOT — ENGINE v2
    ────────────────────────────────────────────────────────────
-   تشخیص intent، تولید پاسخ، پیشنهاد quick replies.
+   • Multi-layer intent detection
+   • Site section matching
+   • Business keyword analysis
+   • Action-driven responses
    ═══════════════════════════════════════════════════════════ */
 
 import {
+  BUSINESS_KEYWORDS,
   INTENT_PATTERNS,
-  QUICK_REPLIES,
   RESPONSES,
-  SITE_KNOWLEDGE,
+  SITE_SECTIONS,
+  type ActionLink,
   type IntentType,
   type QuickReply,
 } from './data';
-
-/* ───────────────────────────────────────────────────────────
-   Types
-   ─────────────────────────────────────────────────────────── */
 
 export type BotResponse = {
   readonly text: string;
   readonly intent: IntentType;
   readonly quickReplies?: readonly QuickReply[];
-  readonly actions?: readonly { label: string; href: string; external?: boolean }[];
+  readonly actions?: readonly ActionLink[];
 };
 
 /* ───────────────────────────────────────────────────────────
@@ -43,17 +43,17 @@ function normalize(text: string): string {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Intent detection
+   Intent detection — multi-pass
    ─────────────────────────────────────────────────────────── */
 
-function detectIntent(text: string): { intent: IntentType; score: number } {
+function detectIntent(text: string): IntentType {
   const normalized = normalize(text);
-  if (!normalized) return { intent: 'unknown', score: 0 };
+  if (!normalized) return 'unknown';
 
   let bestIntent: IntentType = 'unknown';
   let bestScore = 0;
 
-  for (const [intent, patterns] of Object.entries(INTENT_PATTERNS)) {
+  for (const [intentKey, patterns] of Object.entries(INTENT_PATTERNS)) {
     if (patterns.length === 0) continue;
 
     let score = 0;
@@ -61,73 +61,45 @@ function detectIntent(text: string): { intent: IntentType; score: number } {
       const p = normalize(pattern);
       if (p.length === 0) continue;
 
-      if (normalized === p) {
-        score += p.length * 3;
-      } else if (normalized.includes(p)) {
-        score += p.length * 2;
-      } else if (p.includes(normalized) && normalized.length >= 3) {
-        score += normalized.length;
+      if (normalized === p) score += p.length * 4;
+      else if (normalized.includes(p)) score += p.length * 2;
+      else if (p.includes(normalized) && normalized.length >= 3) {
+        score += normalized.length * 1.5;
       }
     }
 
     if (score > bestScore) {
       bestScore = score;
-      bestIntent = intent as IntentType;
+      bestIntent = intentKey as IntentType;
     }
   }
 
-  // Describe project is special — detect when user gives a business description
-  if (bestIntent === 'unknown' && normalized.length >= 5) {
-    const businessWords = [
-      'فروشگاه', 'رستوران', 'کافه', 'آموزشگاه', 'کلینیک',
-      'پوشاک', 'کفش', 'لباس', 'آرایشگاه', 'دندانپزشک',
-      'باشگاه', 'هتل', 'تور', 'شرکت', 'استارتاپ',
-      'کسب و کار', 'کسب‌وکار', 'برند',
-    ];
-    if (businessWords.some((w) => normalized.includes(normalize(w)))) {
-      return { intent: 'describe_project', score: 5 };
+  // If low score, try business keyword fallback
+  if (bestScore < 6 && normalized.length >= 4) {
+    for (const keyword of Object.keys(BUSINESS_KEYWORDS)) {
+      if (normalized.includes(normalize(keyword))) {
+        return 'describe_project';
+      }
     }
   }
 
-  if (bestScore < 4) return { intent: 'unknown', score: bestScore };
-
-  return { intent: bestIntent, score: bestScore };
+  if (bestScore < 4) return 'unknown';
+  return bestIntent;
 }
 
 /* ───────────────────────────────────────────────────────────
-   Response generation
+   Response builder
    ─────────────────────────────────────────────────────────── */
 
 function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function buildDescribeProjectResponse(text: string): BotResponse {
+function buildDescribeProject(text: string): BotResponse {
   const normalized = normalize(text);
-
   const detected: string[] = [];
 
-  const businessKeywords: Record<string, string> = {
-    'رستوران': 'رستوران',
-    'کافه': 'کافه',
-    'فروشگاه': 'فروشگاه',
-    'کفش': 'فروشگاه کفش',
-    'پوشاک': 'فروشگاه پوشاک',
-    'لباس': 'فروشگاه پوشاک',
-    'آموزشگاه': 'آموزشگاه',
-    'زبان': 'آموزشگاه زبان',
-    'کلینیک': 'کلینیک',
-    'دندانپزشک': 'دندانپزشکی',
-    'آرایشگاه': 'سالن زیبایی',
-    'باشگاه': 'باشگاه ورزشی',
-    'هتل': 'هتل',
-    'تور': 'آژانس گردشگری',
-    'استارتاپ': 'استارتاپ',
-    'پلتفرم': 'پلتفرم',
-    'شرکت': 'شرکت',
-  };
-
-  for (const [key, label] of Object.entries(businessKeywords)) {
+  for (const [key, label] of Object.entries(BUSINESS_KEYWORDS)) {
     if (normalized.includes(normalize(key))) {
       detected.push(label);
     }
@@ -135,48 +107,87 @@ function buildDescribeProjectResponse(text: string): BotResponse {
 
   const domain = detected[0] ?? 'کسب‌وکار';
 
+  const isFood = domain.includes('رستوران') || domain.includes('کافه');
+  const isEdu = domain.includes('آموزشگاه');
+  const isShop =
+    domain.includes('فروشگاه') ||
+    domain.includes('پوشاک') ||
+    domain.includes('کفش');
+
+  let serviceHint = '';
+  if (isFood) {
+    serviceHint =
+      '**۲. محتوای بصری** — عکس حرفه‌ای غذا و فضا\n**۳. سفارش/رزرو آنلاین** — کاهش تماس تلفنی';
+  } else if (isEdu) {
+    serviceHint =
+      '**۲. محتوای هوشمند** — جذب زبان‌آموز از گوگل\n**۳. ثبت‌نام آنلاین** — ۲۴ ساعته';
+  } else if (isShop) {
+    serviceHint =
+      '**۲. محتوای هوشمند** — توضیحات محصول و SEO\n**۳. ویدیوی معرفی** — اعتمادسازی';
+  } else {
+    serviceHint =
+      '**۲. محتوای هوشمند** — جذب مشتری از گوگل\n**۳. ویدیوی معرفی** — برندسازی';
+  }
+
   return {
     text:
       `عالی! متوجه شدم — یه **${domain}** داری.\n\n` +
-      `بذار یه پیشنهاد اولیه بدم:\n\n` +
-      `برای ${domain}، معمولاً این مسیر بهترین جواب رو می‌ده:\n\n` +
+      `پیشنهاد اولیه:\n\n` +
       `**۱. وب‌سایت اختصاصی** — پایه‌ی حضور آنلاین\n` +
-      (domain.includes('رستوران') || domain.includes('کافه')
-        ? '**۲. محتوای بصری** — عکس حرفه‌ای غذا و فضا\n**۳. رزرو/سفارش آنلاین** — کاهش تماس تلفنی\n'
-        : domain.includes('آموزشگاه')
-        ? '**۲. محتوای هوشمند** — جذب زبان‌آموز از گوگل\n**۳. ثبت‌نام آنلاین** — ۲۴ ساعته\n'
-        : '**۲. محتوای هوشمند** — جذب مشتری از گوگل\n**۳. ویدیوی معرفی** — اعتمادسازی\n') +
-      `\nمی‌خوای جزئیات بیشتر بدم یا بریم سراغ شروع؟`,
+      serviceHint +
+      `\n\nبرای نقشه‌ی کامل با فازها و زمان‌بندی، بریم سراغ فرم سفارش.`,
     intent: 'describe_project',
-    quickReplies: QUICK_REPLIES.describe_project,
+    actions: [
+      {
+        label: 'شروع پروژه',
+        href: '/order',
+        icon: 'spark',
+        primary: true,
+      },
+      {
+        label: 'دیدن نمونه‌کارها',
+        href: '/work',
+        icon: 'arrow',
+      },
+    ],
+    quickReplies: [
+      { label: 'قیمت حدودی', value: 'قیمت‌ها چطوره؟' },
+      { label: 'زمان‌بندی', value: 'چقدر طول می‌کشه؟' },
+      { label: 'فرآیند کار', value: 'فرآیند کار چطوره؟' },
+    ],
   };
 }
 
-export function generateResponse(
-  userMessage: string,
-): BotResponse {
-  const { intent } = detectIntent(userMessage);
+/* ───────────────────────────────────────────────────────────
+   Public API
+   ─────────────────────────────────────────────────────────── */
 
-  // Special case: describe project
+export function generateResponse(userMessage: string): BotResponse {
+  const intent = detectIntent(userMessage);
+
   if (intent === 'describe_project') {
-    return buildDescribeProjectResponse(userMessage);
+    return buildDescribeProject(userMessage);
   }
 
-  // Standard intents
-  const texts = RESPONSES[intent];
+  const templates = RESPONSES[intent];
 
-  if (!texts || texts.length === 0) {
+  if (!templates || templates.length === 0) {
+    const fallback = RESPONSES.unknown[0];
     return {
-      text: pickRandom(RESPONSES.unknown),
+      text: fallback.text,
       intent: 'unknown',
-      quickReplies: QUICK_REPLIES.unknown,
+      quickReplies: fallback.quickReplies,
+      actions: fallback.actions,
     };
   }
 
+  const template = pickRandom(templates);
+
   return {
-    text: pickRandom(texts),
+    text: template.text,
     intent,
-    quickReplies: QUICK_REPLIES[intent],
+    quickReplies: template.quickReplies,
+    actions: template.actions,
   };
 }
 
@@ -188,91 +199,36 @@ export function getInitialMessage(): BotResponse {
   return {
     text:
       'سلام! 👋\n\n' +
-      'من دستیار دیجیتال امیرحسین‌ام. می‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، یا هر چیز دیگه‌ای راهنماییت کنم.\n\n' +
-      'چطور کمکت کنم؟',
+      'من دستیار دیجیتال امیرحسین‌ام. می‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، فرآیند کار یا هر چیز دیگه‌ای راهنماییت کنم.\n\n' +
+      'حتی اگه فقط یه ایده‌ی خام داری، همین‌جا بگو — با هم شکلش می‌دیم.',
     intent: 'greeting',
-    quickReplies: QUICK_REPLIES.greeting,
+    quickReplies: [
+      { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
+      { label: 'نمونه‌کار نشونم بده', value: 'نمونه کار نشونم بده' },
+      { label: 'قیمت‌ها چطوره؟', value: 'قیمت‌ها چطوره؟' },
+      { label: 'شروع پروژه', value: 'می‌خوام پروژه سفارش بدم' },
+    ],
+    actions: [
+      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
+    ],
   };
 }
 
 /* ───────────────────────────────────────────────────────────
-   Analyze project description
+   Site section matcher — for navigation intent
    ─────────────────────────────────────────────────────────── */
 
-export function analyzeProject(description: string): string {
-  const normalized = normalize(description);
+export function findSectionByText(
+  text: string,
+): (typeof SITE_SECTIONS)[number] | null {
+  const normalized = normalize(text);
 
-  // Detect industry
-  const industries: Record<string, { name: string; features: string[] }> = {
-    'کفش': {
-      name: 'فروشگاه کفش',
-      features: [
-        'راهنمای سایز هوشمند',
-        'بازگشت ۱۴ روزه',
-        'نمای ۳۶۰ درجه',
-      ],
-    },
-    'رستوران': {
-      name: 'رستوران',
-      features: [
-        'منوی تعاملی با عکس',
-        'سفارش آنلاین',
-        'رزرو میز',
-      ],
-    },
-    'کافه': {
-      name: 'کافه',
-      features: [
-        'اتمسفر بصری',
-        'منوی فصلی',
-        'رویدادها',
-      ],
-    },
-    'آموزشگاه': {
-      name: 'آموزشگاه',
-      features: [
-        'تست سطح آنلاین',
-        'معرفی اساتید',
-        'ثبت‌نام ۲۴ ساعته',
-      ],
-    },
-    'کلینیک': {
-      name: 'کلینیک',
-      features: [
-        'رزرو آنلاین + یادآور',
-        'پروفایل پزشکان',
-        'Before/After',
-      ],
-    },
-    'فروشگاه': {
-      name: 'فروشگاه آنلاین',
-      features: [
-        'مسیر خرید ساده',
-        'سبد خرید drawer',
-        'فیلتر هوشمند',
-      ],
-    },
-  };
-
-  let detectedIndustry = 'کسب‌وکار';
-  let detectedFeatures: string[] = [];
-
-  for (const [key, data] of Object.entries(industries)) {
-    if (normalized.includes(normalize(key))) {
-      detectedIndustry = data.name;
-      detectedFeatures = data.features;
-      break;
+  for (const section of SITE_SECTIONS) {
+    for (const keyword of section.keywords) {
+      if (normalized.includes(normalize(keyword))) {
+        return section;
+      }
     }
   }
-
-  const featuresText = detectedFeatures.length > 0
-    ? `\n\nویژگی‌های پیشنهادی:\n${detectedFeatures.map((f) => `• ${f}`).join('\n')}`
-    : '';
-
-  return (
-    `تحلیل ایده‌ت:\n\n` +
-    `**حوزه:** ${detectedIndustry}\n` +
-    `**مسیر پیشنهادی:** وب + محتوا + ویدیو${featuresText}\n\n` +
-    `اگه می‌خوای نقشه‌ی کامل با فازها و زمان‌بندی ببینی، بگو «بریم سراغ پروژه».`
-  );
+  return null;
 }
