@@ -1,15 +1,15 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════
-   IDEA → REAL — v2
+   IDEA → REAL — v3 (Word-by-Word Edition)
    ────────────────────────────────────────────────────────────
-   • Progressive analysis with rotating phrases
-   • Path visualization (metro-line style)
-   • Progressive station reveal
-   • Expandable details per station
-   • "چرا این؟" reasons
-   • URL state sync
-   • Keyboard-first
+   • Real NLP analysis (tokenize → stem → filter → n-gram → score)
+   • Word-by-word trace (what was kept, what was filtered)
+   • Confidence bars for domain + services
+   • Progressive loading with rotating phrases
+   • Path visualization (metro-line)
+   • Explainable "Why this?" reasons
+   • URL state sync + sessionStorage
    ═══════════════════════════════════════════════════════════ */
 
 import {
@@ -46,7 +46,7 @@ function toPersian(value: string | number): string {
 
 type Phase = 'input' | 'analyzing' | 'result';
 
-const ANALYZE_MS = 1200;
+const ANALYZE_MS = 1600;
 const PHRASE_INTERVAL_MS = 400;
 const MIN_IDEA_LENGTH = 4;
 const MAX_IDEA_LENGTH = 600;
@@ -69,25 +69,22 @@ export function IdeaToReal() {
   const [result, setResult] = useState<DecisionResult | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0);
+  const [showTrace, setShowTrace] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const analyzeTimeout = useRef<number | null>(null);
   const phraseInterval = useRef<number | null>(null);
 
-  /* ─── Mount guard ─── */
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  /* ─── Mount ─── */
+  useEffect(() => setMounted(true), []);
 
   /* ─── Restore from URL ─── */
   useEffect(() => {
     if (!mounted) return;
-
     try {
       const params = new URLSearchParams(window.location.search);
       const urlIdea = params.get('idea');
       const urlGoals = params.get('goals');
-
       if (!urlIdea) return;
 
       setIdea(urlIdea.slice(0, MAX_IDEA_LENGTH));
@@ -95,16 +92,12 @@ export function IdeaToReal() {
       if (urlGoals) {
         const validGoals = urlGoals
           .split(',')
-          .filter(
-            (g): g is GoalId =>
-              GOALS.some((goal) => goal.id === g),
+          .filter((g): g is GoalId =>
+            GOALS.some((goal) => goal.id === g),
           );
         if (validGoals.length > 0) {
           setGoals(validGoals);
-
-          // Auto-advance to result
-          const r = decide(urlIdea, validGoals);
-          setResult(r);
+          setResult(decide(urlIdea, validGoals));
           setPhase('result');
           setActiveIndex(0);
         }
@@ -117,27 +110,17 @@ export function IdeaToReal() {
   /* ─── Sync to URL ─── */
   useEffect(() => {
     if (!mounted) return;
-
     try {
       const params = new URLSearchParams(window.location.search);
-
-      if (idea.trim()) {
-        params.set('idea', idea.trim());
-      } else {
-        params.delete('idea');
-      }
-
-      if (goals.length > 0) {
-        params.set('goals', goals.join(','));
-      } else {
-        params.delete('goals');
-      }
+      if (idea.trim()) params.set('idea', idea.trim());
+      else params.delete('idea');
+      if (goals.length > 0) params.set('goals', goals.join(','));
+      else params.delete('goals');
 
       const qs = params.toString();
       const url = qs
         ? `${window.location.pathname}?${qs}`
         : window.location.pathname;
-
       window.history.replaceState(null, '', url);
     } catch {
       /* ignore */
@@ -147,12 +130,10 @@ export function IdeaToReal() {
   /* ─── Cleanup ─── */
   useEffect(() => {
     return () => {
-      if (analyzeTimeout.current !== null) {
+      if (analyzeTimeout.current !== null)
         window.clearTimeout(analyzeTimeout.current);
-      }
-      if (phraseInterval.current !== null) {
+      if (phraseInterval.current !== null)
         window.clearInterval(phraseInterval.current);
-      }
     };
   }, []);
 
@@ -186,28 +167,24 @@ export function IdeaToReal() {
 
   const submit = useCallback(() => {
     if (!canSubmit) return;
-
     setPhase('analyzing');
     setLoadingPhraseIndex(0);
 
-    // Cycle loading phrases
     phraseInterval.current = window.setInterval(() => {
-      setLoadingPhraseIndex((prev) =>
-        (prev + 1) % LOADING_PHRASES.length,
+      setLoadingPhraseIndex(
+        (prev) => (prev + 1) % LOADING_PHRASES.length,
       );
     }, PHRASE_INTERVAL_MS);
 
-    // After analysis, transition to result
     analyzeTimeout.current = window.setTimeout(() => {
       if (phraseInterval.current !== null) {
         window.clearInterval(phraseInterval.current);
         phraseInterval.current = null;
       }
-
-      const r = decide(idea, goals);
-      setResult(r);
+      setResult(decide(idea, goals));
       setPhase('result');
       setActiveIndex(0);
+      setShowTrace(false);
       analyzeTimeout.current = null;
     }, ANALYZE_MS);
   }, [canSubmit, idea, goals]);
@@ -221,13 +198,12 @@ export function IdeaToReal() {
       window.clearInterval(phraseInterval.current);
       phraseInterval.current = null;
     }
-
     setIdea('');
     setGoals([]);
     setResult(null);
     setActiveIndex(0);
+    setShowTrace(false);
     setPhase('input');
-
     try {
       window.history.replaceState(
         null,
@@ -237,7 +213,6 @@ export function IdeaToReal() {
     } catch {
       /* ignore */
     }
-
     window.requestAnimationFrame(() => {
       textareaRef.current?.focus();
     });
@@ -245,7 +220,6 @@ export function IdeaToReal() {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      // Ctrl/Cmd + Enter → submit
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         submit();
@@ -270,15 +244,14 @@ export function IdeaToReal() {
           <span className="i2r-eyebrow">
             IDEA <span aria-hidden="true">→</span> REAL
           </span>
-
           <h2 id="i2r-title" className="i2r-title">
             یک ایده داری؟{' '}
-            <em>بذار مسیرش رو نشونت بدم.</em>
+            <em>بذار کلمه‌به‌کلمه تحلیلش کنم.</em>
           </h2>
-
           <p className="i2r-lead">
-            چند خط از ایده‌ات بنویس، هدفش رو انتخاب کن، و
-            در چند ثانیه مسیر پیشنهادی رو ببین.
+            چند خط از ایده‌ات بنویس، هدفش رو انتخاب کن، و ببین
+            موتور تحلیل چطور کلماتت رو می‌خونه و مسیر پیشنهاد
+            می‌ده.
           </p>
         </div>
 
@@ -294,7 +267,6 @@ export function IdeaToReal() {
                     *
                   </span>
                 </label>
-
                 <textarea
                   id="i2r-idea"
                   ref={textareaRef}
@@ -311,7 +283,6 @@ export function IdeaToReal() {
                   rows={5}
                   maxLength={MAX_IDEA_LENGTH}
                 />
-
                 <div className="i2r-examples">
                   <span className="i2r-examples-label">
                     یا یکی از این‌ها:
@@ -339,7 +310,6 @@ export function IdeaToReal() {
                     (چند تا هم می‌تونی انتخاب کنی)
                   </span>
                 </legend>
-
                 <div className="i2r-goals">
                   {GOALS.map((goal) => {
                     const active = goals.includes(goal.id);
@@ -366,7 +336,7 @@ export function IdeaToReal() {
 
               <div className="i2r-actions">
                 <p className="i2r-actions-hint">
-                  <kbd>Ctrl</kbd> + <kbd>Enter</kbd> برای ارسال
+                  <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
                 </p>
                 <button
                   type="button"
@@ -374,7 +344,7 @@ export function IdeaToReal() {
                   onClick={submit}
                   disabled={!canSubmit}
                 >
-                  <span>ببین مسیر چیه</span>
+                  <span>تحلیل کن</span>
                   <span aria-hidden="true">←</span>
                 </button>
               </div>
@@ -389,7 +359,6 @@ export function IdeaToReal() {
               role="status"
               aria-live="polite"
             >
-              {/* Skeleton path */}
               <div className="i2r-skeleton-path" aria-hidden="true">
                 <span className="i2r-skeleton-station" />
                 <span className="i2r-skeleton-line" />
@@ -397,7 +366,6 @@ export function IdeaToReal() {
                 <span className="i2r-skeleton-line" />
                 <span className="i2r-skeleton-station" />
               </div>
-
               <div className="i2r-analyzing">
                 <span
                   className="i2r-analyzing-text"
@@ -412,39 +380,88 @@ export function IdeaToReal() {
           {/* ── RESULT ── */}
           {phase === 'result' && result && (
             <div className="i2r-panel" key="result">
-              {/* Result head */}
+              {/* ═══ Result head ═══ */}
               <div className="i2r-result-head">
                 <span className="i2r-result-eyebrow">
-                  PROPOSED PATH
+                  ANALYSIS RESULT
                 </span>
-
                 <h3 className="i2r-result-title">
                   {result.domain.id !== 'general' ? (
                     <>
-                      ایده‌ات رو در حوزه‌ی{' '}
+                      حوزه‌ی{' '}
                       <em>«{result.domain.label}»</em>{' '}
-                      تشخیص دادم. این مسیر رو پیشنهاد
-                      می‌کنم:
+                      تشخیص داده شد با اطمینان{' '}
+                      <em>
+                        {toPersian(
+                          Math.round(
+                            result.domainConfidence * 100,
+                          ),
+                        )}
+                        ٪
+                      </em>
                     </>
                   ) : (
-                    <>این مسیر رو برات پیشنهاد می‌کنم:</>
+                    <>مسیر پیشنهادی آماده شد</>
                   )}
                 </h3>
 
-                {result.matchedKeywords.length > 0 && (
-                  <p className="i2r-result-meta">
-                    {toPersian(result.matchedKeywords.length)}{' '}
-                    کلمه‌ی کلیدی مطبوق:{' '}
-                    <span dir="rtl">
-                      {result.matchedKeywords
-                        .slice(0, 3)
-                        .join(' · ')}
-                    </span>
-                  </p>
+                {/* Confidence bar */}
+                {result.domain.id !== 'general' && (
+                  <div
+                    className="i2r-confidence"
+                    aria-label={`اطمینان ${Math.round(
+                      result.domainConfidence * 100,
+                    )} درصد`}
+                  >
+                    <div className="i2r-confidence-track">
+                      <div
+                        className="i2r-confidence-fill"
+                        style={{
+                          width: `${Math.round(
+                            result.domainConfidence * 100,
+                          )}%`,
+                        }}
+                      />
+                    </div>
+                    {result.secondaryDomains.length > 0 && (
+                      <span className="i2r-confidence-alt">
+                        حوزه‌های دیگر:{' '}
+                        {result.secondaryDomains
+                          .slice(0, 2)
+                          .map((d) => d.domain.label)
+                          .join('، ')}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
-              {/* Path */}
+              {/* ═══ Keyphrases extracted ═══ */}
+              {result.keyphrases.length > 0 && (
+                <div className="i2r-section">
+                  <div className="i2r-section-head">
+                    <span className="i2r-section-label">
+                      کلمات کلیدی استخراج‌شده
+                    </span>
+                    <span className="i2r-section-count">
+                      {toPersian(result.keyphrases.length)}
+                    </span>
+                  </div>
+                  <div className="i2r-phrase-list">
+                    {result.keyphrases.map((kp) => (
+                      <span
+                        key={kp.phrase}
+                        className={`i2r-phrase-chip i2r-phrase-chip--size-${kp.size}`}
+                        title={`امتیاز: ${Math.round(kp.score)}`}
+                      >
+                        {kp.phrase}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ═══ Path ═══ */}
               <ol
                 className="i2r-path"
                 role="list"
@@ -455,15 +472,14 @@ export function IdeaToReal() {
                   } as React.CSSProperties
                 }
               >
-                {/* Fill line */}
                 <span
                   className="i2r-path-fill"
                   aria-hidden="true"
                 />
-
                 {result.services.map((serviceId, index) => {
                   const service = SERVICES[serviceId];
                   const isActive = activeIndex === index;
+                  const confidence = result.serviceConfidence[serviceId];
 
                   return (
                     <li
@@ -472,9 +488,7 @@ export function IdeaToReal() {
                         isActive ? ' is-active' : ''
                       }`}
                       style={
-                        {
-                          '--i2r-i': index,
-                        } as React.CSSProperties
+                        { '--i2r-i': index } as React.CSSProperties
                       }
                     >
                       <button
@@ -482,14 +496,9 @@ export function IdeaToReal() {
                         className="i2r-station-btn"
                         onClick={() => setActiveIndex(index)}
                         aria-pressed={isActive}
-                        aria-label={`${service.title} — ${
-                          isActive ? 'فعال' : 'انتخاب'
-                        }`}
+                        aria-label={service.title}
                       >
-                        <span
-                          className="i2r-station-num"
-                          aria-hidden="true"
-                        >
+                        <span className="i2r-station-num" aria-hidden="true">
                           {toPersian(
                             String(index + 1).padStart(2, '0'),
                           )}
@@ -498,11 +507,11 @@ export function IdeaToReal() {
                           className="i2r-station-dot"
                           aria-hidden="true"
                         />
-                        <span
-                          className="i2r-station-code"
-                          dir="ltr"
-                        >
+                        <span className="i2r-station-code" dir="ltr">
                           {service.code}
+                        </span>
+                        <span className="i2r-station-confidence" dir="ltr">
+                          {toPersian(Math.round(confidence * 100))}٪
                         </span>
                       </button>
                     </li>
@@ -510,21 +519,120 @@ export function IdeaToReal() {
                 })}
               </ol>
 
-              {/* Detail panel */}
-              <div
-                className="i2r-detail"
-                aria-live="polite"
-              >
+              {/* ═══ Detail panel ═══ */}
+              <div className="i2r-detail" aria-live="polite">
                 <DetailPanel
                   key={result.services[activeIndex]}
                   serviceId={result.services[activeIndex]}
                   reasons={
                     result.reasons[result.services[activeIndex]]
                   }
+                  confidence={
+                    result.serviceConfidence[result.services[activeIndex]]
+                  }
                 />
               </div>
 
-              {/* Actions */}
+              {/* ═══ Word-by-word trace ═══ */}
+              <div className="i2r-trace">
+                <button
+                  type="button"
+                  className="i2r-trace-toggle"
+                  onClick={() => setShowTrace((v) => !v)}
+                  aria-expanded={showTrace}
+                >
+                  <span className="i2r-trace-icon" aria-hidden="true">
+                    {showTrace ? '−' : '+'}
+                  </span>
+                  <span>
+                    موتور تحلیل چه دید؟{' '}
+                    <span className="i2r-trace-count">
+                      (
+                      {toPersian(
+                        result.trace.filter(
+                          (t) => !t.isStopword,
+                        ).length,
+                      )}{' '}
+                      محتوا ·{' '}
+                      {toPersian(
+                        result.trace.filter(
+                          (t) => t.isStopword,
+                        ).length,
+                      )}{' '}
+                      ایستواژه)
+                    </span>
+                  </span>
+                </button>
+
+                {showTrace && (
+                  <div className="i2r-trace-body">
+                    <div className="i2r-trace-group">
+                      <span className="i2r-trace-group-label i2r-trace-group-label--kept">
+                        کلمات محتوا
+                      </span>
+                      <div className="i2r-trace-chips">
+                        {result.trace
+                          .filter((t) => !t.isStopword)
+                          .map((t, i) => (
+                            <span
+                              key={`${t.original}-${i}`}
+                              className={`i2r-trace-chip${
+                                t.matchedDomains.length > 0
+                                  ? ' is-matched'
+                                  : ''
+                              }`}
+                              title={
+                                t.matchedDomains.length > 0
+                                  ? `مطابقت با: ${t.matchedDomains.join(', ')}`
+                                  : undefined
+                              }
+                            >
+                              {t.original}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+
+                    <div className="i2r-trace-group">
+                      <span className="i2r-trace-group-label i2r-trace-group-label--dropped">
+                        ایستواژه‌ها (فیلتر شدند)
+                      </span>
+                      <div className="i2r-trace-chips">
+                        {result.trace
+                          .filter((t) => t.isStopword)
+                          .map((t, i) => (
+                            <span
+                              key={`${t.original}-${i}`}
+                              className="i2r-trace-chip i2r-trace-chip--muted"
+                            >
+                              {t.original}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+
+                    {result.matchedKeywords.length > 0 && (
+                      <div className="i2r-trace-group">
+                        <span className="i2r-trace-group-label i2r-trace-group-label--matched">
+                          کلیدواژه‌های مطبوق
+                        </span>
+                        <div className="i2r-trace-chips">
+                          {result.matchedKeywords.map((kw) => (
+                            <span
+                              key={kw}
+                              className="i2r-trace-chip i2r-trace-chip--matched"
+                            >
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ═══ Actions ═══ */}
               <div className="i2r-result-actions">
                 <a href="/order" className="i2r-cta-primary">
                   <span>شروع پروژه</span>
@@ -547,25 +655,34 @@ export function IdeaToReal() {
 }
 
 /* ───────────────────────────────────────────────────────────
-   DetailPanel — shows the active station's details
+   DetailPanel
    ─────────────────────────────────────────────────────────── */
 
 type DetailPanelProps = {
   serviceId: ServiceId;
   reasons: readonly string[];
+  confidence: number;
 };
 
-function DetailPanel({ serviceId, reasons }: DetailPanelProps) {
+function DetailPanel({
+  serviceId,
+  reasons,
+  confidence,
+}: DetailPanelProps) {
   const service = SERVICES[serviceId];
 
   return (
     <div className="i2r-detail-inner">
-      <span className="i2r-detail-code" dir="ltr">
-        {service.code}
-      </span>
+      <div className="i2r-detail-head">
+        <span className="i2r-detail-code" dir="ltr">
+          {service.code}
+        </span>
+        <span className="i2r-detail-confidence">
+          اطمینان {toPersian(Math.round(confidence * 100))}٪
+        </span>
+      </div>
 
       <h4 className="i2r-detail-title">{service.title}</h4>
-
       <p className="i2r-detail-desc">{service.description}</p>
 
       {reasons.length > 0 && (
