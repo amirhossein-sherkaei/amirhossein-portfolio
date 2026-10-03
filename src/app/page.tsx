@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
-import { IdeaToReal } from "@/components/idea-to-real/IdeaToReal";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import WhyMe from "@/components/WhyMe";
@@ -13,12 +12,6 @@ import Footer from "@/components/Footer";
 import RevealObserver from "@/components/RevealObserver";
 import { getAllPosts, getLatestPosts } from "@/lib/blog";
 import { projects } from "@/content/projects";
-
-/* ═══════════════════════════════════════════════════════════
-   CODE SPLITTING — همه ssr: true
-   کامپوننت‌های client-only (BackToTop, PerfObserver, ...)
-   خودشون "use client" دارن و روی سرور null رندر می‌کنن.
-   ═══════════════════════════════════════════════════════════ */
 
 const Services = dynamic(() => import("@/components/Services"), {
   ssr: true,
@@ -115,7 +108,6 @@ export default function Home() {
           totalPosts={allPosts.length}
           totalProjects={projects.length}
         />
-        <IdeaToReal />
         <Services />
         <Process />
         <Portfolio />

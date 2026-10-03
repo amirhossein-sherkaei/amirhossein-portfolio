@@ -166,23 +166,19 @@ import "@/styles/blog-editorial.css";
 /* 47. Blog Article Premium */
 import "@/styles/blog-article-premium.css";
 
-/* 48. Grid Overlay (design tool, hidden by default) */
+/* 48. Grid Overlay */
 import "@/styles/grid-overlay.css";
 
-/* ═══════════════════════════════════════════════════════════
-   49. FINAL POLISH 2026 — باید آخرین CSS باشه
-   ═══════════════════════════════════════════════════════════ */
+/* 49. FINAL POLISH 2026 */
 import "@/styles/final-polish-2026.css";
 
-/* 50. AI Companion — Lost Garden (revival) */
-import "@/components/ai-companion/ai-companion.css";
+/* 50. ChatBot */
+import "@/components/chat/chat.css";
 
 /* ═══════════════════════════════════════════════════════════
    Components
    ═══════════════════════════════════════════════════════════ */
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { CompanionProvider } from "@/components/ai-companion/CompanionProvider";
-import Companion from "@/components/ai-companion/Companion";
 import WelcomeOnboarding from "@/components/WelcomeOnboarding";
 import TouchFeedback from "@/components/TouchFeedback";
 import SensoryFeedback from "@/components/SensoryFeedback";
@@ -190,13 +186,11 @@ import SignatureInk from "@/components/SignatureInk";
 import PerfObserver from "@/components/PerfObserver";
 import PageTransition from "@/components/PageTransition";
 import GridOverlay from "@/components/GridOverlay";
+import { ChatBot } from "@/components/chat/ChatBot";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 
-/* ═══════════════════════════════════════════════════════════
-   Fonts
-   ═══════════════════════════════════════════════════════════ */
 const vazirmatn = Vazirmatn({
   subsets: ["arabic", "latin"],
   variable: "--font-vazirmatn",
@@ -206,9 +200,6 @@ const vazirmatn = Vazirmatn({
   fallback: ["system-ui", "arial"],
 });
 
-/* ═══════════════════════════════════════════════════════════
-   Metadata
-   ═══════════════════════════════════════════════════════════ */
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 
@@ -258,9 +249,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  alternates: {
-    canonical: "/",
-  },
+  alternates: { canonical: "/" },
   icons: {
     icon: "/icon.webp",
     apple: "/apple-icon.webp",
@@ -359,10 +348,7 @@ export default function RootLayout({
           پرش به محتوای اصلی
         </a>
 
-        <CompanionProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-          <Companion />
-        </CompanionProvider>
+        <ThemeProvider>{children}</ThemeProvider>
 
         <WelcomeOnboarding />
         <TouchFeedback />
@@ -371,6 +357,7 @@ export default function RootLayout({
         <PerfObserver />
         <PageTransition />
         <GridOverlay />
+        <ChatBot />
         <Analytics />
         <SpeedInsights />
       </body>
