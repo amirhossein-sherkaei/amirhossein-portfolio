@@ -1,22 +1,26 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — ENGINE v3
+   CHATBOT — ENGINE v4 (Production)
    ────────────────────────────────────────────────────────────
-   • Knowledge base search (188 entries)
+   • Knowledge base search (888 entries)
    • Multi-layer intent detection
-   • Business keyword analysis
+   • Context awareness
    • Action-driven responses
    ═══════════════════════════════════════════════════════════ */
 
 import {
   BUSINESS_KEYWORDS,
+  CATEGORY_TO_INTENT,
   INTENT_PATTERNS,
   RESPONSES,
-  SITE_SECTIONS,
   type ActionLink,
   type IntentType,
   type QuickReply,
 } from './data';
 import { searchKnowledge } from './knowledge';
+
+/* ───────────────────────────────────────────────────────────
+   Types
+   ─────────────────────────────────────────────────────────── */
 
 export type BotResponse = {
   readonly text: string;
@@ -25,11 +29,16 @@ export type BotResponse = {
   readonly actions?: readonly ActionLink[];
 };
 
+export type ChatContext = {
+  readonly lastIntent?: IntentType;
+  readonly lastTopic?: string;
+};
+
 /* ───────────────────────────────────────────────────────────
    Normalization
    ─────────────────────────────────────────────────────────── */
 
-function normalize(text: string): string {
+export function normalize(text: string): string {
   return text
     .replace(/[\u200c\u200e\u200f]/g, ' ')
     .replace(/[يى]/g, 'ی')
@@ -44,7 +53,7 @@ function normalize(text: string): string {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Intent detection — multi-pass
+   Intent detection
    ─────────────────────────────────────────────────────────── */
 
 function detectIntent(text: string): IntentType {
@@ -75,45 +84,55 @@ function detectIntent(text: string): IntentType {
     }
   }
 
-  // If low score, try business keyword fallback
-  if (bestScore < 6 && normalized.length >= 4) {
-    for (const keyword of Object.keys(BUSINESS_KEYWORDS)) {
-      if (normalized.includes(normalize(keyword))) {
-        return 'describe_project';
-      }
-    }
-  }
-
   if (bestScore < 4) return 'unknown';
   return bestIntent;
 }
 
 /* ───────────────────────────────────────────────────────────
-   Response builder helpers
+   Business keyword detection (برای describe_project)
+   ─────────────────────────────────────────────────────────── */
+
+function detectBusinessDomain(text: string): string | null {
+  const normalized = normalize(text);
+  if (!normalized) return null;
+  if (normalized.length < 5) return null;
+
+  for (const [key, label] of Object.entries(BUSINESS_KEYWORDS)) {
+    const k = normalize(key);
+    if (k.length >= 3 && normalized.includes(k)) return label;
+  }
+  return null;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Response builders
    ─────────────────────────────────────────────────────────── */
 
 function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function buildDescribeProject(text: string): BotResponse {
-  const normalized = normalize(text);
-  const detected: string[] = [];
+function buildDescribeProject(domain: string): BotResponse {
+  const isFood =
+    domain.includes('رستوران') ||
+    domain.includes('کافه') ||
+    domain.includes('قنادی') ||
+    domain.includes('نانوایی');
 
-  for (const [key, label] of Object.entries(BUSINESS_KEYWORDS)) {
-    if (normalized.includes(normalize(key))) {
-      detected.push(label);
-    }
-  }
-
-  const domain = detected[0] ?? 'کسب‌وکار';
-
-  const isFood = domain.includes('رستوران') || domain.includes('کافه');
   const isEdu = domain.includes('آموزشگاه');
+
   const isShop =
     domain.includes('فروشگاه') ||
     domain.includes('پوشاک') ||
-    domain.includes('کفش');
+    domain.includes('کفش') ||
+    domain.includes('طلا') ||
+    domain.includes('موبایل');
+
+  const isHealth =
+    domain.includes('کلینیک') ||
+    domain.includes('دندان') ||
+    domain.includes('پزشک') ||
+    domain.includes('مطب');
 
   let serviceHint = '';
   if (isFood) {
@@ -125,6 +144,9 @@ function buildDescribeProject(text: string): BotResponse {
   } else if (isShop) {
     serviceHint =
       '**۲. محتوای هوشمند** — توضیحات محصول و SEO\n**۳. ویدیوی معرفی** — اعتمادسازی';
+  } else if (isHealth) {
+    serviceHint =
+      '**۲. رزرو نوبت آنلاین** — کاهش تماس تلفنی\n**۳. محتوای تخصصی** — جذب بیمار از گوگل';
   } else {
     serviceHint =
       '**۲. محتوای هوشمند** — جذب مشتری از گوگل\n**۳. ویدیوی معرفی** — برندسازی';
@@ -139,17 +161,8 @@ function buildDescribeProject(text: string): BotResponse {
       `\n\nبرای نقشه‌ی کامل با فازها و زمان‌بندی، بریم سراغ فرم سفارش.`,
     intent: 'describe_project',
     actions: [
-      {
-        label: 'شروع پروژه',
-        href: '/order',
-        icon: 'spark',
-        primary: true,
-      },
-      {
-        label: 'دیدن نمونه‌کارها',
-        href: '/work',
-        icon: 'arrow',
-      },
+      { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
+      { label: 'دیدن نمونه‌کارها', href: '/work', icon: 'arrow' },
     ],
     quickReplies: [
       { label: 'قیمت حدودی', value: 'قیمت‌ها چطوره؟' },
@@ -163,13 +176,18 @@ function buildDescribeProject(text: string): BotResponse {
    Public API — generateResponse
    ═══════════════════════════════════════════════════════════ */
 
-export function generateResponse(userMessage: string): BotResponse {
-  // ۱. Knowledge base search — ۱۸۸ سؤال
+export function generateResponse(
+  userMessage: string,
+  context?: ChatContext,
+): BotResponse {
+  // ۱. Knowledge base search — ۸۸۸ سوال
   const knowledge = searchKnowledge(userMessage);
   if (knowledge) {
+    const mappedIntent =
+      CATEGORY_TO_INTENT[knowledge.category] ?? 'ask_faq';
     return {
       text: knowledge.answer,
-      intent: 'ask_faq',
+      intent: mappedIntent,
       actions: knowledge.actions,
     };
   }
@@ -177,12 +195,19 @@ export function generateResponse(userMessage: string): BotResponse {
   // ۲. Intent detection
   const intent = detectIntent(userMessage);
 
-  // ۳. Special case: describe_project
-  if (intent === 'describe_project') {
-    return buildDescribeProject(userMessage);
+  // ۳. Business domain detection (فقط اگه هیچ intent قوی‌ای نبود)
+  if (intent === 'unknown') {
+    const domain = detectBusinessDomain(userMessage);
+    if (domain) return buildDescribeProject(domain);
   }
 
-  // ۴. Standard responses
+  // ۴. describe_project با intent مستقیم
+  if (intent === 'describe_project') {
+    const domain = detectBusinessDomain(userMessage) ?? 'کسب‌وکار';
+    return buildDescribeProject(domain);
+  }
+
+  // ۵. Standard responses
   const templates = RESPONSES[intent];
 
   if (!templates || templates.length === 0) {
@@ -209,40 +234,36 @@ export function generateResponse(userMessage: string): BotResponse {
    Initial message
    ─────────────────────────────────────────────────────────── */
 
+const INITIAL_MESSAGE: BotResponse = {
+  text:
+    'سلام! 👋\n\n' +
+    'من دستیار دیجیتال امیرحسین‌ام. می‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، فرآیند کار یا هر چیز دیگه‌ای راهنماییت کنم.\n\n' +
+    'حتی اگه فقط یه ایده‌ی خام داری، همین‌جا بگو — با هم شکلش می‌دیم.',
+  intent: 'greeting',
+  quickReplies: [
+    { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
+    { label: 'نمونه‌کار نشونم بده', value: 'نمونه کار نشونم بده' },
+    { label: 'قیمت‌ها چطوره؟', value: 'قیمت‌ها چطوره؟' },
+    { label: 'شروع پروژه', value: 'می‌خوام پروژه سفارش بدم' },
+  ],
+  actions: [
+    { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
+  ],
+};
+
 export function getInitialMessage(): BotResponse {
-  return {
-    text:
-      'سلام! 👋\n\n' +
-      'من دستیار دیجیتال امیرحسین‌ام. می‌تونم درباره‌ی خدمات، نمونه‌کارها، قیمت‌ها، فرآیند کار یا هر چیز دیگه‌ای راهنماییت کنم.\n\n' +
-      'حتی اگه فقط یه ایده‌ی خام داری، همین‌جا بگو — با هم شکلش می‌دیم.',
-    intent: 'greeting',
-    quickReplies: [
-      { label: 'خدماتت چیه؟', value: 'خدماتت چیه؟' },
-      { label: 'نمونه‌کار نشونم بده', value: 'نمونه کار نشونم بده' },
-      { label: 'قیمت‌ها چطوره؟', value: 'قیمت‌ها چطوره؟' },
-      { label: 'شروع پروژه', value: 'می‌خوام پروژه سفارش بدم' },
-    ],
-    actions: [
-      { label: 'نمونه‌کارها', href: '/work', icon: 'arrow' },
-    ],
-  };
+  return INITIAL_MESSAGE;
 }
 
 /* ───────────────────────────────────────────────────────────
-   Site section matcher — for navigation intent
+   Stats helper (اختیاری — برای دیباگ)
    ─────────────────────────────────────────────────────────── */
 
-export function findSectionByText(
-  text: string,
-): (typeof SITE_SECTIONS)[number] | null {
-  const normalized = normalize(text);
-
-  for (const section of SITE_SECTIONS) {
-    for (const keyword of section.keywords) {
-      if (normalized.includes(normalize(keyword))) {
-        return section;
-      }
-    }
-  }
-  return null;
+export function getEngineStats() {
+  return {
+    intents: Object.keys(INTENT_PATTERNS).length,
+    responses: Object.keys(RESPONSES).length,
+    businessKeywords: Object.keys(BUSINESS_KEYWORDS).length,
+    contextSupported: true,
+  };
 }
