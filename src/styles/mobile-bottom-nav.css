@@ -164,20 +164,23 @@
     touch-action: none; /* enable scrubbing */
   }
 
-  /* ─── SLIDING INDICATOR (FIXED · perfectly centered) ─── */
+  /* ─── SLIDING INDICATOR ───
+     Uses `right` (physical) instead of `inset-inline-start` for
+     consistent RTL positioning across browsers.
+     In RTL flex layout, item[0] is rightmost → right: calc(0%)
+     item[4] is leftmost → right: calc(80%) + padding
+     ─────────────────────────── */
   .mbn-slider {
     position: absolute;
     top: 0;
     bottom: 0;
-    inset-inline-start: calc(
-      var(--mbn-index, 0) * (100% / var(--mbn-count, 5)) + 3px
-    );
+    right: calc(var(--mbn-index, 0) * (100% / var(--mbn-count, 5)) + 3px);
     width: calc(100% / var(--mbn-count, 5) - 6px);
     border-radius: 28px;
     pointer-events: none;
     z-index: 0;
     transition:
-      inset-inline-start 640ms cubic-bezier(0.34, 1.15, 0.4, 1),
+      right 640ms cubic-bezier(0.34, 1.15, 0.4, 1),
       opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 250, 242, 0.92) 100%);
     box-shadow:
