@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — ENGINE v2
+   CHATBOT — ENGINE v3
    ────────────────────────────────────────────────────────────
+   • Knowledge base search (188 entries)
    • Multi-layer intent detection
-   • Site section matching
    • Business keyword analysis
    • Action-driven responses
    ═══════════════════════════════════════════════════════════ */
@@ -16,6 +16,7 @@ import {
   type IntentType,
   type QuickReply,
 } from './data';
+import { searchKnowledge } from './knowledge';
 
 export type BotResponse = {
   readonly text: string;
@@ -32,9 +33,9 @@ function normalize(text: string): string {
   return text
     .replace(/[\u200c\u200e\u200f]/g, ' ')
     .replace(/[يى]/g, 'ی')
-    .replace(/ك/g, 'ک')
+    .replace(/[ك]/g, 'ک')
     .replace(/[أإآٱ]/g, 'ا')
-    .replace(/ة/g, 'ه')
+    .replace(/[ة]/g, 'ه')
     .replace(/[\u064B-\u065F]/g, '')
     .replace(/[^\p{L}\p{N}\s]/gu, ' ')
     .replace(/\s+/g, ' ')
@@ -88,7 +89,7 @@ function detectIntent(text: string): IntentType {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Response builder
+   Response builder helpers
    ─────────────────────────────────────────────────────────── */
 
 function pickRandom<T>(arr: readonly T[]): T {
@@ -159,16 +160,29 @@ function buildDescribeProject(text: string): BotResponse {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Public API
-   ─────────────────────────────────────────────────────────── */
+   Public API — generateResponse
+   ═══════════════════════════════════════════════════════════ */
 
 export function generateResponse(userMessage: string): BotResponse {
+  // ۱. Knowledge base search — ۱۸۸ سؤال
+  const knowledge = searchKnowledge(userMessage);
+  if (knowledge) {
+    return {
+      text: knowledge.answer,
+      intent: 'ask_faq',
+      actions: knowledge.actions,
+    };
+  }
+
+  // ۲. Intent detection
   const intent = detectIntent(userMessage);
 
+  // ۳. Special case: describe_project
   if (intent === 'describe_project') {
     return buildDescribeProject(userMessage);
   }
 
+  // ۴. Standard responses
   const templates = RESPONSES[intent];
 
   if (!templates || templates.length === 0) {
