@@ -1,40 +1,31 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — Floating Assistant v2
-   ────────────────────────────────────────────────────────────
-   • Site-matching gradient icons
-   • Editorial corner marks
-   • Action buttons (navigate directly)
-   • Full keyboard navigation
-   • Auto-scroll + persistent history
+   CHATBOT — Floating Assistant v5 (Fixed Logo Edition)
    ═══════════════════════════════════════════════════════════ */
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import {
   generateResponse,
   getInitialMessage,
   type BotResponse,
-} from './ChatEngine';
-import type { ActionLink, ChatMessage, QuickReply } from './data';
-import './chat.css';
+} from "./ChatEngine";
+import type { ActionLink, ChatMessage, QuickReply } from "./data";
+import "./chat.css";
 
-/* ───────────────────────────────────────────────────────────
-   Constants
-   ─────────────────────────────────────────────────────────── */
-
-const STORAGE_KEY = 'chat-messages-v2';
+const STORAGE_KEY = "chat-messages-v5";
 const TYPING_DELAY_MS = 700;
 const MAX_MESSAGES = 60;
 
-const PERSIAN_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
+const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
 
 function toPersian(value: string | number): string {
   return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[Number(d)]);
@@ -45,98 +36,12 @@ function generateId(): string {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Site-matching icons (SVG with gradient)
+   Action icon
    ─────────────────────────────────────────────────────────── */
 
-function ChatIcon({ open }: { open: boolean }) {
-  if (open) {
-    return (
-      <svg
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient
-            id="chatCloseDark"
-            x1="16"
-            y1="6"
-            x2="16"
-            y2="26"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#3E3630" />
-            <stop offset="1" stopColor="#18140F" />
-          </linearGradient>
-          <linearGradient
-            id="chatCloseWarm"
-            x1="10"
-            y1="10"
-            x2="22"
-            y2="22"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#FF9A55" />
-            <stop offset="1" stopColor="#E94B2C" />
-          </linearGradient>
-        </defs>
-        <circle cx="16" cy="16" r="11" fill="url(#chatCloseDark)" />
-        <path
-          d="M11.5 11.5l9 9M20.5 11.5l-9 9"
-          stroke="url(#chatCloseWarm)"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-        />
-      </svg>
-    );
-  }
-
-  return (
-    <svg
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient
-          id="chatBubbleDark"
-          x1="16"
-          y1="4"
-          x2="16"
-          y2="28"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#3E3630" />
-          <stop offset="1" stopColor="#18140F" />
-        </linearGradient>
-        <linearGradient
-          id="chatBubbleWarm"
-          x1="16"
-          y1="8"
-          x2="16"
-          y2="16"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#FF9A55" />
-          <stop offset="1" stopColor="#E94B2C" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M6 8a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-6.5L9 27v-5H10a4 4 0 0 1-4-4V8z"
-        fill="url(#chatBubbleDark)"
-      />
-      <circle cx="12" cy="12" r="1.7" fill="url(#chatBubbleWarm)" />
-      <circle cx="16" cy="12" r="1.7" fill="url(#chatBubbleWarm)" />
-      <circle cx="20" cy="12" r="1.7" fill="url(#chatBubbleWarm)" />
-    </svg>
-  );
-}
-
-function ActionIcon({ type }: { type: ActionLink['icon'] }) {
+function ActionIcon({ type }: { type: ActionLink["icon"] }) {
   switch (type) {
-    case 'external':
+    case "external":
       return (
         <svg
           viewBox="0 0 24 24"
@@ -152,7 +57,7 @@ function ActionIcon({ type }: { type: ActionLink['icon'] }) {
           <line x1="10" y1="14" x2="21" y2="3" />
         </svg>
       );
-    case 'spark':
+    case "spark":
       return (
         <svg
           viewBox="0 0 24 24"
@@ -166,7 +71,7 @@ function ActionIcon({ type }: { type: ActionLink['icon'] }) {
           <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z" />
         </svg>
       );
-    case 'doc':
+    case "doc":
       return (
         <svg
           viewBox="0 0 24 24"
@@ -181,7 +86,7 @@ function ActionIcon({ type }: { type: ActionLink['icon'] }) {
           <polyline points="14 2 14 8 20 8" />
         </svg>
       );
-    case 'chat':
+    case "chat":
       return (
         <svg
           viewBox="0 0 24 24"
@@ -195,7 +100,7 @@ function ActionIcon({ type }: { type: ActionLink['icon'] }) {
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
       );
-    case 'arrow':
+    case "arrow":
     default:
       return (
         <svg
@@ -223,7 +128,7 @@ export function ChatBot() {
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [hasNew, setHasNew] = useState(false);
 
@@ -250,12 +155,12 @@ export function ChatBot() {
       setMessages([
         {
           id: generateId(),
-          role: 'bot',
+          role: "bot",
           text: initial.text,
           timestamp: Date.now(),
           quickReplies: initial.quickReplies,
           actions: initial.actions,
-          state: 'complete',
+          state: "complete",
         },
       ]);
     } catch {
@@ -280,8 +185,8 @@ export function ChatBot() {
   useEffect(() => {
     if (open) {
       endRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end',
+        behavior: "smooth",
+        block: "end",
       });
     }
   }, [messages, isTyping, open]);
@@ -308,13 +213,13 @@ export function ChatBot() {
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         e.preventDefault();
         setOpen(false);
       }
     };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [open]);
 
   /* Close on route change */
@@ -330,14 +235,14 @@ export function ChatBot() {
 
       const userMessage: ChatMessage = {
         id: generateId(),
-        role: 'user',
+        role: "user",
         text: trimmed,
         timestamp: Date.now(),
-        state: 'complete',
+        state: "complete",
       };
 
       setMessages((prev) => [...prev, userMessage]);
-      setInput('');
+      setInput("");
       setIsTyping(true);
 
       typingTimeout.current = window.setTimeout(() => {
@@ -345,12 +250,12 @@ export function ChatBot() {
 
         const botMessage: ChatMessage = {
           id: generateId(),
-          role: 'bot',
+          role: "bot",
           text: response.text,
           timestamp: Date.now(),
           quickReplies: response.quickReplies,
           actions: response.actions,
-          state: 'complete',
+          state: "complete",
         };
 
         setMessages((prev) => [...prev, botMessage]);
@@ -378,7 +283,7 @@ export function ChatBot() {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage(input);
       }
@@ -396,12 +301,12 @@ export function ChatBot() {
     setMessages([
       {
         id: generateId(),
-        role: 'bot',
+        role: "bot",
         text: initial.text,
         timestamp: Date.now(),
         quickReplies: initial.quickReplies,
         actions: initial.actions,
-        state: 'complete',
+        state: "complete",
       },
     ]);
     try {
@@ -414,7 +319,7 @@ export function ChatBot() {
   const lastMessage = messages[messages.length - 1];
   const showQuickReplies =
     !isTyping &&
-    lastMessage?.role === 'bot' &&
+    lastMessage?.role === "bot" &&
     lastMessage.quickReplies &&
     lastMessage.quickReplies.length > 0;
 
@@ -426,16 +331,24 @@ export function ChatBot() {
       <button
         ref={bubbleRef}
         type="button"
-        className={`chat-bubble${open ? ' is-open' : ''}${
-          hasNew ? ' has-new' : ''
+        className={`chat-bubble${open ? " is-open" : ""}${
+          hasNew ? " has-new" : ""
         }`}
         onClick={handleToggle}
-        aria-label={open ? 'بستن گفت‌وگو' : 'شروع گفت‌وگو'}
+        aria-label={open ? "بستن گفت‌وگو" : "شروع گفت‌وگو"}
         aria-expanded={open}
         aria-controls="chat-panel"
       >
-        <span className="chat-bubble-glyph" aria-hidden="true">
-          <ChatIcon open={open} />
+        <span className="chat-bubble-halo" aria-hidden="true" />
+        <span className="chat-bubble-inner" aria-hidden="true">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={72}
+            height={72}
+            className="chat-bubble-img"
+            priority={false}
+          />
         </span>
         {hasNew && <span className="chat-bubble-badge" aria-hidden="true" />}
         <span className="chat-bubble-pulse" aria-hidden="true" />
@@ -444,35 +357,40 @@ export function ChatBot() {
       {/* ═══ Panel ═══ */}
       <aside
         id="chat-panel"
-        className={`chat-panel${open ? ' is-open' : ''}`}
+        className={`chat-panel${open ? " is-open" : ""}`}
         role="dialog"
         aria-modal="false"
         aria-labelledby="chat-title"
         aria-hidden={!open}
       >
-        {/* Editorial corner marks */}
         <span className="chat-corner chat-corner-tl" aria-hidden="true" />
         <span className="chat-corner chat-corner-tr" aria-hidden="true" />
         <span className="chat-corner chat-corner-bl" aria-hidden="true" />
         <span className="chat-corner chat-corner-br" aria-hidden="true" />
 
-        {/* Header */}
+        <span className="chat-orb chat-orb-1" aria-hidden="true" />
+        <span className="chat-orb chat-orb-2" aria-hidden="true" />
+
+        {/* ─── Header ─── */}
         <header className="chat-head">
           <div className="chat-head-info">
-            <span className="chat-head-avatar" aria-hidden="true">
-              <span className="chat-head-avatar-inner">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z" />
-                </svg>
+            {/* Avatar with logo */}
+            <span className="chat-avatar">
+              <span className="chat-avatar-halo" aria-hidden="true" />
+              <span className="chat-avatar-inner">
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="chat-avatar-img"
+                  priority={false}
+                />
               </span>
-              <span className="chat-head-avatar-status" />
+              <span
+                className="chat-avatar-status"
+                aria-hidden="true"
+              />
             </span>
 
             <div className="chat-head-text">
@@ -535,7 +453,7 @@ export function ChatBot() {
           </div>
         </header>
 
-        {/* Messages */}
+        {/* ─── Messages ─── */}
         <div
           className="chat-stream"
           role="log"
@@ -547,18 +465,16 @@ export function ChatBot() {
               key={msg.id}
               className={`chat-msg chat-msg--${msg.role}`}
             >
-              {msg.role === 'bot' && (
+              {msg.role === "bot" && (
                 <span className="chat-msg-avatar" aria-hidden="true">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z" />
-                  </svg>
+                  <Image
+                    src="/logo.png"
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="chat-msg-avatar-img"
+                    priority={false}
+                  />
                 </span>
               )}
 
@@ -571,8 +487,7 @@ export function ChatBot() {
                     }}
                   />
 
-                  {/* Actions */}
-                  {msg.role === 'bot' &&
+                  {msg.role === "bot" &&
                     msg.actions &&
                     msg.actions.length > 0 && (
                       <div className="chat-msg-actions">
@@ -584,7 +499,7 @@ export function ChatBot() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className={`chat-action${
-                                action.primary ? ' is-primary' : ''
+                                action.primary ? " is-primary" : ""
                               }`}
                             >
                               <span className="chat-action-icon">
@@ -599,7 +514,7 @@ export function ChatBot() {
                               key={action.href}
                               href={action.href}
                               className={`chat-action${
-                                action.primary ? ' is-primary' : ''
+                                action.primary ? " is-primary" : ""
                               }`}
                               onClick={() => setOpen(false)}
                             >
@@ -619,20 +534,17 @@ export function ChatBot() {
             </div>
           ))}
 
-          {/* Typing */}
           {isTyping && (
             <div className="chat-msg chat-msg--bot">
               <span className="chat-msg-avatar" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z" />
-                </svg>
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="chat-msg-avatar-img"
+                  priority={false}
+                />
               </span>
               <div className="chat-msg-body">
                 <div className="chat-msg-bubble chat-msg-bubble--typing">
@@ -644,7 +556,6 @@ export function ChatBot() {
             </div>
           )}
 
-          {/* Quick replies */}
           {showQuickReplies && lastMessage.quickReplies && (
             <div className="chat-quick">
               {lastMessage.quickReplies.map((reply) => (
@@ -663,7 +574,7 @@ export function ChatBot() {
           <div ref={endRef} />
         </div>
 
-        {/* Input */}
+        {/* ─── Input ─── */}
         <form className="chat-compose" onSubmit={handleSubmit}>
           <textarea
             ref={inputRef}
@@ -697,7 +608,6 @@ export function ChatBot() {
           </button>
         </form>
 
-        {/* Footer hint */}
         <div className="chat-foot-hint" aria-hidden="true">
           <span>پاسخ حداکثر ۲۴ ساعت</span>
           <span className="chat-foot-sep">·</span>
@@ -705,7 +615,6 @@ export function ChatBot() {
         </div>
       </aside>
 
-      {/* Mobile backdrop */}
       {open && (
         <div
           className="chat-backdrop"
@@ -723,13 +632,13 @@ export function ChatBot() {
 
 function formatMessageText(text: string): string {
   const escaped = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 
   const withBold = escaped.replace(
     /\*\*(.+?)\*\*/g,
-    '<strong>$1</strong>',
+    "<strong>$1</strong>",
   );
 
   const withQuote = withBold.replace(
@@ -737,5 +646,5 @@ function formatMessageText(text: string): string {
     '<span class="chat-quote">$1</span>',
   );
 
-  return withQuote.replace(/\n/g, '<br />');
+  return withQuote.replace(/\n/g, "<br />");
 }
