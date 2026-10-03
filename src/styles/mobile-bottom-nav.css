@@ -164,19 +164,20 @@
     touch-action: none; /* enable scrubbing */
   }
 
-  /* ─── SLIDING INDICATOR ─── */
+  /* ─── SLIDING INDICATOR (FIXED · perfectly centered) ─── */
   .mbn-slider {
     position: absolute;
     top: 0;
     bottom: 0;
-    inset-inline-start: 0;
-    width: calc((100% - 12px) / var(--mbn-count, 5) - 2px);
+    inset-inline-start: calc(
+      var(--mbn-index, 0) * (100% / var(--mbn-count, 5)) + 3px
+    );
+    width: calc(100% / var(--mbn-count, 5) - 6px);
     border-radius: 28px;
     pointer-events: none;
     z-index: 0;
-    transform: translate3d(calc(-100% * var(--mbn-index, 0) - var(--mbn-index, 0) * 2px), 0, 0);
     transition:
-      transform 640ms cubic-bezier(0.34, 1.15, 0.4, 1),
+      inset-inline-start 640ms cubic-bezier(0.34, 1.15, 0.4, 1),
       opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 250, 242, 0.92) 100%);
     box-shadow:
