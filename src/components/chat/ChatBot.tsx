@@ -1,15 +1,15 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — v13 (Final Edition)
+   CHATBOT — v13.1 (Final + Smart Auto-Scroll)
    ────────────────────────────────────────────────────────────
-   ✅ Fixed button position (respects site bottom nav)
-   ✅ Fixed theme (light default, follows site preference)
-   ✅ Fixed voice input (HTTPS detection + error handling)
-   ✅ New: Name detection + memory
-   ✅ New: Reply, toast, reaction palette
-   ✅ New: Offline detection, reset confirm
-   ✅ New: Search highlight, date separators
+   ✅ Fixed button position
+   ✅ Light theme by default
+   ✅ HTTPS voice input
+   ✅ Smart auto-scroll (always scrolls when user sends)
+   ✅ Name detection + memory
+   ✅ Reply, toast, reactions
+   ✅ Offline detection, reset confirm
    ═══════════════════════════════════════════════════════════ */
 
 import Image from "next/image";
@@ -24,7 +24,7 @@ import type { ActionLink, ChatMessage, IntentType, QuickReply } from "./data";
 import "./chat.css";
 
 /* ───────────────────────────────────────────────────────────
-   Web Speech API type declarations
+   Web Speech API types
    ─────────────────────────────────────────────────────────── */
 
 interface SpeechRecognitionAlternative { readonly transcript: string; readonly confidence: number; }
@@ -70,6 +70,7 @@ const CEREMONY_KEY = "chat-ceremony-date";
 const TYPING_DELAY_MS = 600;
 const IDLE_DELAY_MS = 28_000;
 const MAX_MESSAGES = 60;
+const AUTO_SCROLL_WINDOW_MS = 5000;
 
 const MOOD_COLORS: Partial<Record<IntentType, string>> = {
   greeting: "#10b981", thanks: "#10b981", goodbye: "#10b981",
@@ -305,10 +306,12 @@ export function ChatBot() {
   const contextRef = useRef<ChatContext>({});
   const lastKeystroke = useRef<number>(0);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  /* 👇 جدید: زمان آخرین پیام ارسالی کاربر برای auto-scroll هوشمند */
+  const lastUserSendRef = useRef<number>(0);
 
   useEffect(() => setMounted(true), []);
 
-  /* Check voice support on mount */
+  /* Check voice support */
   useEffect(() => {
     if (!mounted) return;
     const w = window as SpeechRecognitionWindow;
@@ -322,7 +325,7 @@ export function ChatBot() {
     toastTimeout.current = window.setTimeout(() => setToast(null), 2000);
   }, []);
 
-  /* Online/offline detection */
+  /* Online/offline */
   useEffect(() => {
     if (!mounted) return;
     setOnline(navigator.onLine);
@@ -336,7 +339,7 @@ export function ChatBot() {
     };
   }, [mounted, showToast]);
 
-  /* First-open ceremony */
+  /* Ceremony */
   useEffect(() => {
     if (!open || !mounted) return;
     const today = new Date().toISOString().slice(0, 10);
@@ -384,13 +387,28 @@ export function ChatBot() {
     try { sessionStorage.setItem(MEMORY_KEY, JSON.stringify(memory)); } catch { /* ignore */ }
   }, [mounted, memory]);
 
-  /* Auto-scroll */
+  /* ═══════════════════════════════════════════════════════════
+     🎯 SMART AUTO-SCROLL
+     ───────────────────────────────────────────────────────────
+     - اگه کاربر تازه پیام فرستاده → همیشه اسکرول به پایین
+     - اگه کاربر نزدیک پایین بود → اسکرول به پایین
+     - اگه کاربر بالا بود و پیام جدید اومد → اسکرول نمی‌کنه (دکمه‌ی پایین ظاهر می‌شه)
+     ═══════════════════════════════════════════════════════════ */
   useEffect(() => {
     if (!open) return;
     const el = streamRef.current;
     if (!el) return;
-    const d = el.scrollHeight - el.scrollTop - el.clientHeight;
-    if (d < 120) endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+
+    const recentlySent = Date.now() - lastUserSendRef.current < AUTO_SCROLL_WINDOW_MS;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    const nearBottom = distanceFromBottom < 120;
+
+    if (recentlySent || nearBottom) {
+      // ذخیره در RAF که DOM کامل رندر شده باشه
+      requestAnimationFrame(() => {
+        endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      });
+    }
   }, [messages, isTyping, open]);
 
   /* Scroll tracking */
@@ -518,7 +536,7 @@ export function ChatBot() {
 
   useEffect(() => { autoResize(); }, [input, autoResize]);
 
-  /* Aura on typing */
+  /* Aura */
   const bumpAura = useCallback(() => {
     const now = Date.now();
     const delta = now - lastKeystroke.current;
@@ -535,7 +553,7 @@ export function ChatBot() {
     else setSlashOpen(false);
   }, [input]);
 
-  /* Voice input — with HTTPS check */
+  /* Voice */
   const toggleVoice = useCallback(() => {
     if (typeof window === "undefined") return;
     if (!isSecureContext()) {
@@ -608,6 +626,9 @@ export function ChatBot() {
       }
 
       haptic("light");
+      /* 👇 جدید: علامت‌گذاری زمان ارسال برای auto-scroll اجباری */
+      lastUserSendRef.current = Date.now();
+
       const userMsg = createUserMessage(trimmed, replyTo ?? undefined);
       setMessages((prev) => [...prev, userMsg].slice(-MAX_MESSAGES));
       setInput("");
@@ -699,7 +720,7 @@ export function ChatBot() {
 
   return (
     <>
-      {/* ═══ BUBBLE ═══ */}
+      {/* BUBBLE */}
       <button ref={bubbleRef} type="button"
         className={`chat-bubble${open ? " is-open" : ""}${hasNew ? " has-new" : ""}`}
         onClick={handleToggle}
@@ -712,7 +733,7 @@ export function ChatBot() {
         <span className="chat-bubble-pulse" aria-hidden="true" />
       </button>
 
-      {/* ═══ PANEL ═══ */}
+      {/* PANEL */}
       <aside id="chat-panel" className={`chat-panel${open ? " is-open" : ""}${showCeremony ? " is-celebrating" : ""}`}
         role="dialog" aria-modal="false" aria-labelledby="chat-title" aria-hidden={!open}>
         <div className="chat-drag-handle" aria-hidden="true" />
@@ -724,11 +745,6 @@ export function ChatBot() {
             <span className="chat-ceremony-ring chat-ceremony-ring--3" />
           </div>
         )}
-
-        <span className="chat-corner chat-corner-tl" aria-hidden="true" />
-        <span className="chat-corner chat-corner-tr" aria-hidden="true" />
-        <span className="chat-corner chat-corner-bl" aria-hidden="true" />
-        <span className="chat-corner chat-corner-br" aria-hidden="true" />
 
         {!online && (
           <div className="chat-offline-banner" role="alert">
