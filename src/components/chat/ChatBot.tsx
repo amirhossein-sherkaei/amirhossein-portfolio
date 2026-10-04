@@ -1,7 +1,7 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — v6 (Production Edition)
+   CHATBOT — v7 (Mobile-First Debug Edition)
    ═══════════════════════════════════════════════════════════ */
 
 import Image from "next/image";
@@ -10,7 +10,6 @@ import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -23,17 +22,39 @@ import {
 import type { ActionLink, ChatMessage, QuickReply } from "./data";
 import "./chat.css";
 
-const STORAGE_KEY = "chat-messages-v6";
-const TYPING_DELAY_MS = 650;
+const STORAGE_KEY = "chat-messages-v7";
+const TYPING_DELAY_MS = 600;
 const MAX_MESSAGES = 60;
-
-function toPersian(value: string | number): string {
-  const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
-  return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[Number(d)]);
-}
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Chat bubble icon (SVG) — بجای لوگوی سایت
+   ─────────────────────────────────────────────────────────── */
+
+function ChatBubbleIcon() {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      xmlns="http://www.w3.org/2000/svg"
+      className="chat-bubble-icon-svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M34 19.5c0 7.2-6.3 13-14 13-1.6 0-3.2-.2-4.6-.6-2.5 1.8-5.7 3-8.9 3.3 1.5-1.8 2.5-4.2 2.7-6.9C6.4 25.9 4.5 22.9 4.5 19.5c0-7.2 6.3-13 14-13s15.5 5.8 15.5 13z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <circle cx="14" cy="19.5" r="1.9" fill="currentColor" />
+      <circle cx="20" cy="19.5" r="1.9" fill="currentColor" />
+      <circle cx="26" cy="19.5" r="1.9" fill="currentColor" />
+    </svg>
+  );
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -144,7 +165,7 @@ export function ChatBot() {
     } catch { /* ignore */ }
   }, [mounted, messages]);
 
-  /* Auto-scroll only if user is near bottom */
+  /* Auto-scroll فقط اگه کاربر نزدیک bottom هست */
   useEffect(() => {
     if (!open) return;
     const el = streamRef.current;
@@ -156,7 +177,7 @@ export function ChatBot() {
     }
   }, [messages, isTyping, open]);
 
-  /* Track scroll for "scroll to bottom" button */
+  /* Scroll tracking برای دکمه‌ی scroll-to-bottom */
   useEffect(() => {
     const el = streamRef.current;
     if (!el || !open) return;
@@ -167,6 +188,16 @@ export function ChatBot() {
     el.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => el.removeEventListener("scroll", handleScroll);
+  }, [open]);
+
+  /* قفل اسکرول بدنه وقتی پنل بازه (موبایل) */
+  useEffect(() => {
+    if (!open) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
   }, [open]);
 
   /* Focus */
@@ -205,7 +236,7 @@ export function ChatBot() {
     setOpen(false);
   }, [pathname]);
 
-  /* Auto-resize textarea (fallback for field-sizing) */
+  /* Auto-resize textarea */
   const autoResize = useCallback(() => {
     const el = inputRef.current;
     if (!el) return;
@@ -217,7 +248,7 @@ export function ChatBot() {
     autoResize();
   }, [input, autoResize]);
 
-  /* Actions */
+  /* Send */
   const sendMessage = useCallback(
     (text: string) => {
       const trimmed = text.trim();
@@ -241,9 +272,7 @@ export function ChatBot() {
           contextRef.current,
         );
 
-        contextRef.current = {
-          lastIntent: response.intent,
-        };
+        contextRef.current = { lastIntent: response.intent };
 
         const botMessage: ChatMessage = {
           id: generateId(),
@@ -325,6 +354,7 @@ export function ChatBot() {
 
   return (
     <>
+      {/* ═══ Bubble ═══ */}
       <button
         ref={bubbleRef}
         type="button"
@@ -336,19 +366,13 @@ export function ChatBot() {
       >
         <span className="chat-bubble-halo" aria-hidden="true" />
         <span className="chat-bubble-inner" aria-hidden="true">
-          <Image
-            src="/logo.png"
-            alt=""
-            width={72}
-            height={72}
-            className="chat-bubble-img"
-            priority={false}
-          />
+          <ChatBubbleIcon />
         </span>
         {hasNew && <span className="chat-bubble-badge" aria-hidden="true" />}
         <span className="chat-bubble-pulse" aria-hidden="true" />
       </button>
 
+      {/* ═══ Panel ═══ */}
       <aside
         id="chat-panel"
         className={`chat-panel${open ? " is-open" : ""}`}
@@ -365,6 +389,7 @@ export function ChatBot() {
         <span className="chat-orb chat-orb-1" aria-hidden="true" />
         <span className="chat-orb chat-orb-2" aria-hidden="true" />
 
+        {/* ─── Header ─── */}
         <header className="chat-head">
           <div className="chat-head-info">
             <span className="chat-avatar">
@@ -431,6 +456,7 @@ export function ChatBot() {
           </div>
         </header>
 
+        {/* ─── Stream ─── */}
         <div
           ref={streamRef}
           className="chat-stream"
@@ -565,6 +591,7 @@ export function ChatBot() {
           </button>
         )}
 
+        {/* ─── Compose ─── */}
         <form className="chat-compose" onSubmit={handleSubmit}>
           <textarea
             ref={inputRef}

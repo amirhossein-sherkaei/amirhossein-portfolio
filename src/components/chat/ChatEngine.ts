@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — ENGINE v4 (Production)
+   CHATBOT — ENGINE v5 (Debug Edition)
    ────────────────────────────────────────────────────────────
+   • Priority intent detection (fixes greeting hijack)
    • Knowledge base search (888 entries)
-   • Multi-layer intent detection
+   • Business domain detection
    • Context awareness
-   • Action-driven responses
    ═══════════════════════════════════════════════════════════ */
 
 import {
@@ -53,7 +53,55 @@ export function normalize(text: string): string {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Intent detection
+   Priority Intent Detection
+   — این تابع قبل از KB search اجرا می‌شه تا greeting هرگز
+     با یه کلیدواژه تصادفی قاطی نشه.
+   ─────────────────────────────────────────────────────────── */
+
+const PRIORITY_INTENTS: readonly IntentType[] = [
+  'greeting',
+  'thanks',
+  'goodbye',
+];
+
+const PRIORITY_PATTERNS: Record<string, readonly string[]> = {
+  greeting: INTENT_PATTERNS.greeting.map(normalize),
+  thanks: INTENT_PATTERNS.thanks.map(normalize),
+  goodbye: INTENT_PATTERNS.goodbye.map(normalize),
+};
+
+function detectPriorityIntent(normalized: string): IntentType | null {
+  if (!normalized) return null;
+
+  const words = normalized.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return null;
+  if (words.length > 4) return null; // پیام‌های طولانی احتمالاً سؤال جدی‌ان
+
+  for (const intent of PRIORITY_INTENTS) {
+    const patterns = PRIORITY_PATTERNS[intent];
+
+    // حالت ۱: تک‌کلمه‌ای که دقیقاً با یه pattern مطابقت داره
+    if (words.length === 1 && patterns.includes(words[0])) {
+      return intent;
+    }
+
+    // حالت ۲: چندکلمه‌ای — همه‌ی کلمات باید در pattern های همون intent باشن
+    if (words.length >= 2) {
+      const allMatch = words.every((w) => patterns.includes(w));
+      if (allMatch) return intent;
+
+      // حالت ۳: کلمه‌ی اول greeting + حداکثر ۱ کلمه‌ی اضافی
+      if (words.length === 2 && patterns.includes(words[0])) {
+        return intent;
+      }
+    }
+  }
+
+  return null;
+}
+
+/* ───────────────────────────────────────────────────────────
+   Intent detection — عمومی
    ─────────────────────────────────────────────────────────── */
 
 function detectIntent(text: string): IntentType {
@@ -89,7 +137,7 @@ function detectIntent(text: string): IntentType {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Business keyword detection (برای describe_project)
+   Business keyword detection
    ─────────────────────────────────────────────────────────── */
 
 function detectBusinessDomain(text: string): string | null {
@@ -105,11 +153,34 @@ function detectBusinessDomain(text: string): string | null {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Response builders
+   Helpers
    ─────────────────────────────────────────────────────────── */
 
 function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function buildFromIntent(intent: IntentType): BotResponse {
+  const templates = RESPONSES[intent];
+
+  if (!templates || templates.length === 0) {
+    const fallback = RESPONSES.unknown[0];
+    return {
+      text: fallback.text,
+      intent: 'unknown',
+      quickReplies: fallback.quickReplies,
+      actions: fallback.actions,
+    };
+  }
+
+  const template = pickRandom(templates);
+
+  return {
+    text: template.text,
+    intent,
+    quickReplies: template.quickReplies,
+    actions: template.actions,
+  };
 }
 
 function buildDescribeProject(domain: string): BotResponse {
@@ -173,61 +244,57 @@ function buildDescribeProject(domain: string): BotResponse {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Public API — generateResponse
-   ═══════════════════════════════════════════════════════════ */
+   Public API
+   ─────────────────────────────────────────────────────────── */
 
 export function generateResponse(
   userMessage: string,
-  context?: ChatContext,
+  _context?: ChatContext,
 ): BotResponse {
-  // ۱. Knowledge base search — ۸۸۸ سوال
-  const knowledge = searchKnowledge(userMessage);
-  if (knowledge) {
-    const mappedIntent =
-      CATEGORY_TO_INTENT[knowledge.category] ?? 'ask_faq';
-    return {
-      text: knowledge.answer,
-      intent: mappedIntent,
-      actions: knowledge.actions,
-    };
+  const normalized = normalize(userMessage);
+
+  // ۰. ورودی خالی
+  if (!normalized || normalized.length < 2) {
+    return buildFromIntent('unknown');
   }
 
-  // ۲. Intent detection
+  // ۱. PRIORITY — greeting/thanks/goodbye قبل از هر چیز
+  //    این جلوی hijack شدن توسط KB رو می‌گیره
+  const priorityIntent = detectPriorityIntent(normalized);
+  if (priorityIntent) {
+    return buildFromIntent(priorityIntent);
+  }
+
+  // ۲. Knowledge base search (فقط برای پیام‌های >= ۳ کاراکتر)
+  if (normalized.length >= 3) {
+    const knowledge = searchKnowledge(userMessage);
+    if (knowledge) {
+      const mappedIntent =
+        CATEGORY_TO_INTENT[knowledge.category] ?? 'ask_faq';
+      return {
+        text: knowledge.answer,
+        intent: mappedIntent,
+        actions: knowledge.actions,
+      };
+    }
+  }
+
+  // ۳. Intent detection
   const intent = detectIntent(userMessage);
 
-  // ۳. Business domain detection (فقط اگه هیچ intent قوی‌ای نبود)
+  // ۴. Business domain detection (وقتی هیچ intent قوی‌ای نبود)
   if (intent === 'unknown') {
     const domain = detectBusinessDomain(userMessage);
     if (domain) return buildDescribeProject(domain);
   }
 
-  // ۴. describe_project با intent مستقیم
   if (intent === 'describe_project') {
     const domain = detectBusinessDomain(userMessage) ?? 'کسب‌وکار';
     return buildDescribeProject(domain);
   }
 
-  // ۵. Standard responses
-  const templates = RESPONSES[intent];
-
-  if (!templates || templates.length === 0) {
-    const fallback = RESPONSES.unknown[0];
-    return {
-      text: fallback.text,
-      intent: 'unknown',
-      quickReplies: fallback.quickReplies,
-      actions: fallback.actions,
-    };
-  }
-
-  const template = pickRandom(templates);
-
-  return {
-    text: template.text,
-    intent,
-    quickReplies: template.quickReplies,
-    actions: template.actions,
-  };
+  // ۵. پاسخ استاندارد
+  return buildFromIntent(intent);
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -256,14 +323,22 @@ export function getInitialMessage(): BotResponse {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Stats helper (اختیاری — برای دیباگ)
+   Debug helper
    ─────────────────────────────────────────────────────────── */
 
-export function getEngineStats() {
+export function debugIntent(userMessage: string) {
+  const normalized = normalize(userMessage);
+  const priority = detectPriorityIntent(normalized);
+  const knowledge = searchKnowledge(userMessage);
+  const intent = detectIntent(userMessage);
+
   return {
-    intents: Object.keys(INTENT_PATTERNS).length,
-    responses: Object.keys(RESPONSES).length,
-    businessKeywords: Object.keys(BUSINESS_KEYWORDS).length,
-    contextSupported: true,
+    normalized,
+    priorityIntent: priority,
+    knowledgeMatch: knowledge
+      ? { id: knowledge.id, category: knowledge.category }
+      : null,
+    regularIntent: intent,
+    finalResponse: generateResponse(userMessage),
   };
 }
