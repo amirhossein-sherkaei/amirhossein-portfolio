@@ -224,7 +224,7 @@ export default function Hero({
         id: "latest",
         render: () => (
           <Link
-            href={`/blog/${latestPost.slug}`} prefetch={false}
+            href={`/blog/${latestPost.slug}`}
             className="hero-bento-live-item"
           >
             <span className="hero-bento-live-label">
@@ -251,7 +251,7 @@ export default function Hero({
       id: "stats",
       render: () => (
         <Link
-          href="/blog" prefetch={false}
+          href="/blog"
           className="hero-bento-live-item hero-bento-live-item--stats"
         >
           <span className="hero-bento-live-label">
@@ -278,7 +278,7 @@ export default function Hero({
         id: "archive",
         render: () => (
           <Link
-            href={`/blog/${archivePost.slug}`} prefetch={false}
+            href={`/blog/${archivePost.slug}`}
             className="hero-bento-live-item"
           >
             <span className="hero-bento-live-label">
@@ -399,7 +399,7 @@ export default function Hero({
 
             <div className="hero-actions">
               <MagneticButton strength={0.18} radius={80}>
-                <Link href="/order" prefetch={false} className="hero-btn hero-btn-primary">
+                <Link href="/order" className="hero-btn hero-btn-primary">
                   <span className="hero-btn-shine" aria-hidden="true" />
                   <span className="ink-word ink-word--on-dark">
                     شروع پروژه

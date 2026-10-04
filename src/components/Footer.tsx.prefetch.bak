@@ -86,7 +86,7 @@ export default function Footer() {
 
               <div className="footer-hero-actions">
                 <Link
-                  href="/order" prefetch={false}
+                  href="/order"
                   className="footer-hero-btn footer-hero-btn--primary"
                 >
                   <span className="ink-word ink-word--on-dark">

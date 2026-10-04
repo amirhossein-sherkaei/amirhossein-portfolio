@@ -32,7 +32,7 @@ export default function LatestBlogPosts() {
           {posts.map((post) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`} prefetch={false}
+              href={`/blog/${post.slug}`}
               className="latest-blog-card reveal"
             >
               <div className="latest-blog-meta">
@@ -57,7 +57,7 @@ export default function LatestBlogPosts() {
         </div>
 
         <div className="latest-blog-footer reveal">
-          <Link href="/blog" prefetch={false} className="button button-secondary">
+          <Link href="/blog" className="button button-secondary">
             مشاهده همه مقالات
             <span aria-hidden="true">←</span>
           </Link>

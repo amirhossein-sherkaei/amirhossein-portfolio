@@ -15,7 +15,7 @@ export default function BlogInlineCTA() {
 
       <div className="blog-inline-cta-actions">
         <Link
-          href="/order" prefetch={false}
+          href="/order"
           className="blog-inline-cta-btn blog-inline-cta-btn--primary"
         >
           شروع پروژه

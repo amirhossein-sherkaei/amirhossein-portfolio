@@ -351,7 +351,7 @@ export default function Nav() {
 
             <div className="nav-actions">
               <MagneticButton strength={0.15} radius={50}>
-                <Link href="/order" prefetch={false} className="nav-order-button">
+                <Link href="/order" className="nav-order-button">
                   <span className="nav-order-shine" aria-hidden="true" />
                   <span>شروع پروژه</span>
                   <span className="nav-order-arrow" aria-hidden="true">←</span>

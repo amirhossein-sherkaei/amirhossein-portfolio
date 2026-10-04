@@ -58,7 +58,7 @@ export default function BlogList({ posts, tags }: Props) {
       {/* Featured Post */}
       {featuredPost && (
         <Link
-          href={`/blog/${featuredPost.slug}`} prefetch={false}
+          href={`/blog/${featuredPost.slug}`}
           className="blog-featured-card"
         >
           <div className="blog-featured-badge">مقاله ویژه</div>
@@ -85,7 +85,7 @@ export default function BlogList({ posts, tags }: Props) {
           {restPosts.map((post) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`} prefetch={false}
+              href={`/blog/${post.slug}`}
               className="blog-card"
             >
               <div className="blog-card-meta">

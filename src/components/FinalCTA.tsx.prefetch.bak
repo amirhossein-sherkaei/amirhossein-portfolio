@@ -31,7 +31,7 @@ export default function FinalCTA() {
             <div className="final-cta-actions">
               <MagneticButton strength={0.22} radius={75}>
                 <Link
-                  href="/order" prefetch={false}
+                  href="/order"
                   className="button button-primary button-lg"
                 >
                   <span className="ink-word ink-word--on-dark">

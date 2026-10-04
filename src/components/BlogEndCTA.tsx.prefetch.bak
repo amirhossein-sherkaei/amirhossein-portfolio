@@ -23,7 +23,7 @@ export default function BlogEndCTA() {
       <div className="blog-funnel-actions">
         <MagneticButton strength={0.18} radius={75}>
           <Link
-            href="/order" prefetch={false}
+            href="/order"
             className="button button-primary button-lg"
           >
             شروع پروژه

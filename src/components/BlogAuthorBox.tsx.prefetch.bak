@@ -22,7 +22,7 @@ export default function BlogAuthorBox() {
       </p>
 
       <div className="blog-author-actions">
-        <Link href="/order" prefetch={false} className="blog-author-btn blog-author-btn--primary">
+        <Link href="/order" className="blog-author-btn blog-author-btn--primary">
           شروع پروژه
           <span aria-hidden="true">←</span>
         </Link>
