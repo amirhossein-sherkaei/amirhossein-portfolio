@@ -1,48 +1,18 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — DATA v3 (Production)
-   ────────────────────────────────────────────────────────────
-   • 40+ intents
-   • Actions + QuickReplies
-   • Mapping KnowledgeCategory → Intent
+   CHATBOT — DATA v10 (Legendary)
    ═══════════════════════════════════════════════════════════ */
 
 export type IntentType =
-  | 'greeting'
-  | 'ask_about'
-  | 'ask_services'
-  | 'ask_service_web'
-  | 'ask_service_ai'
-  | 'ask_service_video'
-  | 'ask_pricing'
-  | 'ask_pricing_landing'
-  | 'ask_pricing_corporate'
-  | 'ask_pricing_shop'
-  | 'ask_portfolio'
-  | 'ask_portfolio_arka'
-  | 'ask_portfolio_nila'
-  | 'ask_portfolio_vira'
-  | 'ask_portfolio_lumen'
-  | 'ask_process'
-  | 'ask_timeline'
-  | 'ask_contact'
-  | 'ask_blog'
-  | 'ask_faq'
-  | 'ask_about_person'
-  | 'ask_stack'
-  | 'ask_availability'
-  | 'ask_testimonials'
-  | 'ask_location'
-  | 'ask_guarantee'
-  | 'ask_revision'
-  | 'ask_ownership'
-  | 'start_project'
-  | 'describe_project'
-  | 'compliment'
-  | 'complaint'
-  | 'help'
-  | 'thanks'
-  | 'goodbye'
-  | 'unknown';
+  | 'greeting' | 'ask_about' | 'ask_services' | 'ask_service_web'
+  | 'ask_service_ai' | 'ask_service_video' | 'ask_pricing'
+  | 'ask_pricing_landing' | 'ask_pricing_corporate' | 'ask_pricing_shop'
+  | 'ask_portfolio' | 'ask_portfolio_arka' | 'ask_portfolio_nila'
+  | 'ask_portfolio_vira' | 'ask_portfolio_lumen' | 'ask_process'
+  | 'ask_timeline' | 'ask_contact' | 'ask_blog' | 'ask_faq'
+  | 'ask_about_person' | 'ask_stack' | 'ask_availability'
+  | 'ask_testimonials' | 'ask_location' | 'ask_guarantee'
+  | 'ask_revision' | 'ask_ownership' | 'start_project' | 'describe_project'
+  | 'compliment' | 'complaint' | 'help' | 'thanks' | 'goodbye' | 'unknown';
 
 export type QuickReply = {
   readonly label: string;
@@ -65,10 +35,13 @@ export type ChatMessage = {
   readonly quickReplies?: readonly QuickReply[];
   readonly actions?: readonly ActionLink[];
   readonly state?: 'typing' | 'complete';
+  readonly intent?: IntentType;
+  readonly reaction?: string;
+  readonly bookmarked?: boolean;
 };
 
 /* ───────────────────────────────────────────────────────────
-   INTENT KEYWORDS — عمومی‌های خطرناک حذف شدند
+   INTENT PATTERNS
    ─────────────────────────────────────────────────────────── */
 
 export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
@@ -111,50 +84,28 @@ export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
 };
 
 /* ───────────────────────────────────────────────────────────
-   KNOWLEDGE CATEGORY → INTENT
+   CATEGORY → INTENT
    ─────────────────────────────────────────────────────────── */
 
 export const CATEGORY_TO_INTENT: Record<string, IntentType> = {
-  'before-start': 'ask_faq',
-  'process': 'ask_process',
-  'pricing': 'ask_pricing',
-  'timeline': 'ask_timeline',
-  'design': 'ask_faq',
-  'tech': 'ask_stack',
-  'content': 'ask_faq',
-  'seo': 'ask_faq',
-  'hosting': 'ask_faq',
-  'maintenance': 'ask_guarantee',
-  'ownership': 'ask_ownership',
-  'marketing': 'ask_faq',
-  'ecommerce': 'ask_faq',
-  'ai': 'ask_service_ai',
-  'mobile': 'ask_faq',
-  'accessibility': 'ask_faq',
-  'branding': 'ask_faq',
-  'video': 'ask_service_video',
-  'photography': 'ask_faq',
-  'security': 'ask_guarantee',
-  'legal': 'ask_ownership',
-  'social': 'ask_faq',
-  'email-marketing': 'ask_faq',
-  'automation': 'ask_faq',
-  'tools': 'ask_stack',
-  'career': 'ask_about_person',
-  'industry-food': 'describe_project',
-  'industry-shop': 'describe_project',
-  'industry-edu': 'describe_project',
-  'industry-health': 'describe_project',
-  'industry-service': 'describe_project',
-  'analytics': 'ask_faq',
-  'performance': 'ask_stack',
-  'ux-writing': 'ask_faq',
-  'conversion': 'ask_faq',
-  'customer': 'ask_faq',
+  'before-start': 'ask_faq', 'process': 'ask_process', 'pricing': 'ask_pricing',
+  'timeline': 'ask_timeline', 'design': 'ask_faq', 'tech': 'ask_stack',
+  'content': 'ask_faq', 'seo': 'ask_faq', 'hosting': 'ask_faq',
+  'maintenance': 'ask_guarantee', 'ownership': 'ask_ownership',
+  'marketing': 'ask_faq', 'ecommerce': 'ask_faq', 'ai': 'ask_service_ai',
+  'mobile': 'ask_faq', 'accessibility': 'ask_faq', 'branding': 'ask_faq',
+  'video': 'ask_service_video', 'photography': 'ask_faq',
+  'security': 'ask_guarantee', 'legal': 'ask_ownership', 'social': 'ask_faq',
+  'email-marketing': 'ask_faq', 'automation': 'ask_faq', 'tools': 'ask_stack',
+  'career': 'ask_about_person', 'industry-food': 'describe_project',
+  'industry-shop': 'describe_project', 'industry-edu': 'describe_project',
+  'industry-health': 'describe_project', 'industry-service': 'describe_project',
+  'analytics': 'ask_faq', 'performance': 'ask_stack',
+  'ux-writing': 'ask_faq', 'conversion': 'ask_faq', 'customer': 'ask_faq',
 };
 
 /* ───────────────────────────────────────────────────────────
-   RESPONSES — با actions (خلاصه، چون KB بیشتر کار رو می‌کنه)
+   RESPONSES
    ─────────────────────────────────────────────────────────── */
 
 type ResponseTemplate = {
@@ -197,9 +148,7 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
 
   ask_service_web: [{
     text: '**وب‌سایت اختصاصی** — از صفر، بدون قالب.\n\nطراحی UI/UX، پیاده‌سازی با Next.js، بهینه برای موبایل، سرعت لود زیر ۲ ثانیه.',
-    actions: [
-      { label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true },
-    ],
+    actions: [{ label: 'شروع پروژه', href: '/order', icon: 'spark', primary: true }],
   }],
 
   ask_service_ai: [{
@@ -386,47 +335,20 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
    ─────────────────────────────────────────────────────────── */
 
 export const BUSINESS_KEYWORDS: Record<string, string> = {
-  'رستوران': 'رستوران',
-  'کافه': 'کافه',
-  'کافی شاپ': 'کافه',
-  'فروشگاه': 'فروشگاه',
-  'کفش': 'فروشگاه کفش',
-  'پوشاک': 'فروشگاه پوشاک',
-  'لباس': 'فروشگاه پوشاک',
-  'آموزشگاه': 'آموزشگاه',
-  'زبان': 'آموزشگاه زبان',
-  'کلینیک': 'کلینیک',
-  'پوست': 'کلینیک پوست',
-  'دندانپزشک': 'دندانپزشکی',
-  'آرایشگاه': 'سالن زیبایی',
-  'باشگاه': 'باشگاه ورزشی',
-  'هتل': 'هتل',
-  'تور': 'آژانس گردشگری',
-  'استارتاپ': 'استارتاپ',
-  'پلتفرم': 'پلتفرم',
-  'شرکت': 'شرکت',
-  'عکاسی': 'عکاسی',
-  'مشاور': 'مشاور',
-  'وکیل': 'دفتر وکالت',
-  'پزشک': 'مطب پزشکی',
-  'دکتر': 'مطب پزشکی',
-  'لوازم خانگی': 'فروشگاه لوازم خانگی',
-  'موبایل': 'فروشگاه موبایل',
-  'لوازم یدکی': 'فروشگاه لوازم یدکی',
-  'گل': 'گل‌فروشی',
-  'کتاب': 'فروشگاه کتاب',
-  'ابزار': 'فروشگاه ابزار',
-  'ورزشی': 'فروشگاه ورزشی',
-  'آرایشی': 'فروشگاه آرایشی',
-  'سوپرمارکت': 'سوپرمارکت',
-  'نانوایی': 'نانوایی',
-  'قنادی': 'قنادی',
-  'آتلیه': 'آتلیه',
-  'دفتر بیمه': 'بیمه',
-  'بیمه': 'بیمه',
-  'حسابداری': 'حسابداری',
-  'طلا': 'طلا و جواهر',
-  'جواهری': 'طلا و جواهر',
+  'رستوران': 'رستوران', 'کافه': 'کافه', 'کافی شاپ': 'کافه',
+  'فروشگاه': 'فروشگاه', 'کفش': 'فروشگاه کفش', 'پوشاک': 'فروشگاه پوشاک',
+  'لباس': 'فروشگاه پوشاک', 'آموزشگاه': 'آموزشگاه', 'زبان': 'آموزشگاه زبان',
+  'کلینیک': 'کلینیک', 'پوست': 'کلینیک پوست', 'دندانپزشک': 'دندانپزشکی',
+  'آرایشگاه': 'سالن زیبایی', 'باشگاه': 'باشگاه ورزشی', 'هتل': 'هتل',
+  'تور': 'آژانس گردشگری', 'استارتاپ': 'استارتاپ', 'پلتفرم': 'پلتفرم',
+  'شرکت': 'شرکت', 'عکاسی': 'عکاسی', 'مشاور': 'مشاور', 'وکیل': 'دفتر وکالت',
+  'پزشک': 'مطب پزشکی', 'دکتر': 'مطب پزشکی', 'لوازم خانگی': 'فروشگاه لوازم خانگی',
+  'موبایل': 'فروشگاه موبایل', 'لوازم یدکی': 'فروشگاه لوازم یدکی',
+  'گل': 'گل‌فروشی', 'کتاب': 'فروشگاه کتاب', 'ابزار': 'فروشگاه ابزار',
+  'ورزشی': 'فروشگاه ورزشی', 'آرایشی': 'فروشگاه آرایشی',
+  'سوپرمارکت': 'سوپرمارکت', 'نانوایی': 'نانوایی', 'قنادی': 'قنادی',
+  'آتلیه': 'آتلیه', 'بیمه': 'بیمه', 'حسابداری': 'حسابداری',
+  'طلا': 'طلا و جواهر', 'جواهری': 'طلا و جواهر',
 };
 
 /* ───────────────────────────────────────────────────────────
