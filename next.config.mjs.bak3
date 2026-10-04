@@ -30,9 +30,30 @@ const nextConfig = {
   /* HTTP Headers: Cache + Security */
   async headers() {
     return [
+      /* 1) Immutable static assets */
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
 
+      /* 2) Optimized images - 30 days */
+      {
+        source: '/_next/image/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=2592000, stale-while-revalidate=86400',
+          },
+        ],
+      },
 
-      /* 1) Static public assets */
+      /* 3) Static public assets */
       {
         source:
           '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
@@ -44,7 +65,7 @@ const nextConfig = {
         ],
       },
 
-      /* 2) HTML pages */
+      /* 4) HTML pages */
       {
         source: '/((?!api|_next|_vercel|.*\\..*).*)',
         headers: [
@@ -56,7 +77,7 @@ const nextConfig = {
         ],
       },
 
-      /* 3) Blog posts - longer cache */
+      /* 5) Blog posts - longer cache */
       {
         source: '/blog/:path*',
         headers: [
@@ -68,7 +89,7 @@ const nextConfig = {
         ],
       },
 
-      /* 4) Security headers */
+      /* 6) Security headers */
       {
         source: '/(.*)',
         headers: [

@@ -5,100 +5,171 @@ import { Vazirmatn } from "next/font/google";
    CSS — Order matters!
    ═══════════════════════════════════════════════════════════ */
 
-/* ------------------------------------------------------------------
-   CSS IMPORTS - ORDER MATTERS
-   ------------------------------------------------------------------
-   Single source of truth for CSS cascade order.
-   Each file is numbered by its position.
-   Do not reorder without understanding cascade implications.
-   ------------------------------------------------------------------ */
-
-/* 01-04 - Foundation */
+/* 1. Design tokens */
 import "@/styles/tokens.css";
+
+/* 2. Motion system */
 import "@/styles/motion.css";
+
+/* 3. Base */
 import "@/styles/base.css";
+
+/* 4. Magnetic buttons */
 import "@/styles/magnetic.css";
 
-/* 05-09 - Core systems */
+/* 5. Reveal system */
 import "@/styles/reveal.css";
+
+/* 6. Mobile touch */
 import "@/styles/mobile-touch.css";
+
+/* 7. Mobile modal */
 import "@/styles/mobile-modal.css";
+
+/* 8. Mobile typography */
 import "@/styles/mobile-typography.css";
+
+/* 9. Mobile nav v2 */
 import "@/styles/mobile-nav-v2.css";
 
-/* 10-14 - Mobile foundations */
+/* 9b. Mobile bottom nav */
 import "@/styles/mobile-bottom-nav.css";
+
+/* 10. Perceived performance */
 import "@/styles/perceived-performance.css";
+
+/* 11. Adaptive navigation */
 import "@/styles/adaptive-navigation.css";
+
+/* 12. Sensory feedback */
 import "@/styles/sensory.css";
+
+/* 13. Welcome onboarding */
 import "@/styles/welcome-onboarding.css";
 
-/* 15-17 - Forms */
+/* 14. Order form v2 */
 import "@/styles/order-form-v2.css";
+
+/* 14b. Order Premium */
 import "@/styles/order-premium.css";
+
+/* 15. Mobile declutter */
 import "@/styles/mobile-declutter.css";
 
-/* 18-22 - Work + Layout */
+/* 16. Work pages */
 import "@/styles/work-pages.css";
+
+/* 16b. Work Premium */
 import "@/styles/work-premium.css";
+
+/* 17. Layout */
 import "@/styles/layout.css";
+
+/* 18. Layout more */
 import "@/styles/layout-more.css";
+
+/* 19. Footer effects */
 import "@/styles/footer-effects.css";
 
-/* 23-27 - Pages + Responsive */
+/* 20. Pages */
 import "@/styles/pages.css";
+
+/* 21. Responsive */
 import "@/styles/responsive.css";
+
+/* 22. Enhancements */
 import "@/styles/enhancements.css";
+
+/* 23. Process */
 import "@/styles/process.css";
+
+/* 24. Commitments */
 import "@/styles/commitments.css";
 
-/* 28-29 - Mobile overrides (MUST come after mobile-declutter) */
+/* 25. Mobile fix */
 import "@/styles/mobile-fix.css";
+
+/* 26. Mobile polish v2 */
 import "@/styles/mobile-polish-v2.css";
 
-/* 30 - Blog page-level CSS is imported in src/app/blog/page.tsx */
+/* 27. Blog */
+import "@/app/blog/blog.css";
 
-/* 31-33 - Blog extras + Theme + Hero */
+/* 27b. Blog Premium */
 import "@/styles/blog-premium.css";
+
+/* 28. Theme toggle */
 import "@/styles/theme-toggle.css";
+
+/* 29. Hero Editorial */
 import "@/styles/hero-editorial.css";
 
-/* 34-38 - Hero + Branding */
+/* 29b. Hero Premium */
 import "@/styles/hero-premium.css";
+
+/* 30. Signature Ink */
 import "@/styles/signature-ink.css";
+
+/* 31. Density Standardization */
 import "@/styles/density-standardization.css";
 import "@/styles/services-premium.css";
+
+/* 32. Manuscript Grid */
 import "@/styles/manuscript-grid.css";
 
-/* 39-42 - Sections */
+/* 33. Hero Bento Live cell */
 import "@/styles/hero-bento-live.css";
+
+/* 34. Testimonials */
 import "@/styles/testimonials.css";
+
+/* 35. Brand Logo */
 import "@/styles/brand-logo.css";
+
+/* 36. Newsletter */
 import "@/styles/newsletter.css";
 
-/* 43-47 - Performance + Footer */
+/* 37. Performance Boost */
 import "@/styles/performance-boost.css";
+
+/* 38. Footer V2 */
 import "@/styles/footer-v2.css";
+
+/* 39. Contact Links */
 import "@/styles/contact-links.css";
+
+/* 40. Count Up */
 import "@/styles/count-up.css";
+
+/* 41. Chapter Rail */
 import "@/styles/chapter-rail.css";
 
-/* 48-50 - Performance + Nav */
+/* 42. Performance Layer */
 import "@/styles/performance-layer.css";
+
+/* 42b. Nav Premium */
 import "@/styles/nav-premium.css";
+
+/* 43. Performance Pro */
 import "@/styles/performance-pro.css";
 
-/* 51-55 - Final polish + Blog editorial */
+/* 44. Final Polish */
 import "@/styles/final-polish.css";
 import "@/styles/mobile-performance-fix.css";
+
+/* 45. Editorial Structure */
 import "@/styles/editorial-structure.css";
+
+/* 46. Blog Editorial */
 import "@/styles/blog-editorial.css";
+
+/* 47. Blog Article Premium */
 import "@/styles/blog-article-premium.css";
 
-/* 56 - Dev tools (GridOverlay is wrapped in DevOnly) */
+/* 48. Grid Overlay */
 import "@/styles/grid-overlay.css";
 
-/* 57 - ULTIMATE FINAL - must be the last CSS import */
+/* 49. FINAL POLISH 2026 */
 import "@/styles/final-polish-2026.css";
 
 /* 50. ChatBot */

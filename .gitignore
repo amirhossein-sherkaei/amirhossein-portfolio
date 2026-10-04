@@ -44,3 +44,7 @@ next-env.d.ts
 *.log
 .cache/
 .env*
+
+# Backup folders
+.backup-*/
+*.backup

@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
 
-  /* Performance */
+  /* ── Performance ── */
   compress: true,
   productionBrowserSourceMaps: false,
   compiler: {
@@ -13,29 +13,27 @@ const nextConfig = {
         : false,
   },
 
-  /* Image optimization */
+  /* ── Image optimization ── */
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    formats: ['image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    unoptimized: true,
     dangerouslyAllowSVG: false,
   },
 
-  /* Modules & packages */
+  /* ── Modules & packages ── */
   experimental: {
     optimizePackageImports: ['shiki'],
   },
 
-  /* HTTP Headers: Cache + Security */
+  /* ── HTTP Headers: Cache + Security ── */
   async headers() {
     return [
-
-
-      /* 1) Static public assets */
+      /* 1) Immutable static assets */
       {
-        source:
-          '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -44,7 +42,29 @@ const nextConfig = {
         ],
       },
 
-      /* 2) HTML pages */
+      /* 2) Optimized images - 30 days */
+      {
+        source: '/_next/image/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, stale-while-revalidate=86400',
+          },
+        ],
+      },
+
+      /* 3) Static public assets (fonts, images, etc.) */
+      {
+        source: '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+
+      /* 4) HTML pages - short browser cache, long CDN cache */
       {
         source: '/((?!api|_next|_vercel|.*\\..*).*)',
         headers: [
@@ -53,10 +73,15 @@ const nextConfig = {
             value:
               'public, max-age=120, s-maxage=86400, stale-while-revalidate=604800',
           },
+          {
+            key: 'Vercel-CDN-Cache-Control',
+            value:
+              'public, s-maxage=86400, stale-while-revalidate=604800',
+          },
         ],
       },
 
-      /* 3) Blog posts - longer cache */
+      /* 5) Blog posts - longer cache */
       {
         source: '/blog/:path*',
         headers: [
@@ -68,7 +93,7 @@ const nextConfig = {
         ],
       },
 
-      /* 4) Security headers */
+      /* 6) Security headers */
       {
         source: '/(.*)',
         headers: [
@@ -96,18 +121,15 @@ const nextConfig = {
     ];
   },
 
-  /* 301 Redirects */
+  /* ── 301 Redirects ── */
   async redirects() {
     return [
-      /* 1) Specific: www -> canonical */
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.shorakaei.ir' }],
         destination: 'https://shorakaei.ir/:path*',
         permanent: true,
       },
-
-      /* 2) Specific: old vercel project */
       {
         source: '/:path*',
         has: [
@@ -119,8 +141,6 @@ const nextConfig = {
         destination: 'https://shorakaei.ir/:path*',
         permanent: true,
       },
-
-      /* 3) Wildcard: any other vercel.app */
       {
         source: '/:path*',
         has: [
