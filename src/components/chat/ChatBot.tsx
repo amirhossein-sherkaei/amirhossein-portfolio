@@ -1,13 +1,21 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — v11 (Legendary · Warm Edition)
+   CHATBOT — v13 (Final Edition)
+   ────────────────────────────────────────────────────────────
+   ✅ Fixed button position (respects site bottom nav)
+   ✅ Fixed theme (light default, follows site preference)
+   ✅ Fixed voice input (HTTPS detection + error handling)
+   ✅ New: Name detection + memory
+   ✅ New: Reply, toast, reaction palette
+   ✅ New: Offline detection, reset confirm
+   ✅ New: Search highlight, date separators
    ═══════════════════════════════════════════════════════════ */
 
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   generateResponse, getInitialMessage,
   type BotResponse, type ChatContext, type ChatMemory,
@@ -16,7 +24,7 @@ import type { ActionLink, ChatMessage, IntentType, QuickReply } from "./data";
 import "./chat.css";
 
 /* ───────────────────────────────────────────────────────────
-   Web Speech API types
+   Web Speech API type declarations
    ─────────────────────────────────────────────────────────── */
 
 interface SpeechRecognitionAlternative { readonly transcript: string; readonly confidence: number; }
@@ -55,9 +63,9 @@ type SpeechRecognitionWindow = Window & {
    Constants
    ─────────────────────────────────────────────────────────── */
 
-const STORAGE_KEY = "chat-messages-v11";
-const BOOKMARKS_KEY = "chat-bookmarks-v11";
-const MEMORY_KEY = "chat-memory-v11";
+const STORAGE_KEY = "chat-messages-v13";
+const BOOKMARKS_KEY = "chat-bookmarks-v13";
+const MEMORY_KEY = "chat-memory-v13";
 const CEREMONY_KEY = "chat-ceremony-date";
 const TYPING_DELAY_MS = 600;
 const IDLE_DELAY_MS = 28_000;
@@ -98,7 +106,7 @@ const SLASH_COMMANDS = [
 ];
 
 /* ───────────────────────────────────────────────────────────
-   Factories
+   Message factories
    ─────────────────────────────────────────────────────────── */
 
 function generateId(): string {
@@ -148,11 +156,6 @@ function createWelcomeMessage(): ChatMessage {
    Helpers
    ─────────────────────────────────────────────────────────── */
 
-function isNightTime(): boolean {
-  const hour = new Date().getHours();
-  return hour >= 19 || hour < 6;
-}
-
 function formatTime(ts: number): string {
   const d = new Date(ts);
   const h = d.getHours().toString().padStart(2, "0");
@@ -177,6 +180,11 @@ function getDateLabel(ts: number): string {
 function getMoodColor(intent?: IntentType): string {
   if (!intent) return "var(--accent)";
   return MOOD_COLORS[intent] ?? "var(--accent)";
+}
+
+function isSecureContext(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.isSecureContext || window.location.protocol === "https:" || window.location.hostname === "localhost";
 }
 
 function haptic(type: "light" | "medium" | "heavy" | "success" | "error" = "light") {
@@ -283,6 +291,7 @@ export function ChatBot() {
   const [resetConfirm, setResetConfirm] = useState(false);
   const [online, setOnline] = useState(true);
   const [memory, setMemory] = useState<ChatMemory>({ interactionCount: 0 });
+  const [voiceSupported, setVoiceSupported] = useState(false);
 
   const endRef = useRef<HTMLDivElement>(null);
   const streamRef = useRef<HTMLDivElement>(null);
@@ -299,13 +308,21 @@ export function ChatBot() {
 
   useEffect(() => setMounted(true), []);
 
+  /* Check voice support on mount */
+  useEffect(() => {
+    if (!mounted) return;
+    const w = window as SpeechRecognitionWindow;
+    const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
+    setVoiceSupported(Boolean(SR) && isSecureContext());
+  }, [mounted]);
+
   const showToast = useCallback((msg: string) => {
     setToast(msg);
     if (toastTimeout.current) clearTimeout(toastTimeout.current);
     toastTimeout.current = window.setTimeout(() => setToast(null), 2000);
   }, []);
 
-  // Online/offline detection
+  /* Online/offline detection */
   useEffect(() => {
     if (!mounted) return;
     setOnline(navigator.onLine);
@@ -319,15 +336,20 @@ export function ChatBot() {
     };
   }, [mounted, showToast]);
 
-  // Adaptive night theme
+  /* First-open ceremony */
   useEffect(() => {
-    if (!mounted || !open) return;
-    if (isNightTime()) document.documentElement.setAttribute("data-chat-time", "night");
-    else document.documentElement.removeAttribute("data-chat-time");
-    return () => document.documentElement.removeAttribute("data-chat-time");
-  }, [mounted, open]);
+    if (!open || !mounted) return;
+    const today = new Date().toISOString().slice(0, 10);
+    try {
+      if (sessionStorage.getItem(CEREMONY_KEY) !== today) {
+        setShowCeremony(true);
+        sessionStorage.setItem(CEREMONY_KEY, today);
+        setTimeout(() => setShowCeremony(false), 2200);
+      }
+    } catch { /* ignore */ }
+  }, [open, mounted]);
 
-  // Restore
+  /* Restore */
   useEffect(() => {
     if (!mounted) return;
     try {
@@ -346,7 +368,7 @@ export function ChatBot() {
     } catch { /* ignore */ }
   }, [mounted]);
 
-  // Persist
+  /* Persist */
   useEffect(() => {
     if (!mounted) return;
     try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-MAX_MESSAGES))); } catch { /* ignore */ }
@@ -362,20 +384,7 @@ export function ChatBot() {
     try { sessionStorage.setItem(MEMORY_KEY, JSON.stringify(memory)); } catch { /* ignore */ }
   }, [mounted, memory]);
 
-  // Ceremony
-  useEffect(() => {
-    if (!open || !mounted) return;
-    const today = new Date().toISOString().slice(0, 10);
-    try {
-      if (sessionStorage.getItem(CEREMONY_KEY) !== today) {
-        setShowCeremony(true);
-        sessionStorage.setItem(CEREMONY_KEY, today);
-        setTimeout(() => setShowCeremony(false), 2200);
-      }
-    } catch { /* ignore */ }
-  }, [open, mounted]);
-
-  // Auto-scroll
+  /* Auto-scroll */
   useEffect(() => {
     if (!open) return;
     const el = streamRef.current;
@@ -384,7 +393,7 @@ export function ChatBot() {
     if (d < 120) endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, isTyping, open]);
 
-  // Scroll track
+  /* Scroll tracking */
   useEffect(() => {
     const el = streamRef.current;
     if (!el || !open) return;
@@ -397,7 +406,7 @@ export function ChatBot() {
     return () => el.removeEventListener("scroll", handler);
   }, [open]);
 
-  // Body lock
+  /* Body lock */
   useEffect(() => {
     if (!open) return;
     const scrollY = window.scrollY;
@@ -413,13 +422,13 @@ export function ChatBot() {
     };
   }, [open]);
 
-  // Focus
+  /* Focus */
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 400);
     else if (mounted) bubbleRef.current?.focus();
   }, [open, mounted]);
 
-  // Cleanup
+  /* Cleanup */
   useEffect(() => {
     return () => {
       if (typingTimeout.current) clearTimeout(typingTimeout.current);
@@ -430,7 +439,7 @@ export function ChatBot() {
     };
   }, []);
 
-  // Idle
+  /* Idle whisper */
   const resetIdleTimer = useCallback(() => {
     if (idleTimeout.current) clearTimeout(idleTimeout.current);
     setIdleWhisper(null);
@@ -449,7 +458,7 @@ export function ChatBot() {
     return () => { if (idleTimeout.current) clearTimeout(idleTimeout.current); };
   }, [open, resetIdleTimer, messages.length]);
 
-  // Reset chat
+  /* Reset chat */
   const resetChat = useCallback(() => {
     setMessages([createWelcomeMessage()]);
     contextRef.current = {};
@@ -461,12 +470,13 @@ export function ChatBot() {
     try {
       sessionStorage.removeItem(STORAGE_KEY);
       sessionStorage.removeItem(MEMORY_KEY);
+      sessionStorage.removeItem(CEREMONY_KEY);
     } catch { /* ignore */ }
     haptic("medium");
     showToast("✨ گفت‌وگوی جدید شروع شد");
   }, [showToast]);
 
-  // Shortcuts
+  /* Keyboard shortcuts */
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -490,15 +500,15 @@ export function ChatBot() {
     return () => document.removeEventListener("keydown", handler);
   }, [open, searchOpen, slashOpen, replyTo, resetConfirm, messages, showToast]);
 
-  // Focus search
+  /* Focus search */
   useEffect(() => {
     if (searchOpen) { setTimeout(() => searchInputRef.current?.focus(), 100); setSearchQuery(""); }
   }, [searchOpen]);
 
-  // Route change
+  /* Route change */
   useEffect(() => { setOpen(false); }, [pathname]);
 
-  // Auto resize
+  /* Auto resize */
   const autoResize = useCallback(() => {
     const el = inputRef.current;
     if (!el) return;
@@ -508,6 +518,7 @@ export function ChatBot() {
 
   useEffect(() => { autoResize(); }, [input, autoResize]);
 
+  /* Aura on typing */
   const bumpAura = useCallback(() => {
     const now = Date.now();
     const delta = now - lastKeystroke.current;
@@ -518,15 +529,19 @@ export function ChatBot() {
     auraTimeout.current = window.setTimeout(() => setTypingIntensity(0), 700);
   }, []);
 
-  // Slash detect
+  /* Slash detect */
   useEffect(() => {
     if (input.startsWith("/") && !input.includes(" ")) { setSlashOpen(true); setSlashIndex(0); }
     else setSlashOpen(false);
   }, [input]);
 
-  // Voice
+  /* Voice input — with HTTPS check */
   const toggleVoice = useCallback(() => {
     if (typeof window === "undefined") return;
+    if (!isSecureContext()) {
+      showToast("🎤 فقط روی HTTPS کار می‌کنه");
+      return;
+    }
     const w = window as SpeechRecognitionWindow;
     const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
     if (!SR) { showToast("🎤 این مرورگر پشتیبانی نمی‌کنه"); return; }
@@ -715,26 +730,22 @@ export function ChatBot() {
         <span className="chat-corner chat-corner-bl" aria-hidden="true" />
         <span className="chat-corner chat-corner-br" aria-hidden="true" />
 
-        {/* Offline Banner */}
         {!online && (
           <div className="chat-offline-banner" role="alert">
             📡 اتصالت قطع شده — ولی می‌تونی ادامه بدی
           </div>
         )}
 
-        {/* Header */}
         <header className="chat-head">
           <div className="chat-head-info">
             <span className={`chat-avatar${isTyping ? " is-typing" : ""}${isListening ? " is-listening" : ""}`}>
               <span className="chat-avatar-halo" aria-hidden="true" />
-              <span className="chat-avatar-inner">
-                <BotAvatar />
-              </span>
+              <span className="chat-avatar-inner"><BotAvatar /></span>
               <span className="chat-avatar-status" aria-hidden="true" />
             </span>
             <div className="chat-head-text">
               <span id="chat-title" className="chat-head-name">
-                {memory.userName ? `دستیار امیرحسین` : "دستیار امیرحسین"}
+                دستیار امیرحسین
                 <span className="chat-mood-ring" style={{ "--mood-color": moodColor } as React.CSSProperties} aria-hidden="true" />
               </span>
               <span className="chat-head-status" role="status" aria-live="polite">
@@ -766,7 +777,6 @@ export function ChatBot() {
           </div>
         </header>
 
-        {/* Reset confirm */}
         {resetConfirm && (
           <div className="chat-reset-confirm" role="dialog" aria-label="تأیید شروع مجدد">
             <p>مطمئنی می‌خوای همه‌چی رو پاک کنی؟ این کار برگشت‌پذیر نیست.</p>
@@ -777,7 +787,6 @@ export function ChatBot() {
           </div>
         )}
 
-        {/* Stream */}
         <div ref={streamRef} className="chat-stream" role="log" aria-live="polite" aria-label="پیام‌ها">
           {messages.map((msg, index) => {
             const prevMsg = index > 0 ? messages[index - 1] : null;
@@ -788,7 +797,7 @@ export function ChatBot() {
             const isReactionPickerOpen = reactionPickerFor === msg.id;
 
             return (
-              <div key={msg.id}>
+              <Fragment key={msg.id}>
                 {showDate && (
                   <div className="chat-date-sep" aria-hidden="true">
                     <span>{getDateLabel(msg.timestamp)}</span>
@@ -797,9 +806,7 @@ export function ChatBot() {
                 <div data-msg-id={msg.id}
                   className={`chat-msg chat-msg--${msg.role}${isBookmarked ? " is-bookmarked" : ""}${sameGroup ? " is-grouped" : ""}`}>
                   {msg.role === "bot" && !sameGroup && (
-                    <span className="chat-msg-avatar" aria-hidden="true">
-                      <BotAvatar />
-                    </span>
+                    <span className="chat-msg-avatar" aria-hidden="true"><BotAvatar /></span>
                   )}
                   {msg.role === "bot" && sameGroup && (
                     <span className="chat-msg-avatar chat-msg-avatar--ghost" aria-hidden="true" />
@@ -881,15 +888,13 @@ export function ChatBot() {
                     )}
                   </div>
                 </div>
-              </div>
+              </Fragment>
             );
           })}
 
           {isTyping && (
             <div className="chat-msg chat-msg--bot">
-              <span className="chat-msg-avatar" aria-hidden="true">
-                <BotAvatar />
-              </span>
+              <span className="chat-msg-avatar" aria-hidden="true"><BotAvatar /></span>
               <div className="chat-msg-body">
                 <div className="chat-msg-bubble chat-msg-bubble--typing">
                   <span className="chat-typing-thought" aria-hidden="true">
@@ -930,12 +935,10 @@ export function ChatBot() {
           </button>
         )}
 
-        {/* Toast */}
         {toast && (
-          <div className="chat-toast" role="status" aria-live="polite">{toast}</div>
+          <div className="chat-toast" style={{ bottom: replyTo ? "150px" : "110px" }} role="status" aria-live="polite">{toast}</div>
         )}
 
-        {/* Slash menu */}
         {slashOpen && filteredSlash.length > 0 && (
           <div className="chat-slash-menu" role="menu">
             {filteredSlash.map((c, i) => (
@@ -951,12 +954,11 @@ export function ChatBot() {
           </div>
         )}
 
-        {/* Reply preview */}
         {replyTo && (
           <div className="chat-reply-bar">
             <div className="chat-reply-bar-content">
               <span className="chat-reply-bar-role">{replyTo.role === "user" ? "شما" : "دستیار"}</span>
-              <span className="chat-reply-bar-text">{replyTo.text.slice(0, 100)}</span>
+              <span className="chat-reply-bar-text">{replyTo.text.replace(/[<>]/g, "").slice(0, 100)}</span>
             </div>
             <button type="button" className="chat-reply-bar-close" onClick={() => setReplyTo(null)} aria-label="لغو پاسخ">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
@@ -966,12 +968,12 @@ export function ChatBot() {
           </div>
         )}
 
-        {/* Compose */}
         <form className="chat-compose" onSubmit={handleSubmit}>
           <button type="button"
-            className={`chat-voice-btn${isListening ? " is-listening" : ""}`}
+            className={`chat-voice-btn${isListening ? " is-listening" : ""}${!voiceSupported ? " is-disabled" : ""}`}
             onClick={toggleVoice}
-            aria-label={isListening ? "توقف ضبط" : "ضبط صدا"}>
+            disabled={!voiceSupported}
+            aria-label={!voiceSupported ? "ضبط صدا در دسترس نیست" : isListening ? "توقف ضبط" : "ضبط صدا"}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
               <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
@@ -1000,7 +1002,6 @@ export function ChatBot() {
 
       {open && <div className="chat-backdrop" onClick={() => { setOpen(false); haptic("light"); }} aria-hidden="true" />}
 
-      {/* Search */}
       {searchOpen && (
         <div className="chat-search-overlay" role="dialog" aria-modal="true" aria-label="جستجو">
           <div className="chat-search-backdrop" onClick={() => setSearchOpen(false)} />
@@ -1047,24 +1048,14 @@ function highlightText(text: string, query: string): string {
 
 function formatMessageText(text: string): string {
   const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  // Headings
   const withHeadings = escaped
     .replace(/^### (.+)$/gm, '<h3 class="chat-h3">$1</h3>')
     .replace(/^## (.+)$/gm, '<h2 class="chat-h2">$1</h2>')
     .replace(/^# (.+)$/gm, '<h1 class="chat-h1">$1</h1>');
-
-  // Bold + code + quote
   const withBold = withHeadings.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   const withQuote = withBold.replace(/^> (.+)$/gm, '<span class="chat-quote">$1</span>');
   const withCode = withQuote.replace(/`([^`]+)`/g, '<code class="chat-code">$1</code>');
-
-  // Lists
-  const withLists = withCode
-    .replace(/^[•·\-] (.+)$/gm, '<span class="chat-list-item">$1</span>');
-
-  // Separator
+  const withLists = withCode.replace(/^[•·\-] (.+)$/gm, '<span class="chat-list-item">$1</span>');
   const withSep = withLists.replace(/^---$/gm, '<hr class="chat-hr" />');
-
   return withSep.replace(/\n/g, "<br />");
 }

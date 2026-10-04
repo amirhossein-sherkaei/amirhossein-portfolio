@@ -1,5 +1,10 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — DATA v11 (Legendary · Warm Edition)
+   CHATBOT — DATA v13 (Legendary · Final Edition)
+   ────────────────────────────────────────────────────────────
+   • 40+ intents with rich response variations
+   • 2-4 templates per intent for natural variety
+   • Warm, human tone throughout
+   • Action-driven with contextual CTAs
    ═══════════════════════════════════════════════════════════ */
 
 export type IntentType =
@@ -14,10 +19,7 @@ export type IntentType =
   | 'ask_revision' | 'ask_ownership' | 'start_project' | 'describe_project'
   | 'compliment' | 'complaint' | 'help' | 'thanks' | 'goodbye' | 'unknown';
 
-export type QuickReply = {
-  readonly label: string;
-  readonly value: string;
-};
+export type QuickReply = { readonly label: string; readonly value: string };
 
 export type ActionLink = {
   readonly label: string;
@@ -83,7 +85,7 @@ export const INTENT_PATTERNS: Record<IntentType, readonly string[]> = {
   compliment: ['عالی', 'خوبه', 'قشنگ', 'دوستم داشت', 'لذت بخش', 'awesome', 'great', 'nice', 'ایول', 'دمت گرم'],
   complaint: ['بد', 'مشکل', 'ایراد', 'خرابه', 'کند', 'زشت', 'کار نمی‌کنه', 'bad', 'issue', 'problem', 'ناراضی'],
   help: ['کمک', 'راهنما', 'چیکار کنم', 'چطور', 'help', 'نمی‌دونم'],
-  thanks: ['ممنون', 'مرسی', 'سپاس', 'دستت درد نکنه', 'thanks', 'thank you', 'لطف کردی', 'دستت درد نکنه'],
+  thanks: ['ممنون', 'مرسی', 'سپاس', 'دستت درد نکنه', 'thanks', 'thank you', 'لطف کردی'],
   goodbye: ['خداحافظ', 'بدرود', 'می‌رم', 'خدانگهدار', 'bye', 'goodbye', 'فعلاً', 'فعلا'],
   unknown: [],
 };
@@ -110,7 +112,7 @@ export const CATEGORY_TO_INTENT: Record<string, IntentType> = {
 };
 
 /* ───────────────────────────────────────────────────────────
-   RESPONSES — با تنوع و لحن گرم
+   RESPONSES — Warm, varied, human
    ─────────────────────────────────────────────────────────── */
 
 type ResponseTemplate = {
@@ -145,7 +147,7 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
       ],
     },
     {
-      text: 'سلااااام! 😄\n\nخب... از کجا شروع کنیم؟\n\nیه ایده داری یا فقط می‌خوای گشتی بزنی؟',
+      text: 'سلام رفیق! 😄\n\nاز کجا شروع کنیم؟\n\nیه ایده داری یا فقط می‌خوای گشتی بزنی؟',
       quickReplies: [
         { label: 'ایده دارم', value: 'می‌خوام پروژه سفارش بدم' },
         { label: 'اول بگردم', value: 'خدماتت چیه؟' },
@@ -167,18 +169,31 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
         { label: 'بیشتر درباره‌ش بدون', href: '/#about', icon: 'arrow', primary: true },
       ],
     },
+    {
+      text: 'من اینجام که کمکت کنم 🎯\n\nساخته‌ی **امیرحسین شرکائی** — طراح و توسعه‌دهنده‌ی وب.\n\nچی می‌خوای بدونی؟',
+      quickReplies: [
+        { label: 'خدمات', value: 'خدماتت چیه؟' },
+        { label: 'قیمت', value: 'قیمت‌ها چطوره؟' },
+      ],
+    },
   ],
 
   ask_services: [
     {
       text: 'سه چیز اصلی بلدیم:\n\n🎨 **۱. وب‌سایت اختصاصی** — از صفر، بدون قالب آماده\n\n✨ **۲. محتوای هوشمند** — متن، تصویر، المان بصری با AI\n\n🎬 **۳. ویدیوی سینمایی** — روایت کوتاه تبلیغاتی\n\nکدومش برات جالب‌تره؟',
-      actions: [
-        { label: 'همه رو ببین', href: '/#services', icon: 'arrow', primary: true },
-      ],
+      actions: [{ label: 'همه رو ببین', href: '/#services', icon: 'arrow', primary: true }],
       quickReplies: [
         { label: 'درباره‌ی سایت', value: 'درباره‌ی وب‌سایت بیشتر بگو' },
         { label: 'درباره‌ی AI', value: 'درباره‌ی محتوای هوشمند بگو' },
         { label: 'درباره‌ی ویدیو', value: 'درباره‌ی ویدیو بگو' },
+      ],
+    },
+    {
+      text: 'ما سه کار اصلی می‌کنیم 👇\n\n**وب‌سایت** — طراحی و توسعه‌ی اختصاصی\n**محتوای AI** — متن و تصویر هوشمند\n**ویدیو** — کمپین سینمایی\n\nبگو کدوم برات مهم‌تره، بیشتر توضیح بدم.',
+      quickReplies: [
+        { label: 'وب‌سایت', value: 'درباره‌ی وب‌سایت بیشتر بگو' },
+        { label: 'محتوای AI', value: 'درباره‌ی محتوای هوشمند بگو' },
+        { label: 'ویدیو', value: 'درباره‌ی ویدیو بگو' },
       ],
     },
   ],
@@ -188,6 +203,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
       text: '**وب‌سایت اختصاصی** — از صفر، بدون قالب 🎨\n\nطراحی UI/UX، پیاده‌سازی با Next.js، بهینه برای موبایل، سرعت لود زیر ۲ ثانیه. کد کامل هم به اسم خودت ثبت می‌شه.',
       actions: [{ label: 'بریم بسازیم', href: '/order', icon: 'spark', primary: true }],
     },
+    {
+      text: 'سایت اختصاصی یعنی چی؟ 🤔\n\nیعنی **هیچ قالب آماده‌ای** استفاده نمی‌کنیم — همه‌چیز از صفر طراحی می‌شه، مخصوص کسب‌وکار تو.\n\nنتیجه: سریع‌تر، متمایزتر، سئوی بهتر.',
+      actions: [{ label: 'شروع کنیم', href: '/order', icon: 'spark', primary: true }],
+    },
   ],
 
   ask_service_ai: [
@@ -195,12 +214,20 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
       text: '**محتوای هوشمند با AI** ✨\n\nمتن، تصویر، المان بصری — همه با نظارت کامل انسانی. یعنی سرعت AI بدون از دست دادن کیفیت.',
       actions: [{ label: 'بریم شروع کنیم', href: '/order', icon: 'spark', primary: true }],
     },
+    {
+      text: 'با AI چیکار می‌کنیم؟ 🤖\n\n• محتوای سایت\n• تصاویر اختصاصی\n• المان‌های بصری\n• بنر تبلیغاتی\n\nهمه با ویرایش انسانی، بدون حس مصنوعی.',
+      actions: [{ label: 'شروع کنیم', href: '/order', icon: 'spark', primary: true }],
+    },
   ],
 
   ask_service_video: [
     {
       text: '**ویدیوی سینمایی** 🎬\n\nاز ایده و استوری‌بورد تا صداگذاری و نسخه‌ی نهایی. بدون نیاز به تیم فیلم‌برداری و بودجه‌ی سنگین.',
       actions: [{ label: 'بریم بسازیم', href: '/order', icon: 'spark', primary: true }],
+    },
+    {
+      text: 'ویدیو چطور کار می‌کنه؟ 🎥\n\n۱. ایده و استوری‌بورد\n۲. روایت و تصویرسازی\n۳. صداگذاری\n۴. نسخه‌ی نهایی\n\nمدت: ۱-۲ هفته. بدون دوربین، با AI و موشن گرافیک.',
+      actions: [{ label: 'شروع کنیم', href: '/order', icon: 'spark', primary: true }],
     },
   ],
 
@@ -217,6 +244,9 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
     {
       text: 'تعرفه‌ها رو شفاف می‌گم 👇\n\n**لندینگ** — از ۸ میلیون\n**شرکتی** — از ۱۵ میلیون\n**فروشگاه** — از ۳۰ میلیون\n\nاگه پروژه‌ت خاصه یا نمی‌دونی کدومه، فرم سفارش رو پر کن — دقیق تخمین می‌زنم.',
       actions: [{ label: 'یه تخمین دقیق بگیر', href: '/order', icon: 'spark', primary: true }],
+    },
+    {
+      text: 'سؤال قشنگیه 🤔\n\nقیمت‌ها:\n• لندینگ: **از ۸ میلیون**\n• شرکتی: **از ۱۵ میلیون**\n• فروشگاه: **از ۳۰ میلیون**\n\nهمه پروژه‌ها شامل ۳ ماه پشتیبانی رایگان + کد کامل به اسم خودت.',
     },
   ],
 
@@ -251,6 +281,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
         { label: 'ویرا', value: 'درباره‌ی ویرا بگو' },
         { label: 'لومن', value: 'درباره‌ی لومن بگو' },
       ],
+    },
+    {
+      text: 'چهار تا کار داریم که بهشون افتخار می‌کنیم ✨\n\n**آرکا** — SaaS مینیمال\n**نیلا** — فروشگاه پوشاک\n**ویرا** — برندبوک با AI\n**لومن** — ویدیوی سینمایی\n\nکدوم برات جالب‌تره؟',
+      actions: [{ label: 'دیدن همه', href: '/work', icon: 'arrow', primary: true }],
     },
   ],
 
@@ -288,12 +322,19 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
         { label: 'هزینه؟', value: 'قیمت‌ها چطوره؟' },
       ],
     },
+    {
+      text: 'فرآیند کارمون رو شفاف می‌گم 🎯\n\n۱. **اول** — با هم حرف می‌زنیم، نیازت رو می‌فهمم\n۲. **بعد** — طراحی می‌کنم، تأیید می‌گیری\n۳. **سپس** — کد می‌زنم، تست می‌کنیم\n۴. **آخر** — تحویل + پشتیبانی ۳ ماه\n\nبدون غافلگیری، بدون هزینه‌ی پنهان.',
+      actions: [{ label: 'شروع کنیم', href: '/order', icon: 'spark', primary: true }],
+    },
   ],
 
   ask_timeline: [
     {
       text: 'زمان‌بندی معمولمون 👇\n\n• **لندینگ:** ۳ تا ۷ روز\n• **شرکتی:** ۲ تا ۴ هفته\n• **فروشگاه:** ۴ تا ۸ هفته\n\nتاریخ دقیق توی قرارداد نوشته می‌شه — به تأخیر پایبند نیستیم.',
       actions: [{ label: 'شروع کنیم', href: '/order', icon: 'spark', primary: true }],
+    },
+    {
+      text: 'بستگی به پروژه داره ⏱\n\nلندینگ سریع (۳-۷ روز)، سایت کامل‌تر (۲-۴ هفته)، فروشگاه (۴-۸ هفته).\n\nتوی جلسه‌ی اول می‌تونم تخمین دقیق‌تری بدم.',
     },
   ],
 
@@ -304,6 +345,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
         { label: 'فرم سفارش', href: '/order', icon: 'spark', primary: true },
         { label: 'پیامک بزن', href: 'sms:+989371932549', icon: 'chat', external: true },
       ],
+    },
+    {
+      text: 'چند راه برای تماس 📞\n\n• **فرم سایت** — سریع‌ترین (۲۴ ساعت پاسخ)\n• **پیامک:** ۰۹۳۷ ۱۹۳ ۲۵۴۹\n• **روبیکا:** @Amirhosein2076\n\nهر کدوم راحت‌تره.',
+      actions: [{ label: 'فرم پر کن', href: '/order', icon: 'spark', primary: true }],
     },
   ],
 
@@ -329,6 +374,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
     {
       text: '**امیرحسین شرکائی** — طراح و توسعه‌دهنده‌ی وب 🧑‍💻\n\nسه اصل کاری:\n• طراحی قبل از کد\n• جزئیات کوچک، اثر بزرگ\n• سرعت، بخشی از طراحی',
       actions: [{ label: 'بیشتر بدون', href: '/#about', icon: 'arrow', primary: true }],
+    },
+    {
+      text: 'امیرحسین یه طراح و توسعه‌دهنده‌ست که از چند سال پیش داره سایت می‌سازه 🎨\n\nتخصصش: **Next.js**، **TypeScript**، و **طراحی مینیمال**.\n\nهدفش: سایت‌هایی که هم سریع باشن، هم قشنگ.',
+      actions: [{ label: 'درباره‌ش بخون', href: '/#about', icon: 'arrow', primary: true }],
     },
   ],
 
@@ -386,6 +435,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
       text: 'خب، بزن بریم! 🚀\n\nفرم سفارش رو پر کن — چند دقیقه وقت بذار و جزئیات رو بنویس، حتی اگه کامل نیست. حداکثر ۲۴ ساعت بعد باهات تماس می‌گیرم.',
       actions: [{ label: 'بازکردن فرم سفارش', href: '/order', icon: 'spark', primary: true }],
     },
+    {
+      text: 'چه خبر خوبی! 🎉\n\nفقط یه قدم مونده: فرم رو پر کن.\n\nچیز خاصی نمی‌خواد — اسم، شماره، یه توضیح کوتاه از پروژه. بقیه‌ش با من.',
+      actions: [{ label: 'فرم رو باز کن', href: '/order', icon: 'spark', primary: true }],
+    },
   ],
 
   describe_project: [],
@@ -411,6 +464,10 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
     {
       text: 'اوف، اینو شنیدن ناراحتم کرد 😔\n\nبذار درستش کنیم. هر چی هست، بگو — من اینجام تا کمک کنم، نه دفاع کنم.',
       quickReplies: [{ label: 'راه تماس', value: 'چطور تماس بگیرم؟' }],
+    },
+    {
+      text: 'متأسفم که این‌طوری شد 🙏\n\nمی‌تونی بگی دقیقاً چی اذیتت کرد؟ تا بهتر بتونم کمکت کنم.',
+      quickReplies: [{ label: 'تماس مستقیم', value: 'چطور تماس بگیرم؟' }],
     },
   ],
 
@@ -468,6 +525,14 @@ export const RESPONSES: Record<IntentType, readonly ResponseTemplate[]> = {
         { label: 'خدمات', value: 'خدماتت چیه؟' },
         { label: 'قیمت', value: 'قیمت‌ها چطوره؟' },
         { label: 'تماس', value: 'چطور تماس بگیرم؟' },
+      ],
+    },
+    {
+      text: 'اوه، سؤالت یه‌کم برام مبهمه 🤷‍♂️\n\nبذار راه ساده‌تر بریم — دنبال چی هستی؟',
+      quickReplies: [
+        { label: 'سایت می‌خوام', value: 'درباره‌ی وب‌سایت بیشتر بگو' },
+        { label: 'قیمت مهمه', value: 'قیمت‌ها چطوره؟' },
+        { label: 'نمونه‌کار', value: 'نمونه کار نشونم بده' },
       ],
     },
   ],

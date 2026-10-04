@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════════
-   CHATBOT — ENGINE v11 (Legendary · Warm Edition)
+   CHATBOT — ENGINE v13 (Final Edition)
    ────────────────────────────────────────────────────────────
-   • Priority intent
+   • Priority intent detection
    • Slash commands
-   • Name detection
-   • Context references
-   • Easter eggs (professional)
+   • Name detection with blacklist
+   • Context awareness
+   • Easter eggs
    ─────────────────────────────────────────────────────────── */
 
 import {
@@ -61,7 +61,7 @@ export const SLASH_COMMANDS: Record<string, { text: string; intent: IntentType }
 };
 
 /* ───────────────────────────────────────────────────────────
-   Easter eggs — حرفه‌ای‌تر
+   Easter eggs
    ─────────────────────────────────────────────────────────── */
 
 const EASTER_EGGS: Record<string, string> = {
@@ -85,29 +85,44 @@ function detectEasterEgg(normalized: string): string | null {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Name detection
+   Name detection with blacklist
    ─────────────────────────────────────────────────────────── */
 
-const NAME_PATTERNS = [
-  /اسمم\s+(?:هست|هستش|ه)?\s*([\u0600-\u06FF]{2,20})/i,
-  /من\s+([\u0600-\u06FF]{2,20})\s+هستم/i,
-  /اسمم\s+([\u0600-\u06FF]{2,20})/i,
-  /بهم\s+میگن\s+([\u0600-\u06FF]{2,20})/i,
+const NON_NAME_WORDS = new Set([
+  'چیه', 'چی', 'کیه', 'کی', 'هست', 'نیست', 'خوب', 'بد', 'خوبی', 'بدی',
+  'گرسنه', 'تشنه', 'خسته', 'خواب', 'بیدار', 'رفتم', 'اومدم', 'دارم', 'داشتم',
+  'میخوام', 'میرم', 'میام', 'باز', 'بسته', 'خوشحال', 'ناراحت', 'عصبانى',
+  'اینجا', 'آنجا', 'این', 'آن', 'کجا', 'چرا', 'چطور', 'چگونه', 'چند',
+  'چه', 'آیا', 'بله', 'نه', 'اره', 'آره', 'شاید', 'حتما',
+  'دوست', 'بلدم', 'میتونم', 'نمیتونم', 'گفتم', 'میگم',
+  'متوجه', 'مطمئن', 'دنبال', 'منتظر', 'آماده', 'مشغول',
+]);
+
+const NAME_PATTERNS: readonly RegExp[] = [
+  /اسمم\s+([\u0600-\u06FF]{2,20})\s*(?:ه|هست|است)?\s*$/u,
+  /بهم\s+میگن\s+([\u0600-\u06FF]{2,20})/u,
+  /^من\s+([\u0600-\u06FF]{3,20})\s+هستم/u,
 ];
 
 function detectName(text: string): string | null {
+  if (/[؟?]/.test(text)) return null;
+  if (text.trim().length < 6) return null;
+
   for (const pattern of NAME_PATTERNS) {
     const match = text.match(pattern);
     if (match && match[1]) {
       const name = match[1].trim();
-      if (name.length >= 2 && name.length <= 20) return name;
+      if (name.length < 2 || name.length > 20) continue;
+      if (NON_NAME_WORDS.has(name)) continue;
+      if (name.startsWith('/')) continue;
+      return name;
     }
   }
   return null;
 }
 
 /* ───────────────────────────────────────────────────────────
-   Priority intent
+   Priority intent — strict matching
    ─────────────────────────────────────────────────────────── */
 
 const PRIORITY_PATTERNS: Record<string, readonly string[]> = {
@@ -119,13 +134,12 @@ const PRIORITY_PATTERNS: Record<string, readonly string[]> = {
 function detectPriorityIntent(normalized: string): IntentType | null {
   if (!normalized) return null;
   const words = normalized.split(/\s+/).filter(Boolean);
-  if (words.length === 0 || words.length > 4) return null;
+  if (words.length === 0 || words.length > 3) return null;
 
   for (const intent of ['greeting', 'thanks', 'goodbye'] as IntentType[]) {
     const patterns = PRIORITY_PATTERNS[intent];
     if (words.length === 1 && patterns.includes(words[0])) return intent;
     if (words.length >= 2 && words.every((w) => patterns.includes(w))) return intent;
-    if (words.length === 2 && patterns.includes(words[0])) return intent;
   }
   return null;
 }
@@ -195,10 +209,22 @@ function buildFromIntent(intent: IntentType): BotResponse {
   const templates = RESPONSES[intent];
   if (!templates || templates.length === 0) {
     const fallback = RESPONSES.unknown[0];
-    return { text: fallback.text, intent: 'unknown', quickReplies: fallback.quickReplies, actions: fallback.actions, mood: 'thinking' };
+    return {
+      text: fallback.text,
+      intent: 'unknown',
+      quickReplies: fallback.quickReplies,
+      actions: fallback.actions,
+      mood: 'thinking',
+    };
   }
   const template = pickRandom(templates);
-  return { text: template.text, intent, quickReplies: template.quickReplies, actions: template.actions, mood: getMoodForIntent(intent) };
+  return {
+    text: template.text,
+    intent,
+    quickReplies: template.quickReplies,
+    actions: template.actions,
+    mood: getMoodForIntent(intent),
+  };
 }
 
 function buildDescribeProject(domain: string, userName?: string): BotResponse {
@@ -245,9 +271,8 @@ export function generateResponse(
 
   if (!normalized || normalized.length < 2) return buildFromIntent('unknown');
 
-  // ۰. Name detection
   const detectedName = detectName(userMessage);
-  if (detectedName) {
+  if (detectedName && memory?.userName !== detectedName) {
     return {
       text: `چه اسم قشنگی، **${detectedName}**! 😊\n\nخوشحالم که باهات آشنا شدم. حالا بگو، چی می‌خوای بسازیم؟`,
       intent: 'greeting',
@@ -256,19 +281,24 @@ export function generateResponse(
     };
   }
 
-  // ۱. Easter egg
   const egg = detectEasterEgg(normalized);
   if (egg) return { text: egg, intent: 'unknown', mood: 'excited' };
 
-  // ۲. Slash command
   const slash = SLASH_COMMANDS[userMessage.trim().toLowerCase()];
   if (slash) return { text: slash.text, intent: slash.intent, mood: 'neutral' };
 
-  // ۳. Priority intent
   const priority = detectPriorityIntent(normalized);
-  if (priority) return buildFromIntent(priority);
+  if (priority) {
+    const base = buildFromIntent(priority);
+    if (memory?.userName && priority === 'greeting') {
+      return {
+        ...base,
+        text: `سلاااام ${memory.userName}! 😊\n\nخوش برگشتی. بگو ببینم چی می‌خوای بدونی؟`,
+      };
+    }
+    return base;
+  }
 
-  // ۴. Knowledge base
   if (normalized.length >= 3) {
     const knowledge = searchKnowledge(userMessage);
     if (knowledge) {
@@ -282,14 +312,11 @@ export function generateResponse(
     }
   }
 
-  // ۵. Intent detection
   const intent = detectIntent(userMessage);
 
   if (intent === 'unknown') {
     const domain = detectBusinessDomain(userMessage);
-    if (domain) {
-      return buildDescribeProject(domain, memory?.userName);
-    }
+    if (domain) return buildDescribeProject(domain, memory?.userName);
   }
 
   if (intent === 'describe_project') {
