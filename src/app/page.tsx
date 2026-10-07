@@ -2,16 +2,15 @@ import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
-import Process from "@/components/Process";
-import About from "@/components/About";
-import WhyMe from "@/components/WhyMe";
-import Testimonials from "@/components/Testimonials";
-import LatestBlogPosts from "@/components/LatestBlogPosts";
-import FinalCTA from "@/components/FinalCTA";
-import Footer from "@/components/Footer";
-import RevealObserver from "@/components/RevealObserver";
 import { getAllPosts, getLatestPosts } from "@/lib/blog";
 import { projects } from "@/content/projects";
+
+/* ── Above-the-fold: direct import (need immediate render) ── */
+/* Nav, MobileNav, Hero */
+
+/* ── Below-the-fold: dynamic imports with SSR preserved ── */
+/* ssr: true means server renders them into HTML for SEO,
+   but client-side JS chunk loads separately = smaller initial bundle */
 
 const Services = dynamic(() => import("@/components/Services"), {
   ssr: true,
@@ -26,6 +25,8 @@ const Services = dynamic(() => import("@/components/Services"), {
     </section>
   ),
 });
+
+const Process = dynamic(() => import("@/components/Process"), { ssr: true });
 
 const Portfolio = dynamic(() => import("@/components/Portfolio"), {
   ssr: true,
@@ -46,15 +47,32 @@ const Portfolio = dynamic(() => import("@/components/Portfolio"), {
   ),
 });
 
+const About = dynamic(() => import("@/components/About"), { ssr: true });
+
+const WhyMe = dynamic(() => import("@/components/WhyMe"), { ssr: true });
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"), {
+  ssr: true,
+});
+
+const LatestBlogPosts = dynamic(
+  () => import("@/components/LatestBlogPosts"),
+  { ssr: true }
+);
+
 const Newsletter = dynamic(() => import("@/components/Newsletter"), {
   ssr: true,
 });
 
-const FAQ = dynamic(() => import("@/components/FAQ"), {
-  ssr: true,
-});
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: true });
 
-const BackToTop = dynamic(() => import("@/components/BackToTop"), {
+const FinalCTA = dynamic(() => import("@/components/FinalCTA"), { ssr: true });
+
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+
+const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: true });
+
+const RevealObserver = dynamic(() => import("@/components/RevealObserver"), {
   ssr: true,
 });
 
