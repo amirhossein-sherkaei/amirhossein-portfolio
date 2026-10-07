@@ -116,7 +116,6 @@ import PerfObserver from "@/components/PerfObserver";
 import PageTransition from "@/components/PageTransition";
 import DevOnly from "@/components/DevOnly";
 import GridOverlay from "@/components/GridOverlay";
-import IntroExperience from "@/components/intro/IntroExperience";
 import { ChatBot } from "@/components/chat/LazyChatBot";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -278,8 +277,6 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           پرش به محتوای اصلی
         </a>
-
-                <IntroExperience />
 
         <ThemeProvider>{children}</ThemeProvider>
 
