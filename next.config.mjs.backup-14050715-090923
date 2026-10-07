@@ -1,10 +1,4 @@
 /** @type {import('next').NextConfig} */
-import bundleAnalyzer from '@next/bundle-analyzer';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -30,16 +24,14 @@ const nextConfig = {
 
   /* Modules & packages */
   experimental: {
-    optimizePackageImports: [
-      'shiki',
-      '@vercel/analytics',
-      '@vercel/speed-insights',
-    ],
+    optimizePackageImports: ['shiki'],
   },
 
   /* HTTP Headers: Cache + Security */
   async headers() {
     return [
+
+
       /* 1) Static public assets */
       {
         source:
@@ -144,4 +136,4 @@ const nextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

@@ -11,13 +11,12 @@ import "./intro.css";
    - Body scroll lock without layout shift
    - Premium crossfade exit
    - Full reduced-motion + SSR safety
-   - Multi-codec delivery: AV1 WebM (309KB) → H.265 MP4 (262KB)
-   - Poster-first paint for instant LCP
    ═══════════════════════════════════════════════════════════ */
 
 const STORAGE_KEY = "shorakaei:intro-seen:v1";
-const POSTER_SRC = "/video-poster.jpg";
-const SAFETY_TIMEOUT_MS = 10_000;
+const VIDEO_SRC = "/video.mp4";
+const POSTER_SRC = ""; // ← اگه پوستر داری، مثلاً "/video-poster.jpg"
+const SAFETY_TIMEOUT_MS = 10_000; // حداکثر انتظار برای شروع پخش
 const TRANSITION_MS = 900;
 
 type Phase = "checking" | "playing" | "exiting" | "done";
@@ -294,19 +293,15 @@ export default function IntroExperience() {
         <video
           ref={videoRef}
           className="intro-video"
-          poster={POSTER_SRC}
+          src={VIDEO_SRC}
+          poster={POSTER_SRC || undefined}
           playsInline
           preload="auto"
           disablePictureInPicture
           controls={false}
           onEnded={handleEnded}
           onError={handleError}
-        >
-          {/* AV1 WebM — modern browsers (Chrome, Firefox, Edge, modern Safari) */}
-          <source src="/video.webm" type="video/webm" />
-          {/* H.265 MP4 — Safari / iOS fallback (with hvc1 tag for Apple) */}
-          <source src="/video-opt.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="intro-veil" aria-hidden="true" />
       </div>
 
