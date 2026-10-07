@@ -70,3 +70,14 @@ desktop.ini
 # ═══════════════════════════════════════════════════════
 *.tsbuildinfo
 next-env.d.ts
+# ═══════════════════════════════════════════════════════
+# Backup files — extended patterns
+# ═══════════════════════════════════════════════════════
+*.backup*
+**/*.backup*
+*_backup*
+**/*_backup*
+*-backup*
+**/*-backup*
+*.backup
+**/*.backup
