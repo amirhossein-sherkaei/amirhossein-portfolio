@@ -992,9 +992,9 @@
    16. DARK MODE
    ═══════════════════════════════════════════════════════════ */
 [data-theme="dark"] .blog-post-content {
-  --ed-accent: #ff6a3d;
-  --ed-accent-soft: color-mix(in srgb, #ff6a3d 12%, transparent);
-  --ed-accent-faint: color-mix(in srgb, #ff6a3d 6%, transparent);
+  --ed-accent: #14b1ab;
+  --ed-accent-soft: color-mix(in srgb, #14b1ab 12%, transparent);
+  --ed-accent-faint: color-mix(in srgb, #14b1ab 6%, transparent);
   --ed-ink: #f5efe6;
   --ed-ink-2: #c9c2b8;
   --ed-ink-3: #a9a296;
@@ -1025,7 +1025,7 @@
   background: linear-gradient(
     180deg,
     transparent 40%,
-    color-mix(in srgb, #ff6a3d 30%, transparent) 40%
+    color-mix(in srgb, #14b1ab 30%, transparent) 40%
   );
 }
 

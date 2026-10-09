@@ -1,4 +1,4 @@
-﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CHATBOT â€” v13 (Final Edition)
    â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    âœ… Light theme by default (dark only when site is dark)
@@ -54,7 +54,7 @@
 
 .chat-bubble-halo {
   position: absolute; inset: 0; border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff9a55 0%, #e94b2c 25%, #c22e15 50%, #e94b2c 75%, #ff9a55 100%);
+  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 25%, #c22e15 50%, #0d7377 75%, #ff9a55 100%);
   opacity: calc(0.7 + var(--aura-intensity) * 0.3);
   z-index: 0;
   animation: chat-spin calc(12s - var(--aura-intensity) * 8s) linear infinite;
@@ -211,7 +211,7 @@
 
 .chat-avatar-halo {
   position: absolute; inset: -2px; border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff9a55 0%, #e94b2c 30%, #c22e15 55%, #e94b2c 80%, #ff9a55 100%);
+  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 30%, #c22e15 55%, #0d7377 80%, #ff9a55 100%);
   z-index: 0;
   animation: chat-spin 12s linear infinite;
   opacity: 0.9;

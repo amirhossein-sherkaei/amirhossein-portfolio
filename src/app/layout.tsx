@@ -100,6 +100,7 @@ import "@/styles/grid-overlay.css";
 
 /* 57 - ULTIMATE FINAL - must be the last CSS import */
 import "@/styles/final-polish-2026.css";
+import "@/styles/balance-turquoise-burgundy.css";
 
 /* 50. ChatBot */
 import "@/components/chat/chat.css";

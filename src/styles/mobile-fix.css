@@ -197,7 +197,7 @@
   /* ── Active state: soft orange pill with glow ── */
   .mobile-nav-item.is-active,
   .mobile-nav-item.active {
-    color: #e94b2c !important;
+    color: #0d7377 !important;
     background:
       linear-gradient(
         180deg,
@@ -237,7 +237,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      #e94b2c,
+      #0d7377,
       transparent
     ) !important;
     box-shadow: 0 0 8px rgba(233, 75, 44, 0.7) !important;
@@ -307,7 +307,7 @@
       linear-gradient(
         135deg,
         #ff8050 0%,
-        #e94b2c 55%,
+        #0d7377 55%,
         #c93418 100%
       ) !important;
     box-shadow:

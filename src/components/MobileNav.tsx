@@ -52,7 +52,7 @@ function IconServices() {
           <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
         </linearGradient>
         <linearGradient id="mbnSrvWarm" x1="22" y1="6" x2="22" y2="14" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
         </linearGradient>
       </defs>
       <rect x="4" y="7" width="10.5" height="10.5" rx="3.2" fill="url(#mbnSrvDark)" />
@@ -71,7 +71,7 @@ function IconPortfolio() {
           <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
         </linearGradient>
         <linearGradient id="mbnPortWarm" x1="16" y1="3" x2="16" y2="8" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
         </linearGradient>
         <linearGradient id="mbnPortSun" x1="20" y1="14" x2="20" y2="18" gradientUnits="userSpaceOnUse">
           <stop stopColor="#FFB07A" /><stop offset="1" stopColor="#FF7043" />
@@ -94,7 +94,7 @@ function IconBlog() {
           <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
         </linearGradient>
         <linearGradient id="mbnBlogWarm" x1="21" y1="4" x2="21" y2="15" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
         </linearGradient>
       </defs>
       <rect x="4.5" y="4" width="23" height="24" rx="3.5" fill="url(#mbnBlogDark)" />
@@ -113,7 +113,7 @@ function IconAbout() {
           <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
         </linearGradient>
         <linearGradient id="mbnAboutWarm" x1="24" y1="18" x2="30" y2="24" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
         </linearGradient>
       </defs>
       <circle cx="16" cy="9.5" r="5.5" fill="url(#mbnAboutDark)" />
@@ -132,7 +132,7 @@ function IconSpark() {
           <stop stopColor="#18140F" /><stop offset="0.55" stopColor="#7A3D22" /><stop offset="1" stopColor="#FF7043" />
         </linearGradient>
         <linearGradient id="mbnSparkPlus" x1="16" y1="10" x2="16" y2="22" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+          <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
         </linearGradient>
       </defs>
       <path d="M24.4 7.6a11 11 0 1 0 3.1 7.4" stroke="url(#mbnSparkRing)" strokeWidth="3.8" strokeLinecap="round" fill="none" />

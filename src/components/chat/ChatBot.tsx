@@ -82,7 +82,7 @@ const MOOD_COLORS: Partial<Record<IntentType, string>> = {
   ask_portfolio_lumen: "#8b5cf6",
   ask_services: "#06b6d4", ask_service_web: "#06b6d4",
   ask_service_ai: "#06b6d4", ask_service_video: "#06b6d4",
-  start_project: "#e94b2c", describe_project: "#e94b2c",
+  start_project: "#0d7377", describe_project: "#0d7377",
   help: "#facc15", compliment: "#10b981", unknown: "#6b7280",
 };
 

@@ -749,14 +749,14 @@ figcaption {
 }
 
 .button-primary {
-  background: var(--accent);
+  background: var(--burgundy);
   color: #fff;
-  box-shadow: var(--shadow-accent);
+  box-shadow: 0 12px 40px -12px var(--burgundy-glow);
 }
 
 .button-primary:hover {
-  background: var(--accent-2);
-  box-shadow: 0 16px 48px -14px var(--accent-glow);
+  background: var(--burgundy-2);
+  box-shadow: 0 16px 48px -14px var(--burgundy-glow);
 }
 
 .button-secondary {

@@ -1,0 +1,296 @@
+/* ============================================================
+   COLOR BALANCE v2 — 60-30-10 Rule
+   Persian Turquoise + Burgundy
+   ------------------------------------------------------------
+   Uses REAL class names from the project:
+   - .hero-section .hero-title
+   - .hero-section .hero-title-line
+   - .hero-section .hero-title-em
+   - .nav-order-button
+   - .hero-btn.hero-btn-primary
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Hero Title
+   ═══════════════════════════════════════════════════════════ */
+
+.hero-section .hero-title,
+.hero-section .hero-title-line:not(.hero-title-muted) {
+  color: var(--burgundy) !important;
+}
+
+/* The muted line (line 2 "برای کسب‌وکارهایی که") stays muted ink */
+.hero-section .hero-title-muted {
+  color: var(--ink-3) !important;
+  font-weight: 500 !important;
+}
+
+/* The em (accent word "حرفه‌ای دیده بشن") → Burgundy */
+.hero-section .hero-title-em {
+  color: var(--burgundy) !important;
+  font-weight: 700 !important;
+}
+
+/* Underline under em */
+.hero-section .hero-title-em::after {
+  background: var(--burgundy) !important;
+  opacity: 0.4 !important;
+}
+
+/* The dot at the end "·" → Turquoise (stays as brand mark) */
+.hero-section .hero-title-accent {
+  color: var(--accent) !important;
+}
+
+.hero-section .hero-title-accent::after {
+  background: var(--accent) !important;
+}
+
+/* Hero title em for "hero-title-accent" */
+.hero-title-accent::after,
+.section-title em::after {
+  background: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Section Headings (h2)
+   ═══════════════════════════════════════════════════════════ */
+
+.section-heading h2,
+.section-heading h2 em,
+.section-heading h2 span:not(.section-heading h2 span),
+h2:not([class*="card"]):not([class*="badge"]) {
+  color: var(--burgundy) !important;
+}
+
+.section-heading h2 em {
+  color: var(--burgundy) !important;
+  font-style: normal !important;
+}
+
+/* Section index */
+.section-index {
+  color: var(--burgundy) !important;
+}
+
+.section-index::before {
+  background: var(--burgundy) !important;
+  box-shadow: 0 0 0 4px var(--burgundy-tint) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10% BRIGHT ACCENT — Nav Order Button (CTA)
+   ═══════════════════════════════════════════════════════════ */
+
+.nav-order-button {
+  background: var(--burgundy) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 32px -10px var(--burgundy-glow) !important;
+  border-color: var(--burgundy) !important;
+}
+
+.nav-order-button:hover {
+  background: var(--burgundy-2) !important;
+  box-shadow: 0 12px 40px -12px var(--burgundy-glow) !important;
+}
+
+.nav-order-button .nav-order-shine {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  ) !important;
+}
+
+.nav-order-button .nav-order-arrow {
+  color: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10% BRIGHT ACCENT — Hero Primary Button (CTA)
+   ═══════════════════════════════════════════════════════════ */
+
+.hero-btn.hero-btn-primary {
+  background: var(--burgundy) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 40px -12px var(--burgundy-glow) !important;
+  border-color: var(--burgundy) !important;
+}
+
+.hero-btn.hero-btn-primary:hover {
+  background: var(--burgundy-2) !important;
+  box-shadow: 0 16px 48px -14px var(--burgundy-glow) !important;
+}
+
+.hero-btn.hero-btn-primary .hero-btn-arrow {
+  color: #fff !important;
+}
+
+.hero-btn.hero-btn-primary .ink-word,
+.hero-btn.hero-btn-primary .ink-word::before {
+  color: #fff !important;
+}
+
+/* Secondary button (نمایش نمونه‌کارها) — Turquoise accent */
+.hero-btn.hero-btn-secondary {
+  background: transparent !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.hero-btn.hero-btn-secondary:hover {
+  background: var(--accent-tint) !important;
+  color: var(--accent-2) !important;
+  border-color: var(--accent-2) !important;
+}
+
+.hero-btn.hero-btn-secondary .ink-word {
+  color: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Links
+   ═══════════════════════════════════════════════════════════ */
+
+a:not([class*="button"]):not([class*="nav"]):not([class*="badge"]):not([class*="hero-btn"]):not([class*="order-button"]),
+.link:not([class*="button"]) {
+  color: var(--burgundy);
+}
+
+a:not([class*="button"]):not([class*="nav"]):not([class*="badge"]):not([class*="hero-btn"]):not([class*="order-button"]):hover,
+.link:not([class*="button"]):hover {
+  color: var(--burgundy-2);
+}
+
+.text-accent {
+  color: var(--burgundy) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Badges, Tags, Eyebrow
+   ═══════════════════════════════════════════════════════════ */
+
+.badge-accent {
+  background: var(--burgundy-tint) !important;
+  color: var(--burgundy) !important;
+}
+
+.eyebrow,
+.eyebrow--accent {
+  color: var(--burgundy) !important;
+}
+
+.eyebrow::before {
+  background: var(--burgundy) !important;
+  box-shadow: 0 0 0 4px var(--burgundy-tint) !important;
+}
+
+.tag:hover {
+  border-color: var(--burgundy) !important;
+  color: var(--burgundy) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Nav Active States
+   ═══════════════════════════════════════════════════════════ */
+
+.desktop-nav-slider {
+  background: var(--burgundy) !important;
+}
+
+.desktop-nav-slider-pulse {
+  background: var(--burgundy) !important;
+}
+
+.desktop-nav-icon,
+.desktop-nav-text {
+  color: var(--burgundy) !important;
+}
+
+.desktop-nav-list .is-active .desktop-nav-icon,
+.desktop-nav-list .is-active .desktop-nav-text,
+.desktop-nav-list li.is-active a .desktop-nav-icon,
+.desktop-nav-list li.is-active a .desktop-nav-text {
+  color: #fff !important;
+}
+
+/* Mobile nav */
+.mobile-nav-link.active,
+.mobile-bottom-nav-item.active,
+.mobile-bottom-nav-item[data-active="true"] {
+  color: var(--burgundy) !important;
+}
+
+.mobile-bottom-nav-item.active .mobile-bottom-nav-icon {
+  color: var(--burgundy) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — Form Focus
+   ═══════════════════════════════════════════════════════════ */
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: var(--burgundy) !important;
+  box-shadow: 0 0 0 4px var(--burgundy-tint) !important;
+}
+
+.checkbox input:checked ~ .checkbox-mark {
+  background: var(--burgundy) !important;
+  border-color: var(--burgundy) !important;
+}
+
+.radio input:checked ~ .radio-mark {
+  background: var(--burgundy) !important;
+  border-color: var(--burgundy) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   30% BURGUNDY — List markers & Dividers
+   ═══════════════════════════════════════════════════════════ */
+
+ul:not([class]) li::marker,
+ol:not([class]) li::marker {
+  color: var(--burgundy) !important;
+}
+
+.divider {
+  color: var(--burgundy) !important;
+}
+
+.divider::before,
+.divider::after {
+  background: var(--burgundy-tint) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE
+   ═══════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] .hero-section .hero-title,
+[data-theme="dark"] .hero-section .hero-title-line:not(.hero-title-muted),
+[data-theme="dark"] .hero-section .hero-title-em {
+  color: var(--burgundy-soft) !important;
+}
+
+[data-theme="dark"] .nav-order-button {
+  background: var(--burgundy-soft) !important;
+  border-color: var(--burgundy-soft) !important;
+}
+
+[data-theme="dark"] .hero-btn.hero-btn-primary {
+  background: var(--burgundy-soft) !important;
+  border-color: var(--burgundy-soft) !important;
+}
+
+[data-theme="dark"] .hero-btn.hero-btn-secondary {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+[data-theme="dark"] .section-heading h2,
+[data-theme="dark"] h2 {
+  color: var(--burgundy-soft) !important;
+}

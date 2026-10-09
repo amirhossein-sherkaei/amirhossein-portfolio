@@ -1,55 +1,63 @@
 /* ============================================================
-   Design Tokens — Liquid Signature
-   Typography Edition 2026
+   Design Tokens — Persian Turquoise Edition 2026
    ------------------------------------------------------------
    - Fluid type scale computed from 320px → 1920px viewport
    - Persian line-heights (descenders + diacritics room)
    - No letter-spacing on Persian/Arabic script
    - All contrast ratios WCAG 2.2 AAA (≥ 7:1)
+   - Palette: Persian Turquoise + Burgundy (accent)
+   - Inspired by Isfahan tiles + Persian carpets
    ============================================================ */
 
 :root {
-  /* ── Surface ── */
-  --paper:        #f7f3ee;
-  --paper-2:      #efe9e0;
-  --surface:      #fff9f4;
-  --surface-2:    #fbf4ec;
+  /* ── Surface (Cool off-white with turquoise hint) ── */
+  --paper:        #f8fbfb;
+  --paper-2:      #eef4f5;
+  --surface:      #ffffff;
+  --surface-2:    #f0f7f8;
 
   /* ── Ink (WCAG AAA verified) ── */
-  --ink:          #0a0908;   /* 18.5:1 on paper */
-  --ink-2:        #3f3a34;   /* 11.2:1 on paper */
-  --ink-3:        #5a5550;   /* 7.8:1  on paper */
-  --ink-3-strong: #4a4642;   /* 9.1:1  on paper */
-  --ink-muted:    #a29a90;   /* placeholder only */
+  --ink:          #0a1a1c;   /* deep petrol ink */
+  --ink-2:        #2a4244;
+  --ink-3:        #4a6466;
+  --ink-3-strong: #3d5658;
+  --ink-muted:    #8fa5a6;   /* placeholder only */
 
-  /* ── Accent ── */
-  --accent:        #e94b2c;
-  --accent-2:      #ff7a45;
-  --accent-soft:   #ffb38a;
-  --accent-tint:   rgba(233, 75, 44, 0.08);
-  --accent-glow:   rgba(233, 75, 44, 0.24);
+  /* ── Accent: Persian Turquoise ── */
+  --accent:        #0d7377;
+  --accent-2:      #0a5c60;
+  --accent-soft:   #14b1ab;
+  --accent-tint:   rgba(13, 115, 119, 0.08);
+  --accent-glow:   rgba(13, 115, 119, 0.24);
+
+  /* ── Secondary Accent: Royal Burgundy (for main CTA only) ── */
+  --burgundy:        #8B1A1A;
+  --burgundy-2:      #6B0F0F;
+  --burgundy-soft:   #B22222;
+  --burgundy-tint:   rgba(139, 26, 26, 0.08);
+  --burgundy-glow:   rgba(139, 26, 26, 0.28);
 
   /* ── Lines ── */
-  --line:          rgba(10, 9, 8, 0.08);
-  --line-soft:     rgba(10, 9, 8, 0.04);
-  --line-strong:   rgba(10, 9, 8, 0.18);
+  --line:          rgba(10, 26, 28, 0.08);
+  --line-soft:     rgba(10, 26, 28, 0.04);
+  --line-strong:   rgba(10, 26, 28, 0.18);
 
   /* ── Glass (Light) ── */
-  --glass-soft:    rgba(255, 249, 244, 0.55);
-  --glass:         rgba(255, 249, 244, 0.65);
-  --glass-strong:  rgba(255, 249, 244, 0.78);
-  --glass-border:  rgba(10, 9, 8, 0.06);
+  --glass-soft:    rgba(255, 255, 255, 0.55);
+  --glass:         rgba(255, 255, 255, 0.65);
+  --glass-strong:  rgba(255, 255, 255, 0.78);
+  --glass-border:  rgba(10, 26, 28, 0.06);
   --glass-highlight: rgba(255, 255, 255, 0.7);
 
   /* ── Feedback ── */
   --success:       #0f766e;
   --danger:        #b42318;
 
-  /* ── Shadow ── */
-  --shadow-sm: 0 1px 2px rgba(10, 9, 8, 0.04);
-  --shadow-md: 0 8px 24px -12px rgba(10, 9, 8, 0.14);
-  --shadow-lg: 0 24px 64px -24px rgba(10, 9, 8, 0.22);
-  --shadow-xl: 0 40px 100px -32px rgba(10, 9, 8, 0.28);
+  /* ── Shadow (tinted with cool petrol instead of warm) ── */
+  --shadow-sm: 0 1px 2px rgba(10, 26, 28, 0.04);
+  --shadow-md: 0 8px 24px -12px rgba(10, 26, 28, 0.14);
+  --shadow-lg: 0 24px 64px -24px rgba(10, 26, 28, 0.22);
+  --shadow-xl: 0 40px 100px -32px rgba(10, 26, 28, 0.28);
   --shadow-accent: 0 12px 40px -12px var(--accent-glow);
 
   /* ── Radius ── */
@@ -149,39 +157,45 @@
   --focus-offset: 3px;
 
   /* ── Fonts ── */
-  --font-sans: var(--font-vazirmatn), "Vazirmatn", system-ui, -apple-system,
-    "Segoe UI", sans-serif;
+  --font-sans: var(--font-vazirmatn), "Vazirmatn", system-ui, -apple-system,    "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo,
     Consolas, monospace;
 }
 
 [data-theme="dark"] {
-  --paper:        #0a0908;
-  --paper-2:      #11100e;
-  --surface:      #14120f;
-  --surface-2:    #1a1815;
+  --paper:        #08181a;
+  --paper-2:      #0a2022;
+  --surface:      #0d2528;
+  --surface-2:    #102b2e;
 
   /* Dark mode: never pure black background, never pure white text */
-  --ink:          #f5efe6;   /* 17.4:1 on paper */
-  --ink-2:        #c9c2b8;   /* 11.5:1 */
-  --ink-3:        #a9a296;   /* 8.2:1  */
-  --ink-3-strong: #b8b1a5;   /* 9.4:1  */
-  --ink-muted:    #5f5a52;
+  --ink:          #e8f0f0;
+  --ink-2:        #b8c8c8;
+  --ink-3:        #8aa0a2;
+  --ink-3-strong: #9db0b2;
+  --ink-muted:    #5a6e70;
 
-  --accent:        #ff6a3d;
-  --accent-2:      #ff8a5c;
-  --accent-soft:   #ffb38a;
-  --accent-tint:   rgba(255, 106, 61, 0.12);
-  --accent-glow:   rgba(255, 106, 61, 0.32);
+  --accent:        #14b1ab;
+  --accent-2:      #2ec4c4;
+  --accent-soft:   #5dd8d3;
+  --accent-tint:   rgba(20, 177, 171, 0.12);
+  --accent-glow:   rgba(20, 177, 171, 0.32);
 
-  --line:          rgba(245, 239, 230, 0.08);
-  --line-soft:     rgba(245, 239, 230, 0.04);
-  --line-strong:   rgba(245, 239, 230, 0.18);
+  /* Burgundy in dark mode: slightly brighter for better contrast */
+  --burgundy:        #B22222;
+  --burgundy-2:      #8B1A1A;
+  --burgundy-soft:   #D42A2A;
+  --burgundy-tint:   rgba(178, 34, 34, 0.16);
+  --burgundy-glow:   rgba(178, 34, 34, 0.36);
 
-  --glass-soft:    rgba(26, 24, 21, 0.55);
-  --glass:         rgba(26, 24, 21, 0.65);
-  --glass-strong:  rgba(20, 18, 15, 0.78);
-  --glass-border:  rgba(245, 239, 230, 0.08);
+  --line:          rgba(232, 240, 240, 0.08);
+  --line-soft:     rgba(232, 240, 240, 0.04);
+  --line-strong:   rgba(232, 240, 240, 0.18);
+
+  --glass-soft:    rgba(13, 37, 40, 0.55);
+  --glass:         rgba(13, 37, 40, 0.65);
+  --glass-strong:  rgba(10, 32, 34, 0.78);
+  --glass-border:  rgba(232, 240, 240, 0.08);
   --glass-highlight: rgba(255, 255, 255, 0.06);
 
   --success:       #34d399;
@@ -193,6 +207,7 @@
   --shadow-xl: 0 40px 100px -32px rgba(0, 0, 0, 0.9);
   --shadow-accent: 0 12px 40px -12px var(--accent-glow);
 }
+
 /* ============================================================
    HERO TYPOGRAPHY — 2026 Standards
    ────────────────────────────────────────────────────────────

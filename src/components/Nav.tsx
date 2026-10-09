@@ -80,7 +80,7 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navHomeWarm" x1="16" y1="14" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           <path d="M15.15 4.4a1.5 1.5 0 0 1 1.7 0l9.5 6.35a1.6 1.6 0 0 1 .65 1.3V25a2.5 2.5 0 0 1-2.5 2.5H7.5A2.5 2.5 0 0 1 5 25V12.05a1.6 1.6 0 0 1 .65-1.3z" fill="url(#navHomeDark)" />
@@ -96,7 +96,7 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navSrvWarm" x1="22" y1="6" x2="22" y2="14" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           <rect x="4" y="7" width="10.5" height="10.5" rx="3.2" fill="url(#navSrvDark)" />
@@ -113,7 +113,7 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navPortWarm" x1="16" y1="3" x2="16" y2="8" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
             </linearGradient>
             <linearGradient id="navPortSun" x1="20" y1="14" x2="20" y2="18" gradientUnits="userSpaceOnUse">
               <stop stopColor="#FFB07A" /><stop offset="1" stopColor="#FF7043" />
@@ -134,7 +134,7 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navBlogWarm" x1="21" y1="4" x2="21" y2="15" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           <rect x="4.5" y="4" width="23" height="24" rx="3.5" fill="url(#navBlogDark)" />
@@ -151,7 +151,7 @@ function NavIcon({ type }: { type: NavItem["icon"] }) {
               <stop stopColor="#3E3630" /><stop offset="1" stopColor="#18140F" />
             </linearGradient>
             <linearGradient id="navAboutWarm" x1="24" y1="18" x2="30" y2="24" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#E94B2C" />
+              <stop stopColor="#FF9A55" /><stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           <circle cx="16" cy="9.5" r="5.5" fill="url(#navAboutDark)" />

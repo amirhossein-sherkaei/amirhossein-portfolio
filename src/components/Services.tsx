@@ -106,7 +106,7 @@ function ServiceIconLarge({ type }: { type: Service["icon"] }) {
             </linearGradient>
             <linearGradient id="svcWebWarm" x1="20" y1="14" x2="44" y2="26" gradientUnits="userSpaceOnUse">
               <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           {/* Browser window */}
@@ -132,7 +132,7 @@ function ServiceIconLarge({ type }: { type: Service["icon"] }) {
           <defs>
             <linearGradient id="svcAiWarm" x1="32" y1="8" x2="32" y2="56" gradientUnits="userSpaceOnUse">
               <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           {/* Central spark */}
@@ -165,7 +165,7 @@ function ServiceIconLarge({ type }: { type: Service["icon"] }) {
             </linearGradient>
             <linearGradient id="svcBanWarm" x1="16" y1="10" x2="48" y2="22" gradientUnits="userSpaceOnUse">
               <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           {/* Frame */}
@@ -202,7 +202,7 @@ function ServiceIconLarge({ type }: { type: Service["icon"] }) {
             </linearGradient>
             <linearGradient id="svcVidWarm" x1="26" y1="22" x2="40" y2="42" gradientUnits="userSpaceOnUse">
               <stop stopColor="#FF9A55" />
-              <stop offset="1" stopColor="#E94B2C" />
+              <stop offset="1" stopColor="#0d7377" />
             </linearGradient>
           </defs>
           {/* Video frame */}
