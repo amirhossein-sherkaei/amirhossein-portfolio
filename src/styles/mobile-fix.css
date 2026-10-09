@@ -201,26 +201,26 @@
     background:
       linear-gradient(
         180deg,
-        rgba(233, 75, 44, 0.12) 0%,
-        rgba(233, 75, 44, 0.06) 100%
+        rgba(13, 115, 119, 0.12) 0%,
+        rgba(13, 115, 119, 0.06) 100%
       ) !important;
     box-shadow:
-      0 0 0 1px rgba(233, 75, 44, 0.15) inset,
-      0 4px 12px rgba(233, 75, 44, 0.15) !important;
+      0 0 0 1px rgba(13, 115, 119, 0.15) inset,
+      0 4px 12px rgba(13, 115, 119, 0.15) !important;
   }
 
   [data-theme="dark"] .mobile-nav-item.is-active,
   [data-theme="dark"] .mobile-nav-item.active {
-    color: #ff8050 !important;
+    color: #14b1ab !important;
     background:
       linear-gradient(
         180deg,
-        rgba(233, 75, 44, 0.20) 0%,
-        rgba(233, 75, 44, 0.10) 100%
+        rgba(13, 115, 119, 0.20) 0%,
+        rgba(13, 115, 119, 0.10) 100%
       ) !important;
     box-shadow:
-      0 0 0 1px rgba(233, 75, 44, 0.25) inset,
-      0 4px 14px rgba(233, 75, 44, 0.25) !important;
+      0 0 0 1px rgba(13, 115, 119, 0.25) inset,
+      0 4px 14px rgba(13, 115, 119, 0.25) !important;
   }
 
   /* ── Active indicator line above label ── */
@@ -240,7 +240,7 @@
       #0d7377,
       transparent
     ) !important;
-    box-shadow: 0 0 8px rgba(233, 75, 44, 0.7) !important;
+    box-shadow: 0 0 8px rgba(13, 115, 119, 0.7) !important;
     opacity: 0.9 !important;
   }
 
@@ -304,17 +304,12 @@
   .mobile-nav-cta {
     color: #ffffff !important;
     background:
-      linear-gradient(
-        135deg,
-        #ff8050 0%,
-        #0d7377 55%,
-        #c93418 100%
-      ) !important;
+      linear-gradient(135deg, #B22222 0%, #8B1A1A 55%, #6B0F0F 100%) !important;
     box-shadow:
       0 1px 0 0 rgba(255, 255, 255, 0.35) inset,
       0 -1px 0 0 rgba(0, 0, 0, 0.15) inset,
-      0 4px 12px rgba(233, 75, 44, 0.35),
-      0 8px 24px rgba(233, 75, 44, 0.25) !important;
+      0 4px 12px rgba(13, 115, 119, 0.35),
+      0 8px 24px rgba(178, 34, 34, 0.25) !important;
     overflow: hidden !important;
   }
 
@@ -348,8 +343,8 @@
   .mobile-nav-cta:active {
     transform: scale(0.94) !important;
     box-shadow:
-      0 2px 6px rgba(233, 75, 44, 0.5),
-      0 4px 14px rgba(233, 75, 44, 0.35) !important;
+      0 2px 6px rgba(13, 115, 119, 0.5),
+      0 4px 14px rgba(178, 34, 34, 0.35) !important;
   }
 }
 
