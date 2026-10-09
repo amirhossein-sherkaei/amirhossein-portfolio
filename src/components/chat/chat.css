@@ -13,8 +13,8 @@
   --chat-bubble-size-desktop: 64px;
   --chat-bubble-size-mobile: 54px;
   --aura-intensity: 0;
-  --accent-soft: rgba(233, 75, 44, 0.08);
-  --accent-line: rgba(233, 75, 44, 0.2);
+  --accent-soft: rgba(13, 115, 119, 0.08);
+  --accent-line: rgba(13, 115, 119, 0.2);
   --surface-1: rgba(255, 253, 250, 0.96);
   --surface-2: rgba(250, 248, 245, 0.9);
   --line-soft: rgba(10, 9, 8, 0.06);
@@ -54,7 +54,7 @@
 
 .chat-bubble-halo {
   position: absolute; inset: 0; border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 25%, #c22e15 50%, #0d7377 75%, #ff9a55 100%);
+  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 25%, #0a5c60 50%, #0d7377 75%, #ff9a55 100%);
   opacity: calc(0.7 + var(--aura-intensity) * 0.3);
   z-index: 0;
   animation: chat-spin calc(12s - var(--aura-intensity) * 8s) linear infinite;
@@ -71,7 +71,7 @@
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.12),
     0 2px 8px -4px rgba(10, 9, 8, 0.5),
-    0 0 0 calc(var(--aura-intensity) * 3px) rgba(233, 75, 44, calc(var(--aura-intensity) * 0.25));
+    0 0 0 calc(var(--aura-intensity) * 3px) rgba(13, 115, 119, calc(var(--aura-intensity) * 0.25));
   transition: transform 440ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
@@ -211,7 +211,7 @@
 
 .chat-avatar-halo {
   position: absolute; inset: -2px; border-radius: 50%;
-  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 30%, #c22e15 55%, #0d7377 80%, #ff9a55 100%);
+  background: conic-gradient(from 0deg, #ff9a55 0%, #0d7377 30%, #0a5c60 55%, #0d7377 80%, #ff9a55 100%);
   z-index: 0;
   animation: chat-spin 12s linear infinite;
   opacity: 0.9;
@@ -668,12 +668,12 @@
 .chat-action.is-primary {
   border-color: transparent; color: #fff;
   background: var(--accent);
-  box-shadow: 0 2px 8px -2px rgba(233, 75, 44, 0.4);
+  box-shadow: 0 2px 8px -2px rgba(13, 115, 119, 0.4);
 }
 
 .chat-action.is-primary:hover {
-  background: #c22e15;
-  box-shadow: 0 4px 12px -2px rgba(233, 75, 44, 0.5);
+  background: #0a5c60;
+  box-shadow: 0 4px 12px -2px rgba(13, 115, 119, 0.5);
   transform: translateY(-1px);
 }
 
@@ -711,7 +711,7 @@
   background: var(--accent); color: #fff;
   border-color: transparent;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px -4px rgba(233, 75, 44, 0.4);
+  box-shadow: 0 4px 12px -4px rgba(13, 115, 119, 0.4);
 }
 
 .chat-quick-chip:active { transform: translateY(0) scale(0.97); }
@@ -788,13 +788,13 @@
 .chat-voice-btn.is-listening {
   color: #fff; background: var(--accent);
   border-color: transparent;
-  box-shadow: 0 0 0 4px rgba(233, 75, 44, 0.15);
+  box-shadow: 0 0 0 4px rgba(13, 115, 119, 0.15);
   animation: chat-voice-pulse 1.6s ease-in-out infinite;
 }
 
 @keyframes chat-voice-pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(233, 75, 44, 0.15); }
-  50% { box-shadow: 0 0 0 8px rgba(233, 75, 44, 0.05); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(13, 115, 119, 0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(13, 115, 119, 0.05); }
 }
 
 .chat-voice-btn.is-disabled {
@@ -827,7 +827,7 @@
 .chat-input:focus {
   border-color: var(--accent);
   background: var(--surface-1);
-  box-shadow: 0 0 0 3px rgba(233, 75, 44, 0.1);
+  box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
 }
 
 .chat-send {
@@ -836,12 +836,12 @@
   background: var(--accent); color: #fff;
   cursor: pointer; flex-shrink: 0; isolation: isolate;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  box-shadow: 0 2px 8px -2px rgba(233, 75, 44, 0.5);
+  box-shadow: 0 2px 8px -2px rgba(13, 115, 119, 0.5);
   transition: all 280ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 .chat-send svg { width: 17px; height: 17px; transform: translateX(1px); }
-.chat-send:hover:not(:disabled) { background: #c22e15; transform: translateY(-1px) scale(1.04); box-shadow: 0 4px 12px -3px rgba(233, 75, 44, 0.6); }
+.chat-send:hover:not(:disabled) { background: #0a5c60; transform: translateY(-1px) scale(1.04); box-shadow: 0 4px 12px -3px rgba(13, 115, 119, 0.6); }
 .chat-send:active:not(:disabled) { transform: translateY(0) scale(0.94); }
 .chat-send:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; background: var(--ink-3); }
 

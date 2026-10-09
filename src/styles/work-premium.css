@@ -188,8 +188,8 @@
   padding: 6px 13px !important;
   background: linear-gradient(
     135deg,
-    #ff9264 0%,
-    #ef5a35 40%,
+    #2ec4c4 0%,
+    #0a5c60 40%,
     #0d7377 100%
   ) !important;
   color: #ffffff !important;
@@ -735,8 +735,8 @@
 .project-modal-nav-demo {
   background: linear-gradient(
     135deg,
-    #ff9264 0%,
-    #ef5a35 40%,
+    #2ec4c4 0%,
+    #0a5c60 40%,
     #0d7377 100%
   ) !important;
   color: #ffffff !important;
@@ -744,7 +744,7 @@
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.42),
     inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 1px 2px rgba(13, 115, 119, 0.3),
     0 8px 22px -6px color-mix(in srgb, var(--accent) 55%, transparent) !important;
   transition:
     transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1),
@@ -768,7 +768,7 @@
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.15),
     0 8px 24px -8px rgba(0, 0, 0, 0.5),
-    0 0 0 0.5px rgba(233, 75, 44, 0.2) !important;
+    0 0 0 0.5px rgba(13, 115, 119, 0.2) !important;
   border-radius: 18px !important;
 }
 
@@ -904,17 +904,17 @@
   overflow: hidden;
   background: linear-gradient(
     135deg,
-    #ff9264 0%,
-    #ef5a35 40%,
+    #2ec4c4 0%,
+    #0a5c60 40%,
     #0d7377 70%,
-    #c22e15 100%
+    #0a5c60 100%
   ) !important;
   color: #ffffff !important;
   border: none !important;
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.42),
     inset 0 -1.5px 0 rgba(0, 0, 0, 0.22),
-    0 1px 2px rgba(233, 75, 44, 0.3),
+    0 1px 2px rgba(13, 115, 119, 0.3),
     0 10px 26px -8px color-mix(in srgb, var(--accent) 55%, transparent) !important;
   transition:
     transform 280ms cubic-bezier(0.34, 1.4, 0.64, 1),
@@ -1120,8 +1120,8 @@
 .not-found-zero-core {
   background: linear-gradient(
     135deg,
-    #ff9264 0%,
-    #ef5a35 40%,
+    #2ec4c4 0%,
+    #0a5c60 40%,
     #0d7377 100%
   ) !important;
   color: #ffffff !important;
