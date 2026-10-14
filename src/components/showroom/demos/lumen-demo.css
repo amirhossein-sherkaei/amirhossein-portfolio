@@ -1,0 +1,149 @@
+/* Lumen Demo */
+
+.lumen-demo {
+  width: 100%; height: 100%; min-height: 480px;
+  background: #050506; color: #f4ede4; padding: 16px;
+  display: flex; flex-direction: column; gap: 14px;
+  font-family: var(--font-sans); overflow: hidden;
+}
+
+.lumen-stage { flex: 1; min-height: 200px; }
+
+.lumen-frame-big {
+  position: relative; width: 100%; height: 100%;
+  border-radius: 14px; overflow: hidden;
+  transition: background .6s ease;
+  min-height: 200px;
+}
+
+.lumen-frame-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(5,5,6,.9) 100%);
+  pointer-events: none;
+}
+
+.lumen-frame-info {
+  position: absolute; bottom: 20px; inset-inline-start: 20px;
+  z-index: 2; max-width: 80%;
+}
+
+.lumen-frame-num {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .24em;
+  text-transform: uppercase; color: #ff5a3a; margin-bottom: 8px; font-weight: 700;
+}
+
+.lumen-frame-title {
+  font-size: 28px; font-weight: 800; line-height: 1.1;
+  color: #f4ede4; margin-bottom: 4px;
+}
+
+.lumen-frame-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(244,237,228,.6); margin-bottom: 10px;
+}
+
+.lumen-frame-desc {
+  font-size: 12.5px; line-height: 1.7;
+  color: rgba(244,237,228,.85);
+}
+
+.lumen-timeline {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.lumen-tl-nav {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(244,237,228,.06); border: 1px solid rgba(244,237,228,.12);
+  color: #f4ede4; font-size: 18px; line-height: 1;
+  display: grid; place-items: center; cursor: pointer;
+  transition: all .2s ease; padding: 0;
+}
+
+.lumen-tl-nav:hover {
+  background: #ff5a3a; border-color: #ff5a3a; color: #fff;
+}
+
+.lumen-tl-track {
+  flex: 1; display: flex; gap: 6px; overflow-x: auto;
+  padding: 4px 0; scrollbar-width: thin;
+}
+
+.lumen-tl-track::-webkit-scrollbar { height: 4px; }
+.lumen-tl-track::-webkit-scrollbar-thumb { background: rgba(255,90,58,.4); border-radius: 2px; }
+
+.lumen-tl-frame {
+  flex-shrink: 0; width: 60px; display: flex; flex-direction: column;
+  gap: 4px; padding: 0; border: none; background: none; cursor: pointer;
+  transition: all .25s ease; padding: 4px;
+  border-radius: 8px; position: relative;
+}
+
+.lumen-tl-frame:hover { transform: translateY(-2px); }
+
+.lumen-tl-frame.is-active {
+  background: rgba(255,90,58,.15);
+  box-shadow: 0 0 0 2px rgba(255,90,58,.5);
+}
+
+.lumen-tl-thumb {
+  width: 100%; aspect-ratio: 16/10; border-radius: 5px;
+  transition: all .3s ease;
+}
+
+.lumen-tl-frame.is-active .lumen-tl-thumb {
+  box-shadow: 0 0 12px rgba(255,90,58,.5);
+}
+
+.lumen-tl-num {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em;
+  color: rgba(244,237,228,.5); text-align: center;
+}
+
+.lumen-tl-frame.is-active .lumen-tl-num { color: #ff5a3a; font-weight: 700; }
+
+.lumen-controls {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; background: rgba(244,237,228,.04);
+  border-radius: 10px; border: 1px solid rgba(244,237,228,.06);
+}
+
+.lumen-auto-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(244,237,228,.06); border: 1px solid rgba(244,237,228,.12);
+  color: #f4ede4; font-size: 11px; font-weight: 600; cursor: pointer;
+  transition: all .2s ease; white-space: nowrap;
+}
+
+.lumen-auto-btn:hover { border-color: #ff5a3a; color: #ff5a3a; }
+
+.lumen-auto-btn.is-active {
+  background: #ff5a3a; color: #fff; border-color: #ff5a3a;
+}
+
+.lumen-progress {
+  flex: 1; height: 3px; background: rgba(244,237,228,.08);
+  border-radius: 2px; overflow: hidden;
+}
+
+.lumen-progress-bar {
+  height: 100%; background: linear-gradient(90deg, #ff5a3a, #ff2d55);
+  border-radius: 2px; transition: width .4s ease;
+}
+
+.lumen-counter {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em;
+  color: rgba(244,237,228,.6); white-space: nowrap; direction: ltr;
+}
+
+@media (max-width: 640px) {
+  .lumen-demo { padding: 12px; gap: 10px; }
+  .lumen-frame-title { font-size: 22px; }
+  .lumen-frame-desc { font-size: 11.5px; }
+  .lumen-tl-frame { width: 52px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumen-frame-big, .lumen-tl-frame, .lumen-tl-thumb,
+  .lumen-auto-btn, .lumen-tl-nav, .lumen-progress-bar { transition: none !important; }
+}

@@ -1,0 +1,130 @@
+/* Vira Demo */
+
+.vira-demo {
+  width: 100%; height: 100%; min-height: 480px;
+  background: linear-gradient(135deg, #0a0713 0%, #150e28 100%);
+  color: #f0eaff; padding: 16px;
+  display: flex; flex-direction: column; gap: 14px;
+  font-family: var(--font-sans); overflow: hidden;
+  transition: background .6s ease;
+}
+
+.vira-palettes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+.vira-palette-btn {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 10px; background: rgba(240,234,255,.04);
+  border: 1px solid rgba(240,234,255,.08); border-radius: 10px;
+  cursor: pointer; transition: all .25s ease; align-items: flex-start;
+}
+
+.vira-palette-btn:hover { background: rgba(240,234,255,.08); border-color: rgba(240,234,255,.15); }
+
+.vira-palette-btn.is-active {
+  background: rgba(240,234,255,.1);
+  border-color: var(--vira-primary);
+  box-shadow: 0 0 0 2px var(--vira-primary);
+}
+
+.vira-palette-swatch {
+  display: block; width: 100%; height: 6px; border-radius: 3px;
+}
+
+.vira-palette-name {
+  font-size: 10.5px; font-weight: 600; color: #c4b8e0;
+  line-height: 1.2; letter-spacing: .02em;
+}
+
+.vira-palette-btn.is-active .vira-palette-name { color: #f0eaff; }
+
+.vira-preview {
+  flex: 1; display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px; align-content: start;
+}
+
+.vira-card {
+  padding: 16px;
+  background: rgba(240,234,255,.04);
+  border: 1px solid rgba(240,234,255,.08);
+  border-radius: 14px;
+  transition: all .5s ease;
+}
+
+.vira-card-label {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .18em;
+  text-transform: uppercase; color: #8b7cb0; margin-bottom: 10px;
+}
+
+.vira-card-brand { grid-column: 1 / -1; }
+
+.vira-logo { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+
+.vira-logo-mark {
+  font-size: 32px; font-weight: 800;
+  background: linear-gradient(135deg, var(--vira-primary), var(--vira-secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1; transition: all .5s ease;
+}
+
+.vira-logo-text {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .2em;
+  color: #8b7cb0;
+}
+
+.vira-tagline { font-size: 13px; color: #c4b8e0; line-height: 1.6; }
+
+.vira-logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+.vira-logo-tile {
+  aspect-ratio: 1; border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 16px; font-weight: 800;
+  transition: all .5s ease;
+}
+
+.vira-logo-primary { background: var(--vira-primary); color: #fff; }
+
+.vira-logo-outline {
+  border: 2px solid var(--vira-primary); color: var(--vira-primary);
+  background: transparent;
+}
+
+.vira-logo-gradient {
+  background: linear-gradient(135deg, var(--vira-primary), var(--vira-secondary));
+  color: #fff;
+}
+
+.vira-logo-inverse { background: #f0eaff; color: #0a0713; }
+
+.vira-swatches { display: flex; flex-direction: column; gap: 6px; }
+
+.vira-swatch {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-radius: 8px; border: none;
+  cursor: pointer; transition: all .2s ease;
+  color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+
+.vira-swatch:hover { transform: translateX(-3px); }
+
+.vira-swatch-name { font-size: 11px; font-weight: 700; }
+.vira-swatch-hex { font-family: var(--font-mono); font-size: 10px; opacity: .9; }
+
+.vira-hint {
+  padding: 10px 14px; background: rgba(240,234,255,.04);
+  border-radius: 10px; font-size: 11px; color: #8b7cb0;
+  text-align: center; line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .vira-demo { padding: 12px; gap: 10px; }
+  .vira-palettes { grid-template-columns: repeat(2, 1fr); }
+  .vira-preview { grid-template-columns: 1fr; }
+  .vira-logo-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vira-card, .vira-logo-mark, .vira-logo-tile, .vira-palette-btn, .vira-swatch { transition: none !important; }
+}
