@@ -8,10 +8,9 @@ import { projects } from "@/content/projects";
 /* ── Above-the-fold: direct import (need immediate render) ── */
 /* Nav, MobileNav, Hero */
 
-/* ── Showroom: direct import (main interactive experience) ── */
-import Showroom from "@/components/showroom/Showroom";
-
 /* ── Below-the-fold: dynamic imports with SSR preserved ── */
+/* ssr: true means server renders them into HTML for SEO,
+   but client-side JS chunk loads separately = smaller initial bundle */
 
 const Services = dynamic(() => import("@/components/Services"), {
   ssr: true,
@@ -28,6 +27,25 @@ const Services = dynamic(() => import("@/components/Services"), {
 });
 
 const Process = dynamic(() => import("@/components/Process"), { ssr: true });
+
+const Portfolio = dynamic(() => import("@/components/Portfolio"), {
+  ssr: true,
+  loading: () => (
+    <section
+      className="section portfolio-section"
+      aria-busy="true"
+      aria-label="در حال بارگذاری نمونه‌کارها"
+    >
+      <div className="container">
+        <div className="lazy-skeleton-grid" aria-hidden="true">
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+        </div>
+      </div>
+    </section>
+  ),
+});
 
 const About = dynamic(() => import("@/components/About"), { ssr: true });
 
@@ -108,9 +126,9 @@ export default function Home() {
           totalPosts={allPosts.length}
           totalProjects={projects.length}
         />
-        <Showroom />
         <Services />
         <Process />
+        <Portfolio />
         <About />
         <WhyMe />
         <Testimonials />
