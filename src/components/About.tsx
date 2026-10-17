@@ -3,7 +3,6 @@ import { projects } from "@/content/projects";
 import CountUp from "@/components/CountUp";
 import SectionNumber from "@/components/SectionNumber";
 
-/* سال شمسی جاری — خودکار از تاریخ سیستم محاسبه می‌شود */
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
 })
@@ -77,6 +76,20 @@ export default function About() {
 
   return (
     <section id="about" className="about-section section">
+      <span className="about-brand-texture" aria-hidden="true">
+        <Image
+          src="/brand-texture.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+            opacity: 0.035,
+            pointerEvents: "none",
+          }}
+        />
+      </span>
+
       <div className="container">
         <div className="about-identity reveal">
           <SectionNumber num="۰۴" label="ABOUT" />
@@ -143,7 +156,9 @@ export default function About() {
             </p>
 
             <div className="about-statement-sign">
-              <span className="about-statement-name">امیرحسین شرکائی</span>
+              <span className="about-statement-name">
+                امیرحسین شرکائی
+              </span>
               <span className="about-statement-latin">
                 AMIRHOSSEIN SHORAKAEI
               </span>
@@ -151,7 +166,6 @@ export default function About() {
           </aside>
         </div>
 
-        {/* ═══════ BRAND SHOWCASE ═══════ */}
         <div className="about-brand-showcase reveal">
           <div className="about-brand-mark" aria-hidden="true">
             <Image
@@ -176,7 +190,7 @@ export default function About() {
 
             <p className="about-brand-text">
               این مهر، ترکیبی از حروف اول نامم (AH) با ترکیب فلز و
-              نور نارنجی است — دقیقاً همون تعادلی که در هر پروژه
+              نور فیروزه‌ای است — دقیقاً همون تعادلی که در هر پروژه
               دنبالش هستم: ساختار محکم، جزئیات دقیق، و یک جرقه‌ی
               گرم که کار رو زنده می‌کنه.
             </p>
@@ -205,7 +219,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* ═══════ PROOF STRIP — CountUp animated ═══════ */}
         <div className="about-proof reveal" aria-label="اثبات‌های فنی">
           {proofPoints.map((point) => (
             <div key={point.label} className="about-proof-item">
@@ -215,7 +228,9 @@ export default function About() {
                   className="about-proof-count"
                 />
                 {point.suffix && (
-                  <span className="about-proof-suffix">{point.suffix}</span>
+                  <span className="about-proof-suffix">
+                    {point.suffix}
+                  </span>
                 )}
               </span>
               <span className="about-proof-label">{point.label}</span>
@@ -231,7 +246,10 @@ export default function About() {
 
           <div className="about-principles-grid">
             {principles.map((principle) => (
-              <article key={principle.number} className="about-principle">
+              <article
+                key={principle.number}
+                className="about-principle"
+              >
                 <span className="about-principle-number">
                   {principle.number}
                 </span>

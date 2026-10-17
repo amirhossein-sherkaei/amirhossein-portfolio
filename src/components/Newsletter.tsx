@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import EditorialImage from "@/components/ui/EditorialImage";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -55,6 +56,17 @@ export default function Newsletter() {
       aria-labelledby="newsletter-title"
     >
       <div className="container">
+        <div className="newsletter-editorial-wrap reveal">
+          <EditorialImage
+            src="/home-newsletter.webp"
+            alt="پاکت و مهر"
+            aspectRatio="21 / 9"
+            radius="xl"
+            overlay="all"
+            sizes="(max-width: 720px) 100vw, 1280px"
+          />
+        </div>
+
         <div className="newsletter-card reveal">
           <span className="newsletter-eyebrow">
             07 — NEWSLETTER
@@ -123,7 +135,10 @@ export default function Newsletter() {
               >
                 {status === "loading" ? (
                   <>
-                    <span className="newsletter-btn-spinner" aria-hidden="true" />
+                    <span
+                      className="newsletter-btn-spinner"
+                      aria-hidden="true"
+                    />
                     در حال ثبت...
                   </>
                 ) : (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import MagneticButton from "@/components/MagneticButton";
 import ContactLinks from "@/components/ContactLinks";
 import SectionNumber from "@/components/SectionNumber";
+import EditorialImage from "@/components/ui/EditorialImage";
 
 export default function FinalCTA() {
   const contactEmail = process.env.PROJECT_CONTACT_EMAIL;
@@ -12,6 +13,17 @@ export default function FinalCTA() {
       aria-labelledby="final-cta-title"
     >
       <div className="container">
+        <div className="final-cta-editorial reveal">
+          <EditorialImage
+            src="/home-final-cta.webp"
+            alt="طاق پارسی"
+            aspectRatio="21 / 9"
+            radius="xl"
+            overlay="all"
+            sizes="(max-width: 720px) 100vw, 1280px"
+          />
+        </div>
+
         <div className="final-cta reveal">
           <div className="final-cta-content">
             <SectionNumber num="۱۰" label="START A PROJECT" />
@@ -31,7 +43,8 @@ export default function FinalCTA() {
             <div className="final-cta-actions">
               <MagneticButton strength={0.22} radius={75}>
                 <Link
-                  href="/order" prefetch={false}
+                  href="/order"
+                  prefetch={false}
                   className="button button-primary button-lg"
                 >
                   <span className="ink-word ink-word--on-dark">

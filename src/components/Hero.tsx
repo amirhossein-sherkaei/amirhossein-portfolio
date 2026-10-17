@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
+import EditorialImage from "@/components/ui/EditorialImage";
 
 type LivePost = {
   slug: string;
@@ -224,7 +225,8 @@ export default function Hero({
         id: "latest",
         render: () => (
           <Link
-            href={`/blog/${latestPost.slug}`} prefetch={false}
+            href={`/blog/${latestPost.slug}`}
+            prefetch={false}
             className="hero-bento-live-item"
           >
             <span className="hero-bento-live-label">
@@ -251,7 +253,8 @@ export default function Hero({
       id: "stats",
       render: () => (
         <Link
-          href="/blog" prefetch={false}
+          href="/blog"
+          prefetch={false}
           className="hero-bento-live-item hero-bento-live-item--stats"
         >
           <span className="hero-bento-live-label">
@@ -278,7 +281,8 @@ export default function Hero({
         id: "archive",
         render: () => (
           <Link
-            href={`/blog/${archivePost.slug}`} prefetch={false}
+            href={`/blog/${archivePost.slug}`}
+            prefetch={false}
             className="hero-bento-live-item"
           >
             <span className="hero-bento-live-label">
@@ -399,7 +403,11 @@ export default function Hero({
 
             <div className="hero-actions">
               <MagneticButton strength={0.18} radius={80}>
-                <Link href="/order" prefetch={false} className="hero-btn hero-btn-primary">
+                <Link
+                  href="/order"
+                  prefetch={false}
+                  className="hero-btn hero-btn-primary"
+                >
                   <span className="hero-btn-shine" aria-hidden="true" />
                   <span className="ink-word ink-word--on-dark">
                     شروع پروژه
@@ -523,7 +531,7 @@ export default function Hero({
                 ۹۹<em>+</em>
               </span>
               <span className="hero-bento-sub">
-                امتیاز تجربه‌ی کاربر
+                امتیاز تجربه‌ی کاربری
               </span>
             </article>
 
@@ -546,6 +554,18 @@ export default function Hero({
               </div>
             </article>
           </aside>
+        </div>
+
+        <div className="hero-editorial-band">
+          <EditorialImage
+            src="/home-hero-devices.webp"
+            alt="نمایش دستگاه‌های پروژه"
+            aspectRatio="16 / 9"
+            radius="xl"
+            overlay="editorial-fade"
+            priority
+            sizes="(max-width: 720px) 100vw, 1280px"
+          />
         </div>
       </div>
 
@@ -570,9 +590,29 @@ function CrosshairMark() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" strokeWidth="0.7" />
-      <line x1="0" y1="12" x2="24" y2="12" stroke="currentColor" strokeWidth="0.7" />
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="0.7" />
+      <line
+        x1="12"
+        y1="0"
+        x2="12"
+        y2="24"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+      <line
+        x1="0"
+        y1="12"
+        x2="24"
+        y2="12"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="3"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
     </svg>
   );
 }

@@ -1,4 +1,5 @@
 import SectionNumber from "@/components/SectionNumber";
+import EditorialImage from "@/components/ui/EditorialImage";
 
 const steps = [
   {
@@ -83,6 +84,17 @@ export default function Process() {
             فرآیند شفاف از اولین پیام تا تحویل نهایی. در هر مرحله
             می‌دونی کجای کاری، قدم بعدی چیه، و کِی تحویل می‌گیری.
           </p>
+        </div>
+
+        <div className="process-editorial reveal">
+          <EditorialImage
+            src="/home-process.webp"
+            alt="فرآیند کار"
+            aspectRatio="21 / 9"
+            radius="xl"
+            overlay="editorial-fade"
+            sizes="(max-width: 720px) 100vw, 1280px"
+          />
         </div>
 
         <ol className="process-grid">
