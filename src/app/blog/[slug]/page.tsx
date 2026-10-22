@@ -97,7 +97,7 @@ export default async function BlogPostPage({ params }: Props) {
               <BlogAuthorBox />
               <BlogEndCTA />
               
-              <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={post.slug} />
+              <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
             </article>
             
             {post.toc && post.toc.length > 0 && (

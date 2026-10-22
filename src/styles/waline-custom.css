@@ -1,23 +1,12 @@
-/* ============================================================
-   WALINE ULTIMATE THEME — FORCED OVERRIDES
-   Using !important to defeat all default Waline styles.
-   ============================================================ */
-
-/* Wrapper */
 .waline-wrapper {
   margin-top: 5rem;
   padding: 3rem;
-  background: rgba(255, 255, 255, 0.65) !important;
+  background: rgba(255, 255, 255, 0.4) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
   border-radius: 32px !important;
-  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
   box-shadow: 0 24px 64px -24px rgba(0,0,0,0.1) !important;
-}
-
-[data-theme="dark"] .waline-wrapper {
-  background: rgba(19, 42, 46, 0.65) !important;
-  border-color: rgba(232, 240, 240, 0.1) !important;
 }
 
 .waline-header-title {
@@ -35,127 +24,123 @@
   display: inline-block !important;
   width: 8px !important;
   height: 28px !important;
-  background: var(--accent) !important;
+  background: var(--burgundy) !important;
   border-radius: 4px !important;
 }
 
-/* Force everything to be RTL and inherit fonts */
-.waline-wrapper * {
-  font-family: var(--font-sans) !important;
-  direction: rtl !important;
+.custom-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Kill the default dashed border around header */
-.wl-header {
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  margin-bottom: 1.5rem !important;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 1rem !important;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
-/* Fields (Name, Email, Website) */
-.wl-header input {
-  background: var(--surface) !important;
-  border: 1px solid var(--line-strong) !important;
-  border-radius: 12px !important;
-  padding: 0.8rem 1rem !important;
-  font-size: 0.9rem !important;
-  color: var(--ink) !important;
-  transition: all 0.3s ease !important;
-  flex: 1 !important;
-  min-width: 150px !important;
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
-.wl-header input:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 4px var(--accent-tint) !important;
-  outline: none !important;
+.input-group {
+  position: relative;
 }
 
-/* Editor Box */
-.wl-editor {
-  background: var(--surface) !important;
-  border: 1px solid var(--line-strong) !important;
-  border-radius: 16px !important;
-  padding: 1.5rem !important;
-  min-height: 150px !important;
-  transition: all 0.3s ease !important;
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-.wl-editor:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 4px var(--accent-tint) !important;
-  outline: none !important;
+.input-group textarea {
+  min-height: 150px;
+  resize: vertical;
 }
 
-/* Submit Button */
-.wl-btn {
-  border-radius: 99px !important;
-  padding: 0.8rem 2rem !important;
-  font-weight: 700 !important;
-  font-size: 0.95rem !important;
-  transition: all 0.3s ease !important;
+.input-group label {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  color: var(--ink-3);
+  font-size: 0.95rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
-.wl-btn.primary {
-  background: var(--burgundy) !important;
-  color: #fff !important;
-  border: none !important;
-  box-shadow: 0 8px 24px -8px var(--burgundy-glow) !important;
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-tint);
 }
 
-.wl-btn.primary:hover {
-  background: var(--burgundy-2) !important;
-  transform: translateY(-2px) !important;
+.input-group input:focus ~ label,
+.input-group textarea:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label,
+.input-group textarea:not(:placeholder-shown) ~ label {
+  top: -0.6rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--surface);
+  padding: 0 0.4rem;
+  border-radius: 4px;
 }
 
-/* Tabs (Hottest, Oldest, Latest) */
-.wl-tabs {
-  border-bottom: none !important;
-  display: flex !important;
-  gap: 0.75rem !important;
-  margin-bottom: 2rem !important;
+.custom-submit-btn {
+  align-self: flex-start;
+  padding: 1rem 2.5rem;
+  background: var(--burgundy);
+  color: #fff;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px -8px var(--burgundy-glow);
 }
 
-.wl-tabs .wl-tab {
-  padding: 0.5rem 1.2rem !important;
-  border-radius: 99px !important;
-  font-size: 0.9rem !important;
-  color: var(--ink-3) !important;
-  border: 1px solid var(--line) !important;
-  transition: all 0.3s ease !important;
+.custom-submit-btn:hover:not(:disabled) {
+  background: var(--burgundy-2);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -8px var(--burgundy-glow);
 }
 
-.wl-tabs .wl-tab.active {
-  background: var(--ink) !important;
-  color: var(--paper) !important;
-  border-color: var(--ink) !important;
+.custom-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-/* Comment Cards */
-.wl-card {
-  border-radius: 16px !important;
-  border: 1px solid var(--line-soft) !important;
-  padding: 1.5rem !important;
-  background: var(--surface) !important;
-  margin-bottom: 1rem !important;
+.form-message {
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
 }
 
-.wl-card .wl-head .wl-nick {
-  font-weight: 800 !important;
-  color: var(--ink) !important;
+.form-message.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
-.wl-card .wl-content {
-  font-size: 0.95rem !important;
-  line-height: 1.8 !important;
-  color: var(--ink-2) !important;
-  margin-top: 0.5rem !important;
-}
-
-/* Hide English Texts completely if they slip through */
-.wl-empty {
-  display: none !important;
+.form-message.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
