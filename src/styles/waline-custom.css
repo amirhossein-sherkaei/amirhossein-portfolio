@@ -1,14 +1,189 @@
-.waline-wrapper { margin-top: 5rem; padding: 3rem; background: rgba(255, 255, 255, 0.4) !important; backdrop-filter: blur(24px) !important; border-radius: 24px !important; border: 1px solid rgba(255, 255, 255, 0.6) !important; box-shadow: 0 24px 64px -24px rgba(0,0,0,0.1) !important; }
-.waline-header-title { font-size: 1.75rem !important; font-weight: 800 !important; color: var(--ink) !important; margin-bottom: 2rem !important; display: flex !important; align-items: center !important; gap: 0.75rem !important; }
-.waline-header-title::before { content: "" !important; display: inline-block !important; width: 8px !important; height: 24px !important; background: var(--accent) !important; border-radius: 4px !important; }
-.wl-panel, .wl-comment, .wl-editor, .wl-input, .wl-btn { background: transparent !important; box-shadow: none !important; border: none !important; font-family: var(--font-sans) !important; }
-.wl-editor { background: var(--surface) !important; border: 1px solid var(--line-strong) !important; border-radius: 16px !important; padding: 1rem !important; min-height: 120px !important; transition: all 0.3s ease !important; }
-.wl-editor:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 4px var(--accent-tint) !important; }
-.wl-input { background: var(--surface) !important; border: 1px solid var(--line-strong) !important; border-radius: 12px !important; padding: 0.75rem 1rem !important; color: var(--ink) !important; }
-.wl-input:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 4px var(--accent-tint) !important; }
-.wl-btn { border-radius: 99px !important; padding: 0.75rem 1.5rem !important; font-weight: 600 !important; font-family: var(--font-sans) !important; }
-.wl-btn.primary { background: var(--burgundy) !important; color: #fff !important; border: none !important; }
-.wl-btn.primary:hover { background: var(--burgundy-2) !important; transform: translateY(-2px) !important; }
-.wl-card { border-radius: 16px !important; border: 1px solid var(--line-soft) !important; padding: 1.5rem !important; margin-bottom: 1rem !important; background: var(--surface) !important; }
-.wl-card .wl-head .wl-nick { font-weight: 800 !important; color: var(--ink) !important; }
-.wl-tabs .wl-tab.active { color: var(--burgundy) !important; font-weight: 700 !important; border-bottom-color: var(--burgundy) !important; }
+/* ============================================================
+   WALINE ULTIMATE THEME — AWWWARDS LEVEL
+   ============================================================ */
+
+/* Container */
+.waline-wrapper {
+  margin-top: 6rem;
+  padding: 4rem;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%) !important;
+  backdrop-filter: blur(32px) saturate(1.6) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(1.6) !important;
+  border-radius: 32px !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 32px 80px -24px rgba(0,0,0,0.15) !important;
+}
+
+[data-theme="dark"] .waline-wrapper {
+  background: linear-gradient(155deg, rgba(19, 42, 46, 0.5) 0%, rgba(19, 42, 46, 0.2) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Header */
+.waline-header-title {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  margin-bottom: 2.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.waline-header-title::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 10px !important;
+  height: 32px !important;
+  background: linear-gradient(to bottom, var(--accent), var(--burgundy)) !important;
+  border-radius: 6px !important;
+}
+
+/* Kill default backgrounds */
+.wl-panel, .wl-comment, .wl-editor, .wl-input, .wl-btn {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-family: var(--font-sans) !important;
+}
+
+/* Inputs */
+.wl-input {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 16px !important;
+  padding: 1rem 1.25rem !important;
+  color: var(--ink) !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.wl-input:focus {
+  border-color: var(--accent) !important;
+  background: var(--surface) !important;
+  box-shadow: 0 0 0 4px var(--accent-tint) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Editor */
+.wl-editor {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  min-height: 160px !important;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.wl-editor:focus {
+  border-color: var(--accent) !important;
+  background: var(--surface) !important;
+  box-shadow: 0 0 0 4px var(--accent-tint) !important;
+}
+
+/* Buttons */
+.wl-btn {
+  border-radius: 99px !important;
+  padding: 0.85rem 2rem !important;
+  font-weight: 700 !important;
+  font-family: var(--font-sans) !important;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  font-size: 0.95rem !important;
+}
+
+.wl-btn.primary {
+  background: linear-gradient(135deg, var(--burgundy), var(--burgundy-2)) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 8px 24px -8px var(--burgundy-glow) !important;
+}
+
+.wl-btn.primary:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 16px 32px -8px var(--burgundy-glow) !important;
+}
+
+/* Cards */
+.wl-card {
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  padding: 2rem !important;
+  margin-bottom: 1.5rem !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
+  transition: all 0.3s ease !important;
+}
+
+.wl-card:hover {
+  background: rgba(255, 255, 255, 0.7) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 32px -12px rgba(0,0,0,0.1) !important;
+}
+
+.wl-card .wl-head .wl-nick {
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  font-size: 1rem !important;
+}
+
+.wl-card .wl-content {
+  font-size: 1rem !important;
+  line-height: 1.85 !important;
+  color: var(--ink-2) !important;
+  margin-top: 0.75rem !important;
+}
+
+/* Tabs */
+.wl-tabs {
+  border-bottom: none !important;
+  margin-bottom: 2.5rem !important;
+  display: flex !important;
+  gap: 0.75rem !important;
+}
+
+.wl-tabs .wl-tab {
+  font-family: var(--font-sans) !important;
+  font-size: 0.9rem !important;
+  color: var(--ink-3) !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 99px !important;
+  border: 1px solid transparent !important;
+  transition: all 0.3s !important;
+  font-weight: 500 !important;
+}
+
+.wl-tabs .wl-tab:hover {
+  background: var(--accent-tint) !important;
+  color: var(--accent) !important;
+}
+
+.wl-tabs .wl-tab.active {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  font-weight: 700 !important;
+  border-color: var(--ink) !important;
+}
+
+/* Labels and small text */
+.wl-header label, .wl-header .wl-label {
+  font-weight: 600 !important;
+  color: var(--ink-2) !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.wl-count, .wl-power {
+  font-family: var(--font-mono) !important;
+  font-size: 0.8rem !important;
+  color: var(--ink-3) !important;
+}
+
+/* Fix Emoji Picker, Gif Popup etc */
+.wl-emoji-popup, .wl-gif-popup {
+  background: var(--surface) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 48px -12px rgba(0,0,0,0.15) !important;
+  padding: 1rem !important;
+}

@@ -13,6 +13,7 @@ export default function BlogComments(props: WalineOptions) {
 
   useEffect(() => {
     if (!containerRef.current) return;
+
     walineInstanceRef.current = init({
       ...props,
       el: containerRef.current,
@@ -24,24 +25,38 @@ export default function BlogComments(props: WalineOptions) {
         login: "ورود",
         logout: "خروج",
         comment: "دیدگاه",
-        nick: "نام",
-        mail: "ایمیل",
-        link: "وب‌سایت",
+        nick: "نام شما",
+        mail: "ایمیل شما",
+        link: "وب‌سایت (اختیاری)",
         preview: "پیش‌نمایش",
         emoji: "شکلک",
-        gif: "تصویر",
-        image: "تصویر",
+        gif: "تصویر متحرک",
         upload: "آپلود",
         cancel: "لغو",
         reply: "پاسخ",
         delete: "حذف",
         edit: "ویرایش",
         verify: "تایید",
+        "comment-count": "تعداد دیدگاه‌ها",
+        "comment-empty": "هنوز دیدگاهی وجود ندارد",
+        "comment-not-found": "دیدگاهی یافت نشد",
+        "comment-loading": "در حال بارگذاری...",
+        "comment-load-more": "بارگذاری بیشتر",
+        "comment-reply": "پاسخ به",
+        "comment-reply-placeholder": "پاسخ خود را بنویسید...",
+        "comment-reply-submit": "ثبت پاسخ",
+        "comment-upload-image": "آپلود تصویر",
+        "comment-sort-newest": "جدیدترین",
+        "comment-sort-oldest": "قدیمی‌ترین",
+        "comment-sort-hottest": "داغ‌ترین",
+        "comment-count-unit": "دیدگاه",
+        "comment-wait": "لطفاً صبر کنید...",
       },
       requiredMeta: ["nick"],
       login: "disable",
       dark: "html[data-theme='dark']",
     });
+
     return () => {
       walineInstanceRef.current?.destroy();
     };
