@@ -87,6 +87,7 @@ import "@/styles/grid-overlay.css";
 /* 57 - ULTIMATE FINAL */
 import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
+import "@/styles/blog-ultimate.css";
 
 import "@/components/chat/chat.css";
 
