@@ -1,14 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 
-/* ═══════════════════════════════════════════════════════════
-   CSS — Order matters!
-   ═══════════════════════════════════════════════════════════ */
-
-/* ------------------------------------------------------------------
-   CSS IMPORTS - ORDER MATTERS
-   ------------------------------------------------------------------ */
-
 /* 01-04 - Foundation */
 import "@/styles/tokens.css";
 import "@/styles/motion.css";
@@ -48,7 +40,7 @@ import "@/styles/enhancements.css";
 import "@/styles/process.css";
 import "@/styles/commitments.css";
 
-/* 28-29 - Mobile overrides (MUST come after mobile-declutter) */
+/* 28-29 - Mobile overrides */
 import "@/styles/mobile-fix.css";
 import "@/styles/mobile-polish-v2.css";
 
@@ -96,23 +88,10 @@ import "@/styles/grid-overlay.css";
 import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 
-/* 50. ChatBot */
 import "@/components/chat/chat.css";
 
-/* ═══════════════════════════════════════════════════════════
-   Components
-   ═══════════════════════════════════════════════════════════ */
 import { ThemeProvider } from "@/components/ThemeProvider";
-import WelcomeOnboarding from "@/components/WelcomeOnboarding";
-import TouchFeedback from "@/components/TouchFeedback";
-import SensoryFeedback from "@/components/SensoryFeedback";
-import SignatureInk from "@/components/SignatureInk";
-import PerfObserver from "@/components/PerfObserver";
-import PageTransition from "@/components/PageTransition";
-import DevOnly from "@/components/DevOnly";
-import GridOverlay from "@/components/GridOverlay";
-import IntroExperience from "@/components/intro/IntroExperience";
-import { ChatBot } from "@/components/chat/LazyChatBot";
+import ClientOverlays from "@/components/ClientOverlays";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -159,10 +138,6 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  /* 
-    ⚠️ توجه: خط alternates از اینجا حذف شد 
-    تا گوگل صفحات بلاگ و نمونه‌کارها را نادیده نگیرد. 
-  */
   icons: {
     icon: "/icon.webp",
     apple: "/apple-icon.webp",
@@ -258,18 +233,10 @@ export default function RootLayout({
           پرش به محتوای اصلی
         </a>
 
-        <IntroExperience />
-
         <ThemeProvider>{children}</ThemeProvider>
 
-        <WelcomeOnboarding />
-        <TouchFeedback />
-        <SensoryFeedback />
-        <SignatureInk />
-        <PerfObserver />
-        <PageTransition />
-        <DevOnly><GridOverlay /></DevOnly>
-        <ChatBot />
+        <ClientOverlays />
+
         <Analytics />
         <SpeedInsights />
       </body>

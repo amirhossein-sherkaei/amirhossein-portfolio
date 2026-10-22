@@ -65,7 +65,6 @@ export default function Portfolio() {
                       alt={`نمونه‌کار ${project.title} — ${project.category}`}
                       fill
                       sizes="(max-width: 720px) 100vw, (max-width: 1080px) 55vw, 640px"
-                      priority={index === 0}
                       style={{ objectFit: "cover" }}
                     />
                   ) : (
