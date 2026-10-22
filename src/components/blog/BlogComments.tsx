@@ -1,26 +1,36 @@
 "use client";
-import Giscus from "@giscus/react";
-import { useTheme } from "@/components/ThemeProvider";
 
-export default function BlogComments() {
-  const { theme } = useTheme();
+import React, { useEffect, useRef } from "react";
+import { type WalineInstance, type WalineInitOptions, init } from "@waline/client";
+import "@waline/client/style";
 
-  return (
-    <section className="blog-comments-section" style={{ marginTop: "4rem", paddingTop: "2rem", borderTop: "1px solid var(--line-strong)" }}>
-      <h2 style={{ fontSize: "1.5rem", marginBottom: "1.5rem", color: "var(--ink)" }}>دیدگاه‌ها</h2>
-      <Giscus
-        repo="amirhossein-sherkaei/blog-comments" // Replace with your GitHub repo
-        repoId="R_kgDOL..." // Replace with your repo ID from giscus.app
-        category="Blog Comments"
-        categoryId="DIC_kwDOL..." // Replace with your category ID
-        mapping="pathname"
-        reactionsEnabled="1"
-        emitMetadata="0"
-        inputPosition="top"
-        theme={theme === "dark" ? "dark" : "light"}
-        lang="fa"
-        loading="lazy"
-      />
-    </section>
-  );
+export type WalineOptions = Omit<WalineInitOptions, "el"> & { path: string };
+
+export default function BlogComments(props: WalineOptions) {
+  const walineInstanceRef = useRef<WalineInstance | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Initialize Waline client
+    walineInstanceRef.current = init({
+      ...props,
+      el: containerRef.current,
+    });
+
+    // Cleanup on unmount
+    return () => {
+      walineInstanceRef.current?.destroy();
+    };
+  }, []); // Empty dependency array means init only once
+
+  // Handle path updates (e.g., navigating between articles)
+  useEffect(() => {
+    if (walineInstanceRef.current) {
+      walineInstanceRef.current.update(props);
+    }
+  }, [props]);
+
+  return <div ref={containerRef} className="waline-container" style={{ marginTop: "4rem" }} />;
 }
