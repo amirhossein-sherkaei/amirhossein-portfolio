@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getAllPosts } from "@/lib/blog";
+import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/blog";
 import { getBlogPostSchema } from "@/lib/schema";
 import MarkdownContent from "@/components/MarkdownContent";
 import ReadingProgress from "@/components/ui/ReadingProgress";
@@ -55,6 +55,7 @@ export default async function BlogPostPage({ params }: Props) {
     slug: post.slug,
   });
 
+  const relatedPosts = getRelatedPosts(post.slug, post.tags, 3);
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -106,6 +107,21 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </div>
 
+          {/* Related Posts */}
+          {relatedPosts.length > 0 && (
+            <section className="related-posts-section" style={{ marginTop: "5rem", paddingTop: "3rem", borderTop: "1px solid var(--line-strong)" }}>
+              <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem", color: "var(--ink)" }}>مقالات مرتبط</h2>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+                {relatedPosts.map((related) => (
+                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card" style={{ padding: "1.5rem", background: "var(--surface)", borderRadius: "16px", border: "1px solid var(--line-strong)", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--accent)" }}>{related.category}</span>
+                    <h3 style={{ fontSize: "1.1rem", color: "var(--ink)", lineHeight: 1.4 }}>{related.title}</h3>
+                    <span style={{ fontSize: "0.85rem", color: "var(--ink-3)" }}>{related.dateFormatted}</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
           <BlogPrevNext currentSlug={post.slug} />
 
         </div>
