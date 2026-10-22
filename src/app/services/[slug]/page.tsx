@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// تولید مسیرهای استاتیک برای Next.js (SSG)
+// تولید مسیرهای استاتیک
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
 }
@@ -30,9 +30,29 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
   const service = getServiceBySlug(params.slug);
   if (!service) notFound();
 
+  // اسکیمای داده ساختاریافته برای این سرویس
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.description,
+    provider: {
+      "@type": "Person",
+      name: "امیرحسین شرکائی",
+      url: "https://shorakaei.ir"
+    },
+    areaServed: "IR",
+    url: `https://shorakaei.ir/services/${service.slug}`
+  };
+
   return (
     <main className="section container" style={{ paddingTop: "140px", maxWidth: "800px", margin: "0 auto" }}>
-      
+      {/* تزریق اسکیما */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+
       <Link href="/services" style={{ color: "var(--accent)", display: "inline-block", marginBottom: "32px", fontWeight: 600 }}>
         ← بازگشت به لیست خدمات
       </Link>
@@ -75,7 +95,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
           ثبت سفارش پروژه
         </Link>
       </div>
-
     </main>
   );
 }

@@ -16,7 +16,7 @@ const navGroups = [
     label: "PAGES",
     links: [
       { label: "خانه", href: "/" },
-      { label: "خدمات", href: "/#services" },
+      { label: "خدمات", href: "/services" }, // لینک به صفحه اصلی خدمات
       { label: "نمونه‌کارها", href: "/#portfolio" },
       { label: "درباره من", href: "/#about" },
       { label: "بلاگ", href: "/blog" },
@@ -25,10 +25,10 @@ const navGroups = [
   {
     label: "SERVICES",
     links: [
-      { label: "وب‌سایت اختصاصی", href: "/#services" },
-      { label: "وب + هوش مصنوعی", href: "/#services" },
-      { label: "تبلیغات هوشمند", href: "/#services" },
-      { label: "ویدیوی تبلیغاتی", href: "/#services" },
+      { label: "وب‌سایت اختصاصی", href: "/services/web-design" }, // لینک مستقیم به صفحه خدمت
+      { label: "وب + هوش مصنوعی", href: "/services/ai-website" },
+      { label: "تبلیغات هوشمند", href: "/services/ai-banner" },
+      { label: "ویدیوی تبلیغاتی", href: "/services/ai-video" },
     ],
   },
 ];
