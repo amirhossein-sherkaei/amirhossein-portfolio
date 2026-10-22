@@ -7,10 +7,6 @@ import { Vazirmatn } from "next/font/google";
 
 /* ------------------------------------------------------------------
    CSS IMPORTS - ORDER MATTERS
-   ------------------------------------------------------------------
-   Single source of truth for CSS cascade order.
-   Each file is numbered by its position.
-   Do not reorder without understanding cascade implications.
    ------------------------------------------------------------------ */
 
 /* 01-04 - Foundation */
@@ -56,8 +52,6 @@ import "@/styles/commitments.css";
 import "@/styles/mobile-fix.css";
 import "@/styles/mobile-polish-v2.css";
 
-/* 30 - Blog page-level CSS is imported in src/app/blog/page.tsx */
-
 /* 31-33 - Blog extras + Theme + Hero */
 import "@/styles/blog-premium.css";
 import "@/styles/theme-toggle.css";
@@ -95,10 +89,10 @@ import "@/styles/editorial-structure.css";
 import "@/styles/blog-editorial.css";
 import "@/styles/blog-article-premium.css";
 
-/* 56 - Dev tools (GridOverlay is wrapped in DevOnly) */
+/* 56 - Dev tools */
 import "@/styles/grid-overlay.css";
 
-/* 57 - ULTIMATE FINAL - must be the last CSS import */
+/* 57 - ULTIMATE FINAL */
 import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 
@@ -132,13 +126,10 @@ const vazirmatn = Vazirmatn({
   fallback: ["system-ui", "arial"],
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
-
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 const siteName = "امیرحسین شرکائی";
 const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
-const siteDescription =
-  "امیرحسین شرکائی؛ طراحی و توسعه وب‌سایت‌های اختصاصی و خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.";
+const siteDescription = "امیرحسین شرکائی؛ طراحی و توسعه وب‌سایت‌های اختصاصی و خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -148,20 +139,9 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   keywords: [
-    "امیرحسین شرکائی",
-    "Amirhossein Shorakaei",
-    "طراحی سایت",
-    "طراحی وب",
-    "توسعه وب",
-    "طراحی سایت اختصاصی",
-    "طراحی سایت حرفه‌ای",
-    "هوش مصنوعی",
-    "AI",
-    "UI UX",
-    "فرانت‌اند",
-    "Next.js",
-    "React",
-    "پورتفولیو",
+    "امیرحسین شرکائی", "Amirhossein Shorakaei", "طراحی سایت", "طراحی وب",
+    "توسعه وب", "طراحی سایت اختصاصی", "طراحی سایت حرفه‌ای", "هوش مصنوعی",
+    "AI", "UI UX", "فرانت‌اند", "Next.js", "React", "پورتفولیو",
   ],
   applicationName: "Amirhossein Shorakaei",
   authors: [{ name: siteName, url: siteUrl }],
@@ -171,17 +151,18 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    nocache: false,
     googleBot: {
       index: true,
       follow: true,
-      noimageindex: false,
       "max-image-preview": "large",
       "max-snippet": -1,
       "max-video-preview": -1,
     },
   },
-  alternates: { canonical: "/" },
+  /* 
+    ⚠️ توجه: خط alternates از اینجا حذف شد 
+    تا گوگل صفحات بلاگ و نمونه‌کارها را نادیده نگیرد. 
+  */
   icons: {
     icon: "/icon.webp",
     apple: "/apple-icon.webp",
@@ -233,10 +214,7 @@ const themeInitScript = `
     var theme;
     if (stored === 'light' || stored === 'dark') {
       theme = stored;
-    } else if (
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       theme = 'dark';
     } else {
       theme = 'light';
@@ -280,7 +258,7 @@ export default function RootLayout({
           پرش به محتوای اصلی
         </a>
 
-                <IntroExperience />
+        <IntroExperience />
 
         <ThemeProvider>{children}</ThemeProvider>
 
