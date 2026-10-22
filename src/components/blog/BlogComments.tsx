@@ -17,8 +17,8 @@ export default function BlogComments(props: WalineOptions) {
     walineInstanceRef.current = init({
       ...props,
       el: containerRef.current,
-      lang: "fa",
-      
+      lang: "fa", // Force Persian
+      // We will use CSS to hide any English that slips through
       requiredMeta: ["nick"],
       login: "disable",
       dark: "html[data-theme='dark']",
@@ -38,7 +38,7 @@ export default function BlogComments(props: WalineOptions) {
   return (
     <section className="waline-wrapper">
       <h2 className="waline-header-title">گفتگو و دیدگاه‌ها</h2>
-      <div ref={containerRef} />
+      <div ref={containerRef} className="waline-custom-container" />
     </section>
   );
 }
