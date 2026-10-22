@@ -31,7 +31,6 @@ export default function BlogComments(props: WalineOptions) {
         preview: "پیش‌نمایش",
         emoji: "شکلک",
         gif: "تصویر متحرک",
-        upload: "آپلود",
         cancel: "لغو",
         reply: "پاسخ",
         delete: "حذف",
