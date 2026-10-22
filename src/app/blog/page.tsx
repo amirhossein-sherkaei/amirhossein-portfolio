@@ -13,25 +13,15 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   const posts = getAllPosts();
   const tags = getAllTags();
-
-  const blogSchema = getBlogIndexSchema(
-    posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date }))
-  );
+  const blogSchema = getBlogIndexSchema(posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date })));
 
   return (
     <main id="main">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
-      />
-
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
       <header className="blog-index-header">
         <h1 className="blog-index-title">مجله و مقالات</h1>
-        <p className="blog-index-subtitle">
-          یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.
-        </p>
+        <p className="blog-index-subtitle">یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.</p>
       </header>
-
       <div className="container">
         <BlogList posts={posts} tags={tags} />
       </div>
