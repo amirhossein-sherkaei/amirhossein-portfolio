@@ -4,17 +4,26 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { getBlogPostSchema } from "@/lib/schema";
 import MarkdownContent from "@/components/MarkdownContent";
-import ReadingProgress from "@/components/ReadingProgress";
-import TableOfContents from "@/components/TableOfContents";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import TableOfContents from "@/components/blog/TableOfContents";
+import AIActions from "@/components/blog/AIActions";
+import BlogComments from "@/components/blog/BlogComments";
 import BlogShare from "@/components/BlogShare";
 import BlogAuthorBox from "@/components/BlogAuthorBox";
 import BlogPrevNext from "@/components/BlogPrevNext";
 import BlogEndCTA from "@/components/BlogEndCTA";
 import BlogInlineCTA from "@/components/BlogInlineCTA";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+  
   if (!post) return { title: "یافت نشد" };
+  
   return {
     title: post.title,
     description: post.excerpt,
@@ -24,6 +33,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: post.excerpt,
       url: `https://shorakaei.ir/blog/${post.slug}`,
       type: "article",
+      publishedTime: post.date,
     },
   };
 }
@@ -32,8 +42,10 @@ export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+  
   if (!post) notFound();
 
   const articleSchema = getBlogPostSchema({
@@ -62,31 +74,29 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <main className="blog-post">
         <div className="container">
           
-          <nav className="blog-post-breadcrumb" aria-label="مسیر">
-            <Link href="/">خانه</Link>
-            <span aria-hidden="true">/</span>
-            <Link href="/blog">بلاگ</Link>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">{post.title}</span>
-          </nav>
-
           <header className="blog-post-header">
-            <div className="blog-post-meta">
-              <span className="blog-post-category">{post.category}</span>
-              <span className="blog-post-date">{post.dateFormatted}</span>
-              <span className="blog-post-reading">{post.readingTime} دقیقه مطالعه</span>
-            </div>
+            <span className="blog-post-category">{post.category}</span>
             <h1 className="blog-post-title">{post.title}</h1>
             <p className="blog-post-excerpt">{post.excerpt}</p>
+            <div className="blog-post-meta">
+              <span>{post.dateFormatted}</span>
+              <span>·</span>
+              <span>{post.readingTime} دقیقه مطالعه</span>
+            </div>
           </header>
 
           <div className="blog-post-layout">
             <article className="blog-post-content">
               <MarkdownContent content={post.content || ""} />
+              
+              <AIActions title={post.title} slug={post.slug} />
+              
               <BlogInlineCTA />
               <BlogShare title={post.title} />
               <BlogAuthorBox />
               <BlogEndCTA />
+              
+              <BlogComments />
             </article>
             
             {post.toc && post.toc.length > 0 && (

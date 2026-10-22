@@ -1,35 +1,14 @@
 export const allSchemas = [
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "امیرحسین شرکائی | طراحی سایت اختصاصی",
-    image: "https://shorakaei.ir/icon.webp",
-    "@id": "https://shorakaei.ir",
-    url: "https://shorakaei.ir",
-    telephone: "+989371932549",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "تهران",
-      addressCountry: "IR"
-    },
-    areaServed: "تهران",
-    description: "طراحی و توسعه وب‌سایت‌های اختصاصی و حرفه‌ای در تهران با استفاده از Next.js و هوش مصنوعی.",
-    priceRange: "$",
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
-      closes: "18:00"
-    }
-  },
-  {
-    "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://shorakaei.ir/#person",
     name: "امیرحسین شرکائی",
     alternateName: "Amirhossein Shorakaei",
     url: "https://shorakaei.ir",
     image: "https://shorakaei.ir/icon.webp",
     jobTitle: "طراح و توسعه‌دهنده وب",
+    knowsAbout: ["Web Design", "Next.js", "React", "UI/UX", "Artificial Intelligence", "SEO"],
     worksFor: {
       "@type": "Organization",
       name: "Amirhossein Shorakaei Studio",
@@ -50,12 +29,36 @@ export const allSchemas = [
       "query-input": "required name=search_term_string",
     },
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://shorakaei.ir/#localbusiness",
+    name: "امیرحسین شرکائی | طراحی سایت اختصاصی",
+    image: "https://shorakaei.ir/icon.webp",
+    url: "https://shorakaei.ir",
+    telephone: "+989371932549",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "تهران",
+      addressCountry: "IR",
+    },
+    areaServed: "تهران",
+    description: "طراحی و توسعه وب‌سایت‌های اختصاصی و حرفه‌ای در تهران با استفاده از Next.js و هوش مصنوعی.",
+    priceRange: "$$",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
+  },
 ];
 
 export function getBlogPostSchema(post: {
   title: string;
   excerpt: string;
   date: string;
+  dateModified?: string;
   slug: string;
   image?: string;
 }) {
@@ -65,10 +68,24 @@ export function getBlogPostSchema(post: {
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
+    dateModified: post.dateModified || post.date,
     author: {
       "@type": "Person",
+      "@id": "https://shorakaei.ir/#person",
       name: "امیرحسین شرکائی",
       url: "https://shorakaei.ir",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "امیرحسین شرکائی",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://shorakaei.ir/icon.webp",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://shorakaei.ir/blog/${post.slug}`,
     },
     image: post.image || "https://shorakaei.ir/icon.webp",
     url: `https://shorakaei.ir/blog/${post.slug}`,
@@ -88,6 +105,7 @@ export function getProjectSchema(project: {
     description: project.description,
     author: {
       "@type": "Person",
+      "@id": "https://shorakaei.ir/#person",
       name: "امیرحسین شرکائی",
     },
     image: project.image || "https://shorakaei.ir/icon.webp",
@@ -95,7 +113,6 @@ export function getProjectSchema(project: {
   };
 }
 
-/* ─── FAQ Items (ساختار: q و a — مطابق FAQ.tsx) ─── */
 export const faqItems = [
   {
     q: "آیا امکان سفارش پروژه‌های سفارشی وجود دارد؟",
@@ -115,7 +132,6 @@ export const faqItems = [
   },
 ];
 
-/* ─── Blog Index Schema (مورد نیاز blog/page.tsx) ─── */
 export function getBlogIndexSchema(
   posts: Array<{ slug: string; title: string; date: string }>
 ) {
@@ -123,11 +139,11 @@ export function getBlogIndexSchema(
     "@context": "https://schema.org",
     "@type": "Blog",
     name: "بلاگ امیرحسین شرکائی",
-    description:
-      "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
+    description: "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
     url: "https://shorakaei.ir/blog",
     publisher: {
       "@type": "Person",
+      "@id": "https://shorakaei.ir/#person",
       name: "امیرحسین شرکائی",
       url: "https://shorakaei.ir",
     },
@@ -140,7 +156,6 @@ export function getBlogIndexSchema(
   };
 }
 
-/* ─── FAQ Page Schema (برای Rich Results در گوگل) ─── */
 export function getFAQSchema() {
   return {
     "@context": "https://schema.org",
