@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { BlogPost } from "@/lib/blog";
 
 type Props = {
@@ -10,117 +10,56 @@ type Props = {
 };
 
 export default function BlogList({ posts, tags }: Props) {
-  const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const filteredPosts = useMemo(() => {
-    if (selectedTag === "all") return posts;
-    return posts.filter((post) => post.tags.includes(selectedTag));
-  }, [posts, selectedTag]);
-
-  const featuredPost =
-    filteredPosts.find((p) => p.featured) || filteredPosts[0];
-  const restPosts = filteredPosts.filter(
-    (p) => p.slug !== featuredPost?.slug
-  );
+  const filteredPosts = selectedTag
+    ? posts.filter((post) => post.tags.includes(selectedTag))
+    : posts;
 
   return (
-    <>
+    <div>
       {/* Tags Filter */}
-      {tags.length > 0 && (
-        <div className="blog-tags-filter">
-          <span className="blog-tags-label">فیلتر بر اساس:</span>
-          <div className="blog-tags-list">
-            <button
-              type="button"
-              className={`blog-tag-chip${
-                selectedTag === "all" ? " active" : ""
-              }`}
-              onClick={() => setSelectedTag("all")}
-            >
-              همه
-            </button>
-            {tags.map(({ tag, count }) => (
-              <button
-                key={tag}
-                type="button"
-                className={`blog-tag-chip${
-                  selectedTag === tag ? " active" : ""
-                }`}
-                onClick={() => setSelectedTag(tag)}
-              >
-                {tag} ({count})
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Featured Post */}
-      {featuredPost && (
-        <Link
-          href={`/blog/${featuredPost.slug}`} prefetch={false}
-          className="blog-featured-card"
+      <div className="blog-tags-filter">
+        <button
+          className={`blog-tag-btn ${selectedTag === null ? "active" : ""}`}
+          onClick={() => setSelectedTag(null)}
         >
-          <div className="blog-featured-badge">مقاله ویژه</div>
-          <div className="blog-featured-content">
-            <div className="blog-card-meta">
-              <span>{featuredPost.dateFormatted}</span>
-              <span className="blog-card-reading">
-                {featuredPost.readingTime} دقیقه مطالعه
-              </span>
-            </div>
-            <h2>{featuredPost.title}</h2>
-            <p>{featuredPost.excerpt}</p>
-            <span className="blog-featured-cta">
-              مطالعه مقاله
-              <span aria-hidden="true">←</span>
-            </span>
-          </div>
-        </Link>
-      )}
+          همه مقالات
+        </button>
+        {tags.map((t) => (
+          <button
+            key={t.tag}
+            className={`blog-tag-btn ${selectedTag === t.tag ? "active" : ""}`}
+            onClick={() => setSelectedTag(t.tag)}
+          >
+            {t.tag}
+          </button>
+        ))}
+      </div>
 
-      {/* Rest Posts */}
-      {restPosts.length > 0 && (
-        <div className="blog-grid">
-          {restPosts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`} prefetch={false}
-              className="blog-card"
-            >
+      {/* Blog Grid */}
+      <div className="blog-grid-ultimate">
+        {filteredPosts.map((post) => (
+          <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card-ultimate">
+            <div className="blog-card-content">
               <div className="blog-card-meta">
+                <span className="blog-card-category">{post.category}</span>
                 <span className="blog-card-date">{post.dateFormatted}</span>
-                <span className="blog-card-reading">
-                  {post.readingTime} دقیقه مطالعه
-                </span>
               </div>
-
-              <h2 className="blog-card-title">{post.title}</h2>
-
+              <h2 className="blog-card-title-ultimate">{post.title}</h2>
               <p className="blog-card-excerpt">{post.excerpt}</p>
-
               <div className="blog-card-footer">
-                <div className="blog-card-tags">
-                  {post.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="blog-card-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="blog-card-arrow" aria-hidden="true">
-                  ←
+                <span className="blog-card-read-more">
+                  مطالعه مقاله <span aria-hidden="true">←</span>
+                </span>
+                <span style={{ fontSize: "0.8rem", color: "var(--ink-3)" }}>
+                  {post.readingTime} دقیقه
                 </span>
               </div>
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {filteredPosts.length === 0 && (
-        <p className="blog-empty">
-          مقاله‌ای با این تگ پیدا نشد.
-        </p>
-      )}
-    </>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

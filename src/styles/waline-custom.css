@@ -1,0 +1,107 @@
+/* ============================================================
+   WALINE CUSTOM THEME — MATCHING AWWWARDS STANDARD
+   ============================================================ */
+
+/* Waline Global Variables */
+:root {
+  --waline-theme-color: #7D293F !important; /* Burgundy for primary */
+  --waline-active-color: #0D7377 !important; /* Turquoise for active */
+  --waline-bgcolor: rgba(255, 255, 255, 0.65) !important;
+  --waline-bgcolor-light: rgba(242, 239, 233, 0.8) !important;
+  --waline-border-color: rgba(18, 16, 14, 0.15) !important;
+  --waline-color: #3D3630 !important;
+  --waline-font-size: 1rem !important;
+  --waline-avatar-size: 3rem !important;
+  --waline-box-shadow: 0 12px 32px -12px rgba(0,0,0,0.08) !important;
+}
+
+/* Comments Container Wrapper */
+.waline-wrapper {
+  margin-top: 5rem;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 24px 64px -24px rgba(0,0,0,0.1);
+}
+
+.waline-header-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.waline-header-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+/* Override Waline Inner Components */
+.wl-panel {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.wl-editor {
+  background: var(--surface) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 16px !important;
+  padding: 1rem !important;
+  font-family: var(--font-sans) !important;
+  transition: all 0.3s ease !important;
+}
+
+.wl-editor:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 4px var(--accent-tint) !important;
+}
+
+.wl-btn {
+  border-radius: 99px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.wl-btn.primary {
+  background: var(--burgundy) !important;
+  border-color: var(--burgundy) !important;
+}
+
+.wl-btn.primary:hover {
+  background: var(--burgundy-2) !important;
+}
+
+.wl-card {
+  border-radius: 16px !important;
+  border: 1px solid var(--line-soft) !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  transition: background 0.3s !important;
+}
+
+.wl-card:hover {
+  background: var(--surface) !important;
+}
+
+.wl-card .wl-head .wl-nick {
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+}
+
+.wl-card .wl-content {
+  font-size: 0.95rem !important;
+  line-height: 1.8 !important;
+}

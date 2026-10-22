@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 import { getBlogIndexSchema } from "@/lib/schema";
 import BlogList from "@/components/BlogList";
-import "./blog.css";
+import "@/styles/blog-index-ultimate.css";
 
 export const metadata: Metadata = {
-  title: "بلاگ",
-  description:
-    "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
-  alternates: {
-    canonical: "/blog",
-  },
+  title: "بلاگ | امیرحسین شرکائی",
+  description: "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogPage() {
@@ -19,37 +15,24 @@ export default function BlogPage() {
   const tags = getAllTags();
 
   const blogSchema = getBlogIndexSchema(
-    posts.map((p) => ({
-      slug: p.slug,
-      title: p.title,
-      date: p.date,
-    }))
+    posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date }))
   );
 
   return (
-    <main id="main" className="blog-page">
+    <main id="main">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(blogSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
 
+      <header className="blog-index-header">
+        <h1 className="blog-index-title">مجله و مقالات</h1>
+        <p className="blog-index-subtitle">
+          یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.
+        </p>
+      </header>
+
       <div className="container">
-        <Link href="/" className="blog-back-home">
-          <span aria-hidden="true">→</span>
-          بازگشت به صفحه اصلی
-        </Link>
-
-        <div className="blog-header">
-          <span className="section-index">BLOG</span>
-          <h1>مقالات و یادداشت‌ها</h1>
-          <p>
-            درباره طراحی وب، توسعه فرانت‌اند، UI/UX و خلاقیت دیجیتال با کمک
-            هوش مصنوعی.
-          </p>
-        </div>
-
         <BlogList posts={posts} tags={tags} />
       </div>
     </main>
