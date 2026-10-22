@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { type WalineInstance, type WalineInitOptions, init } from "@waline/client";
 import "@waline/client/style";
-import "@/styles/waline-custom.css"; // Import our custom styles
+import "@/styles/waline-custom.css";
 
 export type WalineOptions = Omit<WalineInitOptions, "el"> & { path: string };
 
@@ -18,7 +18,42 @@ export default function BlogComments(props: WalineOptions) {
       ...props,
       el: containerRef.current,
       lang: "fa",
-      emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo"],
+      // Force Persian translations for all UI elements
+      locale: {
+        placeholder: "دیدگاه خود را اینجا بنویسید...",
+        sofa: "هنوز دیدگاهی ثبت نشده. اولین نفر باشید!",
+        submit: "ثبت دیدگاه",
+        login: "ورود",
+        logout: "خروج",
+        comment: "دیدگاه",
+        nick: "نام",
+        mail: "ایمیل",
+        link: "وب‌سایت",
+        preview: "پیش‌نمایش",
+        emoji: "شکلک",
+        gif: "تصویر",
+        image: "تصویر",
+        upload: "آپلود",
+        cancel: "لغو",
+        reply: "پاسخ",
+        delete: "حذف",
+        edit: "ویرایش",
+        verify: "تایید",
+        "comment-count": "تعداد دیدگاه‌ها",
+        "comment-empty": "هنوز دیدگاهی وجود ندارد",
+        "comment-not-found": "دیدگاهی یافت نشد",
+        "comment-loading": "در حال بارگذاری...",
+        "comment-load-more": "بارگذاری بیشتر",
+        "comment-reply": "پاسخ به",
+        "comment-reply-placeholder": "پاسخ خود را بنویسید...",
+        "comment-reply-submit": "ثبت پاسخ",
+        "comment-upload-image": "آپلود تصویر",
+        "comment-sort-newest": "جدیدترین",
+        "comment-sort-oldest": "قدیمی‌ترین",
+        "comment-sort-hottest": "داغ‌ترین",
+        "comment-count-unit": "دیدگاه",
+        "comment-wait": "لطفاً صبر کنید...",
+      },
       requiredMeta: ["nick"],
       login: "disable",
       dark: "html[data-theme='dark']",
