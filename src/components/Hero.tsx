@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import MagneticButton from "@/components/MagneticButton";
 import EditorialImage from "@/components/ui/EditorialImage";
+import LiveClock from "@/components/ui/LiveClock";
 
 type LivePost = {
   slug: string;
@@ -43,46 +44,6 @@ const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
   .replace(/[^\u06F0-\u06F9]/g, "")
   .slice(0, 4);
 
-function useTehranClock() {
-  const [mounted, setMounted] = useState(false);
-  const [time, setTime] = useState("--:--:--");
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    setMounted(true);
-    const onVis = () => setVisible(!document.hidden);
-    document.addEventListener("visibilitychange", onVis);
-
-    const update = () => {
-      const now = new Date();
-      const fmt = new Intl.DateTimeFormat("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-        timeZone: "Asia/Tehran",
-      });
-      const parts = fmt.formatToParts(now);
-      const get = (t: string) =>
-        parts.find((p) => p.type === t)?.value ?? "00";
-      setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
-    };
-    update();
-
-    if (!visible) {
-      return () => document.removeEventListener("visibilitychange", onVis);
-    }
-
-    const id = window.setInterval(update, 1000);
-    return () => {
-      window.clearInterval(id);
-      document.removeEventListener("visibilitychange", onVis);
-    };
-  }, [visible]);
-
-  return mounted ? toPersian(time) : "--:--:--";
-}
-
 function usePersianDate() {
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState({
@@ -104,8 +65,7 @@ function usePersianDate() {
         timeZone: "Asia/Tehran",
       });
       const parts = fmt.formatToParts(now);
-      const get = (t: string) =>
-        parts.find((p) => p.type === t)?.value ?? "--";
+      const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "--";
       setDate({
         day: get("day"),
         month: get("month"),
@@ -161,7 +121,6 @@ export default function Hero({
   const [heroInView, setHeroInView] = useState(true);
   const [tabVisible, setTabVisible] = useState(true);
 
-  const clock = useTehranClock();
   const persianDate = usePersianDate();
   const latestAgo = useRelativeTime(latestPost?.date ?? null);
   const archiveAgo = useRelativeTime(archivePost?.date ?? null);
@@ -369,7 +328,7 @@ export default function Hero({
             <span className="hero-masthead-coord">
               35.6892°N · 51.3890°E
             </span>
-            <span className="hero-masthead-clock">{clock}</span>
+            <span className="hero-masthead-clock"><LiveClock /></span>
           </span>
         </div>
 
@@ -489,7 +448,7 @@ export default function Hero({
                 ۰۲
               </span>
               <span className="hero-bento-label">TEHRAN</span>
-              <span className="hero-bento-clock-time">{clock}</span>
+              <span className="hero-bento-clock-time"><LiveClock /></span>
               <span className="hero-bento-live">
                 <span
                   className="hero-bento-live-dot"
