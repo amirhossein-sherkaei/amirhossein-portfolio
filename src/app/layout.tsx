@@ -107,8 +107,8 @@ const vazirmatn = Vazirmatn({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
 const siteName = "امیرحسین شرکائی";
-const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
-const siteDescription = "امیرحسین شرکائی؛ طراحی و توسعه وب‌سایت‌های اختصاصی و خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.";
+const siteTitle = "طراحی سایت اختصاصی و حرفه‌ای در تهران | امیرحسین شرکائی";
+const siteDescription = "طراحی و توسعه وب‌سایت‌های اختصاصی، سریع و مدرن در تهران. خلق تجربه‌های دیجیتال با هوش مصنوعی و تمرکز بر رشد کسب‌وکار شما. مشاوره رایگان.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -118,9 +118,10 @@ export const metadata: Metadata = {
   },
   description: siteDescription,
   keywords: [
-    "امیرحسین شرکائی", "Amirhossein Shorakaei", "طراحی سایت", "طراحی وب",
-    "توسعه وب", "طراحی سایت اختصاصی", "طراحی سایت حرفه‌ای", "هوش مصنوعی",
-    "AI", "UI UX", "فرانت‌اند", "Next.js", "React", "پورتفولیو",
+    "طراحی سایت اختصاصی", "طراحی سایت در تهران", "طراح سایت حرفه‌ای",
+    "طراحی سایت فروشگاهی", "قیمت طراحی سایت", "طراحی وب سایت",
+    "توسعه وب", "هوش مصنوعی", "طراحی سایت با هوش مصنوعی",
+    "امیرحسین شرکائی", "Amirhossein Shorakaei", "Next.js", "React",
   ],
   applicationName: "Amirhossein Shorakaei",
   authors: [{ name: siteName, url: siteUrl }],

@@ -1,6 +1,29 @@
 export const allSchemas = [
   {
     "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "امیرحسین شرکائی | طراحی سایت اختصاصی",
+    image: "https://shorakaei.ir/icon.webp",
+    "@id": "https://shorakaei.ir",
+    url: "https://shorakaei.ir",
+    telephone: "+989371932549",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "تهران",
+      addressCountry: "IR"
+    },
+    areaServed: "تهران",
+    description: "طراحی و توسعه وب‌سایت‌های اختصاصی و حرفه‌ای در تهران با استفاده از Next.js و هوش مصنوعی.",
+    priceRange: "$",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "18:00"
+    }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "Person",
     name: "امیرحسین شرکائی",
     alternateName: "Amirhossein Shorakaei",
