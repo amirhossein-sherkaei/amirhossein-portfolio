@@ -2,10 +2,7 @@
     "name": "amirhossein-sherkaei-portfolio",
     "version": "1.0.0",
     "private": true,
-    "engines": {
-        "node": ">=20.0.0",
-        "npm": ">=10"
-    },
+    "engines": { "node": "20.x" },
     "browserslist": [
         "chrome >= 115",
         "edge >= 115",
