@@ -163,3 +163,29 @@
   .blog-post-sidebar { display: none; }
   .blog-post-content { grid-column: 1; }
 }
+/* Shiki Code Block Styling */
+.mdx-content figure[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1e1e1e; /* VS Code Dark Background */
+  border: 1px solid var(--line-strong);
+}
+.mdx-content figure[data-rehype-pretty-code-figure] pre {
+  padding: 1.5rem 1rem;
+  overflow-x: auto;
+  direction: ltr;
+}
+.mdx-content figure[data-rehype-pretty-code-figure] code {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.mdx-content [data-line] {
+  padding: 0 0.5rem;
+}
+.mdx-content [data-highlighted-line] {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left: 2px solid var(--accent);
+}
