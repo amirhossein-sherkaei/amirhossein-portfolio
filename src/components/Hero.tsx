@@ -341,23 +341,16 @@ export default function Hero({
               </span>
             </span>
 
+            {/* تیتر کوتاه و یکپارچه (سبک ره‌وب) */}
             <h1 className="hero-title">
-              <span className="hero-title-line">سایت اختصاصی</span>
-              <span className="hero-title-line hero-title-muted">
-                برای کسب‌وکارهایی که
-              </span>
-              <span className="hero-title-line">
-                {"می‌خوان "}
-                <span className="ink-word hero-title-em">
-                  حرفه‌ای دیده بشن
-                </span>
-                <em className="hero-title-accent">.</em>
-              </span>
+              طراحی سایت اختصاصی برای
+              <span className="ink-word hero-title-em"> دیده شدن</span>
+              <em className="hero-title-accent">.</em>
             </h1>
 
+            {/* توضیحات تکمیلی زیر تیتر */}
             <p className="hero-description">
-              از طراحی UI/UX تا توسعه و انتشار نهایی؛ یک وب‌سایت سریع،
-              ریسپانسیو و متناسب با برند شما — بدون قالب تکراری.
+              وب‌سایت‌هایی سریع، ریسپانسیو و متناسب با هویت برند شما — بدون قالب‌های تکراری.
             </p>
 
             <div className="hero-actions">
