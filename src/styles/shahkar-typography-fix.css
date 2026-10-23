@@ -1,0 +1,101 @@
+/* ============================================================
+   SHAHKAR TYPOGRAPHY MASTER FIX
+   این فایل تمام استایل‌های نامرتب و بزرگی‌های بی‌دلیل را
+   در هیرو، منو و کارت‌ها اصلاح می‌کند.
+   ============================================================ */
+
+/* --- ۱. اصلاح تیتر اصلی (Hero) --- */
+.hero-section .hero-title {
+  margin: 0 !important;
+  font-weight: 700 !important; /* کاهش ضخامت از ۹۰۰ به ۷۰۰ */
+  line-height: 1.4 !important; /* افزایش فاصله خطوط برای خوانایی */
+  letter-spacing: 0 !important;
+  text-wrap: balance !important;
+}
+
+.hero-section .hero-title-line {
+  display: inline !important; /* جلوگیری از شکستن کلمات به صورت بلاک */
+  font-size: clamp(1.8rem, 3.5vw, 3rem) !important; /* اندازه کاملاً کنترل‌شده */
+  line-height: 1.4 !important;
+}
+
+/* اضافه کردن فاصله بین کلمات در تیتر */
+.hero-section .hero-title-line:not(:last-child)::after {
+  content: " ";
+}
+
+/* --- ۲. اصلاح منوی بالا (Nav) --- */
+.site-nav .nav-pill {
+  padding: 6px 12px !important;
+}
+
+.site-nav .desktop-nav-item {
+  padding: 8px 16px !important;
+  font-size: 0.875rem !important; /* اندازه کوچک‌تر و شیک‌تر */
+  font-weight: 500 !important;
+}
+
+/* اصلاح دکمه فعال (بیضی زرشکی) در منو */
+.site-nav .desktop-nav-slider {
+  border-radius: 999px !important;
+}
+
+.site-nav .desktop-nav-item.is-active {
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+/* --- ۳. اصلاح کارت‌های هیرو (Bento Cards) --- */
+.hero-section .hero-bento-name {
+  font-size: clamp(1.2rem, 2vw, 1.5rem) !important; /* نام شرکائی کوچک‌تر شد */
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.hero-section .hero-bento-bignum {
+  font-size: 2.5rem !important; /* عدد بزرگ کوچک‌تر شد */
+  font-weight: 800 !important;
+}
+
+.hero-section .hero-bento-clock-time {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+.hero-section .hero-bento-date-day {
+  font-size: 1.5rem !important;
+}
+
+.hero-section .hero-bento-date-month {
+  font-size: 0.875rem !important;
+}
+
+/* --- ۴. اصلاح توضیحات هیرو --- */
+.hero-section .hero-description {
+  font-size: clamp(0.9375rem, 1vw, 1.0625rem) !important;
+  line-height: 1.8 !important;
+  max-width: 50ch !important;
+  text-wrap: pretty !important;
+}
+
+/* --- ۵. اصلاح تیترهای بخش‌های دیگر --- */
+.section-heading h2,
+.about-content h2,
+.why-header h2,
+.final-cta h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem) !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* --- ۶. اصلاح دکمه‌ها --- */
+.button {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+}
+
+/* --- ۷. جلوگیری از شکستن نامناسب کلمات --- */
+h1, h2, h3, h4, h5, h6, p {
+  text-wrap: pretty;
+}

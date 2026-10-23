@@ -86,6 +86,9 @@ import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 
+/* ⭐️ فایل جدید برای اصلاح تمام ناهماهنگی‌های تایپوگرافی */
+import "@/styles/shahkar-typography-fix.css";
+
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ClientOverlays from "@/components/ClientOverlays";
@@ -98,7 +101,7 @@ const estedad = localFont({
   src: "../../public/fonts/Estedad-Variable.woff2",
   variable: "--font-estedad",
   display: "swap",
-  weight: "100 900", // پشتیبانی از تمام وزن‌های فونت متغیر
+  weight: "100 900",
   style: "normal",
   fallback: ["system-ui", "arial"],
 });
