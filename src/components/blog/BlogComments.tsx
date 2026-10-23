@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import "@/styles/blog-comments-premium.css";
 
 type Comment = {
   objectId: string;
@@ -19,14 +18,12 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
   const [comments, setComments] = useState<Comment[]>([]);
   const [loadingComments, setLoadingComments] = useState(true);
 
-  // Fetch comments on load
   const fetchComments = async () => {
     setLoadingComments(true);
     try {
       const res = await fetch(`${serverURL}/api/comment?path=${encodeURIComponent(path)}&type=recent&pageSize=50`);
       const data = await res.json();
       if (data.data && Array.isArray(data.data)) {
-        // Filter only approved (status = 'approved')
         const approved = data.data.filter((c: any) => c.status === "approved");
         setComments(approved);
       }
@@ -72,13 +69,30 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
     }
   };
 
+  // تابع اصلاح تاریخ و حذف تگ‌های HTML اضافی
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "اخیراً"; // فال‌بک برای تاریخ نامعتبر
+      return new Intl.DateTimeFormat("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(date);
+    } catch (e) {
+      return "اخیراً";
+    }
+  };
+
+  const stripHtml = (html: string) => {
+    return html.replace(/<[^>]*>?/gm, '');
+  };
+
   return (
     <section className="waline-wrapper">
       <h2 className="waline-header-title">گفتگو و دیدگاه‌ها</h2>
       
-      {/* Form */}
       <form onSubmit={handleSubmit} className="custom-comment-form">
-        
         <div className="form-row">
           <div className="input-group">
             <input
@@ -137,7 +151,6 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
         </button>
       </form>
 
-      {/* Comments List */}
       <div className="comments-list-wrapper">
         <h3 className="comments-list-title">دیدگاه‌های ثبت شده</h3>
         
@@ -148,7 +161,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
         ) : (
           <div className="comments-list">
             {comments.map((comment) => (
-              <div key={comment.objectId} className="comment-card">
+              <div key={comment.objectId} className="comment-card glass-card">
                 <div className="comment-header">
                   <div className="comment-avatar">
                     {comment.avatar ? (
@@ -159,10 +172,10 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
                   </div>
                   <div className="comment-meta">
                     <strong className="comment-nick">{comment.nick}</strong>
-                    <span className="comment-date">{new Date(comment.created).toLocaleDateString('fa-IR')}</span>
+                    <span className="comment-date">{formatDate(comment.created)}</span>
                   </div>
                 </div>
-                <p className="comment-content">{comment.comment}</p>
+                <p className="comment-content">{stripHtml(comment.comment)}</p>
               </div>
             ))}
           </div>
