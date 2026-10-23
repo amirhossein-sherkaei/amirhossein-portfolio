@@ -1,49 +1,63 @@
 /* ============================================================
-   SHAHKAR UI FIXES — Absolute Alignment & Rhythm Synchronization
+   SHAHKAR GLOBAL TYPOGRAPHY FIX — Absolute Alignment
+   Forces v04 typography rules and strict RTL alignment site-wide.
    ============================================================ */
 
-/* --- ۱. رفع کامل پله‌ای شدن تیتر هیرو (NUCLEAR OPTION) --- */
+/* --- ۱. نابودی پله‌ها و تراز سراسری تمام تیترها --- */
+.hero-section .hero-title,
+.section-heading h2,
+.about-content h2,
+.why-header h2,
+.final-cta h2,
+.blog-post-title,
+.blog-card-title,
+.blog-card-title-featured,
+h1, h2, h3, h4, h5, h6 {
+  text-align: right !important;
+  direction: rtl !important;
+  font-family: var(--sh-font-fa) !important;
+  letter-spacing: var(--sh-tracking-fa) !important;
+  text-wrap: pretty !important; /* شکستن طبیعی خطوط */
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0 !important;
+}
+
+/* --- ۲. تنظیمات اختصاصی هیرو برای تراز دقیق --- */
 .hero-section .hero-title {
   display: flex !important;
   flex-direction: column !important;
-  align-items: flex-start !important; /* در RTL یعنی تراز دقیق از راست */
-  text-align: right !important;
-  direction: rtl !important;
-  
-  /* سایز و فاصله کنترل شده */
-  font-family: var(--sh-font-fa) !important;
-  font-size: clamp(1.75rem, 3.5vw, 3.2rem) !important; 
-  line-height: 1.4 !important; 
-  font-weight: var(--sh-weight-bold) !important;
-  letter-spacing: var(--sh-tracking-fa) !important;
-  gap: 8px !important; /* فاصله دقیق بین خطوط */
-  
-  margin: 0 0 var(--sh-space-5) 0 !important;
+  align-items: flex-start !important; /* تراز دقیق از راست */
   width: 100% !important;
+  font-size: var(--sh-heading-1) !important;
+  line-height: var(--sh-leading-h1) !important;
+  font-weight: var(--sh-weight-bold) !important;
+  margin-bottom: var(--sh-space-5) !important;
 }
 
-/* تبدیل خطوط تیتر به بلوک‌های مستقل و تراز شده */
+/* تبدیل خطوط تیتر به بلوک‌های مستقل */
 .hero-section .hero-title > span,
-.hero-section .hero-title-line {
+.hero-section .hero-title-line,
+.hero-section .hero-title > div {
   display: block !important; 
   width: 100% !important;
   text-align: right !important;
   
-  /* نابودی هرگونه استایل مزاحم از فایل‌های قدیمی */
+  /* نابودی کامل استایل‌های مزاحم */
   margin: 0 !important;
   padding: 0 !important;
   transform: none !important;
   position: static !important;
+  float: none !important;
+  text-indent: 0 !important;
   background: none !important;
   -webkit-text-fill-color: initial !important;
   -webkit-background-clip: initial !important;
   box-shadow: none !important;
   border: none !important;
-  font-size: inherit !important;
-  line-height: inherit !important;
 }
 
-/* رنگ‌دهی هوشمند به کلمات کلیدی */
 .hero-section .hero-title-muted {
   color: var(--sh-color-muted) !important;
   font-weight: var(--sh-weight-medium) !important;
@@ -54,15 +68,21 @@
   font-weight: var(--sh-weight-bold) !important;
 }
 
-.hero-section .hero-description {
+/* --- ۳. تراز و نظم سراسری پاراگراف‌ها و متن‌ها --- */
+p,
+.hero-section .hero-description,
+.blog-card-excerpt,
+.blog-card-excerpt-featured,
+.card-text {
+  text-align: right !important;
+  direction: rtl !important;
   font-size: var(--sh-text-md) !important;
   line-height: var(--sh-leading-body) !important;
   color: var(--sh-color-text) !important;
-  text-align: right !important;
-  max-width: 52ch !important;
+  max-width: 65ch !important; /* جلوگیری از خطوط بیش از حد طولانی */
 }
 
-/* --- ۲. نظم بخشیدن به منوی بالا (Nav) --- */
+/* --- ۴. نظم بخشیدن به منوی بالا (Nav) --- */
 .site-nav .desktop-nav-item {
   font-family: var(--sh-font-fa) !important;
   font-size: var(--sh-text-sm) !important;
@@ -84,11 +104,7 @@
   font-weight: var(--sh-weight-semibold) !important;
 }
 
-.site-nav .desktop-nav-list {
-  gap: var(--sh-space-1) !important;
-}
-
-/* --- ۳. نظم بخشیدن به کارت‌های هیرو (Bento Cards) --- */
+/* --- ۵. نظم بخشیدن به کارت‌های هیرو (Bento Cards) --- */
 .hero-section .hero-bento-cell {
   padding: var(--sh-space-5) !important;
 }
@@ -98,7 +114,7 @@
   line-height: var(--sh-leading-h3) !important;
   font-weight: var(--sh-weight-bold) !important;
   color: var(--sh-color-ink) !important;
-  white-space: nowrap !important; /* جلوگیری از شکستن نام */
+  white-space: nowrap !important;
 }
 
 .hero-section .hero-bento-clock-time {
