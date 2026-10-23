@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/styles/blog-components-premium.css";
 
 export default function BlogAuthorBox() {
   return (

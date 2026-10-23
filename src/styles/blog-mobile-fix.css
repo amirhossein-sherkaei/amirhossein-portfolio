@@ -1,0 +1,209 @@
+/* ============================================================
+   BLOG MOBILE FIX — Ensure perfect readability on small screens
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /* --- لیست بلاگ --- */
+  .blog-index-wrapper {
+    padding-bottom: 40px;
+  }
+
+  .blog-filter-container {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .blog-filter-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blog-filter-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 0.8125rem;
+  }
+
+  .blog-card-featured {
+    min-height: 320px;
+    border-radius: 16px;
+  }
+
+  .blog-card-featured-content {
+    padding: 24px 20px;
+  }
+
+  .blog-card-title-featured {
+    font-size: 1.5rem;
+  }
+
+  .blog-card-excerpt-featured {
+    font-size: 0.9375rem;
+    margin-bottom: 16px;
+  }
+
+  .blog-regular-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .blog-card-regular {
+    border-radius: 16px;
+  }
+
+  .blog-card-content {
+    padding: 20px 16px;
+  }
+
+  .blog-card-title {
+    font-size: 1.125rem;
+  }
+
+  /* --- صفحه مقاله --- */
+  .blog-post-page {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+
+  .blog-post-header {
+    margin-bottom: 32px;
+  }
+
+  .blog-post-title {
+    font-size: 1.75rem;
+    margin-bottom: 16px;
+  }
+
+  .blog-post-excerpt {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+
+  .blog-post-meta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .blog-post-content {
+    font-size: 1.0625rem; /* 17px for comfortable reading */
+    line-height: 1.8;
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.375rem;
+    margin-top: 2em;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1.125rem;
+  }
+
+  .blog-post-content blockquote {
+    padding: 16px 20px;
+    margin: 1.5em 0;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .blog-post-content pre {
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 0.8125rem;
+  }
+
+  /* --- اجزای مقاله --- */
+  .blog-author {
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-top: 40px;
+  }
+
+  .blog-author-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .blog-author-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .blog-author-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blog-inline-cta {
+    padding: 24px 16px;
+    border-radius: 16px;
+    margin: 32px 0;
+  }
+
+  .blog-inline-cta-title {
+    font-size: 1.25rem;
+  }
+
+  .blog-inline-cta-actions {
+    flex-direction: column;
+  }
+
+  .blog-inline-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blog-funnel {
+    padding: 40px 20px;
+    border-radius: 16px;
+    margin-top: 40px;
+  }
+
+  .blog-funnel-title {
+    font-size: 1.5rem;
+  }
+
+  .blog-funnel-actions {
+    flex-direction: column;
+  }
+
+  .blog-funnel-trust {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .blog-prevnext {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .blog-prevnext-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* --- دیدگاه‌ها --- */
+  .waline-wrapper {
+    padding: 20px 16px;
+    margin-top: 40px;
+    border-radius: 16px;
+  }
+
+  .waline-header-title {
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comment-card {
+    padding: 16px;
+  }
+}

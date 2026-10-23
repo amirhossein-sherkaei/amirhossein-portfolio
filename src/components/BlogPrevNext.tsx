@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 
-/* ═══════════════════════════════════════════════════════════
-   BLOG PREV NEXT — ناوبری بین مقالات
-   ═══════════════════════════════════════════════════════════ */
-
 type Props = {
   currentSlug: string;
 };

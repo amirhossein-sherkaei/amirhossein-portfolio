@@ -44,8 +44,7 @@ import "@/styles/commitments.css";
 import "@/styles/mobile-fix.css";
 import "@/styles/mobile-polish-v2.css";
 
-/* 31-33 - Blog extras + Theme + Hero */
-import "@/styles/blog-premium.css";
+/* 31 - Theme + Hero */
 import "@/styles/theme-toggle.css";
 import "@/styles/hero-editorial.css";
 
@@ -74,12 +73,10 @@ import "@/styles/performance-layer.css";
 import "@/styles/nav-premium.css";
 import "@/styles/performance-pro.css";
 
-/* 51-55 - Final polish + Blog editorial */
+/* 51-55 - Final polish + Editorial */
 import "@/styles/final-polish.css";
 import "@/styles/mobile-performance-fix.css";
 import "@/styles/editorial-structure.css";
-import "@/styles/blog-editorial.css";
-import "@/styles/blog-article-premium.css";
 
 /* 56 - Dev tools */
 import "@/styles/grid-overlay.css";
@@ -87,11 +84,9 @@ import "@/styles/grid-overlay.css";
 /* 57 - ULTIMATE FINAL */
 import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
-import "@/styles/blog-ultimate.css";
-import "@/styles/fix-blog-layout.css";
 import "@/styles/waline-custom.css";
-import "@/styles/blog-index-ultimate.css";
 
+/* Components */
 import "@/components/chat/chat.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";

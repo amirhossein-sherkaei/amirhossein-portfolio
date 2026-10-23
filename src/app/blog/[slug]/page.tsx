@@ -13,6 +13,10 @@ import BlogAuthorBox from "@/components/BlogAuthorBox";
 import BlogPrevNext from "@/components/BlogPrevNext";
 import BlogEndCTA from "@/components/BlogEndCTA";
 import BlogInlineCTA from "@/components/BlogInlineCTA";
+import BlogBreadcrumb from "@/components/BlogBreadcrumb";
+
+import "@/styles/blog-post-premium.css";
+import "@/styles/blog-mobile-fix.css";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -72,16 +76,17 @@ export default async function BlogPostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       
-      <main className="blog-post">
+      <main className="blog-post-page">
         <div className="container">
           
+          <BlogBreadcrumb title={post.title} />
+
           <header className="blog-post-header">
             <span className="blog-post-category">{post.category}</span>
             <h1 className="blog-post-title">{post.title}</h1>
             <p className="blog-post-excerpt">{post.excerpt}</p>
             <div className="blog-post-meta">
               <span>{post.dateFormatted}</span>
-              <span>·</span>
               <span>{post.readingTime} دقیقه مطالعه</span>
             </div>
           </header>
@@ -109,19 +114,20 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
-            <section className="related-posts-section" style={{ marginTop: "5rem", paddingTop: "3rem", borderTop: "1px solid var(--line-strong)" }}>
-              <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem", color: "var(--ink)" }}>مقالات مرتبط</h2>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+            <section className="related-posts-section">
+              <h2 className="related-posts-title">مقالات مرتبط</h2>
+              <div className="related-posts-grid">
                 {relatedPosts.map((related) => (
-                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card" style={{ padding: "1.5rem", background: "var(--surface)", borderRadius: "16px", border: "1px solid var(--line-strong)", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--accent)" }}>{related.category}</span>
-                    <h3 style={{ fontSize: "1.1rem", color: "var(--ink)", lineHeight: 1.4 }}>{related.title}</h3>
-                    <span style={{ fontSize: "0.85rem", color: "var(--ink-3)" }}>{related.dateFormatted}</span>
+                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card">
+                    <span>{related.category}</span>
+                    <h3>{related.title}</h3>
+                    <time>{related.dateFormatted}</time>
                   </Link>
                 ))}
               </div>
             </section>
           )}
+          
           <BlogPrevNext currentSlug={post.slug} />
 
         </div>

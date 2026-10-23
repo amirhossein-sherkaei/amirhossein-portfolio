@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import "@/styles/blog-comments-premium.css";
 
 type Comment = {
   objectId: string;
@@ -99,7 +100,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
               value={formData.mail}
               onChange={(e) => setFormData({ ...formData, mail: e.target.value })}
             />
-            <label htmlFor="mail">ایمیل شما (اختیاری)</label>
+            <label htmlFor="mail">ایمیل (اختیاری)</label>
           </div>
         </div>
 
@@ -122,7 +123,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
             required
           />
-          <label htmlFor="comment">دیدگاه خود را اینجا بنویسید...</label>
+          <label htmlFor="comment">دیدگاه خود را بنویسید...</label>
         </div>
 
         {message && (
@@ -151,7 +152,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
                 <div className="comment-header">
                   <div className="comment-avatar">
                     {comment.avatar ? (
-                      <Image src={comment.avatar} alt={comment.nick} width={40} height={40} style={{ borderRadius: "50%" }} />
+                      <Image src={comment.avatar} alt={comment.nick} width={44} height={44} style={{ objectFit: "cover" }} />
                     ) : (
                       <div className="avatar-placeholder">{comment.nick.charAt(0)}</div>
                     )}

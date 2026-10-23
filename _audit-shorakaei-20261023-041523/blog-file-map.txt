@@ -1,0 +1,70 @@
+BLOG FILE MAP
+
+## Pattern: blog|article|post
+scripts\seed-blogs.js
+src\app\blog\[slug]\loading.tsx
+src\app\blog\[slug]\page.tsx
+src\app\blog\blog.css
+src\app\blog\loading.tsx
+src\app\blog\page.tsx
+src\components\blog\AIActions.tsx
+src\components\blog\BlogComments.tsx
+src\components\blog\TableOfContents.tsx
+src\components\BlogAuthorBox.tsx
+src\components\BlogBreadcrumb.tsx
+src\components\BlogEndCTA.tsx
+src\components\BlogInlineCTA.tsx
+src\components\BlogList.tsx
+src\components\BlogPrevNext.tsx
+src\components\BlogShare.tsx
+src\components\LatestBlogPosts.tsx
+src\content\blog\5-simple-changes-double-impact.md
+src\content\blog\7-website-mistakes.md
+src\content\blog\8-questions-before-order.md
+src\content\blog\ai-design-speed.md
+src\content\blog\barbershop-online-booking.md
+src\content\blog\cheap-website-expensive.md
+src\content\blog\clinic-website-trust.md
+src\content\blog\clothing-store-5-mistakes.md
+src\content\blog\ecommerce-trust-signals-iran-2026.md
+src\content\blog\how-long-until-traffic.md
+src\content\blog\how-to-build-premium-portfolio.md
+src\content\blog\language-school-double-enrollment.md
+src\content\blog\local-seo-iran-2026-google-maps-alternative.md
+src\content\blog\mobile-first-design-iran-2026.md
+src\content\blog\mobile-traffic-loss.md
+src\content\blog\nextjs-vs-react.md
+src\content\blog\restaurant-online-menu.md
+src\content\blog\ui-design-mistakes.md
+src\content\blog\website-design-standards-2026.md
+src\content\blog\website-pricing-1405.md
+src\content\blog\website-sales-machine-cro-2026.md
+src\content\blog\website-sales-machine.md
+src\content\blog\why-no-sales-despite-traffic.md
+src\content\blog\wordpress-vs-custom.md
+src\lib\blog.ts
+src\styles\blog-article-premium.css
+src\styles\blog-editorial.css
+src\styles\blog-editorial.css.backup-14050717-095733
+src\styles\blog-index-ultimate.css
+src\styles\blog-premium.css
+src\styles\blog-premium.css.backup-14050717-095733
+src\styles\blog-ultimate.css
+src\styles\fix-blog-layout.css
+
+## Pattern: comment
+src\components\blog\BlogComments.tsx
+
+## Pattern: author
+src\components\BlogAuthorBox.tsx
+
+## Pattern: breadcrumb
+src\components\BlogBreadcrumb.tsx
+
+## Pattern: metadata|seo|jsonld
+src\content\blog\local-seo-iran-2026-google-maps-alternative.md
+SEO_AUDIT_DATA.txt
+
+## Pattern: pagination|loadmore
+(no match)
+

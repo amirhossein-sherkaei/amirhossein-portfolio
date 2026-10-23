@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 import { getBlogIndexSchema } from "@/lib/schema";
 import BlogList from "@/components/BlogList";
-import "@/styles/blog-index-ultimate.css";
+import "@/styles/blog-index-premium.css";
+import "@/styles/blog-mobile-fix.css";
 
 export const metadata: Metadata = {
   title: "بلاگ | امیرحسین شرکائی",
@@ -16,13 +17,17 @@ export default function BlogPage() {
   const blogSchema = getBlogIndexSchema(posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date })));
 
   return (
-    <main id="main">
+    <main id="main" className="section">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
-      <header className="blog-index-header">
-        <h1 className="blog-index-title">مجله و مقالات</h1>
-        <p className="blog-index-subtitle">یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.</p>
-      </header>
+      
       <div className="container">
+        <header className="section-heading reveal" style={{ marginBottom: '48px' }}>
+          <div>
+            <h1>مجله و <em className="ink-word">مقالات</em></h1>
+          </div>
+          <p>یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.</p>
+        </header>
+        
         <BlogList posts={posts} tags={tags} />
       </div>
     </main>

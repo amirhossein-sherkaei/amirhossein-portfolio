@@ -1,0 +1,70 @@
+PROJECT AUDIT - SHORAKAEI.IR
+Generated: 2026-10-23 04:15:28
+Project root: C:\Users\AmirHossien\Desktop\amirhossein-portfolio
+Output directory: C:\Users\AmirHossien\Desktop\amirhossein-portfolio\_audit-shorakaei-20261023-041523
+
+=== ENVIRONMENT ===
+PowerShell: 5.1.19041.7417
+OS: Microsoft Windows NT 10.0.19045.0
+Git: git version 2.55.0.windows.5
+Node.js: v24.21.0
+npm: 11.19.0
+
+=== FILE SUMMARY ===
+Files inspected: 293
+TypeScript files: 112
+JavaScript files: 2
+CSS/SCSS files: 73
+Font files: 0
+Markdown files: 25
+
+=== DETECTED TECHNOLOGY ===
+Frameworks: Next.js, React
+CSS: 
+
+=== LARGE FILES ===
+public\projects\arka.html - 1432 lines
+public\projects\lumen.html - 833 lines
+public\projects\nila.html - 1165 lines
+public\projects\vira.html - 1015 lines
+revert-backup-14050722-125202\showroom\demos\nila-demo.css - 446 lines
+scripts\seed-blogs.js - 1253 lines
+src\app\blog\blog.css - 1687 lines
+src\components\chat\chat.css - 1209 lines
+src\components\chat\ChatBot.tsx - 1077 lines
+src\components\chat\data.ts - 572 lines
+src\components\chat\knowledge.ts - 1077 lines
+src\components\Hero.tsx - 577 lines
+src\components\MobileNav.tsx - 408 lines
+src\components\OrderForm.tsx - 1037 lines
+src\components\ProjectViewer.tsx - 563 lines
+src\components\Services.tsx - 539 lines
+src\styles\balance-turquoise-burgundy.css - 524 lines
+src\styles\base.css - 1298 lines
+src\styles\blog-article-premium.css - 717 lines
+src\styles\blog-editorial.css - 1087 lines
+src\styles\blog-premium.css - 1540 lines
+src\styles\brand-logo.css - 402 lines
+src\styles\density-standardization.css - 668 lines
+src\styles\enhancements.css - 8213 lines
+src\styles\final-polish-2026.css - 1373 lines
+src\styles\footer-v2.css - 997 lines
+src\styles\hero-editorial.css - 1295 lines
+src\styles\hero-premium.css - 619 lines
+src\styles\layout-more.css - 590 lines
+src\styles\layout.css - 6169 lines
+src\styles\mobile-bottom-nav.css - 478 lines
+src\styles\mobile-fix.css - 480 lines
+src\styles\mobile-polish-v2.css - 790 lines
+src\styles\mobile-typography.css - 512 lines
+src\styles\nav-premium.css - 503 lines
+src\styles\newsletter.css - 462 lines
+src\styles\order-form-v2.css - 1364 lines
+src\styles\order-premium.css - 913 lines
+src\styles\pages.css - 512 lines
+src\styles\process.css - 483 lines
+src\styles\responsive.css - 414 lines
+src\styles\welcome-onboarding.css - 786 lines
+src\styles\work-pages.css - 875 lines
+src\styles\work-premium.css - 1268 lines
+_audit_backup\Hero.tsx - 578 lines
