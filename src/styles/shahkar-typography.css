@@ -1,28 +1,9 @@
-/* =====================================================================
-   SHORKAEI® — TYPOGRAPHY SYSTEM v04
-   ESTEDAD VARIABLE · STRICT RHYTHM · RTL-FIRST · RESPONSIVE
+/* ============================================================
+   SHORKAEI® — TYPOGRAPHY SYSTEM v05
+   Inspired by the clarity and rhythm of editorial/service pages
+   Estedad Variable · Persian-first · RTL-aware
+   ============================================================ */
 
-   DESIGN PRINCIPLES
-   - Consistent hierarchy; no arbitrary jumps in type size or weight.
-   - A single spacing scale; layout rhythm is explicit and repeatable.
-   - Persian tracking remains neutral by default.
-   - Numeric OpenType features are opt-in until verified in the real font.
-   - No cascade layers: intended for incremental integration into a site
-     whose existing stylesheet may contain ordinary, unlayered rules.
-
-   INSTALLATION
-   1) Put the real Estedad variable WOFF2 file in /public/fonts/.
-   2) Change the @font-face URL below to the exact filename you have.
-   3) Load this stylesheet after your reset/theme tokens and before
-      component-specific styles, or adapt its selectors to your project.
-   4) Use <html lang="fa" dir="rtl"> for Persian pages.
-   ===================================================================== */
-
-/* ---------------------------------------------------------------------
-   0. FONT FILE
-   NOTE: This filename is an example. Replace it with your actual file.
-   The weight range is valid only when the supplied file is variable.
-   --------------------------------------------------------------------- */
 @font-face {
   font-family: "Estedad";
   src: url("/fonts/Estedad-VF.woff2") format("woff2");
@@ -31,651 +12,279 @@
   font-display: swap;
 }
 
-/* ---------------------------------------------------------------------
-   1. TOKENS
-   All tokens use the --sh- prefix to reduce collisions with existing CSS.
-   --------------------------------------------------------------------- */
 :root {
-  /* Typeface */
   --sh-font-fa: "Estedad", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --sh-font-latin: "Estedad", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --sh-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --sh-font-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
 
-  /* Controlled weight scale */
   --sh-weight-regular: 400;
   --sh-weight-medium: 500;
   --sh-weight-semibold: 600;
   --sh-weight-bold: 700;
-  --sh-weight-heavy: 800; /* Special display use only */
 
-  /* Type scale: smooth, limited, and deliberately not oversized */
-  --sh-text-2xs: 0.6875rem; /* 11px */
-  --sh-text-xs: 0.75rem;    /* 12px */
-  --sh-text-sm: clamp(0.8125rem, 0.79rem + 0.08vw, 0.875rem); /* 13–14px */
-  --sh-text-md: clamp(1rem, 0.975rem + 0.125vw, 1.0625rem);  /* 16–17px */
-  --sh-text-lg: clamp(1.0625rem, 1.02rem + 0.18vw, 1.1875rem); /* 17–19px */
+  /* A compact, consistent scale tuned for Persian content */
+  --sh-type-caption: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem);      /* 12–13 */
+  --sh-type-small:   clamp(0.8125rem, 0.79rem + 0.10vw, 0.875rem);    /* 13–14 */
+  --sh-type-body:    clamp(1rem, 0.975rem + 0.125vw, 1.0625rem);      /* 16–17 */
+  --sh-type-lead:    clamp(1.0625rem, 1.02rem + 0.18vw, 1.1875rem);  /* 17–19 */
+  --sh-type-h3:      clamp(1.1875rem, 1.10rem + 0.35vw, 1.4375rem);   /* 19–23 */
+  --sh-type-h2:      clamp(1.5rem, 1.34rem + 0.65vw, 2rem);          /* 24–32 */
+  --sh-type-h1:      clamp(1.875rem, 1.58rem + 1.25vw, 2.75rem);     /* 30–44 */
+  --sh-type-display: clamp(2.25rem, 1.85rem + 1.8vw, 3.25rem);      /* 36–52 */
 
-  --sh-heading-3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem); /* 20–24px */
-  --sh-heading-2: clamp(1.625rem, 1.38rem + 1.15vw, 2.375rem); /* 26–38px */
-  --sh-heading-1: clamp(2rem, 1.45rem + 2.15vw, 3.5rem); /* 32–56px */
-  --sh-display: clamp(2.25rem, 1.65rem + 2.8vw, 4.5rem); /* 36–72px */
+  /* Persian script benefits from a calm line rhythm */
+  --sh-line-caption: 1.7;
+  --sh-line-small: 1.8;
+  --sh-line-body: 1.9;
+  --sh-line-lead: 1.9;
+  --sh-line-h3: 1.55;
+  --sh-line-h2: 1.5;
+  --sh-line-h1: 1.42;
+  --sh-line-display: 1.35;
 
-  /* Line-height scale optimized as a starting point for Persian text */
-  --sh-leading-display: 1.22;
-  --sh-leading-h1: 1.32;
-  --sh-leading-h2: 1.38;
-  --sh-leading-h3: 1.48;
-  --sh-leading-body: 1.85;
-  --sh-leading-small: 1.7;
-  --sh-leading-control: 1.5;
-
-  /* Letter spacing: neutral for Persian; separate only for Latin metadata */
+  /* Don't apply tracking tricks to Persian text */
   --sh-tracking-fa: 0;
   --sh-tracking-latin: 0.04em;
-
-  /* One coherent spacing system (4px base, with repeatable intervals) */
-  --sh-space-1: 0.25rem;  /* 4px */
-  --sh-space-2: 0.5rem;   /* 8px */
-  --sh-space-3: 0.75rem;  /* 12px */
-  --sh-space-4: 1rem;     /* 16px */
-  --sh-space-5: 1.5rem;   /* 24px */
-  --sh-space-6: 2rem;     /* 32px */
-  --sh-space-7: 2.5rem;   /* 40px */
-  --sh-space-8: 3rem;     /* 48px */
-  --sh-space-9: 4rem;     /* 64px */
-  --sh-space-10: 5rem;    /* 80px */
-  --sh-space-11: 6rem;    /* 96px */
-
-  /* Readable line lengths: apply to prose containers, not every paragraph */
-  --sh-measure-narrow: 34rem;
-  --sh-measure-copy: 44rem;
-  --sh-measure-wide: 52rem;
-
-  /* Existing site token adapters; existing values take precedence */
-  --sh-color-ink: var(--ink, var(--text-primary, #171513));
-  --sh-color-text: var(--ink-2, var(--text-secondary, #3d3630));
-  --sh-color-muted: var(--ink-3, var(--text-tertiary, #6b625b));
-  --sh-color-paper: var(--paper, var(--bg-primary, #f8f5ef));
-  --sh-color-paper-soft: var(--paper-2, var(--bg-secondary, #ebe5d9));
-  --sh-color-accent: var(--accent, var(--brand-primary, #0d7377));
-  --sh-color-focus: var(--focus, #087fba);
-
-  /* Small shared interface tokens */
-  --sh-radius-sm: 0.375rem;
-  --sh-radius-md: 1rem;
-  --sh-duration-fast: 160ms;
-  --sh-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --sh-focus-width: 2px;
-  --sh-focus-offset: 3px;
 }
 
-/* ---------------------------------------------------------------------
-   2. DOCUMENT BASE
-   Keep global rules predictable; avoid global letter-spacing changes.
-   --------------------------------------------------------------------- */
 html {
   font-family: var(--sh-font-fa);
   font-synthesis: none;
-  text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  text-rendering: optimizeLegibility;
+  text-size-adjust: 100%;
+  font-kerning: normal;
 }
 
-html[dir="rtl"] {
-  direction: rtl;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--sh-font-fa);
+  font-feature-settings: normal;
+  font-variant-numeric: normal;
+  letter-spacing: var(--sh-tracking-fa);
 }
 
 body {
-  margin: 0;
-  color: var(--sh-color-text);
-  font-family: var(--sh-font-fa);
-  font-size: var(--sh-text-md);
+  font-size: var(--sh-type-body);
   font-weight: var(--sh-weight-regular);
-  line-height: var(--sh-leading-body);
+  line-height: var(--sh-line-body);
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6,
+.sh-hero-title,
+.sh-display-title,
+.sh-section-title,
+.sh-card-title {
+  font-family: var(--sh-font-fa);
   letter-spacing: var(--sh-tracking-fa);
-  font-kerning: normal;
-  font-feature-settings: normal;
-  font-variant-numeric: normal;
+  text-wrap: balance;
   overflow-wrap: break-word;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+.sh-hero-title {
+  font-size: var(--sh-type-h1);
+  font-weight: var(--sh-weight-bold);
+  line-height: var(--sh-line-h1);
+}
+
+h2,
+.sh-section-title {
+  font-size: var(--sh-type-h2);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-h2);
+}
+
+h3,
+.sh-card-title {
+  font-size: var(--sh-type-h3);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-h3);
+}
+
+h4 {
+  font-size: var(--sh-type-lead);
+  font-weight: var(--sh-weight-semibold);
+  line-height: 1.65;
+}
+
+h5 {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.7;
+}
+
+h6 {
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-small);
+}
+
+.sh-display-title {
+  font-size: var(--sh-type-display);
+  font-weight: var(--sh-weight-bold);
+  line-height: var(--sh-line-display);
+}
+
+p {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-body);
+  letter-spacing: var(--sh-tracking-fa);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.sh-lead {
+  font-size: var(--sh-type-lead);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-lead);
+  text-wrap: pretty;
+}
+
+.sh-small,
+small,
+.sh-caption {
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-small);
+}
+
+.sh-caption {
+  font-size: var(--sh-type-caption);
+  line-height: var(--sh-line-caption);
+}
+
+nav,
+.sh-nav {
+  font-family: var(--sh-font-fa);
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.6;
 }
 
 button,
 input,
 select,
 textarea {
-  font: inherit;
-  letter-spacing: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-/* Do not apply bold weights automatically to strong/em inside every font. */
-strong,
-b {
-  font-weight: var(--sh-weight-semibold);
-}
-
-/* ---------------------------------------------------------------------
-   3. SEMANTIC HEADINGS
-   Margins are reset here; spacing belongs to the surrounding layout.
-   --------------------------------------------------------------------- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-family: var(--sh-font-fa);
-  letter-spacing: var(--sh-tracking-fa);
-  overflow-wrap: break-word;
-  text-wrap: balance;
-}
-
-h1 {
-  font-size: var(--sh-heading-1);
-  font-weight: var(--sh-weight-bold);
-  line-height: var(--sh-leading-h1);
-}
-
-h2 {
-  font-size: var(--sh-heading-2);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h2);
-}
-
-h3 {
-  font-size: var(--sh-heading-3);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h3);
-}
-
-h4 {
-  font-size: var(--sh-text-lg);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h3);
-}
-
-h5 {
-  font-size: var(--sh-text-md);
-  font-weight: var(--sh-weight-medium);
-  line-height: var(--sh-leading-h3);
-}
-
-h6 {
-  font-size: var(--sh-text-sm);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h3);
-}
-
-/* ---------------------------------------------------------------------
-   4. DISPLAY AND HERO
-   Keep display and semantic h1 visually compatible, not competing.
-   --------------------------------------------------------------------- */
-.sh-display {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-size: var(--sh-display);
-  font-weight: var(--sh-weight-bold);
-  line-height: var(--sh-leading-display);
-  letter-spacing: var(--sh-tracking-fa);
-  overflow-wrap: break-word;
-  text-wrap: balance;
-}
-
-.sh-hero-title {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-size: var(--sh-heading-1);
-  font-weight: var(--sh-weight-bold);
-  line-height: var(--sh-leading-h1);
-  letter-spacing: var(--sh-tracking-fa);
-  overflow-wrap: break-word;
-  text-wrap: balance;
-}
-
-.sh-section-title {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-size: var(--sh-heading-2);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h2);
-  letter-spacing: var(--sh-tracking-fa);
-  text-wrap: balance;
-}
-
-.sh-card-title {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-size: var(--sh-heading-3);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-h3);
-  letter-spacing: var(--sh-tracking-fa);
-  text-wrap: balance;
-}
-
-.sh-text-heavy {
-  font-weight: var(--sh-weight-heavy);
-}
-
-/* ---------------------------------------------------------------------
-   5. BODY COPY AND PARAGRAPHS
-   The default paragraph margin is consistent; use .sh-stack for layouts.
-   --------------------------------------------------------------------- */
-p {
-  margin: 0 0 var(--sh-space-4);
-  color: var(--sh-color-text);
-  font-size: var(--sh-text-md);
-  font-weight: var(--sh-weight-regular);
-  line-height: var(--sh-leading-body);
-  letter-spacing: var(--sh-tracking-fa);
-  overflow-wrap: break-word;
-  text-wrap: pretty;
-}
-
-p:last-child {
-  margin-block-end: 0;
-}
-
-.sh-lead {
-  max-inline-size: var(--sh-measure-copy);
-  margin: 0;
-  color: var(--sh-color-text);
-  font-size: var(--sh-text-lg);
-  font-weight: var(--sh-weight-regular);
-  line-height: var(--sh-leading-body);
-  text-wrap: pretty;
-}
-
-.sh-muted {
-  color: var(--sh-color-muted);
-}
-
-.sh-caption {
-  margin: 0;
-  color: var(--sh-color-muted);
-  font-size: var(--sh-text-xs);
-  font-weight: var(--sh-weight-regular);
-  line-height: var(--sh-leading-small);
-}
-
-/* ---------------------------------------------------------------------
-   6. STRICT LAYOUT RHYTHM UTILITIES
-   These helpers solve spacing consistently rather than inventing offsets.
-   --------------------------------------------------------------------- */
-.sh-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--sh-space-4);
-  min-inline-size: 0;
-}
-
-.sh-stack--compact {
-  gap: var(--sh-space-2);
-}
-
-.sh-stack--comfortable {
-  gap: var(--sh-space-5);
-}
-
-.sh-stack--section {
-  gap: var(--sh-space-6);
-}
-
-.sh-inline {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sh-space-3);
-  min-inline-size: 0;
-}
-
-.sh-prose {
-  max-inline-size: var(--sh-measure-copy);
-  min-inline-size: 0;
-  color: var(--sh-color-text);
-}
-
-.sh-prose > * {
-  margin-block: 0;
-}
-
-.sh-prose > * + * {
-  margin-block-start: var(--sh-space-4);
-}
-
-.sh-prose > h2 {
-  margin-block-start: var(--sh-space-9);
-}
-
-.sh-prose > h3 {
-  margin-block-start: var(--sh-space-7);
-}
-
-.sh-prose > h4,
-.sh-prose > h5,
-.sh-prose > h6 {
-  margin-block-start: var(--sh-space-5);
-}
-
-.sh-measure-narrow {
-  max-inline-size: var(--sh-measure-narrow);
-}
-
-.sh-measure-copy {
-  max-inline-size: var(--sh-measure-copy);
-}
-
-.sh-measure-wide {
-  max-inline-size: var(--sh-measure-wide);
-}
-
-/* ---------------------------------------------------------------------
-   7. LISTS
-   Scope custom list styling to unclassed lists and .sh-prose content.
-   --------------------------------------------------------------------- */
-ul:not([class]),
-ol:not([class]),
-.sh-prose ul,
-.sh-prose ol {
-  margin-block: var(--sh-space-4);
-  padding-inline-start: 1.5em;
-}
-
-ul:not([class]) li,
-ol:not([class]) li,
-.sh-prose li {
-  padding-inline-start: 0.25em;
-  line-height: var(--sh-leading-body);
-}
-
-ul:not([class]) li + li,
-ol:not([class]) li + li,
-.sh-prose li + li {
-  margin-block-start: var(--sh-space-2);
-}
-
-ul:not([class]) li::marker,
-ol:not([class]) li::marker,
-.sh-prose li::marker {
-  color: var(--sh-color-accent);
-}
-
-/* ---------------------------------------------------------------------
-   8. QUOTES
-   Logical border placement works in both RTL and LTR contexts.
-   --------------------------------------------------------------------- */
-blockquote {
-  margin: var(--sh-space-6) 0;
-  padding-block: var(--sh-space-3);
-  padding-inline: var(--sh-space-5);
-  border-inline-start: 3px solid var(--sh-color-accent);
-  border-start-start-radius: var(--sh-radius-md);
-  border-end-start-radius: var(--sh-radius-md);
-  background: var(--sh-color-paper-soft);
-  color: var(--sh-color-ink);
-  font-size: var(--sh-text-md);
-  font-style: normal;
-  line-height: var(--sh-leading-body);
-}
-
-/* ---------------------------------------------------------------------
-   9. LINKS, INTERACTIVE ELEMENTS AND FOCUS
-   --------------------------------------------------------------------- */
-a {
-  color: inherit;
-  text-decoration-thickness: 0.07em;
-  text-underline-offset: 0.2em;
-  text-decoration-skip-ink: auto;
-  transition: color var(--sh-duration-fast) var(--sh-ease-standard);
-}
-
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: var(--sh-focus-width) solid var(--sh-color-focus);
-  outline-offset: var(--sh-focus-offset);
-}
-
-.sh-link {
-  color: var(--sh-color-accent);
-  text-decoration-line: underline;
-}
-
-.sh-nav,
-.sh-button,
-.sh-label {
-  font-family: var(--sh-font-fa);
-  font-size: var(--sh-text-sm);
-  font-weight: var(--sh-weight-medium);
-  line-height: var(--sh-leading-control);
-  letter-spacing: var(--sh-tracking-fa);
-}
-
+button,
 .sh-button {
-  text-decoration: none;
-}
-
-.sh-overline {
-  margin: 0;
-  color: var(--sh-color-muted);
-  font-size: var(--sh-text-xs);
-  font-weight: var(--sh-weight-semibold);
-  line-height: var(--sh-leading-small);
-  letter-spacing: var(--sh-tracking-fa);
-}
-
-.sh-meta-latin {
-  font-family: var(--sh-font-latin);
-  font-size: var(--sh-text-xs);
   font-weight: var(--sh-weight-medium);
-  line-height: var(--sh-leading-small);
-  letter-spacing: var(--sh-tracking-latin);
-  text-transform: uppercase;
-  direction: ltr;
-  unicode-bidi: isolate;
-  color: var(--sh-color-muted);
+  line-height: 1.55;
 }
 
-/* ---------------------------------------------------------------------
-   10. FORMS
-   16px input text helps avoid automatic zoom in common iOS scenarios.
-   --------------------------------------------------------------------- */
 label,
-.sh-form-label {
-  display: inline-block;
-  color: var(--sh-color-ink);
-  font-size: var(--sh-text-sm);
+.sh-label {
+  font-size: var(--sh-type-small);
   font-weight: var(--sh-weight-medium);
-  line-height: var(--sh-leading-control);
-}
-
-input,
-select,
-textarea {
-  max-inline-size: 100%;
-  font-family: var(--sh-font-fa);
-  font-size: 16px;
-  line-height: var(--sh-leading-control);
+  line-height: 1.65;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--sh-color-muted);
-  opacity: 1;
+  font-family: var(--sh-font-fa);
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-regular);
 }
 
-textarea {
-  resize: vertical;
+.sh-prose {
+  font-size: var(--sh-type-body);
+  line-height: var(--sh-line-body);
 }
 
-/* ---------------------------------------------------------------------
-   11. NUMBERS AND DIRECTIONAL ISOLATION
-   Persian digits should be actual Persian characters or converted by JS.
-   ss20 is intentionally opt-in: verify it against the exact font file.
-   --------------------------------------------------------------------- */
-.sh-numeric {
+.sh-prose h2 {
+  font-size: var(--sh-type-h2);
+  line-height: var(--sh-line-h2);
+  font-weight: var(--sh-weight-semibold);
+}
+
+.sh-prose h3 {
+  font-size: var(--sh-type-h3);
+  line-height: var(--sh-line-h3);
+  font-weight: var(--sh-weight-semibold);
+}
+
+.sh-prose li,
+li {
+  font-size: inherit;
+  line-height: var(--sh-line-body);
+}
+
+blockquote {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-body);
+}
+
+.sh-numeric,
+.sh-stat-number,
+.sh-price-number {
   font-variant-numeric: tabular-nums;
-  font-weight: var(--sh-weight-medium);
+  font-weight: var(--sh-weight-semibold);
+  font-feature-settings: normal;
 }
 
 .sh-stat-number {
-  margin: 0;
-  color: var(--sh-color-ink);
-  font-size: clamp(1.75rem, 1.45rem + 1.2vw, 2.5rem);
-  font-weight: var(--sh-weight-semibold);
-  line-height: 1.3;
-  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  line-height: 1.35;
 }
 
-.sh-numeric-alternates {
-  /* Apply only after confirming the feature in your own Estedad font file. */
+.sh-persian-numerals-feature-tested {
   font-feature-settings: "ss20" 1;
 }
 
-.sh-ltr,
-[dir="ltr"] {
+.sh-meta-latin {
+  font-family: var(--sh-font-mono);
+  font-size: var(--sh-type-caption);
+  font-weight: var(--sh-weight-medium);
+  letter-spacing: var(--sh-tracking-latin);
   direction: ltr;
   unicode-bidi: isolate;
 }
 
-/* ---------------------------------------------------------------------
-   12. CODE, KEYBOARD INPUT AND PRE-FORMATTED CONTENT
-   --------------------------------------------------------------------- */
 code,
 kbd,
 samp,
 pre {
   font-family: var(--sh-font-mono);
+  font-size: 0.9em;
   direction: ltr;
   unicode-bidi: isolate;
 }
 
-code {
-  padding: 0.12em 0.35em;
-  border-radius: var(--sh-radius-sm);
-  background: var(--sh-color-paper-soft);
-  font-size: 0.9em;
-  overflow-wrap: anywhere;
-}
-
-pre {
-  max-inline-size: 100%;
-  margin: var(--sh-space-5) 0;
-  padding: var(--sh-space-4);
-  overflow: auto;
-  border-radius: var(--sh-radius-md);
-  background: var(--sh-color-ink);
-  color: var(--sh-color-paper);
-  font-size: 0.875rem;
-  line-height: 1.7;
-  tab-size: 2;
-  text-align: start;
-}
-
-pre code {
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  color: inherit;
-  font-size: inherit;
-  overflow-wrap: normal;
-}
-
-/* ---------------------------------------------------------------------
-   13. SIMPLE TYPOGRAPHY UTILITIES
-   --------------------------------------------------------------------- */
-.sh-text-start { text-align: start; }
-.sh-text-center { text-align: center; }
-.sh-text-end { text-align: end; }
-.sh-nowrap { white-space: nowrap; }
-.sh-balance { text-wrap: balance; }
-.sh-pretty { text-wrap: pretty; }
-.sh-weight-regular { font-weight: var(--sh-weight-regular); }
-.sh-weight-medium { font-weight: var(--sh-weight-medium); }
-.sh-weight-semibold { font-weight: var(--sh-weight-semibold); }
-.sh-weight-bold { font-weight: var(--sh-weight-bold); }
-
-/* ---------------------------------------------------------------------
-   14. RESPONSIVE BEHAVIOUR
-   Maintain the same hierarchy; adjust size and vertical rhythm gradually.
-   --------------------------------------------------------------------- */
 @media (max-width: 720px) {
   :root {
-    --sh-leading-body: 1.8;
-    --sh-space-9: 3rem;
-    --sh-space-10: 4rem;
-    --sh-space-11: 4.5rem;
+    --sh-line-body: 1.85;
+    --sh-line-lead: 1.85;
   }
 
-  .sh-display {
-    font-size: clamp(2.125rem, 8vw, 3rem);
-    line-height: 1.28;
+  .sh-display-title {
+    font-size: clamp(2rem, 7.5vw, 2.75rem);
+    line-height: 1.32;
   }
 
-  .sh-hero-title {
-    font-size: clamp(1.875rem, 7vw, 2.5rem);
-    line-height: 1.35;
+  .sh-hero-title,
+  h1 {
+    line-height: 1.45;
   }
 }
 
 @media (max-width: 380px) {
-  .sh-display {
-    font-size: 2rem;
-    line-height: 1.32;
-  }
-
-  .sh-hero-title {
-    font-size: 1.75rem;
-    line-height: 1.4;
+  :root {
+    --sh-type-h1: 1.75rem;
+    --sh-type-h2: 1.4375rem;
+    --sh-type-h3: 1.125rem;
   }
 }
 
-/* ---------------------------------------------------------------------
-   15. ACCESSIBILITY & USER PREFERENCES
-   These rules support accessibility; they do not certify WCAG conformance.
-   --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-@media (prefers-contrast: more) {
-  .sh-caption,
-  .sh-muted,
-  .sh-overline,
-  .sh-meta-latin {
-    color: var(--sh-color-ink);
-  }
-
-  .sh-link,
-  .sh-prose a {
-    text-decoration-line: underline;
-    text-decoration-thickness: 0.12em;
-  }
-
-  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline-width: 3px;
-    outline-offset: 3px;
-  }
-}
-
-@media (forced-colors: active) {
-  a {
-    color: LinkText;
-  }
-
-  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid Highlight;
   }
 }
