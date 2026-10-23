@@ -1,84 +1,80 @@
 /* ============================================================
-   SHAHKAR UI FIXES — Absolute Rahweb-Style Typography
-   Destroys block-level artifacts and forces inline paragraph flow.
+   SHAHKAR UI FIXES — FINAL ABSOLUTE NUCLEAR FIX
+   Force right alignment on everything in Hero.
    ============================================================ */
 
-/* --- ۱. تبدیل تیتر به یک پاراگراف یکپارچه و راست‌چین --- */
+/* ۱. نابودی وسط‌چینی در تمام والدین تیتر */
+.hero-section .hero-content,
+.hero-section .hero-main,
 .hero-section .hero-title {
-  display: block !important;
-  text-align: right !important; /* تراز دقیق از راست */
+  text-align: right !important;
   direction: rtl !important;
-  
-  /* عرض و چیدمان */
+  align-items: flex-start !important; /* برای حالت فلکس */
+  justify-content: flex-start !important; /* برای حالت فلکس */
+  display: block !important;
   width: 100% !important;
-  max-width: 100% !important; 
-  margin: 0 0 var(--sh-space-5) 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
-  
-  /* تایپوگرافی */
+}
+
+/* ۲. استایل‌دهی به خود تیتر */
+.hero-section .hero-title {
   font-family: var(--sh-font-fa) !important;
   font-size: clamp(1.8rem, 3.5vw, 3.2rem) !important;
   font-weight: var(--sh-weight-bold) !important;
-  line-height: 1.6 !important; /* فاصله خطوط استاندارد مثل ره‌وب */
+  line-height: 1.5 !important; /* فاصله خطوط طبیعی */
   letter-spacing: var(--sh-tracking-fa) !important;
   color: var(--sh-color-ink) !important;
+  margin-bottom: var(--sh-space-5) !important;
+  text-wrap: pretty !important; /* جلوگیری از شکستن عجیب */
 }
 
-/* --- ۲. نابودی کامل بلوک‌بندی و حاشیه‌های مخفی --- */
-/* هر تگ span یا div یا br داخل تیتر را به متن عادی تبدیل می‌کنیم */
-.hero-section .hero-title > *,
-.hero-section .hero-title span,
-.hero-section .hero-title div,
-.hero-section .hero-title-line,
-.hero-section .hero-title br {
-  display: inline !important; /* تبدیل به متن یکپارچه (حذف پله‌ها) */
-  width: auto !important;
-  height: auto !important;
+/* ۳. اجبار خطوط به تراز راست (مهم‌ترین بخش) */
+.hero-section .hero-title > span,
+.hero-section .hero-title-line {
+  display: block !important;
+  width: 100% !important;
+  text-align: right !important; /* تراز دقیق راست */
+  direction: rtl !important;
+  
+  /* نابودی کامل حاشیه‌ها و جابه‌جایی‌ها */
   margin: 0 !important;
   padding: 0 !important;
-  float: none !important;
-  position: static !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0 !important;
+  
   transform: none !important;
-  text-align: inherit !important;
-  background: none !important;
-  -webkit-text-fill-color: initial !important;
-  -webkit-background-clip: initial !important;
-  box-shadow: none !important;
-  border: none !important;
+  position: static !important;
+  float: none !important;
+  text-indent: 0 !important;
 }
 
-/* حذف فاصله اضافه بعد از هر بلوک */
-.hero-section .hero-title-line::after {
-  content: " " !important; /* فقط یک فاصله ساده */
-  display: inline !important;
-}
-
-/* --- ۳. رنگ‌دهی متناسب با سبک ره‌وب --- */
+/* ۴. رنگ‌دهی متناسب */
 .hero-section .hero-title-muted {
-  color: var(--sh-color-muted) !important; /* خاکستری ملایم */
+  color: var(--sh-color-muted) !important;
   font-weight: var(--sh-weight-medium) !important;
 }
 
 .hero-section .hero-title-accent {
-  color: var(--burgundy) !important; /* زرشکی پررنگ */
+  color: var(--burgundy) !important;
   font-weight: var(--sh-weight-bold) !important;
-  position: relative !important;
 }
 
-/* (اختیاری) خط زیر کلمه زرشکی، دقیقاً مثل قبل اما بدون خرابی */
+/* ۵. خط زیر کلمه زرشکی (دقیق و بدون خطا) */
 .hero-section .hero-title-accent::after {
-  content: "" !important;
-  position: absolute !important;
-  bottom: 0.1em !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 2px !important;
-  background: var(--burgundy) !important;
-  opacity: 0.3 !important;
-  z-index: -1 !important;
+  content: none !important; /* حذف روش‌های قبلی */
 }
 
-/* --- ۴. توضیحات هیرو (زیر تیتر) --- */
+.hero-section .hero-title-accent {
+  /* استفاده از border به جای شبه‌المان برای دقت ۱۰۰٪ */
+  border-bottom: 2.5px solid rgba(125, 41, 63, 0.4) !important;
+  display: inline !important;
+  padding-bottom: 4px !important;
+}
+
+/* ۶. توضیحات هیرو */
 .hero-section .hero-description {
   text-align: right !important;
   direction: rtl !important;
@@ -87,34 +83,4 @@
   color: var(--sh-color-text) !important;
   max-width: 52ch !important;
   margin-top: var(--sh-space-4) !important;
-}
-
-/* --- ۵. نظم بخشیدن به منو و کارت‌ها (بدون تغییر ظاهری) --- */
-.site-nav .desktop-nav-item {
-  font-family: var(--sh-font-fa) !important;
-  font-size: var(--sh-text-sm) !important;
-  font-weight: var(--sh-weight-medium) !important;
-  padding: var(--sh-space-2) var(--sh-space-4) !important;
-  border-radius: 999px !important;
-  color: var(--sh-color-text) !important;
-}
-
-.site-nav .desktop-nav-item.is-active {
-  color: #fff !important;
-  font-weight: var(--sh-weight-semibold) !important;
-}
-
-.hero-section .hero-bento-name {
-  font-size: var(--sh-heading-3) !important;
-  line-height: var(--sh-leading-h3) !important;
-  font-weight: var(--sh-weight-bold) !important;
-  color: var(--sh-color-ink) !important;
-  white-space: nowrap !important;
-}
-
-.hero-section .hero-bento-clock-time {
-  font-size: var(--sh-text-lg) !important;
-  font-family: var(--sh-font-latin) !important;
-  font-weight: var(--sh-weight-bold) !important;
-  letter-spacing: 0 !important;
 }
