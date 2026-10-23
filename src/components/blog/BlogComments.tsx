@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 
 type Comment = {
   objectId: string;
@@ -47,11 +46,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
       const res = await fetch(`${serverURL}/api/comment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          url: path,
-          ua: navigator.userAgent,
-        }),
+        body: JSON.stringify({ ...formData, url: path, ua: navigator.userAgent }),
       });
 
       const data = await res.json();
@@ -69,27 +64,47 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
     }
   };
 
-  // تابع اصلاح تاریخ و حذف تگ‌های HTML اضافی
   const formatDate = (dateString: string) => {
+    if (!dateString) return "همین حالا";
     try {
       const date = new Date(dateString);
-      if (isNaN(date.getTime())) return "اخیراً"; // فال‌بک برای تاریخ نامعتبر
-      return new Intl.DateTimeFormat("fa-IR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }).format(date);
+      // بررسی اینکه آیا تاریخ معتبر است یا خیر
+      if (isNaN(date.getTime())) {
+        // اگر Waline تایم‌استمپ فرستاده باشد
+        const timestamp = parseInt(dateString, 10);
+        if (!isNaN(timestamp)) {
+           return new Intl.DateTimeFormat("fa-IR", { year: "numeric", month: "long", day: "numeric" }).format(new Date(timestamp));
+        }
+        return "همین حالا";
+      }
+      return new Intl.DateTimeFormat("fa-IR", { year: "numeric", month: "long", day: "numeric" }).format(date);
     } catch (e) {
-      return "اخیراً";
+      return "همین حالا";
     }
   };
 
-  const stripHtml = (html: string) => {
-    return html.replace(/<[^>]*>?/gm, '');
+  const stripHtml = (html: string) => html.replace(/<[^>]*>?/gm, '');
+
+  // کامپوننت آواتار برای مدیریت عکس شکسته
+  const Avatar = ({ src, nick }: { src?: string; nick: string }) => {
+    const [imgError, setImgError] = useState(false);
+    
+    if (!src || imgError) {
+      return <div className="avatar-placeholder">{nick.charAt(0)}</div>;
+    }
+    
+    return (
+      <img 
+        src={src} 
+        alt={nick} 
+        className="avatar-image" 
+        onError={() => setImgError(true)} 
+      />
+    );
   };
 
   return (
-    <section className="waline-wrapper">
+    <section className="waline-wrapper glass-panel">
       <h2 className="waline-header-title">گفتگو و دیدگاه‌ها</h2>
       
       <form onSubmit={handleSubmit} className="custom-comment-form">
@@ -119,17 +134,6 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
         </div>
 
         <div className="input-group">
-          <input
-            type="url"
-            id="link"
-            placeholder=" "
-            value={formData.link}
-            onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-          />
-          <label htmlFor="link">وب‌سایت شما (اختیاری)</label>
-        </div>
-
-        <div className="input-group">
           <textarea
             id="comment"
             placeholder=" "
@@ -155,7 +159,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
         <h3 className="comments-list-title">دیدگاه‌های ثبت شده</h3>
         
         {loadingComments ? (
-          <p className="comments-loading">در حال بارگذاری دیدگاه‌ها...</p>
+          <p className="comments-loading">در حال بارگذاری...</p>
         ) : comments.length === 0 ? (
           <p className="comments-empty">هنوز دیدگاهی ثبت نشده. اولین نفر باشید!</p>
         ) : (
@@ -164,11 +168,7 @@ export default function BlogComments({ serverURL, path }: { serverURL: string; p
               <div key={comment.objectId} className="comment-card glass-card">
                 <div className="comment-header">
                   <div className="comment-avatar">
-                    {comment.avatar ? (
-                      <Image src={comment.avatar} alt={comment.nick} width={44} height={44} style={{ objectFit: "cover" }} />
-                    ) : (
-                      <div className="avatar-placeholder">{comment.nick.charAt(0)}</div>
-                    )}
+                    <Avatar src={comment.avatar} nick={comment.nick} />
                   </div>
                   <div className="comment-meta">
                     <strong className="comment-nick">{comment.nick}</strong>
