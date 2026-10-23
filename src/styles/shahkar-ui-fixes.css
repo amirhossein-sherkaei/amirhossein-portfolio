@@ -1,43 +1,49 @@
 /* ============================================================
-   SHAHKAR UI FIXES — Alignment & Rhythm Synchronization
+   SHAHKAR UI FIXES — Absolute Alignment & Rhythm Synchronization
    ============================================================ */
 
-/* --- ۱. رفع کامل پله‌ای شدن تیتر هیرو --- */
+/* --- ۱. رفع کامل پله‌ای شدن تیتر هیرو (NUCLEAR OPTION) --- */
 .hero-section .hero-title {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important; /* در RTL یعنی تراز دقیق از راست */
+  text-align: right !important;
+  direction: rtl !important;
+  
+  /* سایز و فاصله کنترل شده */
   font-family: var(--sh-font-fa) !important;
-  font-size: var(--sh-heading-1) !important; /* استفاده از توکن v04 */
-  line-height: var(--sh-leading-h1) !important; /* استفاده از توکن v04 */
+  font-size: clamp(1.75rem, 3.5vw, 3.2rem) !important; 
+  line-height: 1.4 !important; 
   font-weight: var(--sh-weight-bold) !important;
   letter-spacing: var(--sh-tracking-fa) !important;
+  gap: 8px !important; /* فاصله دقیق بین خطوط */
   
-  text-align: right !important; /* تراز دقیق RTL */
-  text-wrap: pretty !important; /* جلوگیری از شکستن عجیب خطوط */
-  margin-bottom: var(--sh-space-4) !important;
+  margin: 0 0 var(--sh-space-5) 0 !important;
+  width: 100% !important;
 }
 
-/* تبدیل خطوط تیتر به حالت یکپارچه (حذف پله‌ها) */
+/* تبدیل خطوط تیتر به بلوک‌های مستقل و تراز شده */
 .hero-section .hero-title > span,
 .hero-section .hero-title-line {
-  display: inline !important; 
-  font-size: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  font-weight: inherit !important;
-  color: inherit !important;
+  display: block !important; 
+  width: 100% !important;
+  text-align: right !important;
+  
+  /* نابودی هرگونه استایل مزاحم از فایل‌های قدیمی */
   margin: 0 !important;
   padding: 0 !important;
+  transform: none !important;
+  position: static !important;
   background: none !important;
   -webkit-text-fill-color: initial !important;
   -webkit-background-clip: initial !important;
-  text-shadow: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
 }
 
-/* فاصله استاندارد بین کلمات */
-.hero-section .hero-title-line:not(:last-child)::after {
-  content: " ";
-}
-
+/* رنگ‌دهی هوشمند به کلمات کلیدی */
 .hero-section .hero-title-muted {
   color: var(--sh-color-muted) !important;
   font-weight: var(--sh-weight-medium) !important;
@@ -53,6 +59,7 @@
   line-height: var(--sh-leading-body) !important;
   color: var(--sh-color-text) !important;
   text-align: right !important;
+  max-width: 52ch !important;
 }
 
 /* --- ۲. نظم بخشیدن به منوی بالا (Nav) --- */
