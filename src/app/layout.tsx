@@ -87,10 +87,9 @@ import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 
 /* Components */
-import "@/components/chat/chat.css";
-
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ClientOverlays from "@/components/ClientOverlays";
+import ChatLauncher from "@/components/chat/ChatLauncher"; // <-- ایمپورت دکمه چت جدید
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -236,6 +235,9 @@ export default function RootLayout({
         <ThemeProvider>{children}</ThemeProvider>
 
         <ClientOverlays />
+        
+        {/* دکمه چت شیشه‌ای جدید */}
+        <ChatLauncher /> 
 
         <Analytics />
         <SpeedInsights />
