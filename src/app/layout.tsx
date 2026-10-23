@@ -86,11 +86,11 @@ import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 
-/* ⭐️ سیستم تایپوگرافی شما */
+/* ⭐️ سیستم تایپوگرافی اختصاصی v04 */
 import "@/styles/shahkar-typography.css";
 
-/* ⭐️ فایل فیکس‌کننده هیرو و منو (باید آخرین باشد) */
-import "@/styles/shahkar-typography-fix.css";
+/* ⭐️ فایل فیکس‌کننده UI (باید آخرین باشد) */
+import "@/styles/shahkar-ui-fixes.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";

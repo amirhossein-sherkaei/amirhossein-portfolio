@@ -1,0 +1,102 @@
+/* ============================================================
+   SHAHKAR UI FIXES — Alignment & Rhythm Synchronization
+   ============================================================ */
+
+/* --- ۱. رفع کامل پله‌ای شدن تیتر هیرو --- */
+.hero-section .hero-title {
+  display: block !important;
+  font-family: var(--sh-font-fa) !important;
+  font-size: var(--sh-heading-1) !important; /* استفاده از توکن v04 */
+  line-height: var(--sh-leading-h1) !important; /* استفاده از توکن v04 */
+  font-weight: var(--sh-weight-bold) !important;
+  letter-spacing: var(--sh-tracking-fa) !important;
+  
+  text-align: right !important; /* تراز دقیق RTL */
+  text-wrap: pretty !important; /* جلوگیری از شکستن عجیب خطوط */
+  margin-bottom: var(--sh-space-4) !important;
+}
+
+/* تبدیل خطوط تیتر به حالت یکپارچه (حذف پله‌ها) */
+.hero-section .hero-title > span,
+.hero-section .hero-title-line {
+  display: inline !important; 
+  font-size: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  -webkit-background-clip: initial !important;
+  text-shadow: none !important;
+}
+
+/* فاصله استاندارد بین کلمات */
+.hero-section .hero-title-line:not(:last-child)::after {
+  content: " ";
+}
+
+.hero-section .hero-title-muted {
+  color: var(--sh-color-muted) !important;
+  font-weight: var(--sh-weight-medium) !important;
+}
+
+.hero-section .hero-title-accent {
+  color: var(--burgundy) !important;
+  font-weight: var(--sh-weight-bold) !important;
+}
+
+.hero-section .hero-description {
+  font-size: var(--sh-text-md) !important;
+  line-height: var(--sh-leading-body) !important;
+  color: var(--sh-color-text) !important;
+  text-align: right !important;
+}
+
+/* --- ۲. نظم بخشیدن به منوی بالا (Nav) --- */
+.site-nav .desktop-nav-item {
+  font-family: var(--sh-font-fa) !important;
+  font-size: var(--sh-text-sm) !important;
+  font-weight: var(--sh-weight-medium) !important;
+  padding: var(--sh-space-2) var(--sh-space-4) !important;
+  border-radius: 999px !important;
+  color: var(--sh-color-text) !important;
+}
+
+.site-nav .desktop-nav-slider {
+  top: var(--sh-space-1) !important;
+  bottom: var(--sh-space-1) !important;
+  border-radius: 999px !important;
+  background: var(--burgundy) !important;
+}
+
+.site-nav .desktop-nav-item.is-active {
+  color: #fff !important;
+  font-weight: var(--sh-weight-semibold) !important;
+}
+
+.site-nav .desktop-nav-list {
+  gap: var(--sh-space-1) !important;
+}
+
+/* --- ۳. نظم بخشیدن به کارت‌های هیرو (Bento Cards) --- */
+.hero-section .hero-bento-cell {
+  padding: var(--sh-space-5) !important;
+}
+
+.hero-section .hero-bento-name {
+  font-size: var(--sh-heading-3) !important;
+  line-height: var(--sh-leading-h3) !important;
+  font-weight: var(--sh-weight-bold) !important;
+  color: var(--sh-color-ink) !important;
+  white-space: nowrap !important; /* جلوگیری از شکستن نام */
+}
+
+.hero-section .hero-bento-clock-time {
+  font-size: var(--sh-text-lg) !important;
+  font-family: var(--sh-font-latin) !important;
+  font-weight: var(--sh-weight-bold) !important;
+  letter-spacing: 0 !important;
+}
