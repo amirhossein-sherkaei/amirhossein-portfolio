@@ -16,6 +16,7 @@ import BlogInlineCTA from "@/components/BlogInlineCTA";
 import BlogBreadcrumb from "@/components/BlogBreadcrumb";
 
 import "@/styles/blog-post-premium.css";
+import "@/styles/blog-components-premium.css";
 import "@/styles/blog-mobile-fix.css";
 
 type Props = {
@@ -92,7 +93,7 @@ export default async function BlogPostPage({ params }: Props) {
           </header>
 
           <div className="blog-post-layout">
-            <article className="blog-post-content">
+            <article className="blog-post-content glass-panel">
               <MarkdownContent content={post.content || ""} />
               
               <AIActions title={post.title} slug={post.slug} />
@@ -112,7 +113,6 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </div>
 
-          {/* Related Posts */}
           {relatedPosts.length > 0 && (
             <section className="related-posts-section">
               <h2 className="related-posts-title">مقالات مرتبط</h2>
