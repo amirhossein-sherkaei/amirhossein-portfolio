@@ -1,7 +1,7 @@
 /* ============================================================
    BASE — Reset, Layout, Glass, Typography, Utilities,
           Buttons, Forms, Badges, Divider, Tooltip, Skeleton, Toast
-   Typography Edition 2026
+   Estedad Edition — Shahkar-e Shorakaei
    ============================================================ */
 
 /* ============================================================
@@ -36,11 +36,11 @@ body {
   min-width: 320px;
   background: var(--paper);
   color: var(--ink-2);
-  font-family: var(--font-sans);
+  font-family: var(--font-sans); /* فونت استعداد */
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   font-weight: 400;
-  font-feature-settings: "ss01", "ss02";
+  font-feature-settings: "ss20", "ss01"; /* فعال‌سازی اعداد فارسی */
   font-optical-sizing: auto;
   letter-spacing: var(--tracking-normal);
   overflow-wrap: break-word;
@@ -306,21 +306,16 @@ select {
 }
 
 /* ============================================================
-   4. Typography — 2026 Standards
+   4. Typography — Estedad Edition
    ============================================================ */
 
-/* ─────────────────────────────────────────────────────────────
-   HEADINGS
-   - text-wrap: balance prevents orphaned words in titles
-   - tighter line-height as size grows
-   - Persian script never gets letter-spacing
-   ───────────────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
   color: var(--ink);
   font-weight: 800;
   text-wrap: balance;
   font-kerning: normal;
   font-variant-ligatures: common-ligatures contextual;
+  letter-spacing: var(--tracking-normal);
 }
 
 h1 {
@@ -357,9 +352,6 @@ h5, h6 {
   letter-spacing: var(--tracking-wide);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   BODY TEXT
-   ───────────────────────────────────────────────────────────── */
 p {
   font-size: var(--fs-body);
   font-weight: 400;
@@ -369,7 +361,6 @@ p {
   max-width: var(--reading-wide);
 }
 
-/* ── Display ── */
 .display {
   font-size: var(--fs-display);
   font-weight: 900;
@@ -399,7 +390,6 @@ p {
   line-height: var(--lh-h3);
 }
 
-/* ── Lead paragraph ── */
 .body {
   font-size: var(--fs-body);
   font-weight: 400;
@@ -416,10 +406,7 @@ p {
   max-width: var(--reading-wide);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   META / MONO — LTR only
-   ⚠️ Persian script must NEVER appear in these
-   ───────────────────────────────────────────────────────────── */
+/* Meta / Mono — LTR only */
 .meta {
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
@@ -441,7 +428,6 @@ p {
   unicode-bidi: isolate;
 }
 
-/* ── Eyebrow ── */
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -465,7 +451,6 @@ p {
   display: none;
 }
 
-/* ── Section index ── */
 .section-index {
   display: flex;
   align-items: center;
@@ -490,7 +475,6 @@ p {
   box-shadow: 0 0 0 4px var(--accent-tint);
 }
 
-/* ── Section heading ── */
 .section-heading {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
@@ -535,9 +519,7 @@ p {
   margin-inline: auto;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   LISTS
-   ───────────────────────────────────────────────────────────── */
+/* Lists */
 ul:not([class]),
 ol:not([class]) {
   padding-inline-start: 1.5em;
@@ -565,18 +547,14 @@ ol:not([class]) li::marker {
   font-weight: 600;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   QUOTES
-   ───────────────────────────────────────────────────────────── */
+/* Quotes */
 blockquote {
   hanging-punctuation: first last;
   font-style: italic;
   line-height: var(--lh-body);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   CODE — always LTR, tabular nums
-   ───────────────────────────────────────────────────────────── */
+/* Code — always LTR, tabular nums */
 code,
 kbd,
 samp,
@@ -604,9 +582,7 @@ kbd {
   font-weight: 500;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   FIGURES & CAPTIONS
-   ───────────────────────────────────────────────────────────── */
+/* Figures & Captions */
 figure {
   margin-block: 1.5em;
 }
@@ -619,9 +595,7 @@ figcaption {
   text-wrap: balance;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   NUMBER FORMATTING HELPERS
-   ───────────────────────────────────────────────────────────── */
+/* Number formatting helpers */
 .num-en {
   direction: ltr;
   unicode-bidi: isolate;
@@ -931,7 +905,6 @@ figcaption {
   background-position: left 14px center;
 }
 
-/* ── Checkbox ── */
 .checkbox {
   display: inline-flex;
   align-items: center;
@@ -986,7 +959,6 @@ figcaption {
   outline-offset: 2px;
 }
 
-/* ── Radio ── */
 .radio {
   display: inline-flex;
   align-items: center;

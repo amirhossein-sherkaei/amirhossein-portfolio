@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Vazirmatn } from "next/font/google";
+import localFont from "next/font/local";
 
 /* 01-04 - Foundation */
 import "@/styles/tokens.css";
@@ -86,9 +86,6 @@ import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 
-/* NEW: Infinity Chat Button Style */
-import "@/styles/chat-infinity.css";
-
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ClientOverlays from "@/components/ClientOverlays";
@@ -96,12 +93,13 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 
-const vazirmatn = Vazirmatn({
-  subsets: ["arabic", "latin"],
-  variable: "--font-vazirmatn",
+// بارگذاری فونت استعداد به صورت Variable
+const estedad = localFont({
+  src: "../../public/fonts/Estedad-Variable.woff2",
+  variable: "--font-estedad",
   display: "swap",
-  preload: true,
-  adjustFontFallback: true,
+  weight: "100 900", // پشتیبانی از تمام وزن‌های فونت متغیر
+  style: "normal",
   fallback: ["system-ui", "arial"],
 });
 
@@ -211,7 +209,7 @@ export default function RootLayout({
     <html
       lang="fa"
       dir="rtl"
-      className={vazirmatn.variable}
+      className={estedad.variable}
       data-theme="light"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
