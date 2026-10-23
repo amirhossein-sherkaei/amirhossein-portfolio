@@ -1,62 +1,69 @@
 /* ============================================================
-   SHAHKAR TYPOGRAPHY — NUCLEAR FIX
-   Destroys the legacy staircase effect and enforces minimal layout.
+   SHAHKAR TYPOGRAPHY FIX — UI Synchronization
    ============================================================ */
 
-/* --- ۱. نجات تیتر اصلی (Hero Title) --- */
+/* --- ۱. نجات تیتر اصلی (Hero) و حذف حالت پله‌ای --- */
 .hero-section .hero-title {
   display: block !important;
-  font-size: clamp(1.8rem, 3.5vw, 3.2rem) !important; /* سایز کاملاً متعادل */
-  line-height: 1.45 !important; /* فاصله خطوط استاندارد برای خوانایی */
-  font-weight: 800 !important;
+  font-family: var(--sh-font-fa) !important;
+  font-size: clamp(1.85rem, 3.5vw, 3rem) !important; /* سایز حساب‌شده */
+  line-height: 1.45 !important; /* فاصله خطوط برای خوانایی */
+  font-weight: var(--sh-fw-extrabold) !important;
   letter-spacing: 0 !important;
-  text-wrap: balance !important; /* شکستن خطوط به صورت کاملاً متقارن */
+  text-wrap: balance !important;
   margin-bottom: 24px !important;
+  color: var(--sh-color-ink) !important;
 }
 
-/* نابودی سایزهای متفاوت در خطوط تیتر */
+/* تبدیل خطوط تیتر به حالت یکپارچه (حذف پله‌ها) */
 .hero-section .hero-title > span,
-.hero-section .hero-title-line,
-.hero-section .hero-title-muted,
-.hero-section .hero-title-accent {
-  display: inline !important; /* تبدیل به متن یکپارچه */
-  font-size: inherit !important; /* حذف سایزهای مختلف */
+.hero-section .hero-title-line {
+  display: inline !important; 
+  font-size: inherit !important;
   line-height: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
   margin: 0 !important;
   padding: 0 !important;
-  color: inherit !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  -webkit-background-clip: initial !important;
+  text-shadow: none !important;
 }
 
-/* رنگ‌دهی اختصاصی فقط به کلمات کلیدی */
-.hero-section .hero-title-muted {
-  color: var(--ink-3) !important;
-  font-weight: 500 !important;
+/* فاصله استاندارد بین کلمات تیتر */
+.hero-section .hero-title-line:not(:last-child)::after {
+  content: " ";
 }
+
+.hero-section .hero-title-muted {
+  color: var(--sh-color-muted) !important;
+  font-weight: var(--sh-fw-medium) !important;
+}
+
 .hero-section .hero-title-accent {
   color: var(--burgundy) !important;
-  font-weight: 800 !important;
+  font-weight: var(--sh-fw-extrabold) !important;
 }
 
-/* --- ۲. نجات منوی بالا (Navbar) --- */
-.site-nav .nav-pill {
-  padding: 4px 10px !important;
-  border-radius: 999px !important;
+.hero-section .hero-description {
+  font-size: var(--sh-fs-md) !important;
+  line-height: var(--sh-lh-body) !important;
+  color: var(--sh-color-text) !important;
+  max-width: 52ch !important;
 }
 
-.site-nav .desktop-nav-list {
-  gap: 2px !important;
-}
-
+/* --- ۲. نجات منوی بالا (Nav) --- */
 .site-nav .desktop-nav-item {
-  padding: 8px 16px !important;
-  font-size: 0.875rem !important; /* ۱۴ پیکسل، سایز استاندارد منو */
-  font-weight: 500 !important;
-  color: var(--ink-2) !important;
+  font-family: var(--sh-font-fa) !important;
+  font-size: var(--sh-fs-sm) !important;
+  font-weight: var(--sh-fw-medium) !important;
+  padding: 8px 14px !important;
   border-radius: 999px !important;
+  color: var(--sh-color-text) !important;
 }
 
-/* اصلاح بیضی پس‌زمینه منو (دکمه خانه) */
 .site-nav .desktop-nav-slider {
   top: 4px !important;
   bottom: 4px !important;
@@ -66,64 +73,29 @@
 
 .site-nav .desktop-nav-item.is-active {
   color: #fff !important;
-  font-weight: 600 !important;
+  font-weight: var(--sh-fw-semibold) !important;
 }
 
-/* --- ۳. نجات کارت‌های شیشه‌ای (Bento Cards) --- */
+.site-nav .desktop-nav-list {
+  gap: 4px !important;
+}
+
+/* --- ۳. نجات کارت‌های هیرو (Bento Cards) --- */
 .hero-section .hero-bento-cell {
-  padding: 20px !important;
+  padding: 24px !important;
 }
 
 .hero-section .hero-bento-name {
-  font-size: 1.25rem !important; /* سایز خوانا و شیک */
-  line-height: 1.4 !important;
-  font-weight: 800 !important;
-  color: var(--ink) !important;
-  white-space: normal !important; /* اجازه شکستن طبیعی به جای بیرون‌زدگی */
-  margin-bottom: 4px !important;
-}
-
-.hero-section .hero-bento-role {
-  font-size: 0.75rem !important;
-  color: var(--ink-3) !important;
-}
-
-.hero-section .hero-bento-bignum {
-  font-size: 2.25rem !important; /* کوچک‌تر از قبل */
-  font-weight: 800 !important;
+  font-size: 1.35rem !important;
+  line-height: 1.3 !important;
+  font-weight: var(--sh-fw-extrabold) !important;
+  color: var(--sh-color-ink) !important;
+  white-space: nowrap !important; /* جلوگیری از شکستن نام */
 }
 
 .hero-section .hero-bento-clock-time {
-  font-size: 1.125rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
-}
-
-.hero-section .hero-bento-date-day {
   font-size: 1.25rem !important;
-}
-
-/* --- ۴. اصلاح توضیحات هیرو --- */
-.hero-section .hero-description {
-  font-size: 1rem !important;
-  line-height: 1.8 !important;
-  color: var(--ink-2) !important;
-  max-width: 52ch !important;
-}
-
-/* --- ۵. اصلاح تیترهای بخش‌های دیگر --- */
-.section-heading h2,
-.about-content h2,
-.why-header h2,
-.final-cta h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2.25rem) !important;
-  line-height: 1.35 !important;
-  font-weight: 800 !important;
-  text-wrap: balance !important;
-}
-
-/* --- ۶. اصلاح دکمه‌ها --- */
-.button {
-  font-size: 0.9375rem !important;
-  font-weight: 600 !important;
+  font-family: var(--sh-font-latin) !important;
+  font-weight: var(--sh-fw-bold) !important;
+  letter-spacing: 0 !important;
 }

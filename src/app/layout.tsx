@@ -86,7 +86,10 @@ import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 
-/* ⭐️ فایل جدید برای اصلاح تمام ناهماهنگی‌های تایپوگرافی */
+/* ⭐️ سیستم تایپوگرافی شما */
+import "@/styles/shahkar-typography.css";
+
+/* ⭐️ فایل فیکس‌کننده هیرو و منو (باید آخرین باشد) */
 import "@/styles/shahkar-typography-fix.css";
 
 /* Components */
@@ -96,7 +99,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 
-// بارگذاری فونت استعداد به صورت Variable
 const estedad = localFont({
   src: "../../public/fonts/Estedad-Variable.woff2",
   variable: "--font-estedad",
