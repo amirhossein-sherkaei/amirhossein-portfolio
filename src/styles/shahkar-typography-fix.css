@@ -1,121 +1,368 @@
 /* ============================================================
-   SHAHKAR TYPOGRAPHY MASTER FIX — Minimal & Modern Edition
+   SHORKAEI® · TYPOGRAPHIC SYSTEM
+   ESTEDAD / VARIABLE · FINAL EDITION
+   Architecture: Layered, Resilient, RTL-First, WCAG-Aware
    ============================================================ */
 
-/* --- ۱. اصلاح تیتر اصلی (Hero) و حذف حالت پله‌ای --- */
-.hero-section .hero-title {
-  margin: 0 !important;
-  font-weight: 800 !important;
-  line-height: 1.4 !important; /* فاصله خطوط استاندارد برای جلوگیری از پله شدن */
-  letter-spacing: -0.01em !important; /* فشردگی بسیار ملایم برای زیبایی */
-  text-wrap: pretty !important; /* حذف Balance که باعث شکستن عجیب می‌شد */
+@layer tokens, base, components, utilities;
+
+/* ── LAYER 1: TOKENS ── */
+@layer tokens {
+  :root {
+    /* 1. فونت و استک مقاوم (Fallback) */
+    --font-estedad: "Estedad";
+    --font-sans: var(--font-estedad), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, monospace;
+
+    /* 2. تنظیمات پیش‌فرض فونت (اعداد فارسی فقط در صورت نیاز فعال می‌شوند) */
+    --font-feature-default: normal;
+    --font-feature-numeric: "ss20" 1; /* ویژگی اعداد فارسی در فونت استعداد */
+
+    /* 3. وزن‌های فونت (سلسله‌مراتب بصری) */
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+    --fw-heavy: 800; /* فقط برای استفاده‌های خاص و نمایشی */
+
+    /* 4. مقیاس سیال (360px تا 1440px) */
+    --fs-micro:  clamp(0.6875rem, 0.675rem + 0.0625vw, 0.75rem);   /* 11px → 12px */
+    --fs-small:  clamp(0.8125rem, 0.8rem + 0.0625vw, 0.875rem);    /* 13px → 14px */
+    --fs-body:   clamp(1rem, 0.975rem + 0.125vw, 1.0625rem);       /* 16px → 17px */
+    --fs-h3:     clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);          /* 20px → 24px */
+    --fs-h2:     clamp(1.625rem, 1.45rem + 1.5vw, 2.75rem);        /* 26px → 44px */
+    --fs-h1:     clamp(2rem, 1.8rem + 2.25vw, 3.75rem);            /* 32px → 60px */
+    --fs-display: clamp(2.75rem, 2.3rem + 4.75vw, 6rem);           /* 44px → 96px */
+
+    /* 5. ارتفاع خطوط (بهینه برای فارسی) */
+    --lh-display: 1.1;
+    --lh-h1:      1.2;
+    --lh-h2:      1.25;
+    --lh-h3:      1.35;
+    --lh-body:    1.8;   /* فاصله خطوط استاندارد برای خوانایی */
+    --lh-small:   1.7;
+    --lh-tight:   1.3;
+
+    /* 6. فاصله حروف (صفر برای فارسی) */
+    --tracking-normal:  0;
+    --tracking-tight:   -0.01em; /* فقط برای تیترهای بسیار بزرگ */
+    --tracking-wide:    0.04em;  /* فقط برای متن‌های لاتین */
+
+    /* 7. ریتم عمودی (پایه ۸ پیکسلی) */
+    --space-1: 0.25rem;  /* 4px */
+    --space-2: 0.5rem;   /* 8px */
+    --space-3: 0.75rem;  /* 12px */
+    --space-4: 1rem;     /* 16px */
+    --space-5: 1.5rem;   /* 24px */
+    --space-6: 2rem;     /* 32px */
+    --space-7: 3rem;     /* 48px */
+    --space-8: 4rem;     /* 64px */
+    --space-9: 5rem;     /* 80px */
+
+    /* 8. عرض خواندن (بهینه برای فارسی) */
+    --reading:        720px; 
+    --reading-wide:   840px;
+    --reading-narrow: 560px;
+
+    /* 9. اندازه‌های زیرنویس و لیبل */
+    --text-caption: 0.75rem;
+    --text-label:   0.875rem;
+    --lh-caption:   1.65;
+    --lh-control:   1.5;
+
+    /* 10. متغیرهای پروژه (جهت اتصال به سیستم قبلی) */
+    --ink: var(--text-primary, #12100E);
+    --ink-2: var(--text-secondary, #3D3630);
+    --ink-3: var(--text-tertiary, #6B625B);
+    --paper: var(--bg-primary, #F8F5EF);
+    --paper-2: var(--bg-secondary, #EBE5D9);
+    --accent: var(--brand-primary, #0D7377);
+    --duration-fast: 160ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --radius-md: 16px;
+  }
 }
 
-/* تبدیل خطوط تیتر به حالت یکپارچه (Inline) تا مثل یک متن عادی بنویسند */
-.hero-section .hero-title-line {
-  display: inline !important; 
-  font-size: clamp(1.75rem, 3vw, 2.75rem) !important; /* اندازه کاملاً حساب شده */
-  line-height: 1.4 !important;
+/* ── LAYER 2: BASE ── */
+@layer base {
+  /* 1. ریست تایپوگرافی */
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-sans);
+    font-feature-settings: var(--font-feature-default);
+    font-variant-numeric: normal;
+  }
+
+  body {
+    font-size: var(--fs-body);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    letter-spacing: var(--tracking-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 2. تیترها (سلسله‌مراتب لایه‌ای) */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: var(--tracking-normal);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-bold); /* 700 */
+  }
+
+  h2 {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold); /* 600 */
+  }
+
+  h3 {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-medium); /* 500 */
+  }
+
+  h4 {
+    font-size: var(--fs-body);
+    line-height: var(--lh-tight);
+    font-weight: var(--fw-semibold); /* 600 */
+  }
+
+  /* 3. تیترهای نمایشی */
+  .display {
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    font-weight: var(--fw-heavy); /* 800، فقط برای استفاده خاص */
+    color: var(--ink);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+
+  .hero-title {
+    font-size: clamp(1.75rem, 3.5vw, 3.25rem);
+    line-height: 1.25;
+    font-weight: var(--fw-bold); /* 700، نه 800 */
+    letter-spacing: var(--tracking-normal);
+    text-wrap: pretty;
+  }
+
+  /* 4. پاراگراف‌ها */
+  p {
+    margin: 0 0 var(--space-4);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    max-width: var(--reading-wide);
+    text-wrap: pretty;
+  }
+
+  .body-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+    font-weight: var(--fw-medium);
+    line-height: 1.8;
+    color: var(--ink);
+    max-width: var(--reading);
+  }
+
+  /* 5. لیست‌ها */
+  ul:not([class]), ol:not([class]) {
+    padding-inline-start: 1.5em;
+    margin-block: var(--space-4);
+  }
+
+  ul:not([class]) li, ol:not([class]) li {
+    padding-inline-start: 0.25em;
+    margin-block: var(--space-2);
+    line-height: var(--lh-body);
+  }
+
+  ul:not([class]) li::marker, ol:not([class]) li::marker {
+    color: var(--accent);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* 6. نقل‌قول‌ها (با ویژگی‌های کاملاً منطقی RTL) */
+  blockquote {
+    margin: var(--space-6) 0;
+    padding: var(--space-5) var(--space-6);
+    border-inline-start: 3px solid var(--accent);
+    border-start-start-radius: var(--radius-md);
+    border-end-start-radius: var(--radius-md);
+    background: var(--paper-2);
+    font-size: var(--fs-body);
+    font-style: italic;
+    line-height: var(--lh-body);
+    color: var(--ink);
+  }
+
+  /* 7. کد و پیش‌فرمت */
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 0.925em;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  code {
+    padding: 0.15em 0.4em;
+    background: var(--paper-2);
+    border-radius: 6px;
+  }
+
+  pre {
+    margin: var(--space-5) 0;
+    padding: var(--space-4);
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* 8. لینک‌ها */
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.07em;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  /* 9. فرم‌ها */
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* جلوگیری از زوم در iOS */
+    line-height: var(--lh-control);
+  }
+
+  label,
+  .form-label {
+    font-size: var(--text-label);
+    line-height: var(--lh-control);
+    font-weight: var(--fw-medium);
+  }
+
+  .caption {
+    font-size: var(--text-caption);
+    line-height: var(--lh-caption);
+    font-weight: var(--fw-regular);
+    color: var(--ink-3);
+  }
+
+  /* 10. اعداد (ابزار اختصاصی) */
+  .numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: var(--font-feature-numeric);
+    font-weight: var(--fw-medium);
+  }
+
+  /* 11. متادیتا و مونو (LTR) */
+  .meta, .mono {
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--ink-3);
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+    unicode-bidi: isolate;
+  }
 }
 
-/* اضافه کردن یک فاصله استاندارد بین کلمات تیتر */
-.hero-section .hero-title-line:not(:last-child)::after {
-  content: " ";
+/* ── LAYER 3: COMPONENTS ── */
+@layer components {
+  .button {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--lh-tight);
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
 }
 
-.hero-section .hero-title-muted {
-  color: var(--ink-3) !important;
-  font-weight: 500 !important;
-}
+/* ── LAYER 4: UTILITIES & PREFERENCES ── */
+@layer utilities {
+  /* مکانیزم دفاعی: استایل‌های خارج از لایه اولویت دارند، سیستم ما عقب‌نشینی می‌کند */
+  .u-reset-layer {
+    all: revert-layer;
+  }
 
-.hero-section .hero-title-accent {
-  font-weight: 800 !important;
-  color: var(--burgundy) !important;
-}
+  /* کنتراست بالا (استاندارد WCAG AAA: نسبت 7:1) */
+  .high-contrast {
+    --ink: #000000;
+    --ink-2: #1a1a1a;
+    --ink-3: #333333;
+    --paper: #ffffff;
+    --paper-2: #f5f5f5;
+    --accent: #0057b8;
+  }
 
-/* --- ۲. اصلاح منوی بالا (Nav) --- */
-.site-nav .nav-pill {
-  padding: 4px 8px !important; /* کوچک‌تر و جمع‌وجورتر */
-}
+  .high-contrast a {
+    text-decoration: underline;
+    text-decoration-thickness: 0.12em;
+  }
 
-.site-nav .desktop-nav-item {
-  padding: 8px 12px !important;
-  font-size: 0.8125rem !important; /* سایز استاندارد منو (۱۳px) */
-  font-weight: 500 !important;
-  color: var(--ink-2) !important;
-}
+  .high-contrast .button {
+    border: 2px solid #000000;
+  }
 
-/* اصلاح بیضی پشت دکمه فعال (خانه) */
-.site-nav .desktop-nav-slider {
-  background: var(--burgundy) !important;
-  border-radius: 999px !important;
-  top: 4px !important;
-  bottom: 4px !important;
-}
+  .high-contrast .caption,
+  .high-contrast .meta,
+  .high-contrast .mono {
+    color: #333333;
+  }
 
-.site-nav .desktop-nav-item.is-active {
-  color: #fff !important;
-  font-weight: 600 !important;
-}
+  /* کاهش حرکت (دسترس‌پذیری) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
-/* --- ۳. اصلاح کارت‌های هیرو (Bento Cards) --- */
-.hero-section .hero-bento-name {
-  font-size: 1.25rem !important; /* نام شرکائی اندازه استاندارد کارت */
-  font-weight: 800 !important;
-  line-height: 1.3 !important;
-  white-space: nowrap !important; /* جلوگیری از شکستن نام به دو خط */
-}
+  /* تنظیمات واکنش‌گرا (موبایل) */
+  @media (max-width: 720px) {
+    :root {
+      --lh-body: 1.75;
+      --space-4: 0.75rem;
+      --space-6: 1.5rem;
+      --space-8: 3rem;
+      --reading-wide: 100%;
+      --reading: 100%;
+    }
 
-.hero-section .hero-bento-role {
-  font-size: 0.75rem !important;
-  color: var(--ink-3) !important;
-}
+    .hero-title {
+      font-size: clamp(1.5rem, 6vw, 2.25rem);
+      line-height: 1.3;
+    }
 
-.hero-section .hero-bento-bignum {
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-}
-
-.hero-section .hero-bento-clock-time {
-  font-size: 1.125rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
-}
-
-.hero-section .hero-bento-date-day {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-}
-
-/* --- ۴. اصلاح توضیحات هیرو --- */
-.hero-section .hero-description {
-  font-size: 0.9375rem !important; /* حدود ۱۵px */
-  line-height: 1.8 !important;
-  max-width: 48ch !important; /* عرض خوانایی عالی */
-  text-wrap: pretty !important;
-  color: var(--ink-2) !important;
-}
-
-/* --- ۵. اصلاح تیترهای بخش‌های دیگر (یکپارچه‌سازی) --- */
-.section-heading h2,
-.about-content h2,
-.why-header h2,
-.final-cta h2 {
-  font-size: clamp(1.5rem, 2vw, 2rem) !important;
-  line-height: 1.4 !important;
-  letter-spacing: -0.01em !important;
-  font-weight: 800 !important;
-  text-wrap: pretty !important; /* حذف Balance */
-}
-
-/* --- ۶. اصلاح دکمه‌ها --- */
-.button {
-  font-size: 0.875rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0 !important;
-}
-
-/* --- ۷. قانون طلایی: خوانایی متن --- */
-h1, h2, h3, h4, h5, h6, p {
-  text-wrap: pretty;
+    h1 {
+      font-weight: var(--fw-semibold); /* 600 برای خوانایی در موبایل */
+    }
+  }
 }
