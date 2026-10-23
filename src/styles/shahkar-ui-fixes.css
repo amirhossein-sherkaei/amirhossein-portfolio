@@ -1,56 +1,45 @@
 /* ============================================================
-   SHAHKAR GLOBAL TYPOGRAPHY FIX — Absolute Alignment
-   Forces v04 typography rules and strict RTL alignment site-wide.
+   SHAHKAR UI FIXES — Absolute Rahweb-Style Typography
+   Destroys block-level artifacts and forces inline paragraph flow.
    ============================================================ */
 
-/* --- ۱. نابودی پله‌ها و تراز سراسری تمام تیترها --- */
-.hero-section .hero-title,
-.section-heading h2,
-.about-content h2,
-.why-header h2,
-.final-cta h2,
-.blog-post-title,
-.blog-card-title,
-.blog-card-title-featured,
-h1, h2, h3, h4, h5, h6 {
-  text-align: right !important;
-  direction: rtl !important;
-  font-family: var(--sh-font-fa) !important;
-  letter-spacing: var(--sh-tracking-fa) !important;
-  text-wrap: pretty !important; /* شکستن طبیعی خطوط */
-  margin-inline-start: 0 !important;
-  margin-inline-end: 0 !important;
-  padding-inline-start: 0 !important;
-  padding-inline-end: 0 !important;
-}
-
-/* --- ۲. تنظیمات اختصاصی هیرو برای تراز دقیق --- */
+/* --- ۱. تبدیل تیتر به یک پاراگراف یکپارچه و راست‌چین --- */
 .hero-section .hero-title {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important; /* تراز دقیق از راست */
+  display: block !important;
+  text-align: right !important; /* تراز دقیق از راست */
+  direction: rtl !important;
+  
+  /* عرض و چیدمان */
   width: 100% !important;
-  font-size: var(--sh-heading-1) !important;
-  line-height: var(--sh-leading-h1) !important;
+  max-width: 100% !important; 
+  margin: 0 0 var(--sh-space-5) 0 !important;
+  padding: 0 !important;
+  
+  /* تایپوگرافی */
+  font-family: var(--sh-font-fa) !important;
+  font-size: clamp(1.8rem, 3.5vw, 3.2rem) !important;
   font-weight: var(--sh-weight-bold) !important;
-  margin-bottom: var(--sh-space-5) !important;
+  line-height: 1.6 !important; /* فاصله خطوط استاندارد مثل ره‌وب */
+  letter-spacing: var(--sh-tracking-fa) !important;
+  color: var(--sh-color-ink) !important;
 }
 
-/* تبدیل خطوط تیتر به بلوک‌های مستقل */
-.hero-section .hero-title > span,
+/* --- ۲. نابودی کامل بلوک‌بندی و حاشیه‌های مخفی --- */
+/* هر تگ span یا div یا br داخل تیتر را به متن عادی تبدیل می‌کنیم */
+.hero-section .hero-title > *,
+.hero-section .hero-title span,
+.hero-section .hero-title div,
 .hero-section .hero-title-line,
-.hero-section .hero-title > div {
-  display: block !important; 
-  width: 100% !important;
-  text-align: right !important;
-  
-  /* نابودی کامل استایل‌های مزاحم */
+.hero-section .hero-title br {
+  display: inline !important; /* تبدیل به متن یکپارچه (حذف پله‌ها) */
+  width: auto !important;
+  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-  transform: none !important;
-  position: static !important;
   float: none !important;
-  text-indent: 0 !important;
+  position: static !important;
+  transform: none !important;
+  text-align: inherit !important;
   background: none !important;
   -webkit-text-fill-color: initial !important;
   -webkit-background-clip: initial !important;
@@ -58,31 +47,49 @@ h1, h2, h3, h4, h5, h6 {
   border: none !important;
 }
 
+/* حذف فاصله اضافه بعد از هر بلوک */
+.hero-section .hero-title-line::after {
+  content: " " !important; /* فقط یک فاصله ساده */
+  display: inline !important;
+}
+
+/* --- ۳. رنگ‌دهی متناسب با سبک ره‌وب --- */
 .hero-section .hero-title-muted {
-  color: var(--sh-color-muted) !important;
+  color: var(--sh-color-muted) !important; /* خاکستری ملایم */
   font-weight: var(--sh-weight-medium) !important;
 }
 
 .hero-section .hero-title-accent {
-  color: var(--burgundy) !important;
+  color: var(--burgundy) !important; /* زرشکی پررنگ */
   font-weight: var(--sh-weight-bold) !important;
+  position: relative !important;
 }
 
-/* --- ۳. تراز و نظم سراسری پاراگراف‌ها و متن‌ها --- */
-p,
-.hero-section .hero-description,
-.blog-card-excerpt,
-.blog-card-excerpt-featured,
-.card-text {
+/* (اختیاری) خط زیر کلمه زرشکی، دقیقاً مثل قبل اما بدون خرابی */
+.hero-section .hero-title-accent::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0.1em !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: var(--burgundy) !important;
+  opacity: 0.3 !important;
+  z-index: -1 !important;
+}
+
+/* --- ۴. توضیحات هیرو (زیر تیتر) --- */
+.hero-section .hero-description {
   text-align: right !important;
   direction: rtl !important;
   font-size: var(--sh-text-md) !important;
   line-height: var(--sh-leading-body) !important;
   color: var(--sh-color-text) !important;
-  max-width: 65ch !important; /* جلوگیری از خطوط بیش از حد طولانی */
+  max-width: 52ch !important;
+  margin-top: var(--sh-space-4) !important;
 }
 
-/* --- ۴. نظم بخشیدن به منوی بالا (Nav) --- */
+/* --- ۵. نظم بخشیدن به منو و کارت‌ها (بدون تغییر ظاهری) --- */
 .site-nav .desktop-nav-item {
   font-family: var(--sh-font-fa) !important;
   font-size: var(--sh-text-sm) !important;
@@ -92,21 +99,9 @@ p,
   color: var(--sh-color-text) !important;
 }
 
-.site-nav .desktop-nav-slider {
-  top: var(--sh-space-1) !important;
-  bottom: var(--sh-space-1) !important;
-  border-radius: 999px !important;
-  background: var(--burgundy) !important;
-}
-
 .site-nav .desktop-nav-item.is-active {
   color: #fff !important;
   font-weight: var(--sh-weight-semibold) !important;
-}
-
-/* --- ۵. نظم بخشیدن به کارت‌های هیرو (Bento Cards) --- */
-.hero-section .hero-bento-cell {
-  padding: var(--sh-space-5) !important;
 }
 
 .hero-section .hero-bento-name {
