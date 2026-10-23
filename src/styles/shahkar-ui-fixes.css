@@ -1,9 +1,9 @@
 /* ============================================================
-   SHAHKAR UI FIXES — Alignment Synchronization (Rahweb Style)
-   Uses v05 tokens to force strict RTL alignment.
+   SHAHKAR UI FIXES — Hero Refinement (Rahweb Style)
+   Uses Sahel (if loaded) or Estedad for compact, clean look.
    ============================================================ */
 
-/* --- ۱. نابودی پله‌ها و تراز دقیق راست در هیرو --- */
+/* ۱. تنظیمات تیتر هیرو برای شکست کوتاه و منظم (سبک ره‌وب) */
 .hero-section .hero-title {
   display: block !important;
   text-align: right !important;
@@ -13,19 +13,19 @@
   margin: 0 0 24px 0 !important;
   padding: 0 !important;
   
-  /* استفاده از توکن‌های v05 */
-  font-family: var(--sh-font-fa) !important;
+  /* استفاده از فونت ساحل (اگر لود شده باشد) یا استعداد */
+  font-family: "Sahel", var(--sh-font-fa) !important; 
   font-size: var(--sh-type-h1) !important;
   font-weight: var(--sh-weight-bold) !important;
   line-height: var(--sh-line-h1) !important;
   letter-spacing: var(--sh-tracking-fa) !important;
   color: var(--ink) !important;
   
-  /* جلوگیری از تراز وسط در فایل‌های قدیمی */
+  /* جلوگیری از تراز وسط و شکستن عجیب */
   text-wrap: pretty !important; 
 }
 
-/* تبدیل خطوط تیتر به متن یکپارچه (حذف پله‌ها) */
+/* ۲. تبدیل خطوط تیتر به متن یکپارچه (حذف پله‌ها) */
 .hero-section .hero-title > span,
 .hero-section .hero-title > div,
 .hero-section .hero-title-line {
@@ -50,7 +50,7 @@
   content: " " !important; 
 }
 
-/* رنگ‌دهی به کلمات کلیدی (با استفاده از رنگ‌های خود سایت) */
+/* ۳. رنگ‌دهی هوشمند به کلمات کلیدی */
 .hero-section .hero-title-muted {
   color: var(--ink-3) !important; 
   font-weight: var(--sh-weight-medium) !important;
@@ -61,7 +61,7 @@
   font-weight: var(--sh-weight-bold) !important;
 }
 
-/* --- ۲. تراز توضیحات هیرو --- */
+/* ۴. تراز توضیحات هیرو */
 .hero-section .hero-description {
   text-align: right !important;
   direction: rtl !important;
@@ -72,7 +72,7 @@
   margin-top: 16px !important;
 }
 
-/* --- ۳. نظم بخشیدن به منو (با توکن‌های v05) --- */
+/* ۵. نظم بخشیدن به منو (با توکن‌های v05) */
 .site-nav .desktop-nav-item {
   font-family: var(--sh-font-fa) !important;
   font-size: var(--sh-type-small) !important;
