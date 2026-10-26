@@ -62,16 +62,16 @@ import "@/styles/brand-logo.css";
 import "@/styles/newsletter.css";
 
 /* 43-47 - Performance + Footer */
-import "@/styles/performance-boost.css";
+// import "@/styles/performance-boost.css";
 import "@/styles/footer-v2.css";
 import "@/styles/contact-links.css";
 import "@/styles/count-up.css";
 import "@/styles/chapter-rail.css";
 
 /* 48-50 - Performance + Nav */
-import "@/styles/performance-layer.css";
+// import "@/styles/performance-layer.css";
 import "@/styles/nav-premium.css";
-import "@/styles/performance-pro.css";
+// import "@/styles/performance-pro.css";
 
 /* 51-55 - Final polish + Editorial */
 import "@/styles/final-polish.css";
@@ -101,6 +101,9 @@ import "@/styles/3d-material.css";
 import "@/styles/infinity-tokens.css";
 import "@/styles/infinity-order-mobile.css";
 import "@/styles/infinity-blog-mobile.css";
+
+/* ⭐️ NEW: ULTIMATE PERFORMANCE ENGINE */
+import "@/styles/infinity-speed-engine.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
