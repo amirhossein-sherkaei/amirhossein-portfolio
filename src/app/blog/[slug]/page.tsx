@@ -78,7 +78,12 @@ export default async function BlogPostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       
       <main className="blog-post-page">
-        <ArticleGlassNav title={post.title} slug={post.slug} />
+        {/* ⭐️ نوار شیشه‌ای شناور با پراپ toc برای فهرست مطالب */}
+        <ArticleGlassNav 
+          title={post.title} 
+          slug={post.slug} 
+          toc={post.toc || []} 
+        />
         
         <div className="container">
           
@@ -108,6 +113,7 @@ export default async function BlogPostPage({ params }: Props) {
               <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
             </article>
             
+            {/* فهرست مطالب کناری (در موبایل با CSS مخفی شده و در مودال شیشه‌ای نمایش داده می‌شود) */}
             {post.toc && post.toc.length > 0 && (
               <aside className="blog-post-sidebar">
                 <TableOfContents items={post.toc} />

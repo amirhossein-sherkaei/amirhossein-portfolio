@@ -1,5 +1,5 @@
 /* ============================================================
-   INFINITY BLOG — MOBILE (TRUE GLASS + PERFECT TYPOGRAPHY)
+   INFINITY BLOG — ULTIMATE MOBILE LUXURY
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -14,7 +14,7 @@
     width: 100% !important;
     max-width: 480px !important;
     margin: 0 auto !important;
-    padding: 0 16px !important;
+    padding: 0 16px 80px 16px !important; /* فاصله امن از پایین */
     transform: translateZ(0) !important;
   }
 
@@ -141,9 +141,13 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     2. ARTICLE BODY & TOC
+     2. ARTICLE BODY & TYPOGRAPHY FIXES
      ═══════════════════════════════════════════════════════ */
   
+  .blog-post-page {
+    padding-bottom: 120px !important; /* فاصله امن از نوار پایین */
+  }
+
   .blog-post-page .blog-post-content.glass-panel {
     font-size: calc(16px * var(--article-font-scale, 1)) !important;
     transition: font-size 0.2s ease !important;
@@ -155,46 +159,19 @@
     transition: font-size 0.2s ease !important;
   }
 
-  /* اصلاح TOC: باکس اسکرول‌شونده تا مقاله رو هل نده */
-  .blog-post-page .blog-post-layout .blog-post-sidebar {
-    width: 100% !important;
-    position: static !important;
-    order: -1 !important;
-    margin: 0 0 16px 0 !important;
-    padding: 0 !important;
+  /* فاصله امن برای تیترها تا زیر نوار شیشه‌ای گیر نکنن */
+  .blog-post-page .blog-post-content h2,
+  .blog-post-page .blog-post-content h3 {
+    scroll-margin-top: 100px !important;
   }
 
-  .glass-toc {
-    padding: var(--inf-s-4) !important;
-    background: #ffffff !important;
-    border-radius: var(--inf-r-xl) !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    max-height: 200px !important; /* محدود کردن ارتفاع */
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .glass-toc-title {
-    flex-shrink: 0 !important;
-    margin-bottom: 8px !important;
-  }
-
-  .glass-toc-list {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding-right: 4px !important; /* برای اسکرول بار */
-  }
-
-  .glass-toc-list::-webkit-scrollbar {
-    width: 4px !important;
-  }
-  .glass-toc-list::-webkit-scrollbar-thumb {
-    background: rgba(13, 115, 119, 0.2) !important;
-    border-radius: 4px !important;
+  /* مخفی کردن TOC اصلی در موبایل (چون در مودال نمایش داده میشه) */
+  .blog-post-page .blog-post-sidebar {
+    display: none !important;
   }
 
   /* ═══════════════════════════════════════════════════════
-     3. LIQUID GLASS ARTICLE NAV (اعوجاج نوری واقعی)
+     3. LIQUID GLASS ARTICLE NAV
      ═══════════════════════════════════════════════════════ */
      
   .article-glass-nav {
@@ -204,7 +181,6 @@
     transform: translate(-50%, 0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    
     z-index: 9999 !important;
     display: flex !important;
     align-items: center !important;
@@ -213,12 +189,11 @@
     width: calc(100% - 32px) !important;
     max-width: 380px !important;
     
-    /* شیشه مایع با اعوجاج نوری (Lens Refraction) */
+    /* شیشه مایع با اعوجاج */
     background: rgba(255, 255, 255, 0.35) !important;
-    backdrop-filter: blur(24px) saturate(200%) contrast(115%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(200%) contrast(115%) !important;
+    backdrop-filter: blur(24px) saturate(220%) contrast(110%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(220%) contrast(110%) !important;
     
-    /* لبه‌های شیشه‌ای که نور رو می‌شکنند */
     border: 1px solid rgba(255, 255, 255, 0.9) !important;
     border-top-color: rgba(255, 255, 255, 1) !important;
     border-bottom-color: rgba(255, 255, 255, 0.3) !important;
@@ -234,7 +209,7 @@
     overflow: hidden !important;
   }
 
-  /* شبیه‌سازی شکست نور (Refraction) روی لبه‌ها */
+  /* بازتاب نور */
   .article-glass-nav::after {
     content: "" !important;
     position: absolute !important;
@@ -257,7 +232,6 @@
       inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
   }
 
-  /* نوار پیشرفت مطالعه */
   .nav-progress-fill {
     position: absolute !important;
     bottom: 0 !important;
@@ -270,7 +244,6 @@
     border-radius: 0 99px 99px 0 !important;
   }
 
-  /* دکمه‌ها */
   .article-glass-nav-btn {
     flex: 1 !important;
     display: inline-flex !important;
@@ -282,11 +255,11 @@
     border-radius: 99px !important;
     color: #3a3a3c !important;
     cursor: pointer !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
     -webkit-tap-highlight-color: transparent !important;
     padding: 0 !important;
     position: relative !important;
-    z-index: 4 !important; /* بالاتر از افکت ها */
+    z-index: 4 !important;
   }
 
   [data-theme="dark"] .article-glass-nav-btn {
@@ -315,7 +288,6 @@
     color: #2ec4c4 !important;
   }
 
-  /* دکمه تنظیم فونت */
   .article-glass-nav-font {
     display: flex !important;
     align-items: center !important;
@@ -344,7 +316,7 @@
     font-weight: 800 !important;
     color: #3a3a3c !important;
     cursor: pointer !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
     -webkit-tap-highlight-color: transparent !important;
   }
 
@@ -367,5 +339,160 @@
   [data-theme="dark"] .article-glass-nav-font-btn:active {
     background: rgba(255, 255, 255, 0.2) !important;
     color: #2ec4c4 !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     4. TOC MODAL (Bottom Sheet)
+     ═══════════════════════════════════════════════════════ */
+  
+  .toc-modal-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000 !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    animation: fadeIn 0.2s ease-out !important;
+  }
+
+  .toc-modal-sheet {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 12px 20px 32px !important;
+    max-height: 75vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  [data-theme="dark"] .toc-modal-sheet {
+    background: rgba(20, 20, 25, 0.85) !important;
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .toc-drag-handle {
+    width: 36px !important;
+    height: 4px !important;
+    background: rgba(0, 0, 0, 0.15) !important;
+    border-radius: 99px !important;
+    margin: 0 auto 16px !important;
+  }
+
+  [data-theme="dark"] .toc-drag-handle {
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .toc-modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 16px !important;
+  }
+
+  .toc-modal-title {
+    margin: 0 !important;
+    font-family: var(--font-estedad, system-ui) !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: #1c1c1e !important;
+  }
+
+  [data-theme="dark"] .toc-modal-title {
+    color: #f2f2f7 !important;
+  }
+
+  .toc-modal-close {
+    width: 32px !important;
+    height: 32px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+    background: rgba(118, 118, 128, 0.1) !important;
+    border: none !important;
+    color: #8e8e93 !important;
+    cursor: pointer !important;
+  }
+
+  .toc-modal-close svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .toc-modal-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .toc-modal-list li {
+    margin: 0 !important;
+  }
+
+  .toc-modal-list li.is-sub {
+    padding-right: 20px !important;
+  }
+
+  .toc-modal-list a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    font-family: var(--font-estedad, system-ui) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #3a3a3c !important;
+    transition: background 0.2s ease !important;
+  }
+
+  [data-theme="dark"] .toc-modal-list a {
+    color: #d1d1d6 !important;
+  }
+
+  .toc-modal-list a:active {
+    background: rgba(13, 115, 119, 0.1) !important;
+    color: #0d7377 !important;
+  }
+
+  .toc-dot {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: #c7c7cc !important;
+    flex-shrink: 0 !important;
+  }
+
+  .toc-modal-list a:active .toc-dot {
+    background: #0d7377 !important;
+  }
+
+  .toc-empty {
+    text-align: center !important;
+    padding: 24px !important;
+    color: #8e8e93 !important;
+    font-size: 14px !important;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 }
