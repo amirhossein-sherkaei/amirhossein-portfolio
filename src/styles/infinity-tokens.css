@@ -1,0 +1,56 @@
+/* ============================================================
+   INFINITY TOKENS — The Foundation of Beauty
+   ============================================================ */
+:root {
+  /* رنگ‌های خنثی (Zinc Scale) برای جلوگیری از خستگی چشم */
+  --inf-bg: #fafafa;
+  --inf-surface: rgba(255, 255, 255, 0.65);
+  --inf-border: rgba(255, 255, 255, 0.8);
+  
+  --inf-text-main: #18181b;
+  --inf-text-muted: #52525b;
+  
+  /* رنگ برند شما */
+  --inf-accent: #0d7377;
+  --inf-accent-glow: rgba(13, 115, 119, 0.2);
+
+  /* فواصل ۸ پیکسلی */
+  --inf-space-sm: 8px;
+  --inf-space-md: 16px;
+  --inf-space-lg: 24px;
+  --inf-space-xl: 32px;
+
+  /* سایه‌های چندلایه (عمق واقعی) */
+  --inf-shadow-ambient: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  --inf-shadow-elevation: 0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  
+  /* سایه‌های نئومورفیک (برای فرم) */
+  --inf-neu-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.04), inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+  --inf-neu-raised: 6px 6px 12px rgba(0, 0, 0, 0.04), -6px -6px 12px rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] {
+  --inf-bg: #09090b;
+  --inf-surface: rgba(24, 24, 27, 0.65);
+  --inf-border: rgba(255, 255, 255, 0.08);
+  
+  --inf-text-main: #f4f4f5;
+  --inf-text-muted: #a1a1aa;
+  
+  --inf-shadow-ambient: 0 4px 20px -4px rgba(0, 0, 0, 0.4);
+  --inf-shadow-elevation: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+  
+  --inf-neu-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.02);
+  --inf-neu-raised: 6px 6px 12px rgba(0, 0, 0, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.02);
+}
+
+/* پس‌زمینه نوری و آرام (Aurora) برای موبایل */
+@media (max-width: 768px) {
+  body {
+    background: 
+      radial-gradient(circle at 0% 0%, rgba(13,115,119,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(125,41,63,0.04) 0%, transparent 50%),
+      var(--inf-bg) !important;
+    background-attachment: fixed !important;
+  }
+}

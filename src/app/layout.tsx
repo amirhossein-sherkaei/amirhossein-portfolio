@@ -81,52 +81,26 @@ import "@/styles/editorial-structure.css";
 /* 56 - Dev tools */
 import "@/styles/grid-overlay.css";
 
-/* 57 - ULTIMATE FINAL */
+/* 57 - ULTIMATE FINAL (Desktop Base) */
 import "@/styles/final-polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
-
-/* ⭐️ سیستم تایپوگرافی اختصاصی v05 */
 import "@/styles/shahkar-typography.css";
-
-/* ⭐️ فیکس‌کننده UI */
 import "@/styles/shahkar-ui-fixes.css";
-
-/* ⭐️ شیشه مایع (شامل اوررایدهای نهایی) */
 import "@/styles/liquid-glass-infinity.css";
-
-/* ⭐️ آیکون‌های شیشه‌ای */
 import "@/styles/infinity-icons.css";
-
-/* ⭐️ دکمه چت شیشه‌ای */
 import "@/styles/chat-bubble-glass.css";
-
-/* ⭐️ فیکس‌کننده سرعت تغییر تم */
 import "@/styles/theme-smooth-fix.css";
-
-/* ⭐️ فیکس‌کننده نهایی موبایل */
 import "@/styles/mobile-ultimate-fix.css";
-
-/* ⭐️ اورراید نهایی و هسته‌ای منوی موبایل */
 import "@/styles/mobile-navbar-nuclear.css";
-
-/* ⭐️ سیستم متریال سه‌بعدی */
 import "@/styles/3d-material.css";
-import "@/styles/infinity-mobile-luxe.css";
 
-/* Absolute Infinity UI */
-
-/* Ultimate Infinity UI */
-
-/* Infinity Glass UI */
-
-/* Infinity UI */
-
-/* Infinity Edition */
-
-/* FINAL BOSS Nav Glass */
-
-/* Desktop Nav Perfect Glass */
+/* ============================================================
+   ⭐️ INFINITY MOBILE LUXURY (The New Design System)
+   ============================================================ */
+import "@/styles/infinity-tokens.css";
+import "@/styles/infinity-order-mobile.css";
+import "@/styles/infinity-blog-mobile.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -176,8 +150,8 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f3ee" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0908" },
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
   ],
 };
 
@@ -200,24 +174,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `
-          document.addEventListener("DOMContentLoaded", () => {
-            const cards = document.querySelectorAll(".oform, .blog-card, .blog-card-featured");
-            cards.forEach(c => {
-              c.style.transition = "transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-              c.addEventListener("mousemove", (e) => {
-                const r = c.getBoundingClientRect();
-                const x = (e.clientX - r.left) / r.width - 0.5;
-                const y = (e.clientY - r.top) / r.height - 0.5;
-                c.style.transform = \`perspective(1000px) rotateX(\${y * -8}deg) rotateY(\${x * 8}deg) scale3d(1.02, 1.02, 1.02)\`;
-              });
-              c.addEventListener("mouseleave", () => {
-                c.style.transform = "perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)";
-                c.style.transition = "transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
-              });
-            });
-          });
-        ` }} />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {allSchemas.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -226,8 +182,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <a href="#main" className="skip-link">پرش به محتوای اصلی</a>
         <GlassFilters />
-        
-        <script src="/premium-interactions.js" defer />
         <ThemeProvider>{children}</ThemeProvider>
         <ClientOverlays />
         <Analytics />
