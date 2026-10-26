@@ -1,0 +1,329 @@
+/* ============================================================
+   MOTION SYSTEM — 2026 Global Standards
+   ------------------------------------------------------------
+   - Physics-based easings (spring, bounce, anticipate)
+   - Scroll-driven animations with @supports fallback
+   - View Transitions API for route navigation
+   - Every layer respects prefers-reduced-motion
+   ============================================================ */
+
+:root {
+  /* ═══ DURATION SCALE — T-shirt sizing ═══ */
+  --motion-instant:   80ms;
+  --motion-fast:      160ms;
+  --motion-base:      240ms;
+  --motion-medium:    320ms;
+  --motion-slow:      480ms;
+  --motion-slower:    640ms;
+  --motion-cinematic: 900ms;
+
+  /* ═══ EASING CURVES ═══ */
+  --motion-ease-out:        cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in-out:     cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-ease-emphasis:   cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-ease-bounce:     cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --motion-ease-anticipate: cubic-bezier(0.36, 0, 0.66, -0.56);
+  --motion-ease-sharp:      cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-ease-cinematic:  cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ═══ COMPOSITE PRESETS ═══ */
+  --motion-button: var(--motion-fast) var(--motion-ease-out);
+  --motion-card:   var(--motion-medium) var(--motion-ease-emphasis);
+  --motion-modal:  var(--motion-medium) var(--motion-ease-emphasis);
+  --motion-menu:   var(--motion-base) var(--motion-ease-emphasis);
+  --motion-reveal: var(--motion-slow) var(--motion-ease-emphasis);
+
+  /* ═══ DISTANCES ═══ */
+  --motion-distance-xs: 4px;
+  --motion-distance-sm: 8px;
+  --motion-distance-md: 16px;
+  --motion-distance-lg: 24px;
+  --motion-distance-xl: 40px;
+
+  /* ═══ BLUR VALUES ═══ */
+  --motion-blur-sm: blur(2px);
+  --motion-blur-md: blur(6px);
+  --motion-blur-lg: blur(12px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION — global safety net
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-slide-up,
+  .motion-slide-down,
+  .motion-scale-in,
+  .motion-bounce-in {
+    transform: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY ANIMATION CLASSES
+   ═══════════════════════════════════════════════════════════ */
+.motion-fade {
+  animation: motionFadeIn var(--motion-reveal);
+}
+
+.motion-slide-up {
+  animation: motionSlideUp var(--motion-reveal);
+}
+
+.motion-slide-down {
+  animation: motionSlideDown var(--motion-reveal);
+}
+
+.motion-scale-in {
+  animation: motionScaleIn var(--motion-modal);
+}
+
+.motion-bounce-in {
+  animation: motionBounceIn var(--motion-slow) var(--motion-ease-bounce);
+}
+
+.motion-spin {
+  animation: motionSpin 1s linear infinite;
+}
+
+@keyframes motionFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes motionSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-md));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motionSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--motion-distance-md) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motionScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes motionBounceIn {
+  0%   { transform: scale(0.7); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes motionSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL-DRIVEN ANIMATIONS
+   Zero JavaScript. Runs on compositor thread.
+   Guarded with @supports for progressive enhancement.
+   ═══════════════════════════════════════════════════════════ */
+@supports (animation-timeline: view()) {
+  .scroll-fade-in {
+    animation: scrollFadeIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  .scroll-slide-up {
+    animation: scrollSlideUp linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+
+  .scroll-slide-right {
+    animation: scrollSlideRight linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+
+  .scroll-slide-left {
+    animation: scrollSlideLeft linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+
+  .scroll-scale-in {
+    animation: scrollScaleIn linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 60%;
+  }
+
+  .scroll-blur-in {
+    animation: scrollBlurIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  .scroll-parallax {
+    animation: scrollParallax linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+
+  @keyframes scrollFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes scrollSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-distance-lg));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scrollSlideRight {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--motion-distance-lg) * -1));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scrollSlideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(var(--motion-distance-lg));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scrollScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scrollBlurIn {
+    from {
+      opacity: 0;
+      filter: var(--motion-blur-md);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes scrollParallax {
+    from { transform: translateY(-2%); }
+    to   { transform: translateY(2%); }
+  }
+
+  /* Staggered children — reveal each child with delay */
+  .scroll-stagger > * {
+    animation: scrollSlideUp linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+
+  .scroll-stagger > *:nth-child(1) { animation-range: entry 0% entry 40%; }
+  .scroll-stagger > *:nth-child(2) { animation-range: entry 5% entry 45%; }
+  .scroll-stagger > *:nth-child(3) { animation-range: entry 10% entry 50%; }
+  .scroll-stagger > *:nth-child(4) { animation-range: entry 15% entry 55%; }
+  .scroll-stagger > *:nth-child(5) { animation-range: entry 20% entry 60%; }
+  .scroll-stagger > *:nth-child(6) { animation-range: entry 25% entry 65%; }
+}
+
+/* Fallback for browsers without scroll-driven support */
+@supports not (animation-timeline: view()) {
+  .scroll-fade-in,
+  .scroll-slide-up,
+  .scroll-slide-right,
+  .scroll-slide-left,
+  .scroll-scale-in,
+  .scroll-blur-in,
+  .scroll-stagger > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VIEW TRANSITIONS — smooth route navigation
+   ═══════════════════════════════════════════════════════════ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: viewTransitionOut var(--motion-base) var(--motion-ease-out);
+}
+
+::view-transition-new(root) {
+  animation: viewTransitionIn var(--motion-medium) var(--motion-ease-emphasis);
+}
+
+@keyframes viewTransitionOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+
+@keyframes viewTransitionIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Persistent elements across navigation */
+.view-transition-persist-header {
+  view-transition-name: header;
+}
+
+.view-transition-persist-footer {
+  view-transition-name: footer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

@@ -1,0 +1,480 @@
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE FIX + GLASS DOCK NAV
+   Version: 2.1 — Optimized for 6 items (5 nav + 1 CTA)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Prevent horizontal scroll ── */
+@media (max-width: 720px) {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  body {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ── 2. Tech chips: horizontal wrap ── */
+@media (max-width: 720px) {
+  .hero-tech {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    padding: 0 !important;
+    margin: 1rem 0 !important;
+    list-style: none !important;
+    width: 100% !important;
+  }
+
+  .hero-tech-chip {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GLASS DOCK — Floating premium bottom nav
+   Optimized for 5 nav items + 1 CTA
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* ── Wrapper: floating glass dock ── */
+  .mobile-nav {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    inset: auto 12px 12px 12px !important;
+    width: auto !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    padding: 6px !important;
+    direction: rtl !important;
+    z-index: 90 !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    translate: none !important;
+    border-radius: 26px !important;
+
+    /* Glass effect */
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.85) 0%,
+        rgba(247, 243, 238, 0.78) 50%,
+        rgba(255, 255, 255, 0.82) 100%
+      ) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+    backdrop-filter: blur(28px) saturate(180%) !important;
+
+    /* Border + inner highlight */
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+
+    /* Layered shadows for depth */
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
+      0 -1px 0 0 rgba(0, 0, 0, 0.03) inset,
+      0 2px 6px rgba(10, 9, 8, 0.04),
+      0 12px 28px rgba(10, 9, 8, 0.10),
+      0 24px 48px rgba(10, 9, 8, 0.08) !important;
+  }
+
+  /* Subtle top highlight line (glass sheen) */
+  .mobile-nav::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 12% !important;
+    right: 12% !important;
+    height: 1px !important;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.95),
+      transparent
+    ) !important;
+    border-radius: 1px !important;
+    pointer-events: none !important;
+  }
+
+  /* ── Dark mode ── */
+  [data-theme="dark"] .mobile-nav {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(28, 24, 20, 0.85) 0%,
+        rgba(20, 17, 14, 0.82) 50%,
+        rgba(26, 22, 18, 0.85) 100%
+      ) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 -1px 0 0 rgba(0, 0, 0, 0.3) inset,
+      0 2px 6px rgba(0, 0, 0, 0.3),
+      0 12px 28px rgba(0, 0, 0, 0.45),
+      0 24px 48px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  /* ── Hide state ── */
+  .mobile-nav.is-hidden {
+    transform: translateY(calc(100% + 40px)) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.3s ease !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     List container
+     ═══════════════════════════════════════════════════════ */
+  .mobile-nav-list {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 62px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 1px !important;
+    list-style: none !important;
+    direction: rtl !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-nav-list > li {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     Nav items — pill shaped tap targets
+     ═══════════════════════════════════════════════════════ */
+  .mobile-nav-item,
+  .mobile-nav-cta {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0.3rem 0.08rem !important;
+    margin: 0 !important;
+    gap: 2px !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+    transform: none !important;
+    color: #716b64 !important;
+    transition:
+      background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.25s ease,
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* ── Active state: soft orange pill with glow ── */
+  .mobile-nav-item.is-active,
+  .mobile-nav-item.active {
+    color: #0d7377 !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(13, 115, 119, 0.12) 0%,
+        rgba(13, 115, 119, 0.06) 100%
+      ) !important;
+    box-shadow:
+      0 0 0 1px rgba(13, 115, 119, 0.15) inset,
+      0 4px 12px rgba(13, 115, 119, 0.15) !important;
+  }
+
+  [data-theme="dark"] .mobile-nav-item.is-active,
+  [data-theme="dark"] .mobile-nav-item.active {
+    color: #14b1ab !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(13, 115, 119, 0.20) 0%,
+        rgba(13, 115, 119, 0.10) 100%
+      ) !important;
+    box-shadow:
+      0 0 0 1px rgba(13, 115, 119, 0.25) inset,
+      0 4px 14px rgba(13, 115, 119, 0.25) !important;
+  }
+
+  /* ── Active indicator line above label ── */
+  .mobile-nav-item.is-active::before,
+  .mobile-nav-item.active::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 3px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 14px !important;
+    height: 2px !important;
+    border-radius: 2px !important;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #0d7377,
+      transparent
+    ) !important;
+    box-shadow: 0 0 8px rgba(13, 115, 119, 0.7) !important;
+    opacity: 0.9 !important;
+  }
+
+  /* ── Press feedback ── */
+  .mobile-nav-item:active,
+  .mobile-nav-cta:active {
+    transform: scale(0.94) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     Labels
+     ═══════════════════════════════════════════════════════ */
+  .mobile-nav-label {
+    display: block !important;
+    font-size: 0.55rem !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.01em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: color 0.25s ease !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     Icons
+     ═══════════════════════════════════════════════════════ */
+  .mobile-nav-icon,
+  .mobile-nav-cta-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .mobile-nav-icon svg,
+  .mobile-nav-cta-icon svg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    stroke-width: 1.8 !important;
+  }
+
+  /* Icon lift on active */
+  .mobile-nav-item.is-active .mobile-nav-icon,
+  .mobile-nav-item.active .mobile-nav-icon {
+    transform: translateY(-1px) scale(1.05) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ORDER CTA — Premium orange button
+     ═══════════════════════════════════════════════════════ */
+  .mobile-nav-cta {
+    color: #ffffff !important;
+    background:
+      linear-gradient(135deg, #B22222 0%, #8B1A1A 55%, #6B0F0F 100%) !important;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.35) inset,
+      0 -1px 0 0 rgba(0, 0, 0, 0.15) inset,
+      0 4px 12px rgba(13, 115, 119, 0.35),
+      0 8px 24px rgba(178, 34, 34, 0.25) !important;
+    overflow: hidden !important;
+  }
+
+  /* Shine sweep on CTA */
+  .mobile-nav-cta::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -60% !important;
+    width: 60% !important;
+    height: 100% !important;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 100%
+    ) !important;
+    transform: skewX(-20deg) !important;
+    animation: cta-shine 4.5s ease-in-out infinite !important;
+    pointer-events: none !important;
+  }
+
+  .mobile-nav-cta .mobile-nav-label,
+  .mobile-nav-cta .mobile-nav-cta-icon,
+  .mobile-nav-cta * {
+    color: #ffffff !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  .mobile-nav-cta:active {
+    transform: scale(0.94) !important;
+    box-shadow:
+      0 2px 6px rgba(13, 115, 119, 0.5),
+      0 4px 14px rgba(178, 34, 34, 0.35) !important;
+  }
+}
+
+/* ── CTA shine animation ── */
+@keyframes cta-shine {
+  0%, 70% {
+    left: -60%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+/* ── 3. Hero layout: stack on mobile ── */
+@media (max-width: 720px) {
+  .hero-rail,
+  .hero-arrow,
+  .hero-scroll {
+    display: none !important;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+  }
+
+  .hero-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .hero-masthead-center {
+    display: none !important;
+  }
+}
+
+/* ── 4. Single-column layouts on mobile ── */
+@media (max-width: 720px) {
+  .about-grid,
+  .why-list,
+  .final-cta,
+  .footer-main,
+  .portfolio-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footer-cta-actions,
+  .final-cta-actions {
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+  }
+
+  .footer-cta-actions .button,
+  .final-cta-actions .button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ── 5. Hide desktop nav on mobile ── */
+@media (max-width: 720px) {
+  .desktop-nav,
+  .nav-order-button,
+  .brand-text,
+  .brand-issue {
+    display: none !important;
+  }
+}
+
+/* ── 6. Hide mobile nav on desktop ── */
+@media (min-width: 721px) {
+  .mobile-nav {
+    display: none !important;
+  }
+
+  body {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* ── 7. Small mobile (max-width: 380px) ── */
+@media (max-width: 380px) {
+  .mobile-nav {
+    inset: auto 8px 8px 8px !important;
+    border-radius: 22px !important;
+    padding: 5px !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-nav-list {
+    height: 56px !important;
+    gap: 0 !important;
+  }
+
+  .mobile-nav-item,
+  .mobile-nav-cta {
+    padding: 0.25rem 0.05rem !important;
+    gap: 1px !important;
+    border-radius: 16px !important;
+  }
+
+  .mobile-nav-icon,
+  .mobile-nav-cta-icon {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .mobile-nav-label {
+    font-size: 0.5rem !important;
+  }
+
+  .mobile-nav-item.is-active::before,
+  .mobile-nav-item.active::before {
+    width: 10px !important;
+    height: 1.5px !important;
+    top: 2px !important;
+  }
+}
+
+/* ── 8. Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-cta::after {
+    animation: none !important;
+  }
+  .mobile-nav,
+  .mobile-nav-item,
+  .mobile-nav-cta,
+  .mobile-nav-icon {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,337 @@
+/* ============================================================
+   INTRO EXPERIENCE — Cinematic brand moment
+   ────────────────────────────────────────────────────────────
+   Isolated styles. Uses existing design tokens.
+   GPU-friendly transitions (opacity only).
+   ============================================================ */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999; /* above everything (welcome=9999, chat=9500) */
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #0a0908;
+  color: #f5efe6;
+
+  /* Hidden by default (SSR + returning visitors) */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+/* ─── First-visit: appear instantly ─── */
+.intro-overlay[data-phase="playing"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
+
+/* ─── Cinematic exit: graceful fade ─── */
+.intro-overlay[data-phase="exiting"] {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Media stage ─── */
+.intro-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #0a0908;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.intro-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: #0a0908;
+}
+
+/* Subtle vignette so controls stay readable */
+.intro-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      transparent 22%,
+      transparent 78%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKIP CONTROL
+   ═══════════════════════════════════════════════════════════ */
+.intro-skip {
+  position: absolute;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  inset-inline-end: calc(24px + env(safe-area-inset-right, 0px));
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px 10px 18px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+
+  color: rgba(245, 239, 230, 0.92);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  transition:
+    background-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.intro-skip:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.intro-skip:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.intro-skip:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.intro-skip svg {
+  opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SOUND CONTROL (subtle, bottom-start)
+   ═══════════════════════════════════════════════════════════ */
+.intro-sound {
+  position: absolute;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  inset-inline-start: calc(24px + env(safe-area-inset-left, 0px));
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+
+  background: rgba(233, 75, 44, 0.18);
+  border: 1px solid rgba(255, 122, 69, 0.42);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  animation: intro-sound-pulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
+  transition:
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.intro-sound:hover {
+  background: rgba(233, 75, 44, 0.32);
+  border-color: rgba(255, 122, 69, 0.7);
+  transform: translateY(-1px);
+  animation-play-state: paused;
+}
+
+.intro-sound:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.intro-sound:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@keyframes intro-sound-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(233, 75, 44, 0.55),
+      0 8px 24px -10px rgba(233, 75, 44, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(233, 75, 44, 0),
+      0 8px 24px -10px rgba(233, 75, 44, 0.5);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PLAY CONTROL (blocked autoplay fallback)
+   ═══════════════════════════════════════════════════════════ */
+.intro-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  padding: 0;
+
+  background: rgba(255, 255, 255, 0.96);
+  color: #0a0908;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  box-shadow:
+    0 2px 8px -2px rgba(0, 0, 0, 0.5),
+    0 20px 60px -12px rgba(0, 0, 0, 0.7);
+
+  transition:
+    transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-play:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow:
+    0 2px 8px -2px rgba(0, 0, 0, 0.5),
+    0 24px 72px -12px rgba(233, 75, 44, 0.55);
+}
+
+.intro-play:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.intro-play:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.intro-play svg {
+  margin-inline-start: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .intro-skip,
+  .intro-sound {
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+  }
+
+  .intro-skip {
+    inset-inline-end: calc(16px + env(safe-area-inset-right, 0px));
+  }
+
+  .intro-sound {
+    inset-inline-start: calc(16px + env(safe-area-inset-left, 0px));
+  }
+
+  .intro-play {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VERY SMALL
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .intro-skip-label,
+  .intro-sound-label {
+    display: none;
+  }
+
+  .intro-skip,
+  .intro-sound {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION — safety net (JS already skips, but be safe)
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay[data-phase="exiting"] {
+    transition-duration: 200ms !important;
+  }
+
+  .intro-sound {
+    animation: none;
+  }
+
+  .intro-skip,
+  .intro-sound,
+  .intro-play {
+    transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT — never show
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+  .intro-overlay {
+    display: none !important;
+  }
+}

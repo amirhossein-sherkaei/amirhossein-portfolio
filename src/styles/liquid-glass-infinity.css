@@ -1,0 +1,245 @@
+/* ============================================================
+   SHORAKAEI — LIQUID GLASS SKIN (Chrome-Proof & Overflow Fixed)
+   ------------------------------------------------------------
+   راه‌حل‌ها:
+   ۱. اعمال filter: url() روی خود عنصر برای اعوجاج واقعی در کروم دسکتاپ
+   ۲. حذف overflow: hidden و خنثی‌سازی سایه اسلایدر برای جلوگیری از سرریز آیکون‌ها
+   ============================================================ */
+
+:root {
+  --glass-blur: 16px;
+  --glass-sat: 180%;
+  --glass-bright: 1.05;
+  --glass-tint-light: rgba(255, 255, 255, 0.15);
+  --glass-tint-dark: rgba(18, 23, 29, 0.35);
+  --glass-shadow-light: rgba(25, 37, 40, 0.12);
+  --glass-shadow-dark: rgba(0, 0, 0, 0.38);
+  --glass-cyan: rgba(13, 115, 119, 0.15);
+  --glass-burgundy: rgba(139, 58, 74, 0.10);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۱. چیدمان دسکتاپ با Grid (فقط در دسکتاپ)
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  .site-nav .nav-inner {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .site-nav .nav-pill {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    gap: 16px !important;
+    padding: 6px 16px !important;
+    position: relative !important;
+    overflow: visible !important;
+    border-radius: 999px !important;
+
+    /* ─── اعمال فیلتر اعوجاج روی خود عنصر (مخصوص کروم دسکتاپ) ─── */
+    filter: url(#liquid-refract) !important;
+  }
+
+  .site-nav .brand { justify-self: start !important; margin: 0 !important; }
+  .site-nav .desktop-nav { justify-self: center !important; margin: 0 !important; }
+  .site-nav .nav-actions { justify-self: end !important; margin: 0 !important; }
+
+  /* ─── حل مشکل سرریز آیکون از اسلایدر ─── */
+  .site-nav .desktop-nav-list {
+    position: relative !important;
+    overflow: visible !important;
+    border-radius: 999px !important;
+  }
+
+  .site-nav .desktop-nav-item {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .site-nav .desktop-nav-slider {
+    z-index: 1 !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+    background: linear-gradient(145deg, var(--burgundy) 0%, var(--burgundy-2) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+}
+
+/* مخفی کردن کامل منوی دسکتاپ در موبایل */
+@media (max-width: 1024px) {
+  .site-nav { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۲. متریال شیشه با شبه‌عنصر (پشتیبانی از همه مرورگرها)
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .nav-pill,
+.mbn {
+  position: relative !important;
+  isolation: isolate !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ─── لایه شیشه‌ای (::before) ─── */
+.site-nav .nav-pill::before,
+.mbn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+
+  background:
+    linear-gradient(128deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 27%,
+      rgba(255, 255, 255, 0.01) 55%,
+      rgba(13, 115, 119, 0.03) 100%),
+    var(--glass-tint-light) !important;
+
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright)) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright)) !important;
+
+  box-shadow:
+    0 12px 34px var(--glass-shadow-light),
+    inset 0 1.2px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2),
+    inset 1px 0 0 var(--glass-cyan),
+    inset -1px 0 0 var(--glass-burgundy) !important;
+}
+
+/* ─── لایه نوری اضافی (::after) ─── */
+.site-nav .nav-pill::after,
+.mbn::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(130deg,
+    rgba(255,255,255,0.40) 0%,
+    rgba(255,255,255,0.08) 30%,
+    transparent 51%,
+    rgba(13,115,119,0.15) 78%,
+    rgba(139,58,74,0.10) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* ─── فعال‌سازی شکست نور (SVG) برای مرورگرهای غیرکروم ─── */
+@supports not (filter: url(#liquid-refract)) {
+  .site-nav .nav-pill::before,
+  .mbn::before {
+    -webkit-backdrop-filter: url(#liquid-refract) blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+    backdrop-filter: url(#liquid-refract) blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+  }
+}
+
+.site-nav .nav-pill { border-radius: 999px; }
+.mbn { border-radius: 28px; }
+
+/* ═══════════════════════════════════════════════════════════
+   ۳. اصلاح دکمه فعال (Slider)
+   ═══════════════════════════════════════════════════════════ */
+.site-nav .desktop-nav-item.is-active {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.site-nav .desktop-nav-item {
+  box-shadow: none !important;
+}
+
+.site-nav .desktop-nav-item:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۴. دکمه چت
+   ═══════════════════════════════════════════════════════════ */
+.chat-bubble {
+  position: fixed !important;
+  bottom: 32px !important;
+  inset-inline-end: 32px !important;
+  width: 56px !important;
+  height: 56px !important;
+  z-index: 9999 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.chat-bubble-halo { display: none !important; }
+
+.chat-bubble-inner {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.chat-bubble-inner svg {
+  position: relative;
+  z-index: 1;
+  color: var(--accent) !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .chat-bubble {
+    bottom: calc(95px + env(safe-area-inset-bottom, 0px)) !important;
+    inset-inline-end: 16px !important;
+    width: 52px !important;
+    height: 52px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۵. تم تاریک
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --glass-tint-light: var(--glass-tint-dark);
+  --glass-shadow-light: var(--glass-shadow-dark);
+}
+
+[data-theme="dark"] .site-nav .nav-pill::before,
+[data-theme="dark"] .mbn::before {
+  background:
+    linear-gradient(128deg,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0.04) 28%,
+      rgba(15,25,30,0.02) 58%,
+      rgba(20,177,171,0.05) 100%),
+    var(--glass-tint-dark) !important;
+}
+
+[data-theme="dark"] .site-nav .desktop-nav-slider {
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%) !important;
+}
+
+[data-theme="dark"] .chat-bubble-inner {
+  background: rgba(30, 30, 30, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .chat-bubble-inner svg {
+  color: #fff !important;
+}

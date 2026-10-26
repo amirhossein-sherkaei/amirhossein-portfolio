@@ -1,0 +1,266 @@
+/* ============================================================
+   FORM PROGRESS + FIELD VALIDATION — Fixed with Flexbox
+   ------------------------------------------------------------
+   - Icons are positioned via flexbox (never absolute top)
+   - Always vertically centered with the input
+   - Works identically on desktop and mobile
+   ============================================================ */
+
+/* ═══ Form progress bar ═══ */
+.form-progress {
+  padding: 14px 24px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--paper-2) 100%, transparent) 0%,
+    color-mix(in srgb, var(--surface) 100%, transparent) 100%
+  );
+  border-bottom: 1px solid var(--line);
+  animation: formProgressIn 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.form-progress-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.form-progress-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1px;
+  min-width: 44px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 13px;
+  transition: background-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.form-progress-badge-value { line-height: 1; }
+.form-progress-badge-unit { font-size: 10px; opacity: 0.7; line-height: 1; }
+
+.form-progress[aria-valuenow="100"] .form-progress-badge {
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  color: var(--success);
+}
+
+.form-progress-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--line-strong) 40%, transparent);
+  overflow: hidden;
+  position: relative;
+}
+
+.form-progress-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-2) 0%, var(--accent) 100%);
+  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width;
+}
+
+.form-progress[aria-valuenow="100"] .form-progress-fill {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--success) 70%, var(--accent)) 0%,
+    var(--success) 100%
+  );
+}
+
+.form-progress-label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-3-strong);
+  white-space: nowrap;
+  transition: color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.form-progress[aria-valuenow="100"] .form-progress-label { color: var(--success); }
+
+@keyframes formProgressIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIELD VALIDATION — Flexbox layout (fixed positioning)
+   ═══════════════════════════════════════════════════════════ */
+
+/* The wrapper is a grid: label / input-row / error */
+.form-field {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0;
+  position: relative;
+}
+
+/* The input-row contains input + optional icon */
+.form-field > span:first-child {
+  /* This is the label */
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  transition: border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Success — gradient background + green border */
+.form-field[data-state="success"] input,
+.form-field[data-state="success"] textarea {
+  border-color: color-mix(in srgb, var(--success) 40%, var(--line));
+  background: linear-gradient(
+    180deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface) 94%, var(--success)) 100%
+  );
+}
+
+/* Error — gradient background + red border */
+.form-field[data-state="error"] input,
+.form-field[data-state="error"] textarea {
+  border-color: color-mix(in srgb, var(--danger) 50%, var(--line));
+  background: linear-gradient(
+    180deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface) 96%, var(--danger)) 100%
+  );
+}
+
+/* Icon wrapper — replaces the ::after pseudo-element */
+.form-field-icon {
+  position: absolute;
+  inset-inline-end: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 2;
+  animation: fieldIconIn 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* For textarea, position at top instead of vertical center */
+.form-field:has(textarea) .form-field-icon {
+  top: 54px;
+  transform: none;
+}
+
+.form-field[data-state="success"] .form-field-icon {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--success);
+}
+
+.form-field[data-state="error"] .form-field-icon {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+.form-field-icon svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+}
+
+.form-field[data-state="error"] .form-field-icon svg {
+  width: 11px;
+  height: 11px;
+  stroke-width: 2.5;
+}
+
+@keyframes fieldIconIn {
+  0%   { opacity: 0; transform: translateY(-50%) scale(0.4); }
+  60%  { opacity: 1; transform: translateY(-50%) scale(1.15); }
+  100% { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+/* Textarea variant — no translateY */
+.form-field:has(textarea) .form-field-icon {
+  animation: fieldIconInTextarea 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes fieldIconInTextarea {
+  0%   { opacity: 0; transform: scale(0.4); }
+  60%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Inline error message */
+.form-field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--danger);
+  animation: fieldErrorMessageIn 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fieldErrorMessageIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Character counter */
+.form-field-counter {
+  position: absolute;
+  bottom: 34px;
+  inset-inline-end: 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.form-field-counter.is-near-limit { color: var(--accent); }
+.form-field-counter.is-over-limit { color: var(--danger); }
+
+/* ═══ Mobile ═══ */
+@media (max-width: 720px) {
+  .form-progress { padding: 12px 18px; }
+  .form-progress-inner { gap: 10px; }
+  .form-progress-badge { min-width: 40px; height: 28px; font-size: 12px; padding: 0 9px; }
+  .form-progress-track { height: 5px; }
+  .form-progress-label { font-size: 11px; }
+
+  .form-field-icon {
+    inset-inline-end: 12px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-field:has(textarea) .form-field-icon {
+    top: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-progress,
+  .form-progress-fill,
+  .form-field-icon,
+  .form-field-error { animation: none !important; transition: none !important; }
+}

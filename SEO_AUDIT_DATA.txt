@@ -1,0 +1,1748 @@
+================================================================================
+ SEO AUDIT DATA FOR AMIRHOSSEIN SHORAKAEI
+ Generated: 1405-07-30 05:26:07
+================================================================================
+
+--------------------------------------------------------------------------------
+ FILE: src\app\layout.tsx
+--------------------------------------------------------------------------------
+import type { Metadata, Viewport } from "next";
+import { Vazirmatn } from "next/font/google";
+
+/* ═══════════════════════════════════════════════════════════
+   CSS — Order matters!
+   ═══════════════════════════════════════════════════════════ */
+
+/* ------------------------------------------------------------------
+   CSS IMPORTS - ORDER MATTERS
+   ------------------------------------------------------------------
+   Single source of truth for CSS cascade order.
+   Each file is numbered by its position.
+   Do not reorder without understanding cascade implications.
+   ------------------------------------------------------------------ */
+
+/* 01-04 - Foundation */
+import "@/styles/tokens.css";
+import "@/styles/motion.css";
+import "@/styles/base.css";
+import "@/styles/magnetic.css";
+
+/* 05-09 - Core systems */
+import "@/styles/reveal.css";
+import "@/styles/mobile-touch.css";
+import "@/styles/mobile-modal.css";
+import "@/styles/mobile-typography.css";
+import "@/styles/mobile-nav-v2.css";
+
+/* 10-14 - Mobile foundations */
+import "@/styles/mobile-bottom-nav.css";
+import "@/styles/perceived-performance.css";
+import "@/styles/adaptive-navigation.css";
+import "@/styles/sensory.css";
+import "@/styles/welcome-onboarding.css";
+
+/* 15-17 - Forms */
+import "@/styles/order-form-v2.css";
+import "@/styles/order-premium.css";
+import "@/styles/mobile-declutter.css";
+
+/* 18-22 - Work + Layout */
+import "@/styles/work-pages.css";
+import "@/styles/work-premium.css";
+import "@/styles/layout.css";
+import "@/styles/layout-more.css";
+import "@/styles/footer-effects.css";
+
+/* 23-27 - Pages + Responsive */
+import "@/styles/pages.css";
+import "@/styles/responsive.css";
+import "@/styles/enhancements.css";
+import "@/styles/process.css";
+import "@/styles/commitments.css";
+
+/* 28-29 - Mobile overrides (MUST come after mobile-declutter) */
+import "@/styles/mobile-fix.css";
+import "@/styles/mobile-polish-v2.css";
+
+/* 30 - Blog page-level CSS is imported in src/app/blog/page.tsx */
+
+/* 31-33 - Blog extras + Theme + Hero */
+import "@/styles/blog-premium.css";
+import "@/styles/theme-toggle.css";
+import "@/styles/hero-editorial.css";
+
+/* 34-38 - Hero + Branding */
+import "@/styles/hero-premium.css";
+import "@/styles/signature-ink.css";
+import "@/styles/density-standardization.css";
+import "@/styles/services-premium.css";
+import "@/styles/manuscript-grid.css";
+
+/* 39-42 - Sections */
+import "@/styles/hero-bento-live.css";
+import "@/styles/testimonials.css";
+import "@/styles/brand-logo.css";
+import "@/styles/newsletter.css";
+
+/* 43-47 - Performance + Footer */
+import "@/styles/performance-boost.css";
+import "@/styles/footer-v2.css";
+import "@/styles/contact-links.css";
+import "@/styles/count-up.css";
+import "@/styles/chapter-rail.css";
+
+/* 48-50 - Performance + Nav */
+import "@/styles/performance-layer.css";
+import "@/styles/nav-premium.css";
+import "@/styles/performance-pro.css";
+
+/* 51-55 - Final polish + Blog editorial */
+import "@/styles/final-polish.css";
+import "@/styles/mobile-performance-fix.css";
+import "@/styles/editorial-structure.css";
+import "@/styles/blog-editorial.css";
+import "@/styles/blog-article-premium.css";
+
+/* 56 - Dev tools (GridOverlay is wrapped in DevOnly) */
+import "@/styles/grid-overlay.css";
+
+/* 57 - ULTIMATE FINAL - must be the last CSS import */
+import "@/styles/final-polish-2026.css";
+import "@/styles/balance-turquoise-burgundy.css";
+
+/* 50. ChatBot */
+import "@/components/chat/chat.css";
+
+/* ═══════════════════════════════════════════════════════════
+   Components
+   ═══════════════════════════════════════════════════════════ */
+import { ThemeProvider } from "@/components/ThemeProvider";
+import WelcomeOnboarding from "@/components/WelcomeOnboarding";
+import TouchFeedback from "@/components/TouchFeedback";
+import SensoryFeedback from "@/components/SensoryFeedback";
+import SignatureInk from "@/components/SignatureInk";
+import PerfObserver from "@/components/PerfObserver";
+import PageTransition from "@/components/PageTransition";
+import DevOnly from "@/components/DevOnly";
+import GridOverlay from "@/components/GridOverlay";
+import IntroExperience from "@/components/intro/IntroExperience";
+import { ChatBot } from "@/components/chat/LazyChatBot";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { allSchemas } from "@/lib/schema";
+
+const vazirmatn = Vazirmatn({
+  subsets: ["arabic", "latin"],
+  variable: "--font-vazirmatn",
+  display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ["system-ui", "arial"],
+});
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
+
+const siteName = "امیرحسین شرکائی";
+const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
+const siteDescription =
+  "امیرحسین شرکائی؛ طراحی و توسعه وب‌سایت‌های اختصاصی و خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteTitle,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  keywords: [
+    "امیرحسین شرکائی",
+    "Amirhossein Shorakaei",
+    "طراحی سایت",
+    "طراحی وب",
+    "توسعه وب",
+    "طراحی سایت اختصاصی",
+    "طراحی سایت حرفه‌ای",
+    "هوش مصنوعی",
+    "AI",
+    "UI UX",
+    "فرانت‌اند",
+    "Next.js",
+    "React",
+    "پورتفولیو",
+  ],
+  applicationName: "Amirhossein Shorakaei",
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  alternates: { canonical: "/" },
+  icons: {
+    icon: "/icon.webp",
+    apple: "/apple-icon.webp",
+  },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    url: siteUrl,
+    siteName: siteName,
+    title: siteTitle,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
+  appleWebApp: {
+    capable: true,
+    title: siteName,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+  verification: {
+    google: "xJlni40EBpeF6mGC_CN1Hy5ko-0pjdMar6sEvc5O_wY",
+  },
+  referrer: "origin-when-cross-origin",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f3ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0908" },
+  ],
+};
+
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme;
+    if (stored === 'light' || stored === 'dark') {
+      theme = stored;
+    } else if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      theme = 'dark';
+    } else {
+      theme = 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+`;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="fa"
+      dir="rtl"
+      className={vazirmatn.variable}
+      data-theme="light"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {allSchemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(schema),
+            }}
+          />
+        ))}
+      </head>
+
+      <body>
+        <a href="#main" className="skip-link">
+          پرش به محتوای اصلی
+        </a>
+
+                <IntroExperience />
+
+        <ThemeProvider>{children}</ThemeProvider>
+
+        <WelcomeOnboarding />
+        <TouchFeedback />
+        <SensoryFeedback />
+        <SignatureInk />
+        <PerfObserver />
+        <PageTransition />
+        <DevOnly><GridOverlay /></DevOnly>
+        <ChatBot />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\lib\blog.ts
+--------------------------------------------------------------------------------
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+
+const postsDirectory = path.join(process.cwd(), "src/content/blog");
+
+export type BlogPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  dateFormatted: string;
+  readingTime: number;
+  tags: string[];
+  category: string;
+  featured: boolean;
+  content?: string;
+  toc?: TOCItem[];
+};
+
+export type TOCItem = {
+  id: string;
+  title: string;
+  level: number;
+};
+
+/* ─── Get all posts ─── */
+export function getAllPosts(): BlogPost[] {
+  if (!fs.existsSync(postsDirectory)) return [];
+
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  return fileNames
+    .filter((f) => f.endsWith(".md"))
+    .map((fileName) => {
+      const slug = fileName.replace(/\.md$/, "");
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      const { data, content } = matter(fileContents);
+
+      const wordCount = content.split(/\s+/).length;
+      const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+      return {
+        slug,
+        title: data.title || slug,
+        excerpt: data.excerpt || "",
+        date: data.date || "",
+        dateFormatted: formatDate(data.date),
+        readingTime,
+        tags: data.tags || [],
+        category: data.category || "عمومی",
+        featured: data.featured || false,
+      };
+    })
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+/* ─── Get single post ─── */
+export function getPostBySlug(slug: string): BlogPost | null {
+  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  if (!fs.existsSync(fullPath)) return null;
+
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+
+  const wordCount = content.split(/\s+/).length;
+  const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+  const toc = extractTOC(content);
+
+  return {
+    slug,
+    title: data.title || slug,
+    excerpt: data.excerpt || "",
+    date: data.date || "",
+    dateFormatted: formatDate(data.date),
+    readingTime,
+    tags: data.tags || [],
+    category: data.category || "عمومی",
+    featured: data.featured || false,
+    content,
+    toc,
+  };
+}
+
+/* ─── Get all unique tags ─── */
+export function getAllTags(): { tag: string; count: number }[] {
+  const allPosts = getAllPosts();
+  const tagMap = new Map<string, number>();
+
+  allPosts.forEach((post) => {
+    post.tags.forEach((tag) => {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    });
+  });
+
+  return Array.from(tagMap.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/* ─── Get related posts ─── */
+export function getRelatedPosts(
+  currentSlug: string,
+  currentTags: string[],
+  limit: number = 3
+): BlogPost[] {
+  const allPosts = getAllPosts().filter((p) => p.slug !== currentSlug);
+
+  return allPosts
+    .map((post) => ({
+      ...post,
+      score: post.tags.filter((tag) => currentTags.includes(tag)).length,
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+}
+
+/* ─── Extract TOC ─── */
+function extractTOC(content: string): TOCItem[] {
+  const headings: TOCItem[] = [];
+  const lines = content.split("\n");
+
+  lines.forEach((line) => {
+    const match = line.match(/^(#{2,3})\s+(.+)$/);
+    if (match) {
+      const level = match[1].length;
+      const title = match[2].trim();
+      const id = title
+        .toLowerCase()
+        .replace(/[^\w\u0600-\u06FF\s-]/g, "")
+        .replace(/\s+/g, "-");
+      headings.push({ id, title, level });
+    }
+  });
+
+  return headings;
+}
+
+/* ─── Format date ─── */
+function formatDate(dateStr: string): string {
+  if (!dateStr) return "";
+  try {
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  } catch {
+    return dateStr;
+  }
+}
+/* ─── Get latest N posts (for homepage) ─── */
+export function getLatestPosts(limit: number = 3): BlogPost[] {
+  const allPosts = getAllPosts();
+  return allPosts.slice(0, limit);
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\content\projects.ts
+--------------------------------------------------------------------------------
+export type ProjectStatus =
+  | "پروژه مفهومی"
+  | "پروژه شخصی"
+  | "مطالعه موردی"
+  | "آماده همکاری";
+
+export type ProjectVisual =
+  | "preview-web"
+  | "preview-shop"
+  | "preview-ai"
+  | "preview-video"
+  | "preview-mobile"
+  | "preview-editorial";
+
+export type ProjectCaseStudy = {
+  overview: string;
+  challenge: string;
+  approach: string[];
+  highlights: string[];
+  metrics?: Array<{ label: string; value: string }>;
+  learnings?: string;
+};
+
+export type Project = {
+  id: string;
+  slug: string;
+  title: string;
+  latinTitle: string;
+  category: string;
+  description: string;
+  fullDescription: string;
+  tags: string[];
+  coverImage?: string;
+  images?: string[];
+  technologies?: string[];
+  projectUrl?: string;
+  demoUrl?: string;
+  liveDemoUrl?: string;
+  status?: ProjectStatus;
+  year?: string;
+  role?: string;
+  client?: string;
+  duration?: string;
+  caseStudy?: ProjectCaseStudy;
+};
+
+/* سال شمسی جاری */
+const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
+  year: "numeric",
+})
+  .format(new Date())
+  .replace(/[^\u06F0-\u06F9]/g, "")
+  .slice(0, 4);
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECTS
+   ═══════════════════════════════════════════════════════════ */
+export const projects: Project[] = [
+  {
+    id: "project-01",
+    slug: "arka",
+    title: "آرکا",
+    latinTitle: "Arka",
+    category: "پلتفرم SaaS",
+    description:
+      "صفحه فرودی که ارزش محصول را در ۳ ثانیه منتقل می‌کند — بدون متن‌های طولانی، بدون اصطلاحات فنی، بدون سردرگمی.",
+    fullDescription:
+      "آرکا یک پلتفرم SaaS ایرانی است که با هدف ساخت صفحه‌ی فرودی طراحی شد که بدون متن‌های طولانی، ارزش محصول را در چند ثانیه منتقل کند. چالش اصلی، ساده‌سازی یک محصول پیچیده به زبانی بود که هر بازدیدکننده در ۳ ثانیه بفهمد.",
+    tags: ["SaaS", "Web Design", "Corporate"],
+    coverImage: "/projects/arka.webp",
+    liveDemoUrl: "/projects/arka.html",
+    year: CURRENT_PERSIAN_YEAR,
+    status: "پروژه مفهومی",
+    role: "طراح و توسعه‌دهنده",
+    client: "پروژه‌ی شخصی",
+    duration: "۲ هفته",
+    technologies: ["HTML", "CSS", "JavaScript"],
+
+    caseStudy: {
+      overview:
+        "آرکا یک پروژه‌ی مفهومی در حوزه‌ی SaaS است که با هدف کاوش در صفحات فرود مدرن طراحی شد. تمرکز اصلی: ساختن صفحه‌ای که بدون متن‌های طولانی، ارزش محصول را در چند ثانیه منتقل کند.",
+      challenge:
+        "اکثر سایت‌های SaaS ایرانی با متن‌های طولانی و اصطلاحات فنی، کاربر را در همان ثانیه‌های اول گیج می‌کنند. سؤال اصلی طراحی این بود: چطور می‌شود در کمتر از ۳ ثانیه، کاربر بفهمد محصول چیست، برای چه کسی است، و چه ارزشی می‌سازد؟",
+      approach: [
+        "تحلیل ۲۰ سایت موفق SaaS ایرانی و خارجی برای شناسایی الگوهای مشترک",
+        "طراحی معماری اطلاعات با تمرکز بر سلسله‌مراتب بصری واضح",
+        "ساخت دیزاین سیستم مینیمال با پالت خنثی و یک رنگ تأکیدی",
+        "پیاده‌سازی با HTML/CSS/JS خالص برای کنترل کامل روی جزئیات",
+        "تست سه نسخه‌ی مختلف از Hero Section تا انتخاب بهترین",
+      ],
+      highlights: [
+        "Hero Section که در ۳ ثانیه پیام اصلی را منتقل می‌کند",
+        "داشبورد mockup با داده‌های شبیه‌سازی‌شده",
+        "سیستم pricing با toggle ماهانه/سالانه",
+        "FAQ accordion و tab system بدون کتابخانه خارجی",
+        "دسترسی‌پذیری کامل طبق WCAG 2.2 AA",
+      ],
+      metrics: [
+        { label: "زمان درک پیام اصلی", value: "۳ ثانیه" },
+        { label: "تعداد بخش‌های طراحی‌شده", value: "۷ بخش" },
+        { label: "زمان پروژه", value: "۲ هفته" },
+      ],
+      learnings:
+        "در طراحی SaaS، «کمتر» همیشه «بیشتر» است. حذف ۴۰٪ از متن‌ها، تجربه‌ی کاربر را به‌طرز محسوسی بهتر کرد.",
+    },
+  },
+  {
+    id: "project-02",
+    slug: "nila",
+    title: "نیلا",
+    latinTitle: "Nila",
+    category: "فروشگاه آنلاین",
+    description:
+      "فروشگاه پوشاک با مسیر خرید ۴ مرحله‌ای و سبد خرید drawer — تجربه‌ای روان از دیدن محصول تا پرداخت.",
+    fullDescription:
+      "نیلا یک فروشگاه آنلاین پوشاک با تمرکز بر تجربه‌ی خرید روان طراحی شد. هدف: کاهش سبدهای رهاشده با ساده‌سازی مسیر خرید و ایجاد اطمینان در هر مرحله.",
+    tags: ["E-Commerce", "Fashion", "UI/UX"],
+    coverImage: "/projects/nila.webp",
+    liveDemoUrl: "/projects/nila.html",
+    year: CURRENT_PERSIAN_YEAR,
+    status: "پروژه مفهومی",
+    role: "طراح و توسعه‌دهنده",
+    client: "پروژه‌ی شخصی",
+    duration: "۳ هفته",
+    technologies: ["HTML", "CSS", "JavaScript"],
+
+    caseStudy: {
+      overview:
+        "نیلا یک پروژه‌ی مفهومی در حوزه‌ی فروشگاه آنلاین پوشاک است. هدف: طراحی تجربه‌ای که مشتری را نگه دارد — با کاهش اصطکاک در هر مرحله‌ی خرید و ایجاد اطمینان در تصمیم‌گیری.",
+      challenge:
+        "فروشگاه‌های آنلاین پوشاک معمولاً با مشکل سبد خرید رهاشده مواجهند. علت اصلی، پیچیدگی فرآیند خرید و عدم اطمینان کاربر از تصمیمش است.",
+      approach: [
+        "طراحی مسیر خرید در ۴ مرحله‌ی واضح: مشاهده، انتخاب، اطلاعات، پرداخت",
+        "سبد خرید drawer که در همه‌ی صفحات قابل دسترسی است",
+        "Quick View modal برای مشاهده‌ی سریع محصول بدون ترک صفحه",
+        "فیلترهای هوشمند محصول با حفظ وضعیت",
+        "اولویت‌بندی موبایل به‌عنوان تجربه‌ی اصلی (Mobile-first)",
+      ],
+      highlights: [
+        "سبد خرید تعاملی با افزایش/کاهش تعداد و حذف محصول",
+        "Quick View modal با انتخاب سایز",
+        "Product filter system با حفظ وضعیت",
+        "سیستم Toast برای بازخورد بصری هر اقدام",
+        "طراحی احساسی برای ایجاد اعتماد (Badges, Reviews)",
+      ],
+      metrics: [
+        { label: "مراحل خرید", value: "۴ مرحله" },
+        { label: "تعداد محصولات نمونه", value: "۸ محصول" },
+        { label: "زمان پروژه", value: "۳ هفته" },
+      ],
+      learnings:
+        "طراحی فروشگاه، بیشتر از رابط کاربری، به روانشناسی کاربر مربوط می‌شود. اعتماد و اطمینان، مهم‌تر از زیبایی است.",
+    },
+  },
+  {
+    id: "project-03",
+    slug: "vira",
+    title: "ویرا",
+    latinTitle: "Vira",
+    category: "هویت بصری AI",
+    description:
+      "برندبوک کامل یک استودیو — پالت رنگی تعاملی، سیستم تایپوگرافی، ۶ واریاسیون لوگو، و ۴ کاربرد عملی.",
+    fullDescription:
+      "ویرا یک برندبوک تعاملی برای یک استودیو طراحی شد — با استفاده از هوش مصنوعی به‌عنوان تسریع‌کننده، در زمان کمتر و با کیفیت بالاتر از روش‌های سنتی.",
+    tags: ["AI Creative", "Branding", "Visual"],
+    coverImage: "/projects/vira.webp",
+    liveDemoUrl: "/projects/vira.html",
+    year: CURRENT_PERSIAN_YEAR,
+    status: "پروژه مفهومی",
+    role: "طراح هویت بصری",
+    client: "پروژه‌ی شخصی",
+    duration: "۳ هفته",
+    technologies: ["AI Generation", "Brand Design", "HTML/CSS"],
+
+    caseStudy: {
+      overview:
+        "ویرا یک پروژه‌ی مستقل هویت بصری است که برای کاوش در مرزهای هوش مصنوعی و برندینگ طراحی شد. هدف: ساختن یک سیستم هویت بصری کامل در زمانی کوتاه، با استفاده از ابزارهای AI به‌عنوان تسریع‌کننده.",
+      challenge:
+        "استودیوهای کوچک معمولاً نمی‌توانند هزینه و زمان لازم برای ساخت هویت بصری کامل را بپردازند. سؤال طراحی: چطور می‌شود با کمک AI، فرآیند را چند برابر سریع‌تر کرد — بدون کاهش کیفیت؟",
+      approach: [
+        "طراحی پالت رنگی ۵ مرحله‌ای با تحلیل روانشناسی رنگ",
+        "سیستم تایپوگرافی سه‌فونته (Display + Body + Mono) با هماهنگی بصری",
+        "تولید ۶ واریاسیون از لوگو برای بسترهای مختلف",
+        "طراحی کاربردهای عملی در ۴ حوزه: چاپ، بسته‌بندی، دیجیتال، محیطی",
+        "ساخت برندبوک تعاملی با قابلیت کپی رنگ‌ها",
+      ],
+      highlights: [
+        "پالت رنگی تعاملی با copy-to-clipboard",
+        "Type scale showcase با ۶ سطح مختلف",
+        "۶ واریاسیون لوگو (Primary, Outline, Gradient, Color, Italic, Inverse)",
+        "Orbit animation برای نمایش هویت بصری",
+        "بخش Applications با ۴ کاربرد عملی",
+      ],
+      metrics: [
+        { label: "تعداد asset", value: "۲۴۰+" },
+        { label: "زمان پروژه", value: "۳ هفته" },
+        { label: "کاهش هزینه", value: "۶۰٪" },
+      ],
+      learnings:
+        "هوش مصنوعی جایگزین طراح نیست، بلکه ابزاری است که سرعت اجرا را چند برابر می‌کند. اما نظارت انسانی و چشم طراح، همچنان حیاتی است.",
+    },
+  },
+  {
+    id: "project-04",
+    slug: "lumen",
+    title: "لومن",
+    latinTitle: "Lumen",
+    category: "کمپین سینمایی",
+    description:
+      "کمپین تبلیغاتی سینمایی با storyboard، timeline تولید، و روایتی که در سکوت پیام را منتقل می‌کند.",
+    fullDescription:
+      "لومن یک کمپین تبلیغاتی سینمایی بدون دیالوگ است — با استفاده از ابزارهای AI، تجربه‌ای روایی در ۴۸ ثانیه ساخته شد که به‌جای فریاد زدن پیام، آن را در سکوت پنهان می‌کند.",
+    tags: ["AI Video", "Campaign", "Cinematic"],
+    coverImage: "/projects/lumen.webp",
+    liveDemoUrl: "/projects/lumen.html",
+    year: CURRENT_PERSIAN_YEAR,
+    status: "پروژه مفهومی",
+    role: "کارگردان خلاق",
+    client: "پروژه‌ی شخصی",
+    duration: "۲ هفته",
+    technologies: ["AI Video", "Storyboard", "Motion"],
+
+    caseStudy: {
+      overview:
+        "لومن یک پروژه‌ی مفهومی کمپین سینمایی است که با هدف کاوش در روایت‌های تبلیغاتی متفاوت طراحی شد. چالش: ساختن یک تجربه‌ی روایی بدون دیالوگ، فقط با تصویر، نور و ریتم.",
+      challenge:
+        "تولید ویدیوی تبلیغاتی سینمایی به‌طور معمول نیاز به تیم بزرگ و بودجه‌ی سنگین دارد. اما با ابزارهای AI، می‌توان این فرآیند را تا ۸۰٪ سریع‌تر کرد — اگر بدانی چطور.",
+      approach: [
+        "ایده‌پردازی روایی بر اساس ساختار سه‌پرده‌ای (Setup, Confrontation, Resolution)",
+        "طراحی استوری‌بورد دقیق با ۶ فریم کلیدی",
+        "ساخت صفحه‌ای که خودش مثل یک فیلم روایت می‌شود",
+        "استفاده از film grain و vignette برای حس سینمایی",
+        "طراحی timeline تولید در ۴ مرحله‌ی شفاف",
+      ],
+      highlights: [
+        "روایت سینمایی با ساختار سه‌پرده‌ای کلاسیک",
+        "۶ storyboard frame با طراحی اختصاصی",
+        "Timeline تولید شفاف در ۴ مرحله",
+        "Video stage با play animation",
+        "Film grain overlay برای حس سینمایی واقعی",
+      ],
+      metrics: [
+        { label: "مدت کمپین", value: "۴۸ ثانیه" },
+        { label: "زمان تولید", value: "۲ هفته" },
+        { label: "کاهش هزینه", value: "۸۰٪" },
+      ],
+      learnings:
+        "در تولید محتوای ویدیویی، «ایده» همچنان مهم‌ترین عنصر است. ابزارها فقط اجرا را سریع‌تر می‌کنند، نه بهتر.",
+    },
+  },
+];
+
+/* ── Helpers ── */
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((p) => p.slug === slug);
+}
+
+export function getAllProjectSlugs(): string[] {
+  return projects.map((p) => p.slug);
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\content\site.ts
+--------------------------------------------------------------------------------
+export const siteContent = {
+  name: "امیرحسین شرکائی",
+  latinName: "Amirhossein Shorakaei",
+
+  hero: {
+    eyebrow: "طراحی دیجیتال با نگاه متفاوت",
+    title: "وب‌سایت‌هایی که فقط دیده نمی‌شوند؛ ماندگار می‌شوند.",
+    description:
+      "طراحی و توسعه وب‌سایت‌های حرفه‌ای، مدرن و اختصاصی در کنار خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.",
+  },
+
+  about: {
+    title: "طراحی برای من، فقط ساختن یک ظاهر زیبا نیست.",
+    description:
+      "هدف من ساخت تجربه‌ای است که هم از نظر بصری متمایز باشد و هم واقعاً برای کاربر و کسب‌وکار کاربرد داشته باشد.",
+  },
+
+  contact: {
+    preferredMethod: "sms",
+  },
+
+  footer: {
+    copyright: "تمامی حقوق این وب‌سایت محفوظ است.",
+  },
+} as const;
+
+
+--------------------------------------------------------------------------------
+ FILE: src\content\contacts.ts
+--------------------------------------------------------------------------------
+/* ═══════════════════════════════════════════════════════════
+   CONTACTS — Single source of truth
+   ────────────────────────────────────────────────────────────
+   To change the phone number: update `PHONE_RAW` below.
+   Format: +98XXXXXXXXXX (international, no spaces)
+   ═══════════════════════════════════════════════════════════ */
+
+export type ContactId = "rubika" | "eitaa" | "sms";
+
+export type Contact = {
+  id: ContactId;
+  label: string;
+  short: string;
+  href: string;
+  external: boolean;
+  /** Display value (e.g. @username or phone number) */
+  value: string;
+  primary?: boolean;
+};
+
+/* ═══════════════════════════════════════════════════════════
+   PHONE — UPDATE THESE LINES ONLY
+   ═══════════════════════════════════════════════════════════ */
+const PHONE_RAW = "+989371932549"; // ← برای لینک sms: (بین‌المللی)
+const PHONE_DISPLAY = "۰۹۳۷ ۱۹۳ ۲۵۴۹"; // ← برای نمایش
+
+/* ═══════════════════════════════════════════════════════════
+   CHAT LINKS
+   ────────────────────────────────────────────────────────────
+   Rubika & Eitaa: use the exact link each app gives you when
+   you tap "Share profile" inside the app. If unsure, keep the
+   /@username format — Rubika and Eitaa both open a chat
+   directly when the username is prefixed with @.
+   ═══════════════════════════════════════════════════════════ */
+
+export const contacts: Contact[] = [
+  {
+    id: "rubika",
+    label: "روبیکا",
+    short: "Rubika",
+    href: "https://rubika.ir/@Amirhosein2076",
+    external: true,
+    value: "@Amirhosein2076",
+  },
+  {
+    id: "eitaa",
+    label: "ایتا",
+    short: "Eitaa",
+    href: "https://eitaa.com/@AmirHosseinsherakaei",
+    external: true,
+    value: "@AmirHosseinsherakaei",
+  },
+  {
+    id: "sms",
+    label: "پیامک",
+    short: "SMS",
+    href: `sms:${PHONE_RAW}`,
+    external: false,
+    value: PHONE_DISPLAY,
+    primary: true,
+  },
+];
+
+export const primaryContact = contacts.find((c) => c.primary)!;
+
+
+--------------------------------------------------------------------------------
+ FILE: next.config.mjs
+--------------------------------------------------------------------------------
+/** @type {import('next').NextConfig} */
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+
+  /* Performance */
+  compress: true,
+  productionBrowserSourceMaps: false,
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? { exclude: ['error', 'warn'] }
+        : false,
+  },
+
+  /* Image optimization */
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+    dangerouslyAllowSVG: false,
+  },
+
+  /* Modules & packages */
+  experimental: {
+    optimizePackageImports: [
+      'shiki',
+      '@vercel/analytics',
+      '@vercel/speed-insights',
+    ],
+  },
+
+  /* HTTP Headers: Cache + Security */
+  async headers() {
+    return [
+      /* 1) Static public assets */
+      {
+        source:
+          '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+
+      /* 2) HTML pages */
+      {
+        source: '/((?!api|_next|_vercel|.*\\..*).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=120, s-maxage=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+
+      /* 3) Blog posts - longer cache */
+      {
+        source: '/blog/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=300, s-maxage=604800, stale-while-revalidate=2592000',
+          },
+        ],
+      },
+
+      /* 4) Security headers */
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+        ],
+      },
+    ];
+  },
+
+  /* 301 Redirects */
+  async redirects() {
+    return [
+      /* 1) Specific: www -> canonical */
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.shorakaei.ir' }],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+
+      /* 2) Specific: old vercel project */
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'amirhossein-portfolio.vercel.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+
+      /* 3) Wildcard: any other vercel.app */
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: '.*\\.vercel\\.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+    ];
+  },
+};
+
+export default withBundleAnalyzer(nextConfig);
+
+
+--------------------------------------------------------------------------------
+ FILE: package.json
+--------------------------------------------------------------------------------
+{
+    "name": "amirhossein-sherkaei-portfolio",
+    "version": "1.0.0",
+    "private": true,
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=10"
+    },
+    "browserslist": [
+        "chrome >= 115",
+        "edge >= 115",
+        "firefox >= 115",
+        "safari >= 16.4",
+        "ios_saf >= 16.4",
+        "not dead"
+    ],
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "typecheck": "tsc --noEmit",
+        "seed:blog": "node scripts/seed-blogs.js"
+    },
+    "dependencies": {
+        "@vercel/analytics": "^2.0.1",
+        "@vercel/speed-insights": "^2.0.0",
+        "gray-matter": "^4.0.3",
+        "marked": "^18.0.13",
+        "next": "16.3.6",
+        "next-mdx-remote": "^6.0.0",
+        "react": "19.3.0",
+        "react-dom": "19.3.0",
+        "rehype-pretty-code": "^0.14.5",
+        "shiki": "^4.4.3"
+    },
+    "devDependencies": {
+        "@next/bundle-analyzer": "^16.4.0",
+        "@types/node": "^20.19.43",
+        "@types/react": "19.3.0",
+        "@types/react-dom": "19.3.0",
+        "eslint": "9.39.5",
+        "eslint-config-next": "16.3.6",
+        "typescript": "^5.5.3"
+    },
+    "overrides": {
+        "@types/react": "19.3.0",
+        "@types/react-dom": "19.3.0"
+    }
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\app\page.tsx
+--------------------------------------------------------------------------------
+import dynamic from "next/dynamic";
+import Nav from "@/components/Nav";
+import MobileNav from "@/components/MobileNav";
+import Hero from "@/components/Hero";
+import { getAllPosts, getLatestPosts } from "@/lib/blog";
+import { projects } from "@/content/projects";
+
+/* ── Above-the-fold: direct import (need immediate render) ── */
+/* Nav, MobileNav, Hero */
+
+/* ── Below-the-fold: dynamic imports with SSR preserved ── */
+/* ssr: true means server renders them into HTML for SEO,
+   but client-side JS chunk loads separately = smaller initial bundle */
+
+const Services = dynamic(() => import("@/components/Services"), {
+  ssr: true,
+  loading: () => (
+    <section className="section" aria-busy="true">
+      <div className="container">
+        <div className="lazy-skeleton-grid" aria-hidden="true">
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+const Process = dynamic(() => import("@/components/Process"), { ssr: true });
+
+const Portfolio = dynamic(() => import("@/components/Portfolio"), {
+  ssr: true,
+  loading: () => (
+    <section
+      className="section portfolio-section"
+      aria-busy="true"
+      aria-label="در حال بارگذاری نمونه‌کارها"
+    >
+      <div className="container">
+        <div className="lazy-skeleton-grid" aria-hidden="true">
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+const About = dynamic(() => import("@/components/About"), { ssr: true });
+
+const WhyMe = dynamic(() => import("@/components/WhyMe"), { ssr: true });
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"), {
+  ssr: true,
+});
+
+const LatestBlogPosts = dynamic(
+  () => import("@/components/LatestBlogPosts"),
+  { ssr: true }
+);
+
+const Newsletter = dynamic(() => import("@/components/Newsletter"), {
+  ssr: true,
+});
+
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: true });
+
+const FinalCTA = dynamic(() => import("@/components/FinalCTA"), { ssr: true });
+
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+
+const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: true });
+
+const RevealObserver = dynamic(() => import("@/components/RevealObserver"), {
+  ssr: true,
+});
+
+const SectionSwipeHandler = dynamic(
+  () => import("@/components/SectionSwipeHandler"),
+  { ssr: true }
+);
+
+const SwipeHint = dynamic(() => import("@/components/SwipeHint"), {
+  ssr: true,
+});
+
+const PerfObserver = dynamic(() => import("@/components/PerfObserver"), {
+  ssr: true,
+});
+
+export default function Home() {
+  const allPosts = getAllPosts();
+  const recentPosts = getLatestPosts(6);
+
+  const latestPost = recentPosts[0]
+    ? {
+        slug: recentPosts[0].slug,
+        title: recentPosts[0].title,
+        date: recentPosts[0].date,
+      }
+    : null;
+
+  const archiveSource =
+    recentPosts.length > 4
+      ? recentPosts[4]
+      : recentPosts[recentPosts.length - 1];
+  const archivePost =
+    archiveSource && archiveSource.slug !== latestPost?.slug
+      ? {
+          slug: archiveSource.slug,
+          title: archiveSource.title,
+          date: archiveSource.date,
+        }
+      : null;
+
+  return (
+    <>
+      <Nav />
+      <MobileNav />
+
+      <main id="main">
+        <Hero
+          latestPost={latestPost}
+          archivePost={archivePost}
+          totalPosts={allPosts.length}
+          totalProjects={projects.length}
+        />
+        <Services />
+        <Process />
+        <Portfolio />
+        <About />
+        <WhyMe />
+        <Testimonials />
+        <LatestBlogPosts />
+        <Newsletter />
+        <FAQ />
+        <FinalCTA />
+      </main>
+
+      <Footer />
+      <BackToTop />
+      <RevealObserver />
+      <SectionSwipeHandler />
+      <SwipeHint />
+      <PerfObserver />
+    </>
+  );
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\app\blog\page.tsx
+--------------------------------------------------------------------------------
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getAllPosts, getAllTags } from "@/lib/blog";
+import { getBlogIndexSchema } from "@/lib/schema";
+import BlogList from "@/components/BlogList";
+import "./blog.css";
+
+export const metadata: Metadata = {
+  title: "بلاگ",
+  description:
+    "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
+  alternates: {
+    canonical: "/blog",
+  },
+};
+
+export default function BlogPage() {
+  const posts = getAllPosts();
+  const tags = getAllTags();
+
+  const blogSchema = getBlogIndexSchema(
+    posts.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      date: p.date,
+    }))
+  );
+
+  return (
+    <main id="main" className="blog-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(blogSchema),
+        }}
+      />
+
+      <div className="container">
+        <Link href="/" className="blog-back-home">
+          <span aria-hidden="true">→</span>
+          بازگشت به صفحه اصلی
+        </Link>
+
+        <div className="blog-header">
+          <span className="section-index">BLOG</span>
+          <h1>مقالات و یادداشت‌ها</h1>
+          <p>
+            درباره طراحی وب، توسعه فرانت‌اند، UI/UX و خلاقیت دیجیتال با کمک
+            هوش مصنوعی.
+          </p>
+        </div>
+
+        <BlogList posts={posts} tags={tags} />
+      </div>
+    </main>
+  );
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\app\work\page.tsx
+--------------------------------------------------------------------------------
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { projects } from "@/content/projects";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://amirhossein-portfolio.vercel.app";
+
+export const metadata: Metadata = {
+  title: "نمونه‌کارها",
+  description:
+    "مجموعه‌ی پروژه‌های منتخب امیرحسین شرکائی — از طراحی وب‌سایت‌های اختصاصی تا کمپین‌های تبلیغاتی با هوش مصنوعی.",
+  alternates: {
+    canonical: "/work",
+  },
+  openGraph: {
+    title: "نمونه‌کارها | امیرحسین شرکائی",
+    description:
+      "مجموعه‌ی پروژه‌های منتخب — طراحی، توسعه و خلاقیت دیجیتال.",
+    url: `${siteUrl}/work`,
+    type: "website",
+  },
+};
+
+export default function WorkPage() {
+  return (
+    <main id="main" className="work-page">
+      <div className="container">
+        {/* ═══════ Breadcrumb ═══════ */}
+        <nav className="work-breadcrumb" aria-label="مسیر">
+          <Link href="/">خانه</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">نمونه‌کارها</span>
+        </nav>
+
+        {/* ═══════ Header ═══════ */}
+        <header className="work-header">
+          <span className="section-index">WORK — {String(projects.length).padStart(2, "0")} PROJECTS</span>
+          <h1 className="work-title">
+            پروژه‌هایی با
+            <em> جزئیات متفاوت.</em>
+          </h1>
+          <p className="work-intro">
+            مجموعه‌ای از پروژه‌های منتخب در حوزه‌های طراحی وب،
+            فروشگاه آنلاین، هویت بصری و کمپین‌های تبلیغاتی. هر
+            پروژه با یک مطالعه‌ی موردی کامل.
+          </p>
+        </header>
+
+        {/* ═══════ Grid ═══════ */}
+        <div className="work-grid">
+          {projects.map((project, index) => (
+            <Link
+              key={project.id}
+              href={`/work/${project.slug}`}
+              className="work-card"
+            >
+              <div className="work-card-visual">
+                {project.coverImage && (
+                  <Image
+                    src={project.coverImage}
+                    alt={`نمونه‌کار ${project.title}`}
+                    fill
+                    sizes="(max-width: 720px) 100vw, (max-width: 1080px) 50vw, 640px"
+                    priority={index === 0}
+                    style={{ objectFit: "cover" }}
+                  />
+                )}
+                <span className="work-card-badge">
+                  {project.status || "پروژه"}
+                </span>
+              </div>
+
+              <div className="work-card-body">
+                <div className="work-card-meta">
+                  <span className="work-card-num">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="work-card-category">
+                    {project.category}
+                  </span>
+                </div>
+
+                <h2 className="work-card-title">{project.title}</h2>
+
+                <p className="work-card-desc">{project.description}</p>
+
+                <div className="work-card-footer">
+                  <div className="work-card-tags">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span key={tag} className="work-card-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="work-card-arrow" aria-hidden="true">
+                    ←
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* ═══════ CTA ═══════ */}
+        <div className="work-cta">
+          <div className="work-cta-content">
+            <span className="eyebrow">پروژه‌ی بعدی</span>
+            <h2>ایده‌ای داری که شبیه این‌ها باشه؟</h2>
+            <p>
+              اگر می‌خوای پروژه‌ات هم با همین دقت و جزئیات ساخته
+              بشه، با من تماس بگیر.
+            </p>
+          </div>
+          <Link href="/order" className="button button-primary button-lg">
+            شروع پروژه
+            <span aria-hidden="true">←</span>
+          </Link>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\components\Footer.tsx
+--------------------------------------------------------------------------------
+import Link from "next/link";
+import Image from "next/image";
+import SoundToggle from "@/components/SoundToggle";
+import FooterClock from "@/components/FooterClock";
+import ContactLinks from "@/components/ContactLinks";
+
+const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
+  year: "numeric",
+})
+  .format(new Date())
+  .replace(/[^\u06F0-\u06F9]/g, "")
+  .slice(0, 4);
+
+const navGroups = [
+  {
+    label: "PAGES",
+    links: [
+      { label: "خانه", href: "/" },
+      { label: "خدمات", href: "/#services" },
+      { label: "نمونه‌کارها", href: "/#portfolio" },
+      { label: "درباره من", href: "/#about" },
+      { label: "بلاگ", href: "/blog" },
+    ],
+  },
+  {
+    label: "SERVICES",
+    links: [
+      { label: "وب‌سایت اختصاصی", href: "/#services" },
+      { label: "وب + هوش مصنوعی", href: "/#services" },
+      { label: "تبلیغات هوشمند", href: "/#services" },
+      { label: "ویدیوی تبلیغاتی", href: "/#services" },
+    ],
+  },
+];
+
+export default function Footer() {
+  const contactEmail = process.env.PROJECT_CONTACT_EMAIL;
+
+  return (
+    <footer className="site-footer">
+      {/* ═══════ Ambient ═══════ */}
+      <div className="footer-ambient" aria-hidden="true">
+        <span className="footer-ambient-glow" />
+        <span className="footer-ambient-grid" />
+      </div>
+
+      {/* ═══════ Masthead ═══════ */}
+      <div className="footer-masthead">
+        <div className="container">
+          <div className="footer-masthead-inner">
+            <span className="footer-masthead-left">
+              CHAPTER&nbsp;·&nbsp;07&nbsp;—&nbsp;END
+            </span>
+            <span className="footer-masthead-mark" aria-hidden="true">
+              ✦
+            </span>
+            <span className="footer-masthead-right">
+              AMIRHOSSEIN&nbsp;SHORAKAEI&nbsp;·&nbsp;{CURRENT_PERSIAN_YEAR}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════ Hero CTA ═══════ */}
+      <section
+        className="footer-hero"
+        aria-labelledby="footer-hero-title"
+      >
+        <div className="container">
+          <div className="footer-hero-grid">
+            <div className="footer-hero-content">
+              <span className="footer-hero-eyebrow">
+                NEXT&nbsp;·&nbsp;STEP
+              </span>
+
+              <h2 id="footer-hero-title" className="footer-hero-title">
+                ایده‌ای داری؟
+                <br />
+                <em className="ink-word">بیا بسازیمش.</em>
+              </h2>
+
+              <p className="footer-hero-text">
+                اگه پروژه‌ت مشخصه، همون رو بفرست. اگه فقط یه ایده
+                داری، با هم به یه طرح روشن می‌رسیم.
+              </p>
+
+              <div className="footer-hero-actions">
+                <Link
+                  href="/order" prefetch={false}
+                  className="footer-hero-btn footer-hero-btn--primary"
+                >
+                  <span className="ink-word ink-word--on-dark">
+                    شروع پروژه
+                  </span>
+                  <span aria-hidden="true">←</span>
+                </Link>
+                <Link
+                  href="/#portfolio"
+                  className="footer-hero-btn footer-hero-btn--secondary"
+                >
+                  <span className="ink-word">دیدن نمونه‌کارها</span>
+                </Link>
+              </div>
+            </div>
+
+            <aside className="footer-hero-aside" aria-hidden="true">
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">پاسخ</span>
+                <strong className="footer-hero-stat-value">
+                  حداکثر ۲۴ ساعت
+                </strong>
+              </div>
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">روش تماس</span>
+                <strong className="footer-hero-stat-value">
+                  پیامک · روبیکا · ایتا
+                </strong>
+              </div>
+              <div className="footer-hero-stat">
+                <span className="footer-hero-stat-label">حوزه</span>
+                <strong className="footer-hero-stat-value">
+                  وب · تبلیغات · ویدیو
+                </strong>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ Main Grid ═══════ */}
+      <div className="footer-grid-wrap">
+        <div className="footer-watermark" aria-hidden="true">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={480}
+            height={480}
+            className="footer-watermark-img"
+          />
+        </div>
+
+        <div className="container">
+          <div className="footer-grid">
+            {/* Brand column */}
+            <div className="footer-col footer-col--brand">
+              <Link
+                href="/"
+                className="footer-brand-link"
+                aria-label="امیرحسین شرکائی — بازگشت به خانه"
+              >
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="footer-brand-logo"
+                  aria-hidden="true"
+                />
+                <div className="footer-brand-copy">
+                  <strong>امیرحسین شرکائی</strong>
+                  <small>AMIRHOSSEIN SHORAKAEI</small>
+                </div>
+              </Link>
+
+              <p className="footer-brand-tagline">
+                طراحی و توسعه وب‌سایت‌های اختصاصی — با تمرکز بر
+                سرعت، جزئیات و تجربه‌ی کاربری.
+              </p>
+
+              <div className="footer-brand-meta">
+                <span className="footer-brand-status">
+                  <span
+                    className="footer-brand-status-dot"
+                    aria-hidden="true"
+                  />
+                  آماده همکاری
+                </span>
+                <span className="footer-brand-location">
+                  <FooterClock />
+                  <span
+                    className="footer-brand-location-sep"
+                    aria-hidden="true"
+                  >
+                    ·
+                  </span>
+                  <span>Tehran</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Nav columns */}
+            {navGroups.map((group) => (
+              <nav
+                key={group.label}
+                className="footer-col footer-col--nav"
+                aria-label={group.label}
+              >
+                <span className="footer-col-label">{group.label}</span>
+                <ul className="footer-col-list">
+                  {group.links.map((link) => (
+                    <li key={link.label}>
+                      <Link href={link.href} className="footer-link">
+                        <span>{link.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+
+            {/* Contact column */}
+            <div className="footer-col footer-col--nav footer-col--contact">
+              <span className="footer-col-label">CONNECT</span>
+              <ContactLinks variant="card" />
+            </div>
+          </div>
+
+          {/* Email row */}
+          {contactEmail && (
+            <div className="footer-email-row">
+              <span className="footer-email-label">— EMAIL</span>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="footer-email-value"
+                dir="ltr"
+              >
+                {contactEmail}
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ═══════ Bottom bar ═══════ */}
+      <div className="footer-bottom-wrap">
+        <div className="container">
+          <div className="footer-bottom">
+            <span className="footer-copyright">
+              ©&nbsp;{CURRENT_PERSIAN_YEAR}&nbsp;— تمامی حقوق محفوظ است.
+            </span>
+            <span className="footer-signature-line">
+              DESIGN&nbsp;·&nbsp;DEVELOPMENT&nbsp;·&nbsp;AI
+            </span>
+            <div className="footer-bottom-actions">
+              <SoundToggle />
+              <a
+                href="#home"
+                className="footer-back-to-top"
+                aria-label="بازگشت به بالای صفحه"
+              >
+                <span className="footer-back-to-top-label">
+                  بازگشت به بالا
+                </span>
+                <span
+                  className="footer-back-to-top-arrow"
+                  aria-hidden="true"
+                >
+                  ↑
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\app\sitemap.ts
+--------------------------------------------------------------------------------
+import type { MetadataRoute } from "next";
+import { getAllPosts } from "@/lib/blog";
+import { getAllProjectSlugs } from "@/content/projects";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://shorakaei.ir";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const posts = getAllPosts();
+  const projectSlugs = getAllProjectSlugs();
+  const now = new Date();
+
+  /* ── Blog posts ── */
+  const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    lastModified: post.date ? new Date(post.date) : now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  /* ── Work (project) pages ── */
+  const workEntries: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
+    url: `${siteUrl}/work/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  /* ── Static pages ── */
+  const staticEntries: MetadataRoute.Sitemap = [
+    {
+      url: siteUrl,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${siteUrl}/work`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/order`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+  ];
+
+  return [...staticEntries, ...workEntries, ...blogEntries];
+}
+
+
+--------------------------------------------------------------------------------
+ FILE: src\app\robots.ts
+--------------------------------------------------------------------------------
+import type { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
+
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      /* فقط API باید از ایندکس خارج باشد.
+         /order صفحه‌ی اصلی سفارش است و باید ایندکس شود. */
+      disallow: ["/api/"],
+    },
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
+  };
+}
+
+

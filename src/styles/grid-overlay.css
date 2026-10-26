@@ -1,0 +1,129 @@
+/* ============================================================
+   GRID OVERLAY — Visible design grid
+   ────────────────────────────────────────────────────────────
+   Hidden by default. Toggle with Ctrl+G / ⌘+G.
+   ============================================================ */
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  display: none;
+  isolation: isolate;
+}
+
+body.show-grid .grid-overlay {
+  display: block;
+}
+
+/* ─── Container (same as .container) ─── */
+.grid-overlay-container {
+  position: absolute;
+  inset: 0;
+  width: min(
+    calc(100% - var(--grid-margin) * 2),
+    var(--container)
+  );
+  margin-inline: auto;
+}
+
+/* ─── 12 Columns ─── */
+.grid-overlay-columns {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gutter);
+  height: 100%;
+}
+
+.grid-overlay-column {
+  position: relative;
+  height: 100%;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border-inline: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+[data-theme="dark"] .grid-overlay-column {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* ─── Column number labels ─── */
+.grid-overlay-column-num {
+  position: absolute;
+  top: 4px;
+  inset-inline-start: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  opacity: 0.7;
+  direction: ltr;
+  padding: 2px 5px;
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+  border-radius: 3px;
+}
+
+/* ─── Baseline grid (8px) ─── */
+.grid-overlay-baselines {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--accent) 8%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 100% var(--baseline);
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+
+[data-theme="dark"] .grid-overlay-baselines {
+  mix-blend-mode: screen;
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--accent) 12%, transparent) 1px,
+    transparent 1px
+  );
+}
+
+/* ─── Top ruler ─── */
+.grid-overlay-ruler {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px calc(var(--grid-margin) + 4px);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  direction: ltr;
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* ─── Indicator badge (bottom-start) ─── */
+body.show-grid::after {
+  content: "GRID · 12 COL · 8px BASE";
+  position: fixed;
+  bottom: 16px;
+  inset-inline-start: 16px;
+  z-index: 9999;
+  padding: 7px 14px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  border-radius: 999px;
+  pointer-events: none;
+  box-shadow: 0 8px 24px -6px var(--accent-glow);
+  direction: ltr;
+}
+
+/* ─── Reduced motion: no changes needed (grid is static) ─── */

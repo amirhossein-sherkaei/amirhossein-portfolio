@@ -1,0 +1,668 @@
+/* ============================================================
+   DENSITY STANDARDIZATION — 2026 Global Standard
+   ────────────────────────────────────────────────────────────
+   Problem: site felt "everything is too big"
+   Solution: scale down the whole system ~20% to match
+             Vercel / Linear / Framer / Stripe baselines.
+   
+   - Body text:      17-18px → 15-16px
+   - Hero title:     80px    → 60px
+   - Section pad:    140px   → 104px
+   - Line-height:    1.85    → 1.70
+   - Mobile root:    17px    → 16px
+   - Reading width:  75ch    → 66ch (Persian-optimized)
+   
+   Loaded LAST in layout.tsx — wins every cascade.
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   1. TOKENS — override the entire type + space scale
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* ── Font sizes (~15-20% tighter) ── */
+  --fs-micro:   clamp(0.625rem,   0.61rem   + 0.0625vw, 0.6875rem); /* 10 → 11 */
+  --fs-mono:    clamp(0.625rem,   0.61rem   + 0.1vw,    0.75rem);    /* 10 → 12 */
+  --fs-small:   clamp(0.75rem,    0.74rem   + 0.05vw,   0.8125rem);  /* 12 → 13 */
+  --fs-body:    clamp(0.875rem,   0.86rem   + 0.1vw,    1rem);       /* 14 → 16 */
+  --fs-h3:      clamp(1.125rem,   1.08rem   + 0.25vw,   1.5rem);     /* 18 → 24 */
+  --fs-h2:      clamp(1.5rem,     1.35rem   + 0.85vw,   2.5rem);     /* 24 → 40 */
+  --fs-h1:      clamp(1.75rem,    1.4rem    + 1.75vw,   3rem);       /* 28 → 48 */
+  --fs-display: clamp(2.25rem,    1.7rem    + 2.75vw,   4.5rem);     /* 36 → 72 */
+
+  /* ── Line heights (tighter, more standard) ── */
+  --lh-display: 1.05;
+  --lh-h1:      1.10;
+  --lh-h2:      1.15;
+  --lh-h3:      1.28;
+  --lh-body:    1.70;
+  --lh-small:   1.55;
+  --lh-tight:   1.28;
+
+  /* ── Space scale (~20% tighter) ── */
+  --space-1:  clamp(0.25rem,   0.245rem + 0.025vw, 0.28125rem);
+  --space-2:  clamp(0.5rem,    0.49rem  + 0.05vw,  0.5625rem);
+  --space-3:  clamp(0.6875rem, 0.67rem  + 0.1vw,   0.8125rem);
+  --space-4:  clamp(0.875rem,  0.85rem  + 0.15vw,  1.0625rem);
+  --space-5:  clamp(1.125rem,  1.09rem  + 0.2vw,   1.3125rem);
+  --space-6:  clamp(1.375rem,  1.33rem  + 0.25vw,  1.5625rem);
+  --space-7:  clamp(1.75rem,   1.69rem  + 0.35vw,  2rem);
+  --space-8:  clamp(2rem,      1.93rem  + 0.4vw,   2.5rem);
+  --space-9:  clamp(2.5rem,    2.4rem   + 0.5vw,   3rem);
+  --space-10: clamp(3rem,      2.88rem  + 0.6vw,   3.75rem);
+  --space-11: clamp(4rem,      3.84rem  + 0.8vw,   5rem);
+  --space-12: clamp(5.5rem,    5.28rem  + 1.1vw,   7rem);
+
+  /* ── Hero-specific scale ── */
+  --hero-display:    clamp(1.75rem,  1.15rem + 3vw,   3.75rem);
+  --hero-display-lh: 1.12;
+  --hero-role:       clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --hero-role-lh:    1.5;
+  --hero-desc:       clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --hero-desc-lh:    1.75;
+  --hero-cta:        clamp(0.875rem, 0.85rem + 0.1vw,  0.9375rem);
+  --hero-eyebrow:    clamp(0.625rem, 0.6rem  + 0.05vw, 0.6875rem);
+  --hero-meta:       clamp(0.5625rem, 0.55rem + 0.05vw, 0.625rem);
+
+  /* ── Reading widths (Persian-optimized) ── */
+  --reading:        58ch;
+  --reading-wide:   66ch;
+  --reading-narrow: 44ch;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. SECTIONS — 25% tighter vertical rhythm
+   ═══════════════════════════════════════════════════════════ */
+.section {
+  padding-block: clamp(64px, 8vw, 104px) !important;
+}
+
+.section-compact {
+  padding-block: clamp(48px, 6vw, 80px) !important;
+}
+
+.section-heading {
+  margin-bottom: clamp(32px, 4vw, 56px) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. HERO — cap the title, tighten spacing
+   (These override hero-editorial.css)
+   ═══════════════════════════════════════════════════════════ */
+.hero-section {
+  padding-block: clamp(96px, 11vw, 136px) clamp(56px, 7vw, 88px) !important;
+}
+
+.hero-section .hero-title {
+  line-height: 1.12 !important;
+}
+
+.hero-section .hero-title-line {
+  font-size: clamp(1.75rem, 1.1rem + 3.2vw, 3rem) !important;
+  line-height: 1.12 !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-title-line {
+    font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem) !important;
+    line-height: 1.08 !important;
+  }
+}
+
+.hero-section .hero-description {
+  font-size: 0.9375rem !important;
+  line-height: 1.75 !important;
+  max-width: 52ch !important;
+  margin-top: 20px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-description {
+    font-size: 1rem !important;
+    margin-top: 22px !important;
+  }
+}
+
+.hero-section .hero-role {
+  font-size: 0.9375rem !important;
+  padding: 6px 13px !important;
+  margin-top: 22px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-role {
+    font-size: 1rem !important;
+    padding: 7px 15px !important;
+    margin-top: 28px !important;
+  }
+}
+
+.hero-section .hero-kicker {
+  margin-bottom: 20px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-kicker {
+    margin-bottom: 26px !important;
+  }
+}
+
+.hero-section .hero-actions {
+  margin-top: 28px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-actions {
+    margin-top: 34px !important;
+  }
+}
+
+.hero-section .hero-masthead {
+  margin-bottom: 28px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-masthead {
+    margin-bottom: 36px !important;
+  }
+}
+
+/* Bento — tighter cells */
+.hero-section .hero-bento-cell {
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell {
+    padding: 18px !important;
+    border-radius: 20px !important;
+  }
+}
+
+.hero-section .hero-bento-cell--name {
+  min-height: 200px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--name {
+    min-height: 260px !important;
+  }
+}
+
+.hero-section .hero-bento-cell--clock,
+.hero-section .hero-bento-cell--date {
+  min-height: 112px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--clock,
+  .hero-section .hero-bento-cell--date {
+    min-height: 128px !important;
+  }
+}
+
+.hero-section .hero-bento-cell--num {
+  min-height: 120px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-cell--num {
+    min-height: 140px !important;
+  }
+}
+
+.hero-section .hero-bento-name {
+  font-size: clamp(1.375rem, 3vw, 1.875rem) !important;
+}
+
+.hero-section .hero-bento-bignum {
+  font-size: 2.75rem !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-bignum {
+    font-size: 3.25rem !important;
+  }
+}
+
+.hero-section .hero-bento-clock-time {
+  font-size: 1rem !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-clock-time {
+    font-size: 1.25rem !important;
+  }
+}
+
+.hero-section .hero-bento-date-day {
+  font-size: 1.375rem !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-bento-date-day {
+    font-size: 1.625rem !important;
+  }
+}
+
+.hero-section .hero-marquee {
+  margin-top: 44px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-marquee {
+    margin-top: 60px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. BUTTONS — 48px a11y baseline (was 52-68px)
+   ═══════════════════════════════════════════════════════════ */
+.button {
+  min-height: 48px !important;
+  padding-inline: 22px !important;
+  font-size: 0.875rem !important;
+}
+
+.button-sm {
+  min-height: 36px !important;
+  padding-inline: 16px !important;
+  font-size: 0.8125rem !important;
+}
+
+.button-lg {
+  min-height: 52px !important;
+  padding-inline: 26px !important;
+  font-size: 0.9375rem !important;
+}
+
+.button-xl {
+  min-height: 56px !important;
+  padding-inline: 32px !important;
+  font-size: 0.9375rem !important;
+}
+
+.hero-section .hero-btn {
+  min-height: 50px !important;
+  padding-inline: 24px !important;
+  font-size: 0.9375rem !important;
+  gap: 10px !important;
+}
+
+@media (min-width: 721px) {
+  .hero-section .hero-btn {
+    min-height: 52px !important;
+    padding-inline: 26px !important;
+    font-size: 0.9375rem !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. SECTION HEADINGS — tighter (was using --fs-h1)
+   ═══════════════════════════════════════════════════════════ */
+.section-heading h2 {
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.5rem) !important;
+  line-height: 1.15 !important;
+  margin-top: 14px !important;
+}
+
+.section-heading > p {
+  font-size: 0.9375rem !important;
+  line-height: 1.7 !important;
+}
+
+@media (max-width: 720px) {
+  .section-heading h2 {
+    font-size: clamp(1.375rem, 6vw, 1.75rem) !important;
+    line-height: 1.2 !important;
+  }
+}
+
+.about-content h2,
+.why-header h2 {
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.5rem) !important;
+  line-height: 1.15 !important;
+}
+
+.about-lead {
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem) !important;
+  line-height: 1.7 !important;
+  margin-top: 20px !important;
+}
+
+.about-content > p {
+  font-size: 0.9375rem !important;
+  line-height: 1.75 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. ABOUT STATEMENT — tighter
+   ═══════════════════════════════════════════════════════════ */
+.about-statement {
+  padding: clamp(32px, 4vw, 48px) clamp(26px, 3vw, 40px) !important;
+}
+
+.about-statement-text {
+  font-size: clamp(1.125rem, 2vw, 1.5rem) !important;
+  line-height: 1.5 !important;
+}
+
+.about-statement-mark {
+  font-size: 72px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. SERVICES PREVIEW — tighter
+   ═══════════════════════════════════════════════════════════ */
+.service-preview {
+  min-height: 460px !important;
+  padding: 28px !important;
+}
+
+@media (min-width: 721px) {
+  .service-preview {
+    min-height: 480px !important;
+  }
+}
+
+.service-preview-content {
+  margin-top: 56px !important;
+}
+
+.service-preview-content h3 {
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem) !important;
+  line-height: 1.2 !important;
+  margin: 14px 0 12px !important;
+}
+
+.service-preview-content p {
+  font-size: 0.9375rem !important;
+  line-height: 1.75 !important;
+}
+
+.service-title {
+  font-size: 0.9375rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. CARDS — tighter padding
+   ═══════════════════════════════════════════════════════════ */
+.commitment-card {
+  padding: clamp(20px, 2.2vw, 26px) !important;
+  gap: 12px !important;
+}
+
+.commitment-card-title {
+  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem) !important;
+  line-height: 1.4 !important;
+}
+
+.commitment-card-desc {
+  font-size: 0.875rem !important;
+  line-height: 1.65 !important;
+}
+
+.process-section .process-step {
+  padding: clamp(20px, 2.2vw, 24px) !important;
+  gap: 12px !important;
+}
+
+.process-section .process-step-title {
+  font-size: clamp(1rem, 1.4vw, 1.125rem) !important;
+  line-height: 1.3 !important;
+}
+
+.process-section .process-step-desc {
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
+}
+
+.latest-blog-card {
+  padding: 22px 20px !important;
+}
+
+.latest-blog-title {
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+}
+
+.latest-blog-excerpt {
+  font-size: 0.875rem !important;
+  line-height: 1.65 !important;
+}
+
+.faq-question {
+  padding: 18px 22px !important;
+  font-size: 0.9375rem !important;
+}
+
+.faq-answer-inner p {
+  font-size: 0.9375rem !important;
+  line-height: 1.75 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   9. PORTFOLIO — tighter captions
+   ═══════════════════════════════════════════════════════════ */
+.portfolio-card-caption {
+  padding: 14px 16px !important;
+  gap: 12px !important;
+}
+
+.portfolio-card-title {
+  font-size: 0.9375rem !important;
+}
+
+.portfolio-card-subtitle {
+  font-size: 0.8125rem !important;
+  line-height: 1.55 !important;
+}
+
+.portfolio-card-visual {
+  min-height: 340px !important;
+}
+
+@media (max-width: 720px) {
+  .portfolio-card-visual {
+    min-height: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   10. FINAL CTA — tighter
+   ═══════════════════════════════════════════════════════════ */
+.final-cta {
+  padding: clamp(44px, 5.5vw, 72px) clamp(24px, 4vw, 56px) !important;
+  gap: clamp(32px, 4vw, 56px) !important;
+}
+
+.final-cta h2 {
+  font-size: clamp(1.75rem, 3vw, 2.75rem) !important;
+  line-height: 1.12 !important;
+}
+
+.final-cta p {
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+  margin-top: 18px !important;
+}
+
+.final-cta-actions {
+  margin-top: 26px !important;
+}
+
+.final-cta-aside {
+  padding: 26px !important;
+  gap: 20px !important;
+}
+
+.final-cta-aside-value {
+  font-size: 0.9375rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11. FOOTER — tighter
+   ═══════════════════════════════════════════════════════════ */
+.site-footer {
+  padding-block: 56px 28px !important;
+}
+
+.footer-cta {
+  padding: clamp(36px, 4.5vw, 56px) 0 clamp(28px, 3.5vw, 44px) !important;
+  margin-bottom: clamp(32px, 4vw, 48px) !important;
+}
+
+.footer-cta-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem) !important;
+  line-height: 1.15 !important;
+}
+
+.footer-tagline {
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
+}
+
+.footer-main {
+  gap: 32px !important;
+  padding-bottom: 32px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. FORMS — tighter fields
+   ═══════════════════════════════════════════════════════════ */
+.order-page .form-field input,
+.order-page .form-field textarea,
+.oform-input-wrap input,
+.oform-input-wrap textarea {
+  min-height: 48px !important;
+  font-size: 0.9375rem !important;
+}
+
+.order-page .form-field textarea,
+.oform-input-wrap textarea {
+  min-height: 120px !important;
+}
+
+.order-page .form-field > span,
+.order-page .form-fieldset legend,
+.oform-label {
+  font-size: 0.8125rem !important;
+}
+
+.oform-step-title {
+  font-size: 1.125rem !important;
+}
+
+.order-page .form-section {
+  padding: clamp(28px, 3.5vw, 40px) !important;
+}
+
+/* iOS zoom prevention — keep 16px on mobile inputs */
+@media (max-width: 720px) {
+  .order-page .form-field input,
+  .order-page .form-field textarea,
+  .oform-input-wrap input,
+  .oform-input-wrap textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. ORDER PAGE HEADER — tighter
+   ═══════════════════════════════════════════════════════════ */
+.order-page {
+  padding-block: clamp(96px, 11vw, 128px) 80px !important;
+}
+
+.order-header h1 {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem) !important;
+  line-height: 1.1 !important;
+}
+
+.order-header p {
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   14. NOT-FOUND — tighter
+   ═══════════════════════════════════════════════════════════ */
+.not-found-number {
+  font-size: clamp(80px, 12vw, 140px) !important;
+}
+
+.not-found-zero {
+  width: clamp(80px, 10vw, 130px) !important;
+  height: clamp(80px, 10vw, 130px) !important;
+}
+
+.not-found-center h1 {
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem) !important;
+}
+
+.not-found-center p {
+  font-size: 0.9375rem !important;
+  line-height: 1.85 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   15. MOBILE — standardize root size to 16px (was 17px)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  html {
+    font-size: 16px !important;
+  }
+
+  body {
+    font-size: 0.9375rem !important;
+    line-height: 1.7 !important;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.375rem, 6vw, 1.75rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  h3 {
+    font-size: clamp(1.125rem, 5vw, 1.375rem) !important;
+    line-height: 1.35 !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   16. NAV — slightly tighter
+   ═══════════════════════════════════════════════════════════ */
+.brand-mark {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 14px !important;
+}
+
+.brand-text strong {
+  font-size: 12.5px !important;
+}
+
+.nav-order-button {
+  min-height: 34px !important;
+  padding-inline: 14px !important;
+  font-size: 12px !important;
+}
+
+.site-nav .theme-toggle {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.site-nav .theme-toggle-inner {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   END — Site is now Vercel/Linear density baseline.
+   ═══════════════════════════════════════════════════════════ */

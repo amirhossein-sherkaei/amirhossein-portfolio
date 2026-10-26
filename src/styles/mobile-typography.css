@@ -1,0 +1,512 @@
+/* ============================================================
+   MOBILE TYPOGRAPHY — 2026 Global Standards
+   ------------------------------------------------------------
+   - WCAG 2.2 reading comfort
+   - Persian-specific: tall ascenders/descenders need more room
+   - 16px minimum body (prevents iOS zoom, meets a11y)
+   - 60ch maximum line length on mobile
+   - Proper spacing rhythm for paragraphs, lists, quotes
+   - Auto-flow for tables and code blocks
+   ============================================================ */
+
+@media (max-width: 720px) {
+  /* ═══════════════════════════════════════════════════════════
+     ROOT SIZE — larger for comfortable reading
+     iOS minimum 16px prevents auto-zoom, WCAG AAA recommends 18px
+     ═══════════════════════════════════════════════════════════ */
+  html {
+    font-size: 17px;
+  }
+
+  body {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     HEADINGS — adjusted scale for mobile
+     Larger than desktop ratio to compensate for reduced viewport
+     ═══════════════════════════════════════════════════════════ */
+  h1 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.6em;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6.5vw, 1.875rem);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5em;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 5.5vw, 1.5rem);
+    line-height: 1.35;
+    margin-bottom: 0.5em;
+    text-wrap: balance;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin-bottom: 0.5em;
+  }
+
+  h5,
+  h6 {
+    font-size: 1rem;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BODY PARAGRAPHS — comfortable reading on small screens
+     Line length capped at ~55-60 characters
+     ═══════════════════════════════════════════════════════════ */
+  p {
+    font-size: 1rem;
+    line-height: 1.85;
+    max-width: 60ch;
+    margin-bottom: 1.1em;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Lead paragraph — slightly larger for emphasis */
+  .body-lead {
+    font-size: 1.075rem;
+    line-height: 1.75;
+    font-weight: 500;
+    margin-bottom: 1.15em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     LISTS — bigger touch targets, better rhythm
+     ═══════════════════════════════════════════════════════════ */
+  ul:not([class]),
+  ol:not([class]) {
+    padding-inline-start: 1.4em;
+    margin-block: 1em 1.25em;
+  }
+
+  ul:not([class]) li,
+  ol:not([class]) li {
+    padding-inline-start: 0.35em;
+    margin-block: 0.5em;
+    line-height: 1.8;
+  }
+
+  ul:not([class]) li::marker,
+  ol:not([class]) li::marker {
+    font-size: 1.1em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BLOCKQUOTES — visual separation on mobile
+     ═══════════════════════════════════════════════════════════ */
+  blockquote {
+    margin: 1.5em 0;
+    padding: 1.1em 1.25em;
+    font-size: 1rem;
+    line-height: 1.75;
+    border-inline-start-width: 4px;
+    border-radius: 0 12px 12px 0;
+  }
+
+  blockquote p {
+    font-size: inherit;
+    line-height: inherit;
+    margin-bottom: 0.6em;
+  }
+
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     CODE & PREFORMATTED — auto-scroll, no page overflow
+     ═══════════════════════════════════════════════════════════ */
+  pre {
+    margin: 1.25em 0;
+    padding: 1em 1.15em;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  pre code {
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+    background: transparent;
+  }
+
+  code:not(pre code) {
+    font-size: 0.85em;
+    padding: 0.15em 0.35em;
+    border-radius: 5px;
+    word-break: break-word;
+  }
+
+  /* Keyboard key */
+  kbd {
+    font-size: 0.8em;
+    padding: 0.15em 0.4em;
+    border-radius: 5px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TABLES — horizontal scroll with visual hint
+     ═══════════════════════════════════════════════════════════ */
+  .blog-post-content table,
+  .order-form table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    margin: 1.25em 0;
+  }
+
+  .blog-post-content table thead,
+  .blog-post-content table tbody,
+  .blog-post-content table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .blog-post-content table th,
+  .blog-post-content table td {
+    padding: 0.7em 0.85em;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     LINKS — larger hit area for touch
+     ═══════════════════════════════════════════════════════════ */
+  .blog-post-content a,
+  .about-content a {
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+    padding: 2px 0;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FIGURES & CAPTIONS
+     ═══════════════════════════════════════════════════════════ */
+  figure {
+    margin-block: 1.5em;
+  }
+
+  figcaption {
+    margin-top: 0.6em;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     HORIZONTAL RULES — bigger spacing
+     ═══════════════════════════════════════════════════════════ */
+  hr {
+    margin: 2em 0;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     STRONG & EMPHASIS — better mobile legibility
+     ═══════════════════════════════════════════════════════════ */
+  strong,
+  b {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  em,
+  i {
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SMALL TEXT — meta, eyebrow, section-index
+     Increase from 11-12px to 13-14px for readability
+     ═══════════════════════════════════════════════════════════ */
+  .meta,
+  .eyebrow,
+  .section-index,
+  .badge {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+  }
+
+  .eyebrow {
+    gap: 10px;
+  }
+
+  .eyebrow::before {
+    width: 20px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BLOG POST CONTENT — reading mode
+     ═══════════════════════════════════════════════════════════ */
+  .blog-post-content {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    max-width: 100%;
+    color: var(--ink-2);
+  }
+
+  .blog-post-content > p {
+    margin-bottom: 1.15em;
+  }
+
+  .blog-post-content h2 {
+    margin-top: 2em;
+    margin-bottom: 0.65em;
+    padding-bottom: 0.4em;
+  }
+
+  .blog-post-content h3 {
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ARTICLE HEADER — adjusted for mobile
+     ═══════════════════════════════════════════════════════════ */
+  .blog-post-header h1 {
+    font-size: clamp(1.5rem, 6.5vw, 2rem);
+    line-height: 1.25;
+    margin-bottom: 0.75em;
+  }
+
+  .blog-post-excerpt {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1em;
+  }
+
+  .blog-post-meta {
+    font-size: 0.75rem;
+    margin-bottom: 1em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     HERO TITLE — tighter control on mobile
+     ═══════════════════════════════════════════════════════════ */
+  .hero-title {
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 100%;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ABOUT CONTENT
+     ═══════════════════════════════════════════════════════════ */
+  .about-lead {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-top: 1.4em;
+  }
+
+  .about-content > p {
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE PREVIEW
+     ═══════════════════════════════════════════════════════════ */
+  .service-preview-content p {
+    font-size: 0.9375rem;
+    line-height: 1.8;
+  }
+
+  .service-feature {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FAQ — bigger reading size
+     ═══════════════════════════════════════════════════════════ */
+  .faq-question {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .faq-answer-inner p {
+    font-size: 0.9375rem;
+    line-height: 1.85;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     PREVENT TEXT OVERFLOW
+     Long URLs, emails, identifiers must not break the layout
+     ═══════════════════════════════════════════════════════════ */
+  * {
+    overflow-wrap: break-word;
+  }
+
+  a[href^="mailto:"],
+  a[href^="tel:"],
+  [data-long-text] {
+    word-break: break-all;
+    hyphens: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SMALL MOBILE (≤ 380px) — extra care for compact phones
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 380px) {
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 7.5vw, 1.875rem);
+  }
+
+  h2 {
+    font-size: clamp(1.375rem, 6vw, 1.625rem);
+  }
+
+  h3 {
+    font-size: clamp(1.125rem, 5vw, 1.375rem);
+  }
+
+  p {
+    font-size: 0.9375rem;
+    line-height: 1.8;
+  }
+
+  .blog-post-content {
+    font-size: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 7.5vw, 1.875rem) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLET (721px - 900px) — middle ground
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 721px) and (max-width: 900px) {
+  p {
+    max-width: 65ch;
+    line-height: 1.8;
+  }
+
+  .blog-post-content {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+
+  .blog-post-content p {
+    max-width: 68ch;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PREVENT "WIDOW" WORDS in headings on mobile
+   (single word on last line — looks bad on narrow screens)
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  h1,
+  h2,
+  h3,
+  .hero-title,
+  .section-heading h2,
+  .about-content h2,
+  .why-header h2,
+  .final-cta h2 {
+    text-wrap: balance;
+    max-width: 100%;
+  }
+
+  /* For paragraphs, "pretty" avoids widows in multi-line text */
+  p,
+  .body-lead,
+  .hero-description {
+    text-wrap: pretty;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY — increased legibility
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) and (prefers-contrast: more) {
+  body {
+    color: var(--ink);
+  }
+
+  p,
+  li {
+    color: var(--ink);
+  }
+
+  .blog-post-content {
+    color: var(--ink);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LANDSCAPE MOBILE — compact but readable
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  html {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    line-height: 1.7;
+    margin-bottom: 0.85em;
+  }
+
+  .blog-post-content {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}

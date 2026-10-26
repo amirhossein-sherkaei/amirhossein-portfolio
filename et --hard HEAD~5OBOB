@@ -1,0 +1,10 @@
+[33md24a629[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m feat: fully isolated premium homepage with Awwwards-level image frames
+[33m1b1635d[m fix: force rewrite components with 100% guaranteed image frames
+[33m8b59062[m feat: apply awwwards-level infinite image frames without changing layout
+[33m6ba908e[m fix: hard restore original layout and purely swap images
+[33maeb7436[m feat: infinite level image integration with bento and mac grids
+[33m2248107[m fix: restore original layout and surgically inject premium images
+[33m2131ce0[m feat: add premium 2026 visuals and images integration
+[33m97914b4[m feat: add premium 2026 visuals and image integration
+[33m1b49c36[m revert: remove showroom
+[33mcd2bd51[m feat(showroom): interactive project showroom with 4 demos

@@ -1,0 +1,50 @@
+/* ============================================================
+   COUNT UP — Visual polish for animated numbers
+   ────────────────────────────────────────────────────────────
+   Adds subtle visual treatment to numbers that count up:
+   - Tabular nums (so digits don't jiggle during animation)
+   - Slight letter-spacing during animation
+   - Amber glow accent on the animating span
+   ============================================================ */
+
+.about-proof-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  min-width: 1ch;
+  transition: color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-proof-count[data-counting="true"] {
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Subtle pulse when counting finishes
+   ═══════════════════════════════════════════════════════════ */
+@keyframes proof-count-finish {
+  0% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.about-proof-count.is-finished {
+  animation: proof-count-finish 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Reduced motion — kill any animation
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .about-proof-count {
+    transition: none !important;
+  }
+  .about-proof-count.is-finished {
+    animation: none !important;
+  }
+}

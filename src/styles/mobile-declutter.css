@@ -1,0 +1,326 @@
+/* ============================================================
+   MOBILE DECLUTTER — Reduce visual noise on small screens
+   ------------------------------------------------------------
+   Strategy:
+   - Hide non-essential decorative elements
+   - Collapse multi-line CTAs to single-line
+   - Tighten vertical rhythm
+   - Every element must justify its presence
+   ============================================================ */
+
+@media (max-width: 720px) {
+  /* ═══════════════════════════════════════════════════════════
+     HERO — remove decoration, keep message
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Hide masthead — too much small text at top */
+  .hero-masthead {
+    display: none !important;
+  }
+
+  /* Hide vertical rail (already hidden but double-safe) */
+  .hero-rail {
+    display: none !important;
+  }
+
+  /* Hide corner marks — pure decoration */
+  .hero-corner {
+    display: none !important;
+  }
+
+  /* Hide hand-drawn arrow */
+  .hero-arrow {
+    display: none !important;
+  }
+
+  /* Hide marquee strip — full width of noise */
+  .hero-marquee {
+    display: none !important;
+  }
+
+  /* Hide tech chips — not essential for first impression */
+  .hero-tech {
+    display: none !important;
+  }
+
+  /* Hide signature block — extra layer */
+  .hero-signature {
+    display: none !important;
+  }
+
+  /* Hide hero footer meta (PORTFOLIO 01/04) */
+  .hero-footer-meta {
+    display: none !important;
+  }
+
+  /* Simplify hero footer — just a divider */
+  .hero-footer {
+    margin-top: 32px !important;
+    padding-top: 20px !important;
+    min-height: auto !important;
+    display: block !important;
+  }
+
+  /* Tighter hero spacing */
+  .hero-section {
+    padding-block: 88px 48px !important;
+  }
+
+  .hero-title {
+    margin-bottom: 14px !important;
+  }
+
+  .hero-role {
+    margin-top: 16px !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .hero-description {
+    margin-top: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+
+  .hero-actions {
+    margin-top: 20px !important;
+    gap: 8px !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SERVICES — remove decorative masthead
+     ═══════════════════════════════════════════════════════════ */
+  .services-masthead {
+    display: none !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ABOUT — remove identity rule + fact labels noise
+     ═══════════════════════════════════════════════════════════ */
+  .about-identity-rule {
+    display: none !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BACK TO TOP — smaller, less intrusive
+     ═══════════════════════════════════════════════════════════ */
+  .back-to-top {
+    width: 40px !important;
+    height: 40px !important;
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+    inset-inline-end: 12px !important;
+    font-size: 14px !important;
+    opacity: 0.85;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE BOTTOM NAV — tighter, cleaner
+     ═══════════════════════════════════════════════════════════ */
+  .mobile-nav {
+    padding: 5px !important;
+    max-width: 440px !important;
+  }
+
+  .mobile-nav-list {
+    height: 56px !important;
+  }
+
+  .mobile-nav-item {
+    padding: 6px 2px 4px !important;
+    gap: 2px !important;
+  }
+
+  .mobile-nav-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .mobile-nav-label {
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+  }
+
+  /* CTA button more compact */
+  .mobile-nav-cta {
+    padding: 6px 12px 4px !important;
+  }
+
+  .mobile-nav-cta-icon {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SECTION HEADINGS — tighter, no decorative em-dash
+     ═══════════════════════════════════════════════════════════ */
+  .section-heading {
+    margin-bottom: 28px !important;
+    gap: 10px !important;
+  }
+
+  .section-heading h2 {
+    margin-top: 12px !important;
+    line-height: 1.18 !important;
+  }
+
+  .section-heading > p {
+    font-size: 13.5px !important;
+    line-height: 1.75 !important;
+  }
+
+  /* Section spacing tighter */
+  .section {
+    padding-block: clamp(48px, 10vw, 72px) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     PORTFOLIO — reduce chrome on cards
+     ═══════════════════════════════════════════════════════════ */
+  .portfolio-card-chrome {
+    padding: 8px 12px !important;
+  }
+
+  .portfolio-card-caption {
+    padding: 12px 14px !important;
+  }
+
+  .portfolio-card-view {
+    display: none !important; /* the "مشاهده پروژه" that appears on hover */
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     LATEST BLOG — tighter cards
+     ═══════════════════════════════════════════════════════════ */
+  .latest-blog-card {
+    padding: 18px 16px !important;
+  }
+
+  .latest-blog-title {
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .latest-blog-excerpt {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 14px !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FAQ — tighter
+     ═══════════════════════════════════════════════════════════ */
+  .faq-question {
+    padding: 16px 18px !important;
+    font-size: 14.5px !important;
+  }
+
+  .faq-answer-inner p {
+    padding: 0 18px 18px !important;
+    font-size: 13.5px !important;
+  }
+
+  /* Hide decorative circle behind FAQ */
+  .faq-section::before {
+    display: none !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FINAL CTA — tighter
+     ═══════════════════════════════════════════════════════════ */
+  .final-cta {
+    padding: 36px 22px !important;
+    gap: 24px !important;
+  }
+
+  .final-cta h2 {
+    font-size: clamp(24px, 7vw, 32px) !important;
+  }
+
+  .final-cta-aside {
+    padding: 20px 18px !important;
+    gap: 16px !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER — tighter, hide decorative signature
+     ═══════════════════════════════════════════════════════════ */
+  .footer-signature {
+    display: none !important;
+  }
+
+  .footer-cta {
+    padding: 32px 0 24px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .footer-cta-title {
+    font-size: clamp(20px, 6.5vw, 28px) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     WELCOME ONBOARDING — smaller, more compact
+     ═══════════════════════════════════════════════════════════ */
+  .welcome-card {
+    padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .welcome-masthead {
+    padding: 0 0 12px !important;
+  }
+
+  .welcome-hero {
+    padding: 16px 0 20px !important;
+  }
+
+  .welcome-title {
+    font-size: clamp(1.4rem, 6.5vw, 1.75rem) !important;
+    margin-bottom: 10px !important;
+  }
+
+  .welcome-subtitle {
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+  }
+
+  .welcome-chapters {
+    gap: 6px !important;
+  }
+
+  .welcome-chapter {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+  }
+
+  .welcome-chapter-num {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 10px !important;
+  }
+
+  .welcome-chapter-title {
+    font-size: 13px !important;
+  }
+
+  .welcome-chapter-text {
+    font-size: 12px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EXTRA SMALL (<400px) — even more aggressive
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .hero-section {
+    padding-block: 80px 40px !important;
+  }
+
+  .mobile-nav-label {
+    font-size: 9px !important;
+  }
+
+  .section {
+    padding-block: 40px !important;
+  }
+}

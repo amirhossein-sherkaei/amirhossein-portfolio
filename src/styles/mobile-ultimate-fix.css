@@ -1,0 +1,245 @@
+/* ============================================================
+   MOBILE ULTIMATE FIX v3 — DEFINITIVE & OPTIMIZED FOR GLASS
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  /* ۱) فاصله بدنه از پایین */
+  body {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* ۲) کانتینر اصلی منو - شکل قطره‌ای‌تر */
+  .mbn {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+
+    position: fixed !important;
+    top: auto !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+    width: calc(100% - 20px) !important;
+    max-width: 520px !important;
+    margin: 0 auto !important;
+    z-index: 90 !important;
+
+    height: 82px !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+
+    /* گردتر کردن گوشه‌ها برای افکت لنز */
+    border-radius: 32px !important;
+    overflow: visible !important; 
+  }
+
+  /* ۳) ردیف آیتم‌ها */
+  .mbn-items {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 100% !important;
+    gap: 2px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ۴) آیتم‌های منو */
+  .mbn-item {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;   
+    max-height: none !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+
+    padding: 4px 1px !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
+    transform: none !important;
+  }
+
+  /* ۵) آیکون‌ها */
+  .mbn .mbn-item-icon {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    flex: 0 0 26px !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  .mbn .mbn-item-icon > svg {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
+  }
+
+  .mbn-logo-ring { width: 28px !important; height: 28px !important; }
+  .mbn-item-logo { width: 22px !important; height: 22px !important; border-radius: 7px !important; }
+
+  /* ۶) برچسب‌ها */
+  .mbn .mbn-item-label {
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+
+  /* ۷) دکمه CTA */
+  .mbn-cta {
+    flex: 0 0 76px !important;
+    width: 76px !important;
+    min-width: 76px !important;  
+    max-width: 76px !important;
+
+    height: auto !important;
+    min-height: 0 !important;    
+    max-height: none !important;
+    align-self: stretch !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+
+    padding: 4px 2px !important;
+    margin: 0 !important;
+    border-radius: 22px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  .mbn-cta .mbn-item-icon {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    flex: 0 0 26px !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+  }
+
+  .mbn-cta .mbn-item-icon > svg {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: 22px !important;
+    max-height: 22px !important;
+  }
+
+  .mbn-cta .mbn-item-label {
+    font-size: 9.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ۸) اسلایدر */
+  .mbn-slider {
+    top: 2px !important;
+    bottom: 2px !important;
+    border-radius: 22px !important;
+  }
+
+  /* ۹) دکمه چت */
+  .chat-bubble {
+    bottom: calc(115px + env(safe-area-inset-bottom, 0px)) !important;
+    inset-inline-end: 14px !important;
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .chat-bubble-inner {
+    width: calc(54px - 6px) !important;
+    height: calc(54px - 6px) !important;
+  }
+
+  /* ۱۰) متن مقاله */
+  .blog-post-page .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 10px !important;
+  }
+
+  .blog-post-layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .blog-post-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box !important;
+    border-radius: 20px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.85 !important;
+  }
+
+  .blog-post-content * {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+}
+
+/* ۱۱) گوشی‌های خیلی کوچک */
+@media (max-width: 400px) {
+  body { padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)) !important; }
+  .mbn { height: 76px !important; padding: 6px !important; border-radius: 28px !important; gap: 3px !important; }
+  .mbn .mbn-item-icon, .mbn-cta .mbn-item-icon {
+    width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; max-width: 24px !important; max-height: 24px !important; flex: 0 0 24px !important;
+  }
+  .mbn .mbn-item-icon > svg, .mbn-cta .mbn-item-icon > svg { width: 20px !important; height: 20px !important; }
+  .mbn .mbn-item-label, .mbn-cta .mbn-item-label { font-size: 9px !important; }
+  .mbn-cta { flex: 0 0 70px !important; width: 70px !important; min-width: 70px !important; max-width: 70px !important; }
+  .chat-bubble { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important; width: 50px !important; height: 50px !important; }
+  .chat-bubble-inner { width: calc(50px - 6px) !important; height: calc(50px - 6px) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mbn, .mbn-item, .mbn-cta, .mbn-item-icon, .mbn-slider, .chat-bubble {
+    transition: none !important;
+    animation: none !important;
+  }
+}

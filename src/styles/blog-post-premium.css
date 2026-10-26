@@ -1,0 +1,409 @@
+/* ============================================================
+   BLOG POST PREMIUM — Infinity Edition (Responsive & Glass)
+   ============================================================ */
+
+/* ۰. جلوگیری از اسکرول افقی در کل صفحه (امنیت) */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+
+.blog-post-page {
+  position: relative;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  background-color: var(--paper);
+  overflow-x: clip; 
+  isolation: isolate;
+}
+
+/* پس‌زمینه ثابت و بهینه */
+.blog-post-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: 
+    radial-gradient(circle at 90% 5%, rgba(13, 115, 119, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 10% 80%, rgba(125, 41, 63, 0.06) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+/* --- Header --- */
+.blog-post-header {
+  max-width: 800px;
+  margin: 0 auto 64px;
+  text-align: right; /* تغییر به راست‌چین */
+  position: relative;
+  z-index: 1;
+  padding-inline: 16px;
+}
+
+.blog-post-category {
+  display: inline-block;
+  font-family: var(--sh-font-fa);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.5);
+  padding: 8px 18px;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.blog-post-title {
+  margin: 0 0 24px;
+  font-family: var(--sh-font-fa);
+  font-size: clamp(1.8rem, 4vw, 2.75rem); /* سایز استاندارد */
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--sh-color-ink);
+  text-wrap: pretty;
+}
+
+.blog-post-excerpt {
+  margin: 0 0 32px;
+  font-family: var(--sh-font-fa);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.8;
+  color: var(--sh-color-text);
+  max-width: 65ch;
+  text-wrap: pretty;
+}
+
+.blog-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--sh-color-muted);
+  font-family: var(--sh-font-mono);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px 24px;
+  border-radius: 999px;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+/* --- Layout (رفع مشکل بیرون‌زدگی در موبایل) --- */
+.blog-post-layout {
+  display: grid;
+  /* minmax(0, 1fr) حیاتی‌ترین بخش برای جلوگیری از بیرون‌زدگی است */
+  grid-template-columns: minmax(0, 1fr); 
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding-inline: 16px;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .blog-post-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 48px;
+  }
+}
+
+/* --- Main Content --- */
+.blog-post-content {
+  min-width: 0; /* الزامی برای جلوگیری از سرریز متن */
+  max-width: 100%;
+  font-family: var(--sh-font-fa);
+  font-size: 1.125rem;
+  line-height: 1.9;
+  color: var(--sh-color-text);
+  margin-inline: auto;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 48px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 20px 50px -20px rgba(0,0,0,0.08);
+  box-sizing: border-box;
+}
+
+/* قوانین شکستن کلمات برای جلوگیری از بیرون‌زدگی */
+.blog-post-content p,
+.blog-post-content li,
+.blog-post-content h1,
+.blog-post-content h2,
+.blog-post-content h3,
+.blog-post-content h4,
+.blog-post-content blockquote,
+.blog-post-content a {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* رفع مشکل سرریز تصاویر و کدها */
+.blog-post-content img,
+.blog-post-content video,
+.blog-post-content iframe {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+.blog-post-content pre {
+  max-width: 100%;
+  overflow-x: auto; /* اسکرول افقی فقط برای خود کد */
+  -webkit-overflow-scrolling: touch;
+  padding: 20px;
+  border-radius: 16px;
+  background: #1a1a1a;
+  color: #f8f8f2;
+}
+
+.blog-post-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto; /* اسکرول افقی فقط برای جدول */
+  border-collapse: collapse;
+}
+
+/* --- عناوین داخل مقاله --- */
+.blog-post-content h2 {
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--sh-color-ink);
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.blog-post-content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 0; /* منطقی: راست در RTL */
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+  border-radius: 2px;
+}
+
+.blog-post-content blockquote {
+  margin: 2em 0;
+  padding: 24px 32px;
+  border-inline-start: 4px solid var(--accent); /* منطقی */
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0 24px 24px 0;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--sh-color-ink);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 24px -8px rgba(0,0,0,0.05);
+}
+
+/* --- Sidebar (Table of Contents) --- */
+.blog-post-sidebar {
+  display: none;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .blog-post-sidebar {
+    display: block;
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+}
+
+/* --- Related Posts & Footer --- */
+.related-posts-section {
+  margin-top: 80px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+
+.related-posts-title {
+  font-family: var(--sh-font-fa);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--sh-color-ink);
+  margin-bottom: 32px;
+}
+
+.related-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  min-width: 0;
+}
+
+.related-post-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 8px 24px -8px rgba(0,0,0,0.05);
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.related-post-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.1);
+  border-color: var(--accent);
+}
+
+/* --- Glass TOC --- */
+.glass-toc {
+  position: relative;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 20px 40px -10px rgba(0,0,0,0.05);
+}
+
+.glass-toc-title {
+  font-family: var(--sh-font-fa);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--sh-color-muted);
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.glass-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.glass-toc-item.is-sub { padding-inline-start: 16px; }
+
+.glass-toc-link {
+  display: block;
+  font-family: var(--sh-font-fa);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--sh-color-text);
+  text-decoration: none;
+  position: relative;
+  padding: 8px 16px 8px 0;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 12px;
+}
+
+.glass-toc-link:hover {
+  background: rgba(255,255,255,0.6);
+  color: var(--accent);
+  padding-inline-start: 6px;
+}
+
+.glass-toc-dot {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid var(--line-strong);
+  transition: all 0.3s ease;
+}
+
+.glass-toc-link.is-active {
+  color: var(--accent);
+  font-weight: 800;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.glass-toc-link.is-active .glass-toc-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-tint);
+}
+
+/* ============================================================
+   📱 تنظیمات اختصاصی موبایل (جلوگیری از نصفه شدن)
+   ============================================================ */
+@media (max-width: 768px) {
+  .blog-post-page {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+
+  .blog-post-header {
+    margin-bottom: 32px;
+  }
+
+  .blog-post-title {
+    font-size: clamp(1.5rem, 6vw, 1.8rem);
+    line-height: 1.35;
+    margin-bottom: 16px;
+  }
+
+  .blog-post-excerpt {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .blog-post-meta {
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    padding: 8px 16px;
+    gap: 10px;
+  }
+
+  /* کارت مقاله در موبایل تمام عرض می‌شود و پدینگ کمی می‌گیرد */
+  .blog-post-content {
+    padding: 24px 16px;
+    border-radius: 20px;
+    font-size: 1rem; /* سایز فونت 16px برای موبایل */
+    line-height: 1.85; /* فاصله خطوط استاندارد فارسی */
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.3rem;
+    margin-top: 2em;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .blog-post-content blockquote {
+    padding: 16px 20px;
+    margin: 1.5em 0;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .blog-post-content pre {
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 0.8125rem;
+  }
+
+  /* مقاله‌های مرتبط در موبایل تک‌ستونه می‌شوند */
+  .related-posts-grid {
+    grid-template-columns: 1fr;
+  }
+}

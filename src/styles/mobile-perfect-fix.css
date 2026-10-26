@@ -1,0 +1,117 @@
+/* ============================================================
+   MOBILE PERFECT FIX — Navbar, Article Width & Chat Button
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /* ═══════════════════════════════════════════════════════════
+     ۱. رفع مشکل باریک بودن متن مقاله
+     ═══════════════════════════════════════════════════════════ */
+  .blog-post-layout {
+    display: block !important; /* خنثی کردن Grid که باعث بیرون‌زدگی می‌شد */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 12px !important;
+    margin: 0 !important;
+  }
+
+  .blog-post-content {
+    width: 100% !important;
+    max-width: 100% !important; /* نابودی محدودیت 65ch قدیمی */
+    padding: 24px 16px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 1.05rem !important;
+    line-height: 1.85 !important;
+    border-radius: 20px !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ۲. نجات منوی پایین موبایل (Liquid Glass)
+     ═══════════════════════════════════════════════════════════ */
+  .mbn {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    width: calc(100% - 24px) !important;
+    max-width: 500px !important;
+    margin-inline: auto !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    height: 72px !important;
+    padding: 6px !important;
+    gap: 6px !important;
+    border-radius: 28px !important;
+  }
+
+  .mbn-items {
+    display: flex !important;
+    flex-direction: row !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    gap: 2px !important;
+  }
+
+  .mbn-item {
+    flex: 1 1 0% !important; /* توزیع مساوی فضا بین آیکون‌ها */
+    min-width: 0 !important;
+    padding: 8px 0 !important;
+    border-radius: 20px !important;
+  }
+
+  /* دکمه شروع پروژه (CTA) - فیکس کردن سایز */
+  .mbn-cta {
+    flex: 0 0 auto !important;
+    width: 90px !important;
+    min-width: 90px !important;
+    max-width: 90px !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 22px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #B22222 0%, #8B1A1A 100%) !important;
+  }
+
+  .mbn-cta .mbn-item-icon {
+    width: 24px !important;
+    height: 24px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .mbn-cta .mbn-item-label {
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    white-space: nowrap !important;
+  }
+
+  /* آیکون‌های داخل منو */
+  .mbn-item-icon {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .mbn-item-label {
+    font-size: 9.5px !important;
+    margin-top: 2px !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ۳. فیکس کردن دکمه چت‌بات (فاصله از محتوا)
+     ═══════════════════════════════════════════════════════════ */
+  .chat-bubble {
+    bottom: 100px !important; /* بالاتر از منوی پایین */
+    inset-inline-end: 16px !important;
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .chat-bubble-inner {
+    width: calc(54px - 6px) !important;
+    height: calc(54px - 6px) !important;
+  }
+}

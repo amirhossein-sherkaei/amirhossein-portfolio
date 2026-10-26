@@ -1,0 +1,30 @@
+/* ============================================================
+   CHAT BUBBLE GLASS — Target ONLY the floating bubble
+   ============================================================ */
+
+.chat-bubble {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.chat-bubble-halo {
+  background: conic-gradient(from 0deg, var(--accent) 0%, var(--burgundy) 50%, var(--accent) 100%) !important;
+  opacity: 0.7 !important;
+}
+
+/* موتور جاوااسکریپت مسئول افکت شیشه و شکست نور است */
+.chat-bubble-inner {
+  color: var(--accent) !important;
+}
+
+.chat-bubble-inner svg {
+  color: var(--accent) !important;
+  filter: drop-shadow(0 2px 4px rgba(10, 9, 8, 0.1));
+  width: 26px !important;
+  height: 26px !important;
+}
+
+[data-theme="dark"] .chat-bubble-inner svg {
+  color: var(--accent-soft) !important;
+}

@@ -1,0 +1,20 @@
+# Amirhossein Shorakaei - Portfolio & Services
+
+> Amirhossein Shorakaei is a professional web designer and developer based in Tehran, Iran. He specializes in creating custom, high-performance websites using Next.js, React, and AI technologies.
+
+## Main Pages
+- [Home](https://shorakaei.ir/): Introduction to Amirhossein and his portfolio.
+- [Services](https://shorakaei.ir/services): Overview of all professional services offered.
+- [Portfolio](https://shorakaei.ir/work): Selected case studies and past projects.
+- [Blog](https://shorakaei.ir/blog): Articles and insights on web design, SEO, and AI.
+- [Order](https://shorakaei.ir/order): Contact page and project request form.
+
+## Core Services
+- [Custom Web Design](https://shorakaei.ir/services/web-design): Building unique, fast, and responsive websites from scratch.
+- [AI-Powered Websites](https://shorakaei.ir/services/ai-website): Integrating AI for content generation and speed.
+- [AI Advertising Banners](https://shorakaei.ir/services/ai-banner): Creating unique visual assets for campaigns.
+- [AI Video Production](https://shorakaei.ir/services/ai-video): Cinematic video creation using AI tools.
+
+## Contact Information
+- Phone: +989371932549
+- Location: Tehran, Iran

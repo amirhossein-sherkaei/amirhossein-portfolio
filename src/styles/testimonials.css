@@ -1,0 +1,264 @@
+/* ============================================================
+   TESTIMONIALS — Editorial Pull Quotes
+   ────────────────────────────────────────────────────────────
+   Three equal cards. Quote is the star.
+   - Semantic <figure>/<blockquote>/<figcaption> markup
+   - No project references, no fake data
+   - Editorial numbering to match the rest of the site
+   - No stars, no avatars — pure words
+   ============================================================ */
+
+.testimonials-section {
+  position: relative;
+}
+
+.testimonials-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 50%,
+    color-mix(in srgb, var(--accent) 4%, transparent),
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* ═══ Masthead ═══ */
+.testimonials-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+.testimonials-masthead-left,
+.testimonials-masthead-right {
+  opacity: 0.7;
+}
+
+.testimonials-masthead-center {
+  font-size: 14px;
+  opacity: 0.5;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+/* ═══ Grid ═══ */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 22px);
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+/* ═══ Card ═══ */
+.testimonial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: clamp(26px, 3vw, 34px) clamp(24px, 2.8vw, 30px);
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition:
+    border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--t-index, 0) * 60ms);
+}
+
+.testimonial-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+  transform: translateY(-3px);
+  box-shadow:
+    0 2px 8px -2px rgba(10, 9, 8, 0.04),
+    0 16px 40px -20px rgba(10, 9, 8, 0.12);
+}
+
+/* ─── Number badge ─── */
+.testimonial-card-num {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+  padding-inline: 8px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* ─── Big quote mark ─── */
+.testimonial-card-mark {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(44px, 5vw, 56px);
+  line-height: 0.5;
+  color: var(--accent);
+  opacity: 0.35;
+  user-select: none;
+  margin-top: 2px;
+}
+
+/* ─── Quote ─── */
+.testimonial-card-quote {
+  margin: 0;
+  flex: 1;
+}
+
+.testimonial-card-quote p {
+  margin: 0;
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1.0625rem);
+  line-height: 1.8;
+  font-weight: 400;
+  color: var(--ink-2);
+  text-wrap: pretty;
+  max-width: none;
+}
+
+/* ─── Caption (name + role) ─── */
+.testimonial-card-caption {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.testimonial-card-name {
+  font-style: normal;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.testimonial-card-role {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-3);
+  opacity: 0.85;
+}
+
+/* ═══ Footer note ═══ */
+.testimonials-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.testimonials-footer-line {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.testimonials-footer-text {
+  max-width: 560px;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.testimonials-footer-text strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.testimonials-footer-text a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.testimonials-footer-text a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 1024px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonial-card:nth-child(3) {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .testimonials-masthead {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    padding-bottom: 14px;
+    margin-bottom: 32px;
+  }
+
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .testimonial-card:nth-child(3) {
+    grid-column: auto;
+  }
+
+  .testimonial-card {
+    padding: 22px 20px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+
+  .testimonial-card-mark {
+    font-size: 40px;
+  }
+
+  .testimonial-card-quote p {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .testimonial-card-name {
+    font-size: 0.9375rem;
+  }
+
+  .testimonial-card-role {
+    font-size: 0.75rem;
+  }
+}
+
+/* ═══ Reduced motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-card {
+    transition: none !important;
+    transform: none !important;
+  }
+}

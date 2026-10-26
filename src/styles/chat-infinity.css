@@ -1,0 +1,140 @@
+/* ============================================================
+   CHAT INFINITY — Liquid Glass Floating Button
+   ============================================================ */
+
+/* هدف قرار دادن تمام دکمه‌های شناور چت در هر جای پروژه */
+[class*="chat"] button,
+[class*="Chat"] button,
+button[aria-label*="چت"],
+button[aria-label*="Chat"],
+.chat-launcher,
+.chat-trigger {
+  position: fixed !important;
+  bottom: 32px !important;
+  left: 32px !important; /* موقعیت شما سمت چپ بود */
+  
+  /* سایز و شکل */
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: transparent !important;
+  z-index: 9999 !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  
+  /* انیمیشن‌ها */
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  will-change: transform !important;
+  transform: translateZ(0) !important;
+}
+
+/* 📱 در موبایل، دکمه را بالاتر می‌بریم تا روی منوی پایین نیفتد */
+@media (max-width: 768px) {
+  [class*="chat"] button,
+  [class*="Chat"] button,
+  button[aria-label*="چت"],
+  button[aria-label*="Chat"],
+  .chat-launcher,
+  .chat-trigger {
+    bottom: 100px !important; /* بالاتر از نوار ناوبری پایین */
+    left: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+  }
+}
+
+/* 🧊 بدنه شیشه‌ای (پشت آیکون) */
+[class*="chat"] button::before,
+[class*="Chat"] button::before,
+button[aria-label*="چت"]::before,
+button[aria-label*="Chat"]::before,
+.chat-launcher::before,
+.chat-trigger::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 50% !important;
+  
+  /* متریال شیشه مایع */
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 8px 32px rgba(10, 9, 8, 0.15) !important;
+  z-index: -1 !important;
+  transition: all 0.4s ease !important;
+}
+
+/* 🎨 رنگ آیکون (فیروزه‌ای) */
+[class*="chat"] button svg,
+[class*="Chat"] button svg,
+button[aria-label*="چت"] svg,
+button[aria-label*="Chat"] svg,
+.chat-launcher svg,
+.chat-trigger svg {
+  width: 28px !important;
+  height: 28px !important;
+  color: var(--accent) !important; /* فیروزه‌ای */
+  position: relative !important;
+  z-index: 2 !important;
+  transition: transform 0.4s ease, color 0.3s ease !important;
+}
+
+/* ✨ افکت هاور (بالا آمدن و درخشش) */
+[class*="chat"] button:hover,
+[class*="Chat"] button:hover,
+button[aria-label*="چت"]:hover,
+button[aria-label*="Chat"]:hover,
+.chat-launcher:hover,
+.chat-trigger:hover {
+  transform: translateY(-5px) scale(1.05) translateZ(0) !important;
+}
+
+[class*="chat"] button:hover::before,
+[class*="Chat"] button:hover::before,
+button[aria-label*="چت"]:hover::before,
+button[aria-label*="Chat"]:hover::before,
+.chat-launcher:hover::before,
+.chat-trigger:hover::before {
+  background: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 1),
+    0 12px 40px var(--accent-glow) !important;
+}
+
+[class*="chat"] button:hover svg,
+[class*="Chat"] button:hover svg,
+button[aria-label*="چت"]:hover svg,
+button[aria-label*="Chat"]:hover svg,
+.chat-launcher:hover svg,
+.chat-trigger:hover svg {
+  transform: rotate(-10deg) scale(1.1) !important;
+}
+
+/* 👆 افکت کلیک (فشرده شدن الاستیک) */
+[class*="chat"] button:active,
+[class*="Chat"] button:active,
+button[aria-label*="چت"]:active,
+button[aria-label*="Chat"]:active,
+.chat-launcher:active,
+.chat-trigger:active {
+  transform: scale(0.92) translateZ(0) !important;
+  transition: transform 0.1s ease !important;
+}
+
+/* 🌙 حالت دارک مود */
+[data-theme="dark"] [class*="chat"] button::before,
+[data-theme="dark"] button[aria-label*="چت"]::before {
+  background: linear-gradient(135deg, rgba(30,30,30,0.7) 0%, rgba(20,20,20,0.4) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] [class*="chat"] button svg,
+[data-theme="dark"] button[aria-label*="چت"] svg {
+  color: var(--accent-soft) !important;
+}

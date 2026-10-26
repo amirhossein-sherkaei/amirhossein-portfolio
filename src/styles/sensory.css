@@ -1,0 +1,248 @@
+/* ============================================================
+   SENSORY FEEDBACK — Sound Toggle + Enhanced Drag
+   ------------------------------------------------------------
+   - Sound toggle in footer
+   - Enhanced visual feedback during drag
+   - Selection pulse on multi-select options
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   SOUND TOGGLE — footer button
+   ═══════════════════════════════════════════════════════════ */
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-3-strong);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+  min-height: 36px;
+}
+
+.sound-toggle:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.sound-toggle:active {
+  transform: scale(0.96);
+}
+
+.sound-toggle.is-on {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.sound-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.sound-toggle-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sound-toggle-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .sound-toggle {
+    padding: 8px 12px;
+    font-size: 11.5px;
+    min-height: 40px;
+  }
+
+  .sound-toggle-label {
+    display: none;
+  }
+
+  .sound-toggle {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .sound-toggle-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ENHANCED DRAG FEEDBACK
+   Applies to project modal and future bottom sheets
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* Drag handle gets more prominent when grabbed */
+  .project-modal-drag-handle {
+    transition:
+      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .project-modal[data-dragging="true"] .project-modal-drag-handle {
+    background: color-mix(in srgb, var(--paper-2) 92%, var(--accent));
+  }
+
+  .project-modal[data-dragging="true"] .project-modal-drag-bar {
+    width: 56px;
+    background: var(--accent);
+  }
+
+  /* While dragging, prevent accidental hover states */
+  .project-modal[data-dragging="true"] * {
+    pointer-events: none !important;
+  }
+
+  .project-modal[data-dragging="true"] .project-modal-drag-handle {
+    pointer-events: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SELECTION PULSE — multi-select options give visual feedback
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  .project-type-option.is-selected,
+  .contact-method.is-selected {
+    animation: selectionPulse 380ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  @keyframes selectionPulse {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Blog tag chip feedback */
+  .blog-tag-chip.active {
+    animation: tagPulse 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  @keyframes tagPulse {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.06);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SUCCESS / ERROR FLASH on form messages
+   ═══════════════════════════════════════════════════════════ */
+.form-message-error {
+  animation: errorFlash 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes errorFlash {
+  0%, 100% {
+    background-color: transparent;
+  }
+  30% {
+    background-color: color-mix(in srgb, var(--danger) 8%, transparent);
+  }
+}
+
+.order-success-icon {
+  animation: successBounce 700ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(0.5) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER BOTTOM — align sound toggle
+   ═══════════════════════════════════════════════════════════ */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-bottom-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-inline-start: auto;
+}
+
+@media (max-width: 720px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .footer-bottom-actions {
+    margin-inline-start: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .project-type-option.is-selected,
+  .contact-method.is-selected,
+  .blog-tag-chip.active,
+  .form-message-error,
+  .order-success-icon {
+    animation: none !important;
+  }
+
+  .project-modal[data-dragging="true"] .project-modal-drag-handle {
+    background: var(--paper-2);
+  }
+
+  .project-modal[data-dragging="true"] .project-modal-drag-bar {
+    background: var(--ink-3);
+  }
+}

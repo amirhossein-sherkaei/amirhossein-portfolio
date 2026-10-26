@@ -1,0 +1,79 @@
+/* ============================================================
+   SHAHKAR UI FIXES — Hero Section (Rahweb-Inspired)
+   ============================================================ */
+
+/* ۱. تیتر اصلی هیرو */
+.hero-section .hero-title {
+  display: block !important;
+  text-align: right !important;
+  direction: rtl !important;
+  width: 100% !important;
+  
+  /* حداکثر عرض برای خوانایی */
+  max-width: 100% !important; 
+  
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
+
+  /* تایپوگرافی استاندارد و کمی کوچک‌تر */
+  font-family: var(--sh-font-fa) !important;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem) !important; /* سایز استاندارد (24px تا 36px) */
+  font-weight: var(--sh-weight-bold) !important;
+  line-height: 1.35 !important; /* فاصله خطوط فشرده‌تر و استاندارد */
+  letter-spacing: var(--sh-tracking-fa) !important;
+  color: var(--ink) !important;
+  text-wrap: pretty !important;
+}
+
+/* نابودی کامل هرگونه استایل مزاحم روی اسپن‌های داخل تیتر */
+.hero-section .hero-title > span,
+.hero-section .hero-title > em,
+.hero-section .hero-title-line {
+  display: inline !important;
+  width: auto !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* رنگ‌دهی به کلمات کلیدی */
+.hero-section .hero-title-accent {
+  color: var(--burgundy) !important;
+}
+
+/* ۲. توضیحات زیر تیتر (Sub-headline) */
+.hero-section .hero-description {
+  display: block !important;
+  text-align: right !important;
+  direction: rtl !important;
+  font-family: var(--sh-font-fa) !important;
+  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem) !important; /* حدود ۱۵ تا ۱۷ پیکسل */
+  line-height: 1.8 !important; 
+  color: var(--ink-2) !important; 
+  max-width: 55ch !important; 
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+/* ۳. نظم بخشیدن به منو */
+.site-nav .desktop-nav-item {
+  font-family: var(--sh-font-fa) !important;
+  font-size: var(--sh-type-small) !important;
+  font-weight: var(--sh-weight-medium) !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  color: var(--ink-2) !important;
+}
+
+.site-nav .desktop-nav-item.is-active {
+  color: #fff !important;
+  font-weight: var(--sh-weight-semibold) !important;
+}

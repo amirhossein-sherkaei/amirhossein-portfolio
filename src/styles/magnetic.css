@@ -1,0 +1,46 @@
+/* ============================================================
+   MAGNETIC BUTTONS — 2026 Edition
+   ------------------------------------------------------------
+   - Wrapper stays fixed; inner element moves
+   - JS drives via RAF; CSS provides fallback
+   - Disabled on touch and reduced-motion
+   ============================================================ */
+
+.magnetic {
+  position: relative;
+  display: inline-block;
+  will-change: transform;
+}
+
+.magnetic-inner {
+  display: inline-block;
+  will-change: transform;
+  transform: translate3d(
+    var(--magnetic-x, 0px),
+    var(--magnetic-y, 0px),
+    0
+  );
+  transition: transform var(--motion-slow) var(--motion-ease-spring);
+}
+
+/* When JS is active, disable CSS transition to let RAF drive it */
+.magnetic[data-magnetic-active="true"] .magnetic-inner {
+  transition: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FALLBACK — no motion allowed
+   ═══════════════════════════════════════════════════════════ */
+@media (hover: none) or (pointer: coarse) {
+  .magnetic-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,58 @@
+/* ============================================================
+   REVEAL SYSTEM — Progressive Enhancement
+   ------------------------------------------------------------
+   Uses IntersectionObserver as fallback for browsers without
+   CSS scroll-driven animation support.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Legacy reveal (already used in the site) — kept as fallback */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--motion-distance-lg));
+  filter: var(--motion-blur-sm);
+  transition:
+    opacity var(--motion-slower) var(--motion-ease-out),
+    transform var(--motion-slower) var(--motion-ease-out),
+    filter var(--motion-slower) var(--motion-ease-out);
+  will-change: opacity, transform, filter;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  will-change: auto;
+}
+
+/* Staggered reveal delays via inline CSS var */
+.reveal {
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ── When scroll-driven animations are supported, prefer them ── */
+@supports (animation-timeline: view()) {
+  .reveal {
+    /* Ensure reveal class still works but doesn't fight with
+       scroll-driven utilities. Users can opt-in per element. */
+  }
+}
+
+/* ── Reveal section container (opt-in per block) ── */
+.reveal-group > .reveal:nth-child(1) { --reveal-delay: 0ms; }
+.reveal-group > .reveal:nth-child(2) { --reveal-delay: 60ms; }
+.reveal-group > .reveal:nth-child(3) { --reveal-delay: 120ms; }
+.reveal-group > .reveal:nth-child(4) { --reveal-delay: 180ms; }
+.reveal-group > .reveal:nth-child(5) { --reveal-delay: 240ms; }
+.reveal-group > .reveal:nth-child(6) { --reveal-delay: 300ms; }
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════════════
+   LIQUID GLASS — COMPREHENSIVE DIAGNOSTIC
+   ───────────────────────────────────────────────────────────
+   1) Snapshot وضعیت فعلی
+   2) تست زندهٔ H1 (nullify filter) — بصری چک کن
+   3) گام به گام با timeout
+   ═══════════════════════════════════════════════════════════ */
+(async () => {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const $ = (s, r = document) => r.querySelector(s);
+
+  console.log('%c════════ LIQUID GLASS DIAGNOSTIC ════════', 'color:#0d7377;font-weight:bold;font-size:14px');
+
+  const pill = $('.site-nav .nav-pill');
+  if (!pill) { console.error('❌ .site-nav .nav-pill پیدا نشد'); return; }
+
+  // ──── گام ۱: Snapshot ────
+  console.log('%c▶ گام ۱/۴ — Snapshot وضعیت فعلی', 'color:#0d7377;font-weight:bold');
+
+  const cs = getComputedStyle(pill);
+  const inlineBF = pill.style.backdropFilter || pill.style.webkitBackdropFilter || '(none)';
+  const inlineFilter = pill.style.filter || '(none)';
+
+  // پیدا کردن filter SVG
+  const idMatch = inlineBF.match(/url\(#([^)]+)\)/);
+  const filterId = idMatch ? idMatch[1] : null;
+  const filterEl = filterId ? document.getElementById(filterId) : null;
+
+  const snapshot = {
+    // inline (از JS)
+    'style.backdropFilter': inlineBF,
+    'style.filter': inlineFilter,
+
+    // computed (نتیجهٔ نهایی)
+    'computed.backdropFilter': cs.backdropFilter || '(empty)',
+    'computed.webkitBackdropFilter': cs.webkitBackdropFilter || '(empty)',
+    'computed.filter': cs.filter || '(none)',
+    'computed.transform': cs.transform,
+    'computed.isolation': cs.isolation,
+    'computed.contain': cs.contain,
+    'computed.willChange': cs.willChange,
+    'computed.overflow': cs.overflow,
+    'computed.position': cs.position,
+    'computed.zIndex': cs.zIndex,
+    'computed.opacity': cs.opacity,
+    'computed.clipPath': cs.clipPath || '(none)',
+    'computed.mask': cs.mask || '(none)',
+
+    // SVG filter
+    'svg.filterId': filterId || '(none)',
+    'svg.exists': !!filterEl,
+    'svg.childrenCount': filterEl ? filterEl.children.length : 0,
+    'svg.childTags': filterEl ? Array.from(filterEl.children).map(c => c.tagName).join(',') : '(none)',
+    'svg.feImageHrefPrefix': (() => {
+      if (!filterEl) return '(no svg)';
+      const feImg = filterEl.querySelector('feImage');
+      if (!feImg) return '(no feImage)';
+      const href = feImg.getAttribute('href') || feImg.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
+      return href ? href.slice(0, 40) : '(no href)';
+    })(),
+
+    // data attr
+    'data-liquid-glass-active': pill.getAttribute('data-liquid-glass-active'),
+
+    // Browser
+    'ua': navigator.userAgent,
+    'supports.backdropFilterUrl': CSS.supports('backdrop-filter', 'url(#x)'),
+    'supports.webkitBackdropFilterUrl': CSS.supports('-webkit-backdrop-filter', 'url(#x)'),
+
+    // Parent chain
+    'parent.desktop-nav.transform': (() => { const p = pill.closest('.desktop-nav'); return p ? getComputedStyle(p).transform : '(none)'; })(),
+    'parent.desktop-nav.isolation': (() => { const p = pill.closest('.desktop-nav'); return p ? getComputedStyle(p).isolation : '(none)'; })(),
+    'parent.nav-inner.transform': (() => { const p = pill.closest('.nav-inner'); return p ? getComputedStyle(p).transform : '(none)'; })(),
+    'parent.site-nav.transform': (() => { const p = pill.closest('.site-nav'); return p ? getComputedStyle(p).transform : '(none)'; })(),
+  };
+
+  console.table(snapshot);
+
+  // ──── گام ۲: تست زندهٔ H1 ────
+  console.log('%c▶ گام ۲/۴ — تست زندهٔ H1 (nullify filter)', 'color:#0d7377;font-weight:bold');
+  console.log('   الان filter روی pill ست می‌شود به none. به نوار ناوبری نگاه کن...');
+
+  const originalInlineFilter = pill.style.filter;
+  pill.style.setProperty('filter', 'none', 'important');
+
+  await sleep(600);
+
+  console.log('%c👀 حالا به نوار ناوبری بالا نگاه کن — آیا اعوجاج شیشه‌ای (مثل ذره‌بین) ظاهر شد؟', 'color:#f59e0b;font-weight:bold;font-size:13px');
+  console.log('   → اگر بله: H1 تأیید شد (filter نامعتبر باعث مشکل بوده)');
+  console.log('   → اگر نه: H1 رد شد (مشکل جای دیگری است)');
+
+  await sleep(4000);
+
+  // ──── گام ۳: بازگردانی ────
+  console.log('%c▶ گام ۳/۴ — بازگردانی filter به حالت قبل', 'color:#0d7377;font-weight:bold');
+  if (originalInlineFilter) {
+    pill.style.filter = originalInlineFilter;
+  } else {
+    pill.style.removeProperty('filter');
+  }
+  await sleep(200);
+
+  // ──── گام ۴: خلاصه + درخواست ────
+  console.log('%c▶ گام ۴/۴ — تمام', 'color:#0d7377;font-weight:bold');
+  console.log('');
+  console.log('%c📋 لطفاً این‌ها را کپی کن و برایم بفرست:', 'color:#22c55e;font-weight:bold;font-size:13px');
+  console.log('   1. کل جدول console.table بالا (کلیک راست → Copy table)');
+  console.log('   2. پاسخ چشمی: در گام ۲ اعوجاج ظاهر شد؟ (بله/نه)');
+  console.log('');
+  console.log('─'.repeat(60));
+})();

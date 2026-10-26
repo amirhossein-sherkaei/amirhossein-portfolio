@@ -1,0 +1,320 @@
+/* ============================================================
+   SHORAKAEI — INFINITY DESIGN SYSTEM
+   Awwwards / Apple Level UI
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   ۱. GLOBAL AURORA BACKGROUND (برای همه صفحات)
+   ═══════════════════════════════════════════════════════════ */
+@keyframes auroraMove {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10%, -10%) scale(1.1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+body {
+  background-color: var(--paper) !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: -20%; left: -10%;
+  width: 70vw; height: 70vw;
+  background: radial-gradient(circle, rgba(46,196,196,0.08) 0%, transparent 60%);
+  filter: blur(100px);
+  animation: auroraMove 25s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -20%; right: -10%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(139,58,74,0.06) 0%, transparent 60%);
+  filter: blur(100px);
+  animation: auroraMove 30s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۲. ORDER FORM — THE CINEMATIC EXPERIENCE
+   ═══════════════════════════════════════════════════════════ */
+
+/* شیشه مادر (Master Glass) */
+.oform {
+  background: linear-gradient(165deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.15) 100%) !important;
+  backdrop-filter: blur(50px) saturate(200%) brightness(1.1) !important;
+  -webkit-backdrop-filter: blur(50px) saturate(200%) brightness(1.1) !important;
+  border: 1px solid rgba(255,255,255,0.8) !important;
+  border-radius: 40px !important;
+  box-shadow: 
+    0 50px 100px -20px rgba(0,0,0,0.15),
+    inset 0 2px 0 rgba(255,255,255,1),
+    inset 0 -2px 0 rgba(0,0,0,0.05),
+    inset 1px 0 0 rgba(255,255,255,0.5),
+    inset -1px 0 0 rgba(255,255,255,0.5) !important;
+  position: relative;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+/* افکت لبه نوری روی فرم */
+.oform::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(46,196,196,0.3) 50%, rgba(255,255,255,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 10;
+}
+
+[data-theme="dark"] .oform {
+  background: linear-gradient(165deg, rgba(20,25,30,0.8) 0%, rgba(10,15,20,0.4) 100%) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1) !important;
+}
+
+/* سربرگ‌های فرم */
+.oform-step-title {
+  background: linear-gradient(90deg, var(--ink) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* دایره شماره مراحل (سه‌بعدی) */
+.oform-step-num {
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%) !important;
+  box-shadow: 
+    0 10px 20px -5px rgba(0,0,0,0.15),
+    inset 0 2px 0 rgba(255,255,255,1),
+    inset 0 -2px 0 rgba(0,0,0,0.1) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(255,255,255,0.9) !important;
+  font-weight: 800 !important;
+}
+
+/* فیلدهای ورودی (Neumorphic + Glass) */
+.oform-input-wrap input, .oform-input-wrap textarea {
+  background: rgba(255,255,255,0.4) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255,255,255,0.7) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    inset 0 4px 8px rgba(0,0,0,0.03), 
+    inset 0 -2px 4px rgba(255,255,255,0.5),
+    0 4px 12px -4px rgba(0,0,0,0.05) !important;
+  transition: all 0.5s cubic-bezier(0.22,1,0.36,1) !important;
+  color: var(--ink) !important;
+  padding: 18px 24px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+}
+
+.oform-input-wrap input:hover, .oform-input-wrap textarea:hover {
+  background: rgba(255,255,255,0.6) !important;
+  border-color: rgba(255,255,255,1) !important;
+}
+
+.oform-input-wrap input:focus, .oform-input-wrap textarea:focus {
+  background: rgba(255,255,255,0.95) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 
+    0 0 0 4px var(--accent-tint), 
+    0 20px 40px -10px var(--accent-glow),
+    inset 0 2px 0 rgba(255,255,255,1) !important;
+  transform: translateY(-4px) scale(1.01) !important;
+}
+
+/* کارت‌های انتخاب (Project Types) */
+.oform-option {
+  background: linear-gradient(145deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 100%) !important;
+  border: 1px solid rgba(255,255,255,0.7) !important;
+  backdrop-filter: blur(15px) !important;
+  border-radius: 24px !important;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255,255,255,1), 
+    0 8px 24px -8px rgba(0,0,0,0.08) !important;
+  padding: 20px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.oform-option::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.oform-option:hover::before {
+  left: 200%;
+}
+
+.oform-option:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: linear-gradient(145deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 100%) !important;
+  border-color: rgba(255,255,255,1) !important;
+  box-shadow: 0 16px 32px -12px rgba(0,0,0,0.1) !important;
+}
+
+.oform-option.is-active {
+  background: linear-gradient(135deg, rgba(46,196,196,0.15) 0%, rgba(10,92,96,0.05) 100%) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 
+    0 20px 40px -15px var(--accent-glow),
+    inset 0 2px 0 rgba(255,255,255,0.9) !important;
+  transform: translateY(-6px) scale(1.03) !important;
+}
+
+/* دکمه ثبت نهایی (The Master Button) */
+.oform-btn--primary {
+  background: linear-gradient(135deg, #2ec4c4 0%, #0a5c60 50%, #0d7377 100%) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 20px 50px -15px var(--accent-glow),
+    inset 0 2px 0 rgba(255,255,255,0.6),
+    inset 0 -3px 0 rgba(0,0,0,0.3) !important;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800 !important;
+}
+
+.oform-btn--primary:hover {
+  transform: translateY(-6px) scale(1.02) !important;
+  box-shadow: 
+    0 30px 70px -20px var(--accent-glow),
+    inset 0 2px 0 rgba(255,255,255,0.8) !important;
+}
+
+/* نوار پیشرفت مایع */
+.oform-progress-track {
+  background: rgba(0,0,0,0.05) !important;
+  height: 10px !important;
+  border-radius: 99px !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+.oform-progress-fill {
+  background: linear-gradient(90deg, #2ec4c4, #14b1ab, #0d7377, #2ec4c4) !important;
+  background-size: 300% 100% !important;
+  animation: gradientMove 4s linear infinite !important;
+  box-shadow: 0 0 20px #2ec4c4 !important;
+  border-radius: 99px !important;
+}
+@keyframes gradientMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+
+/* ═══════════════════════════════════════════════════════════
+   ۳. BLOG — THE EDITORIAL MASTERPIECE
+   ═══════════════════════════════════════════════════════════ */
+
+/* کارت‌های بلاگ (3D Tilt + Glass) */
+.blog-card, .blog-card-featured {
+  background: linear-gradient(145deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 100%) !important;
+  backdrop-filter: blur(30px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+  border: 1px solid rgba(255,255,255,0.8) !important;
+  box-shadow: 
+    0 15px 35px -15px rgba(0,0,0,0.1),
+    inset 0 2px 0 rgba(255,255,255,1) !important;
+  transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  border-radius: 32px !important;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.blog-card:hover, .blog-card-featured:hover {
+  background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 100%) !important;
+  transform: translateY(-12px) scale(1.02) rotateX(2deg) rotateY(-2deg) !important;
+  box-shadow: 
+    0 40px 80px -20px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(46,196,196,0.3),
+    inset 0 2px 0 rgba(255,255,255,1) !important;
+}
+
+[data-theme="dark"] .blog-card, [data-theme="dark"] .blog-card-featured {
+  background: linear-gradient(145deg, rgba(20,25,30,0.8) 0%, rgba(10,15,20,0.4) 100%) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+/* تصویر داخل کارت */
+.blog-card-featured-bg {
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.blog-card:hover .blog-card-featured-bg {
+  transform: scale(1.05);
+}
+
+/* فهرست مطالب (TOC) */
+.glass-toc {
+  background: linear-gradient(145deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 100%) !important;
+  backdrop-filter: blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+  border: 1px solid rgba(255,255,255,0.9) !important;
+  border-radius: 32px !important;
+  box-shadow: 
+    0 30px 60px -15px rgba(0,0,0,0.1),
+    inset 0 2px 0 rgba(255,255,255,1) !important;
+  padding: 36px !important;
+}
+
+[data-theme="dark"] .glass-toc {
+  background: linear-gradient(145deg, rgba(20,25,30,0.7) 0%, rgba(10,15,20,0.3) 100%) !important;
+}
+
+.glass-toc-title {
+  font-size: 1.2rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 2px solid rgba(0,0,0,0.05) !important;
+}
+
+.glass-toc-link {
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1) !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+}
+
+.glass-toc-link:hover {
+  background: rgba(255,255,255,0.8) !important;
+  transform: translateX(-6px) !important;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.05) !important;
+}
+
+.glass-toc-link.is-active {
+  background: linear-gradient(90deg, rgba(46,196,196,0.15), transparent) !important;
+  color: var(--accent) !important;
+  font-weight: 800 !important;
+  box-shadow: inset 4px 0 0 var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ۴. SCROLLBAR & DETAILS (Finishing Touches)
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent) 0%, #0a5c60 100%);
+  border-radius: 10px;
+  border: 3px solid var(--paper);
+}

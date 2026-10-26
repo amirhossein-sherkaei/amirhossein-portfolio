@@ -1,0 +1,1364 @@
+/* ============================================================
+   ORDER FORM v4 — 2026 Redesign
+   ------------------------------------------------------------
+   Scoped under .oform — no conflicts with legacy CSS
+   - Non-clickable step indicators
+   - Desktop 2-column grids for short fields
+   - Mobile 3-step wizard
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+.oform {
+  --f-field-h: 54px;
+  --f-field-radius: 14px;
+  --f-gap: 18px;
+  --f-pad: 24px;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, #fff 40%, transparent) inset,
+    0 24px 60px -24px rgba(10, 9, 8, 0.14);
+}
+
+[data-theme="dark"] .oform {
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 60px -24px rgba(0, 0, 0, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROGRESS
+   ═══════════════════════════════════════════════════════════ */
+.oform-progress {
+  position: relative;
+  padding: 22px var(--f-pad) 18px;
+  background: linear-gradient(
+    180deg,
+    var(--paper-2) 0%,
+    color-mix(in srgb, var(--paper-2) 55%, var(--surface)) 100%
+  );
+  border-bottom: 1px solid var(--line);
+}
+
+.oform-progress-track {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: color-mix(in srgb, var(--line-strong) 25%, transparent);
+  overflow: hidden;
+}
+
+.oform-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width;
+}
+
+.oform-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.oform-progress-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.oform-progress-badge-unit {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.oform-progress-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-3-strong);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP PILLS (mobile only) — NON-CLICKABLE
+   ═══════════════════════════════════════════════════════════ */
+.oform-progress-steps {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  pointer-events: none; /* disable all interactions */
+  user-select: none;
+}
+
+.oform-progress-steps::-webkit-scrollbar {
+  display: none;
+}
+
+.oform-step-pill {
+  flex: 1 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-3);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-step-pill-num {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--line-strong) 20%, transparent);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-step-pill.is-done {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+  color: color-mix(in srgb, var(--accent) 70%, var(--ink-2));
+}
+
+.oform-step-pill.is-done .oform-step-pill-num {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+}
+
+.oform-step-pill.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px -6px var(--accent-glow);
+}
+
+.oform-step-pill.is-active .oform-step-pill-num {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DRAFT NOTICE
+   ═══════════════════════════════════════════════════════════ */
+.oform-draft {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px var(--f-pad);
+  background: var(--accent-tint);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.oform-draft-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.oform-draft-text::before {
+  content: "↻";
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.oform-draft-clear {
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-draft-clear:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP / SECTION HEADINGS
+   ═══════════════════════════════════════════════════════════ */
+.oform-step,
+.oform-section {
+  padding: 28px var(--f-pad) 24px;
+}
+
+.oform-section + .oform-section {
+  border-top: 1px solid var(--line);
+}
+
+.oform-step-head,
+.oform-section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.oform-step-num {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.oform-step-head-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.oform-step-title {
+  margin: 0 0 4px;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.oform-step-subtitle {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-3-strong);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STEP BODY
+   ═══════════════════════════════════════════════════════════ */
+.oform-step-body {
+  display: grid;
+  gap: var(--f-gap);
+}
+
+/* 2-column grid for short fields */
+.oform-fields-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--f-gap);
+}
+
+/* Fields that shouldn't stretch in the 2-column grid */
+.oform-fields-2 .oform-field {
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIELDS
+   ═══════════════════════════════════════════════════════════ */
+.oform-field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.oform-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-3-strong);
+  line-height: 1.4;
+}
+
+.oform-label-text {
+  display: inline;
+}
+
+.oform-req {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.oform-input-wrap {
+  position: relative;
+  display: block;
+}
+
+.oform-input-wrap input,
+.oform-input-wrap textarea {
+  width: 100%;
+  padding: 0 16px;
+  min-height: var(--f-field-h);
+  border: 1.5px solid var(--line);
+  border-radius: var(--f-field-radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.oform-input-wrap textarea {
+  padding: 14px 16px;
+  min-height: 130px;
+  line-height: 1.75;
+  resize: vertical;
+}
+
+.oform-input-wrap input:hover,
+.oform-input-wrap textarea:hover {
+  border-color: var(--line-strong);
+}
+
+.oform-input-wrap input:focus,
+.oform-input-wrap textarea:focus {
+  border-color: var(--accent);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px var(--accent-tint);
+}
+
+.oform-input-wrap input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--paper-2);
+}
+
+.oform-input-wrap input::placeholder,
+.oform-input-wrap textarea::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+}
+
+/* ─── Field icons ─── */
+.oform-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  inset-inline-end: 16px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  animation: oformIconIn 300ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.oform-icon svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+}
+
+.oform-icon--top {
+  top: 22px;
+  transform: none;
+}
+
+.oform-field[data-state="success"] input,
+.oform-field[data-state="success"] textarea {
+  border-color: color-mix(in srgb, var(--success) 50%, var(--line));
+  padding-inline-end: 48px;
+  background: linear-gradient(
+    180deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface) 95%, var(--success)) 100%
+  );
+}
+
+.oform-field[data-state="success"] .oform-icon {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--success);
+}
+
+.oform-field[data-state="error"] input,
+.oform-field[data-state="error"] textarea {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--line));
+  padding-inline-end: 48px;
+  background: linear-gradient(
+    180deg,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--surface) 96%, var(--danger)) 100%
+  );
+  animation: oformShake 340ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.oform-field[data-state="error"] .oform-icon {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+.oform-field[data-state="error"] .oform-icon svg {
+  width: 11px;
+  height: 11px;
+  stroke-width: 2.5;
+}
+
+@keyframes oformIconIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes oformShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* ─── Hints ─── */
+.oform-hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.oform-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.oform-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.oform-counter.is-near {
+  color: var(--accent);
+}
+
+.oform-counter.is-over {
+  color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHECKBOX
+   ═══════════════════════════════════════════════════════════ */
+.oform-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--f-field-radius);
+  cursor: pointer;
+  transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: var(--f-field-h);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.oform-check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.oform-check-box {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 7px;
+  background: var(--surface);
+  color: transparent;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-check-box svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.oform-check input:checked ~ .oform-check-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.oform-check input:checked ~ .oform-check-box svg {
+  opacity: 1;
+}
+
+.oform-check:has(input:checked) {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.oform-check input:focus-visible ~ .oform-check-box {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.oform-check-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OPTIONS GRID (project types)
+   ═══════════════════════════════════════════════════════════ */
+.oform-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.oform-fieldset legend {
+  padding: 0;
+  margin-bottom: 2px;
+}
+
+.oform-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.oform-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  min-height: 50px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+  min-width: 0;
+}
+
+.oform-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.oform-option-check {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: transparent;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-option-check svg {
+  width: 11px;
+  height: 11px;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.oform-option-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink-2);
+  text-align: start;
+}
+
+.oform-option:hover {
+  border-color: var(--line-strong);
+}
+
+.oform-option.is-active {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.oform-option.is-active .oform-option-check {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.oform-option.is-active .oform-option-check svg {
+  opacity: 1;
+}
+
+.oform-option.is-active .oform-option-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.oform-option input:focus-visible ~ .oform-option-check {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT METHODS
+   ═══════════════════════════════════════════════════════════ */
+.oform-contacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.oform-contact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 8px;
+  min-height: 72px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.oform-contact input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.oform-contact-radio {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-contact-radio::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  transform: scale(0);
+  transition: transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.oform-contact-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  line-height: 1.2;
+}
+
+.oform-contact:hover {
+  border-color: var(--line-strong);
+}
+
+.oform-contact.is-active {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+
+.oform-contact.is-active .oform-contact-radio {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.oform-contact.is-active .oform-contact-radio::after {
+  transform: scale(1);
+}
+
+.oform-contact.is-active .oform-contact-label {
+  color: var(--accent);
+}
+
+.oform-contact input:focus-visible ~ .oform-contact-radio {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SUMMARY
+   ═══════════════════════════════════════════════════════════ */
+.oform-summary {
+  margin-top: 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.oform-summary-title {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.oform-summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.oform-summary-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13.5px;
+}
+
+.oform-summary-list span {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.oform-summary-list strong {
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  word-break: break-word;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ERROR BANNER
+   ═══════════════════════════════════════════════════════════ */
+.oform-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px var(--f-pad);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--danger) 20%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--danger) 20%, transparent);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--danger);
+  line-height: 1.5;
+  animation: oformErrorIn 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-error-icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #fff;
+  margin-top: 1px;
+}
+
+.oform-error-icon svg {
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes oformErrorIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIONS
+   ═══════════════════════════════════════════════════════════ */
+.oform-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px var(--f-pad);
+  background: var(--paper-2);
+  border-top: 1px solid var(--line);
+}
+
+.oform-actions--desktop {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.oform-actions-note {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.oform-actions--sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════ */
+.oform-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 0 22px;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition:
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.oform-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.oform-btn--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow:
+    0 1px 2px rgba(10, 9, 8, 0.05),
+    0 8px 24px -10px var(--accent-glow);
+}
+
+.oform-btn--primary:hover:not(:disabled) {
+  background: var(--accent-2);
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 2px rgba(10, 9, 8, 0.05),
+    0 14px 32px -10px var(--accent-glow);
+}
+
+.oform-btn--primary:hover:not(:disabled) svg:last-child {
+  transform: translateX(-4px);
+}
+
+.oform-btn--ghost {
+  flex: 0 0 auto;
+  background: var(--surface);
+  color: var(--ink-2);
+  border-color: var(--line);
+}
+
+.oform-btn--ghost:hover:not(:disabled) {
+  background: var(--paper);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.oform-btn--ghost:hover:not(:disabled) svg {
+  transform: translateX(4px);
+}
+
+.oform-btn--lg {
+  min-height: 58px;
+  padding: 0 30px;
+  font-size: 15px;
+}
+
+.oform-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.oform-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.oform-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Honeypot */
+.oform-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SUCCESS STATE
+   ═══════════════════════════════════════════════════════════ */
+.oform--success {
+  padding: 0;
+}
+
+.oform-success-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 32px 44px;
+}
+
+.oform-success-icon {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  background: var(--accent-tint);
+  color: var(--accent);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 6%, transparent);
+  animation: oformSuccessPop 700ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.oform-success-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 3;
+}
+
+@keyframes oformSuccessPop {
+  0% {
+    transform: scale(0.5) rotate(-15deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+.oform-success-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.oform-success-title {
+  margin: 0 0 14px;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.oform-success-text {
+  max-width: 380px;
+  margin: 0 0 28px;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+.oform-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.oform-success-actions .oform-btn {
+  flex: 1 0 180px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Tablet ─── */
+@media (min-width: 721px) and (max-width: 900px) {
+  .oform {
+    --f-pad: 28px;
+    --f-gap: 20px;
+    max-width: 100%;
+    margin-inline: 16px;
+  }
+
+  .oform-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ─── Desktop ─── */
+@media (min-width: 901px) {
+  .oform {
+    --f-pad: 40px;
+    --f-gap: 22px;
+    max-width: 780px;
+    border-radius: 28px;
+  }
+
+  .oform-progress {
+    padding: 26px var(--f-pad) 22px;
+  }
+
+  .oform-section {
+    padding: 40px var(--f-pad) 36px;
+  }
+
+  .oform-step-num {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .oform-step-title {
+    font-size: 22px;
+  }
+
+  .oform-step-subtitle {
+    font-size: 14px;
+  }
+
+  .oform-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .oform-actions {
+    padding: 24px var(--f-pad);
+  }
+
+  /* At desktop, the last section is "روش تماس" — make it look distinct */
+  .oform-section:last-child {
+    background: linear-gradient(
+      180deg,
+      var(--surface) 0%,
+      color-mix(in srgb, var(--paper-2) 40%, var(--surface)) 100%
+    );
+  }
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 720px) {
+  .oform {
+    --f-pad: 18px;
+    --f-gap: 16px;
+    --f-field-h: 54px;
+    max-width: 100%;
+    margin-inline: 0;
+    border-radius: 18px;
+  }
+
+  .oform-progress {
+    padding: 16px var(--f-pad) 14px;
+  }
+
+  .oform-step {
+    padding: 22px var(--f-pad) 18px;
+  }
+
+  .oform-step-head {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .oform-step-num {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .oform-step-title {
+    font-size: 17px;
+  }
+
+  .oform-step-subtitle {
+    font-size: 13px;
+  }
+
+  /* Fields single-column on mobile */
+  .oform-fields-2 {
+    grid-template-columns: 1fr;
+    gap: var(--f-gap);
+  }
+
+  .oform-label {
+    font-size: 12.5px;
+  }
+
+  .oform-input-wrap input,
+  .oform-input-wrap textarea {
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .oform-icon {
+    inset-inline-end: 14px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .oform-icon--top {
+    top: 20px;
+  }
+
+  .oform-options {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .oform-option {
+    min-height: 48px;
+    padding: 10px 14px;
+    border-radius: 11px;
+  }
+
+  .oform-option-label {
+    font-size: 13.5px;
+  }
+
+  .oform-contacts {
+    gap: 8px;
+  }
+
+  .oform-contact {
+    min-height: 68px;
+    padding: 10px 6px;
+    border-radius: 12px;
+  }
+
+  .oform-contact-label {
+    font-size: 13px;
+  }
+
+  .oform-actions {
+    padding: 14px var(--f-pad);
+  }
+
+  .oform-btn {
+    min-height: 52px;
+    font-size: 14.5px;
+    border-radius: 13px;
+  }
+
+  .oform-btn--ghost {
+    flex: 0 0 100px;
+  }
+
+  .oform-summary {
+    padding: 14px 16px;
+  }
+
+  .oform-summary-list {
+    gap: 6px;
+  }
+
+  .oform-summary-list li {
+    font-size: 13px;
+  }
+
+  .oform-success-card {
+    padding: 44px 24px 36px;
+  }
+
+  .oform-success-icon {
+    width: 68px;
+    height: 68px;
+  }
+
+  .oform-success-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .oform-success-actions {
+    flex-direction: column;
+  }
+
+  .oform-success-actions .oform-btn {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ─── Small mobile ─── */
+@media (max-width: 400px) {
+  .oform {
+    --f-pad: 14px;
+    --f-gap: 14px;
+  }
+
+  .oform-step-title {
+    font-size: 16px;
+  }
+
+  .oform-btn {
+    padding: 0 16px;
+    font-size: 14px;
+  }
+
+  .oform-btn--ghost {
+    flex: 0 0 88px;
+  }
+
+  .oform-step-pill {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .oform-step-pill-num {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .oform-icon,
+  .oform-field[data-state="error"] input,
+  .oform-field[data-state="error"] textarea,
+  .oform-success-icon,
+  .oform-error {
+    animation: none !important;
+  }
+
+  .oform-btn,
+  .oform-progress-fill,
+  .oform-step-pill {
+    transition: none !important;
+  }
+}

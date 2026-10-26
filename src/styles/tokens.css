@@ -1,0 +1,146 @@
+/* ============================================================
+   Design Tokens — Estedad & Shahkar-e Shorakaei Edition
+   ============================================================ */
+
+:root {
+  --paper:        #F8F5EF;
+  --paper-2:      #EBE5D9;
+  --surface:      #FFFFFF;
+  --surface-2:    #F2EFE9;
+  --ink:          #12100E;
+  --ink-2:        #3D3630;
+  --ink-3:        #6B625B;
+  --ink-3-strong: #544C46;
+  --ink-muted:    #A59B93;
+  --accent:        #0D7377;
+  --accent-2:      #0A5C60;
+  --accent-soft:   #14B1AB;
+  --accent-tint:   rgba(13, 115, 119, 0.08);
+  --accent-glow:   rgba(13, 115, 119, 0.24);
+  --burgundy:        #7D293F;
+  --burgundy-2:      #5E1C2E;
+  --burgundy-soft:   #9E3750;
+  --burgundy-tint:   rgba(125, 41, 63, 0.08);
+  --burgundy-glow:   rgba(125, 41, 63, 0.28);
+  --gold:          #D9AD70;
+  --gold-2:        #C29554;
+  --gold-tint:     rgba(217, 173, 112, 0.12);
+  --line:          rgba(18, 16, 14, 0.08);
+  --line-soft:     rgba(18, 16, 14, 0.04);
+  --line-strong:   rgba(18, 16, 14, 0.18);
+  --glass-soft:    rgba(255, 255, 255, 0.55);
+  --glass:         rgba(255, 255, 255, 0.65);
+  --glass-strong:  rgba(255, 255, 255, 0.78);
+  --glass-border:  rgba(18, 16, 14, 0.06);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --success:       #0F766E;
+  --danger:        #B42318;
+  --shadow-sm: 0 1px 2px rgba(18, 16, 14, 0.04);
+  --shadow-md: 0 8px 24px -12px rgba(18, 16, 14, 0.14);
+  --shadow-lg: 0 24px 64px -24px rgba(18, 16, 14, 0.22);
+  --shadow-xl: 0 40px 100px -32px rgba(18, 16, 14, 0.28);
+  --shadow-accent: 0 12px 40px -12px var(--accent-glow);
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-full: 999px;
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --duration-fast:   160ms;
+  --duration-normal: 320ms;
+  --duration-slow:   640ms;
+
+  /* 🔠 فونت استعداد */
+  --font-sans: var(--font-estedad), "Estedad", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* 📏 مقیاس سیال برای فارسی */
+  --fs-micro:   clamp(0.6875rem, 0.675rem  + 0.0625vw, 0.75rem);
+  --fs-mono:    clamp(0.6875rem, 0.6625rem + 0.125vw,  0.8125rem);
+  --fs-small:   clamp(0.8125rem, 0.8rem    + 0.0625vw, 0.875rem);
+  --fs-body:    clamp(1rem,     0.975rem  + 0.125vw,  1.0625rem);
+  --fs-h3:      clamp(1.25rem,  1.15rem   + 0.5vw,    1.5rem);
+  --fs-h2:      clamp(1.625rem, 1.45rem   + 1.5vw,    2.75rem);
+  --fs-h1:      clamp(2rem,     1.8rem    + 2.25vw,   3.75rem);
+  --fs-display: clamp(2.75rem,  2.3rem    + 4.75vw,   6rem);
+
+  /* 📐 ارتفاع خطوط مخصوص فارسی */
+  --lh-display: 1.1;
+  --lh-h1:      1.2;
+  --lh-h2:      1.25;
+  --lh-h3:      1.35;
+  --lh-body:    1.8;
+  --lh-small:   1.7;
+  --lh-tight:   1.3;
+
+  /* 🔤 فاصله حروف */
+  --tracking-normal:  0;
+  --tracking-tight:   -0.01em;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
+  --tracking-widest:  0.16em;
+
+  --reading:        65ch;
+  --reading-wide:   75ch;
+  --reading-narrow: 50ch;
+  --container: 1280px;
+  --focus-ring: 2px;
+  --focus-offset: 3px;
+
+  /* هیرو */
+  --hero-display: clamp(2rem, 1.2rem + 3.2vw, 3.75rem);
+  --hero-display-lh: 1.18;
+  --hero-display-ls: 0;
+  --hero-role: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+  --hero-role-lh: 1.5;
+  --hero-desc: clamp(0.9375rem, 0.875rem + 0.25vw, 1.0625rem);
+  --hero-desc-lh: 1.85;
+  --hero-cta: clamp(0.875rem, 0.83rem + 0.2vw, 0.9375rem);
+  --hero-eyebrow: clamp(0.6875rem, 0.66rem + 0.1vw, 0.75rem);
+  --hero-eyebrow-ls: 0;
+  --hero-meta: clamp(0.625rem, 0.6rem + 0.1vw, 0.6875rem);
+  --hero-meta-ls: 0.18em;
+}
+
+[data-theme="dark"] {
+  --paper:        #08181A;
+  --paper-2:      #0E2224;
+  --surface:      #132A2E;
+  --surface-2:    #1A353A;
+  --ink:          #E8F0F0;
+  --ink-2:        #B8C8C8;
+  --ink-3:        #8AA0A2;
+  --ink-3-strong: #9DB0B2;
+  --ink-muted:    #5A6E70;
+  --accent:        #14B1AB;
+  --accent-2:      #2EC4C4;
+  --accent-soft:   #5DD8D3;
+  --accent-tint:   rgba(20, 177, 171, 0.12);
+  --accent-glow:   rgba(20, 177, 171, 0.32);
+  --burgundy:        #9E3750;
+  --burgundy-2:      #7D293F;
+  --burgundy-soft:   #C24E6B;
+  --burgundy-tint:   rgba(158, 55, 80, 0.16);
+  --burgundy-glow:   rgba(158, 55, 80, 0.36);
+  --gold:          #E5C28F;
+  --gold-2:        #D9AD70;
+  --gold-tint:     rgba(229, 194, 143, 0.12);
+  --line:          rgba(232, 240, 240, 0.08);
+  --line-soft:     rgba(232, 240, 240, 0.04);
+  --line-strong:   rgba(232, 240, 240, 0.18);
+  --glass-soft:    rgba(19, 42, 46, 0.55);
+  --glass:         rgba(19, 42, 46, 0.65);
+  --glass-strong:  rgba(14, 34, 36, 0.78);
+  --glass-border:  rgba(232, 240, 240, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.06);
+  --success:       #34D399;
+  --danger:        #F87171;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 24px 64px -24px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 40px 100px -32px rgba(0, 0, 0, 0.9);
+  --shadow-accent: 0 12px 40px -12px var(--accent-glow);
+}

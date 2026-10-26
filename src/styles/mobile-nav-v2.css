@@ -1,0 +1,150 @@
+/* ============================================================
+   MOBILE NAV V2 — Smart Header + Refined Bottom Nav
+   ------------------------------------------------------------
+   - Header hides on scroll down, shows on scroll up
+   - Refined bottom nav with better icon animation
+   - Route-aware active states
+   - Spring-based motion
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   SMART HEADER — hide on scroll down
+   ═══════════════════════════════════════════════════════════ */
+.site-nav {
+  transition:
+    transform 380ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.site-nav.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* On desktop, keep header always visible (hide is only for mobile feel) */
+@media (min-width: 901px) {
+  .site-nav.is-hidden {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BOTTOM NAV — refined icon animations
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* Icon container */
+  .mobile-nav-icon {
+    transition:
+      transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: center;
+  }
+
+  /* Icon SVG stroke-width */
+  .mobile-nav-icon svg {
+    transition: stroke-width 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ═══ ACTIVE STATE ═══ */
+  .mobile-nav-item.is-active .mobile-nav-icon {
+    transform: translateY(-3px) scale(1.12);
+  }
+
+  .mobile-nav-item.is-active .mobile-nav-icon svg {
+    stroke-width: 2.2;
+  }
+
+  /* ═══ ACTIVE INDICATOR — animated bar above label ═══ */
+  .mobile-nav-item::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    width: 20px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      currentColor 20%,
+      currentColor 80%,
+      transparent
+    );
+    opacity: 0;
+    transition:
+      transform 340ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      opacity 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .mobile-nav-item.is-active::before {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+  }
+
+  /* ═══ ACTIVE LABEL — bold ═══ */
+  .mobile-nav-label {
+    transition:
+      font-weight 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mobile-nav-item.is-active .mobile-nav-label {
+    font-weight: 700;
+    letter-spacing: 0.005em;
+  }
+
+  /* ═══ PRESS FEEDBACK ═══ */
+  .mobile-nav-item:active .mobile-nav-icon {
+    transform: scale(0.9);
+    transition-duration: 100ms;
+  }
+
+  /* ═══ CTA BUTTON — pulse when active hover ═══ */
+  .mobile-nav-cta-icon {
+    transition: transform 320ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .mobile-nav-cta:active .mobile-nav-cta-icon {
+    transform: rotate(90deg) scale(0.9);
+    transition-duration: 180ms;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav {
+    transition: opacity 200ms ease;
+  }
+
+  .site-nav.is-hidden {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-nav-icon,
+  .mobile-nav-item::before,
+  .mobile-nav-label,
+  .mobile-nav-cta-icon {
+    transition: none !important;
+  }
+
+  .mobile-nav-item.is-active .mobile-nav-icon {
+    transform: none;
+  }
+
+  .mobile-nav-item.is-active::before {
+    transform: translateX(-50%) scaleX(1);
+  }
+}

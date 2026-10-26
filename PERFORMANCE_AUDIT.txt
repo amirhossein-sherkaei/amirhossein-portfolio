@@ -1,0 +1,1570 @@
+================================================================================
+ PERFORMANCE AUDIT DATA
+================================================================================
+
+--------------------------------------------------------------------------------
+ FILE: src\components\Hero.tsx
+--------------------------------------------------------------------------------
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
+import MagneticButton from "@/components/MagneticButton";
+import EditorialImage from "@/components/ui/EditorialImage";
+
+type LivePost = {
+  slug: string;
+  title: string;
+  date: string;
+};
+
+type HeroProps = {
+  latestPost: LivePost | null;
+  archivePost: LivePost | null;
+  totalPosts: number;
+  totalProjects: number;
+};
+
+const LIVE_ROTATION_MS = 5500;
+
+const MARQUEE_WORDS = [
+  "WEB DESIGN",
+  "CREATIVE DEVELOPMENT",
+  "AI VISUALS",
+  "BRAND IDENTITY",
+  "MOTION",
+  "INTERFACE",
+];
+
+const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+
+function toPersian(value: string | number): string {
+  return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[+d]);
+}
+
+const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", {
+  year: "numeric",
+})
+  .format(new Date())
+  .replace(/[^\u06F0-\u06F9]/g, "")
+  .slice(0, 4);
+
+function useTehranClock() {
+  const [mounted, setMounted] = useState(false);
+  const [time, setTime] = useState("--:--:--");
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    setMounted(true);
+    const onVis = () => setVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+
+    const update = () => {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Tehran",
+      });
+      const parts = fmt.formatToParts(now);
+      const get = (t: string) =>
+        parts.find((p) => p.type === t)?.value ?? "00";
+      setTime(`${get("hour")}:${get("minute")}:${get("second")}`);
+    };
+    update();
+
+    if (!visible) {
+      return () => document.removeEventListener("visibilitychange", onVis);
+    }
+
+    const id = window.setInterval(update, 1000);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [visible]);
+
+  return mounted ? toPersian(time) : "--:--:--";
+}
+
+function usePersianDate() {
+  const [mounted, setMounted] = useState(false);
+  const [date, setDate] = useState({
+    day: "--",
+    month: "--",
+    year: "----",
+    weekday: "--",
+  });
+
+  useEffect(() => {
+    setMounted(true);
+    const update = () => {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat("fa-IR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        weekday: "long",
+        timeZone: "Asia/Tehran",
+      });
+      const parts = fmt.formatToParts(now);
+      const get = (t: string) =>
+        parts.find((p) => p.type === t)?.value ?? "--";
+      setDate({
+        day: get("day"),
+        month: get("month"),
+        year: get("year").replace(/[^\u06F0-\u06F9]/g, ""),
+        weekday: get("weekday"),
+      });
+    };
+    update();
+    const id = window.setInterval(update, 30000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return mounted
+    ? date
+    : { day: "--", month: "--", year: "----", weekday: "--" };
+}
+
+function useRelativeTime(iso: string | null): string {
+  const [mounted, setMounted] = useState(false);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    if (!iso) return;
+    const compute = () => {
+      const diff = Date.now() - new Date(iso).getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      if (days <= 0) setText("امروز");
+      else if (days === 1) setText("دیروز");
+      else if (days < 30) setText(`${toPersian(days)} روز پیش`);
+      else if (days < 365)
+        setText(`${toPersian(Math.floor(days / 30))} ماه پیش`);
+      else setText(`${toPersian(Math.floor(days / 365))} سال پیش`);
+    };
+    compute();
+    const id = window.setInterval(compute, 120000);
+    return () => window.clearInterval(id);
+  }, [iso]);
+
+  return mounted ? text : "";
+}
+
+export default function Hero({
+  latestPost,
+  archivePost,
+  totalPosts,
+  totalProjects,
+}: HeroProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const [liveIndex, setLiveIndex] = useState(0);
+  const [livePaused, setLivePaused] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
+  const [tabVisible, setTabVisible] = useState(true);
+
+  const clock = useTehranClock();
+  const persianDate = usePersianDate();
+  const latestAgo = useRelativeTime(latestPost?.date ?? null);
+  const archiveAgo = useRelativeTime(archivePost?.date ?? null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setHeroInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onVis = () => {
+      setTabVisible(!document.hidden);
+      document.documentElement.setAttribute(
+        "data-tab-hidden",
+        document.hidden ? "true" : "false"
+      );
+    };
+    onVis();
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (heroInView) section.classList.add("hero-in-view");
+    else section.classList.remove("hero-in-view");
+  }, [heroInView]);
+
+  const shouldAnimate = heroInView && tabVisible;
+
+  useEffect(() => {
+    if (livePaused || !shouldAnimate) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setLiveIndex((i) => (i + 1) % 3),
+      LIVE_ROTATION_MS
+    );
+    return () => window.clearInterval(id);
+  }, [livePaused, shouldAnimate]);
+
+  const liveStates = useMemo(() => {
+    const states: Array<{
+      id: "latest" | "stats" | "archive";
+      render: () => React.ReactNode;
+    }> = [];
+
+    if (latestPost) {
+      states.push({
+        id: "latest",
+        render: () => (
+          <Link
+            href={`/blog/${latestPost.slug}`}
+            prefetch={false}
+            className="hero-bento-live-item"
+          >
+            <span className="hero-bento-live-label">
+              NOW{" "}
+              <span className="hero-bento-live-label-text">
+                · آخرین یادداشت
+              </span>
+            </span>
+            <span className="hero-bento-live-title">
+              {latestPost.title}
+            </span>
+            <span className="hero-bento-live-arrow" aria-hidden="true">
+              ←
+            </span>
+            {latestAgo && (
+              <span className="hero-bento-live-ago">{latestAgo}</span>
+            )}
+          </Link>
+        ),
+      });
+    }
+
+    states.push({
+      id: "stats",
+      render: () => (
+        <Link
+          href="/blog"
+          prefetch={false}
+          className="hero-bento-live-item hero-bento-live-item--stats"
+        >
+          <span className="hero-bento-live-label">
+            INDEX{" "}
+            <span className="hero-bento-live-label-text">· آمار زنده</span>
+          </span>
+          <span className="hero-bento-live-stats">
+            <span className="hero-bento-live-stat">
+              <strong>{toPersian(totalPosts)}</strong>
+              <span>مقاله</span>
+            </span>
+            <span className="hero-bento-live-stat-sep">·</span>
+            <span className="hero-bento-live-stat">
+              <strong>{toPersian(totalProjects)}</strong>
+              <span>پروژه</span>
+            </span>
+          </span>
+        </Link>
+      ),
+    });
+
+    if (archivePost) {
+      states.push({
+        id: "archive",
+        render: () => (
+          <Link
+            href={`/blog/${archivePost.slug}`}
+            prefetch={false}
+            className="hero-bento-live-item"
+          >
+            <span className="hero-bento-live-label">
+              ARCHIVE{" "}
+              <span className="hero-bento-live-label-text">
+                · از آرشیو
+              </span>
+            </span>
+            <span className="hero-bento-live-title">
+              {archivePost.title}
+            </span>
+            <span className="hero-bento-live-arrow" aria-hidden="true">
+              ←
+            </span>
+            {archiveAgo && (
+              <span className="hero-bento-live-ago">{archiveAgo}</span>
+            )}
+          </Link>
+        ),
+      });
+    }
+
+    return states;
+  }, [
+    latestPost,
+    archivePost,
+    latestAgo,
+    archiveAgo,
+    totalPosts,
+    totalProjects,
+  ]);
+
+  const activeLive = liveStates[liveIndex % liveStates.length];
+
+  return (
+    <section
+      ref={sectionRef}
+      id="home"
+      className="hero-section hero-in-view"
+      data-hero
+    >
+      <div className="hero-bg" aria-hidden="true">
+        <span className="hero-bg-orb hero-bg-orb-1" />
+        <span className="hero-bg-orb hero-bg-orb-2" />
+        <span className="hero-bg-orb hero-bg-orb-3" />
+        <span className="hero-bg-grid" />
+        <span className="hero-bg-grain" />
+      </div>
+
+      <div className="hero-ruler hero-ruler-top" aria-hidden="true">
+        {Array.from({ length: 13 }).map((_, i) => (
+          <span key={i}>{toPersian(String(i).padStart(2, "0"))}</span>
+        ))}
+      </div>
+      <div className="hero-ruler hero-ruler-left" aria-hidden="true">
+        {["A", "B", "C", "D", "E", "F", "G", "H"].map((l) => (
+          <span key={l}>{l}</span>
+        ))}
+      </div>
+
+      <span className="hero-crosshair hero-crosshair-tl" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-tr" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-bl" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+      <span className="hero-crosshair hero-crosshair-br" aria-hidden="true">
+        <CrosshairMark />
+      </span>
+
+      <div className="hero-inner">
+        <div className="hero-masthead">
+          <span className="hero-masthead-cell">
+            <span className="hero-masthead-dot" aria-hidden="true" />
+            <span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span>
+          </span>
+          <span className="hero-masthead-cell hero-masthead-cell--center">
+            AMIRHOSSEIN&nbsp;SHORAKAEI
+          </span>
+          <span className="hero-masthead-cell hero-masthead-cell--latin">
+            <span className="hero-masthead-coord">
+              35.6892°N · 51.3890°E
+            </span>
+            <span className="hero-masthead-clock">{clock}</span>
+          </span>
+        </div>
+
+        <div className="hero-grid">
+          <div className="hero-main">
+            <span className="hero-kicker" aria-hidden="true">
+              <span className="hero-kicker-line" />
+              <span className="hero-kicker-text">
+                SECTION&nbsp;·&nbsp;01&nbsp;·&nbsp;INTRO
+              </span>
+            </span>
+
+            <h1 className="hero-title">
+              <span className="hero-title-line">سایت اختصاصی</span>
+              <span className="hero-title-line hero-title-muted">
+                برای کسب‌وکارهایی که
+              </span>
+              <span className="hero-title-line">
+                {"می‌خوان "}
+                <span className="ink-word hero-title-em">
+                  حرفه‌ای دیده بشن
+                </span>
+                <em className="hero-title-accent">.</em>
+              </span>
+            </h1>
+
+            <p className="hero-description">
+              از طراحی UI/UX تا توسعه و انتشار نهایی؛ یک وب‌سایت سریع،
+              ریسپانسیو و متناسب با برند شما — بدون قالب تکراری.
+            </p>
+
+            <div className="hero-actions">
+              <MagneticButton strength={0.18} radius={80}>
+                <Link
+                  href="/order"
+                  prefetch={false}
+                  className="hero-btn hero-btn-primary"
+                >
+                  <span className="hero-btn-shine" aria-hidden="true" />
+                  <span className="ink-word ink-word--on-dark">
+                    شروع پروژه
+                  </span>
+                  <span className="hero-btn-arrow" aria-hidden="true">
+                    ←
+                  </span>
+                </Link>
+              </MagneticButton>
+
+              <MagneticButton strength={0.12} radius={70}>
+                <a
+                  href="#portfolio"
+                  className="hero-btn hero-btn-secondary"
+                >
+                  <span className="ink-word">مشاهده نمونه‌کارها</span>
+                  <span className="hero-btn-count" aria-hidden="true">
+                    ۰۴
+                  </span>
+                </a>
+              </MagneticButton>
+            </div>
+
+            <ul className="hero-trust" aria-label="تعهدهای کلیدی">
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۱۰۰٪</span>
+                <span className="hero-trust-label">طراحی اختصاصی</span>
+              </li>
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۲۴</span>
+                <span className="hero-trust-label">ساعت پاسخ</span>
+              </li>
+              <li className="hero-trust-item">
+                <span className="hero-trust-value">۳</span>
+                <span className="hero-trust-label">ماه پشتیبانی</span>
+              </li>
+            </ul>
+          </div>
+
+          <aside className="hero-bento" aria-label="کارت هویت">
+            <article className="hero-bento-cell hero-bento-cell--name">
+              <span className="hero-bento-cell-mesh" aria-hidden="true" />
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۱
+              </span>
+
+              <span className="hero-bento-seal" aria-hidden="true">
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={44}
+                  height={44}
+                  className="hero-bento-seal-img"
+                />
+              </span>
+
+              <span className="hero-bento-status">
+                <span
+                  className="hero-bento-status-dot"
+                  aria-hidden="true"
+                />
+                آماده همکاری
+              </span>
+              <div className="hero-bento-body">
+                <span className="hero-bento-eyebrow">STUDIO</span>
+                <h2 className="hero-bento-name">
+                  امیرحسین
+                  <br />
+                  شرکائی
+                </h2>
+                <p className="hero-bento-role">
+                  طراح و توسعه‌دهنده‌ی وب
+                </p>
+              </div>
+            </article>
+
+            <article className="hero-bento-cell hero-bento-cell--clock">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۲
+              </span>
+              <span className="hero-bento-label">TEHRAN</span>
+              <span className="hero-bento-clock-time">{clock}</span>
+              <span className="hero-bento-live">
+                <span
+                  className="hero-bento-live-dot"
+                  aria-hidden="true"
+                />
+                LIVE
+              </span>
+            </article>
+
+            <article className="hero-bento-cell hero-bento-cell--date">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۳
+              </span>
+              <span className="hero-bento-label">TODAY</span>
+
+              <div className="hero-bento-date">
+                <span className="hero-bento-date-weekday">
+                  {persianDate.weekday}
+                </span>
+                <span className="hero-bento-date-day">
+                  {persianDate.day}
+                </span>
+                <span className="hero-bento-date-month">
+                  {persianDate.month}
+                </span>
+                <span className="hero-bento-date-year">
+                  {persianDate.year}
+                </span>
+              </div>
+            </article>
+
+            <article className="hero-bento-cell hero-bento-cell--num">
+              <span className="hero-bento-cell-mesh" aria-hidden="true" />
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۴
+              </span>
+              <span className="hero-bento-label">RES / ۱۰۰</span>
+              <span className="hero-bento-bignum">
+                ۹۹<em>+</em>
+              </span>
+              <span className="hero-bento-sub">
+                امتیاز تجربه‌ی کاربری
+              </span>
+            </article>
+
+            <article className="hero-bento-cell hero-bento-cell--live">
+              <span className="hero-bento-num" aria-hidden="true">
+                ۰۵
+              </span>
+              <span className="hero-bento-live-badge" aria-hidden="true">
+                <span className="hero-bento-live-dot" />
+                LIVE
+              </span>
+              <div
+                className="hero-bento-live-stack"
+                onMouseEnter={() => setLivePaused(true)}
+                onMouseLeave={() => setLivePaused(false)}
+              >
+                {activeLive && (
+                  <div key={activeLive.id}>{activeLive.render()}</div>
+                )}
+              </div>
+            </article>
+          </aside>
+        </div>
+
+        <div className="hero-editorial-band">
+          <EditorialImage
+            src="/home-hero-devices.webp"
+            alt="نمایش دستگاه‌های پروژه"
+            aspectRatio="16 / 9"
+            radius="xl"
+            overlay="editorial-fade"
+            priority
+            sizes="(max-width: 720px) 100vw, 1280px"
+          />
+        </div>
+      </div>
+
+      <div className="hero-marquee" aria-hidden="true">
+        <div className="hero-marquee-track">
+          {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((word, i) => (
+            <span key={i} className="hero-marquee-item">
+              {word}
+              <span className="hero-marquee-sep">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CrosshairMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="12"
+        y1="0"
+        x2="12"
+        y2="24"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+      <line
+        x1="0"
+        y1="12"
+        x2="24"
+        y2="12"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="3"
+        stroke="currentColor"
+        strokeWidth="0.7"
+      />
+    </svg>
+  );
+}
+
+--------------------------------------------------------------------------------
+ FILE: src\components\LatestBlogPosts.tsx
+--------------------------------------------------------------------------------
+import SectionNumber from "@/components/SectionNumber";
+
+import Link from "next/link";
+import { getLatestPosts } from "@/lib/blog";
+
+export default function LatestBlogPosts() {
+  const posts = getLatestPosts(3);
+
+  if (posts.length === 0) return null;
+
+  return (
+    <section
+      className="section latest-blog-section"
+      aria-labelledby="latest-blog-title"
+    >
+      <div className="container">
+        <div className="section-heading reveal">
+          <div>
+            <SectionNumber num="۰۹" label="BLOG" />
+            <h2 id="latest-blog-title">
+              مقالات و
+              <em className="ink-word"> یادداشت‌ها</em>
+            </h2>
+          </div>
+          <p>
+            درباره‌ی طراحی وب، افزایش فروش، سئو و تجربه‌ی کاربری — چیزهایی
+            که به رشد کسب‌وکارت کمک می‌کنه.
+          </p>
+        </div>
+
+        <div className="latest-blog-grid">
+          {posts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`} prefetch={false}
+              className="latest-blog-card reveal"
+            >
+              <div className="latest-blog-meta">
+                <span className="latest-blog-date">
+                  {post.dateFormatted}
+                </span>
+                <span className="latest-blog-reading">
+                  {post.readingTime} دقیقه
+                </span>
+              </div>
+
+              <h3 className="latest-blog-title">{post.title}</h3>
+
+              <p className="latest-blog-excerpt">{post.excerpt}</p>
+
+              <span className="latest-blog-cta">
+                مطالعه مقاله
+                <span aria-hidden="true">←</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="latest-blog-footer reveal">
+          <Link href="/blog" prefetch={false} className="button button-secondary">
+            مشاهده همه مقالات
+            <span aria-hidden="true">←</span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+--------------------------------------------------------------------------------
+ FILE: src\components\Portfolio.tsx
+--------------------------------------------------------------------------------
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import ProjectViewer from "@/components/ProjectViewer";
+import SectionNumber from "@/components/SectionNumber";
+import { projects, type Project } from "@/content/projects";
+
+export default function Portfolio() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const selectedProject =
+    selectedIndex !== null ? projects[selectedIndex] : null;
+
+  return (
+    <section id="portfolio" className="portfolio-section section">
+      <div className="container">
+        <div className="section-heading reveal">
+          <div>
+            <SectionNumber num="۰۳" label="PORTFOLIO" />
+            <h2>
+              پروژه‌هایی با
+              <em className="ink-word"> جزئیات متفاوت</em>
+            </h2>
+          </div>
+          <p>
+            بخشی از پروژه‌ها و تجربه‌های طراحی و توسعه؛ با تمرکز بر ظاهر
+            حرفه‌ای، تجربه کاربری و اجرای دقیق ایده.
+          </p>
+        </div>
+
+        <div className="portfolio-grid">
+          {projects.map((project, index) => (
+            <button
+              key={project.id}
+              type="button"
+              className={`portfolio-card portfolio-card-${index + 1} reveal`}
+              onClick={() => setSelectedIndex(index)}
+              aria-label={`مشاهده پروژه ${project.title} — ${project.category}`}
+            >
+              <div className="portfolio-card-visual">
+                <div className="portfolio-card-chrome">
+                  <div
+                    className="portfolio-card-chrome-dots"
+                    aria-hidden="true"
+                  >
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+
+                  <div className="portfolio-card-chrome-url">
+                    {project.slug}.shorakaei.ir
+                  </div>
+
+                  <span className="portfolio-card-chrome-meta">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className="portfolio-card-canvas">
+                  {project.coverImage ? (
+                    <Image
+                      src={project.coverImage}
+                      alt={`نمونه‌کار ${project.title} — ${project.category}`}
+                      fill
+                      sizes="(max-width: 720px) 100vw, (max-width: 1080px) 55vw, 640px"
+                      priority={index === 0}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <ProjectPreview id={project.id} />
+                  )}
+                </div>
+
+                <div className="portfolio-card-caption">
+                  <div className="portfolio-card-caption-text">
+                    <span className="portfolio-card-category">
+                      {project.category}
+                    </span>
+                    <span className="portfolio-card-title">
+                      {project.title}
+                    </span>
+                    <span className="portfolio-card-subtitle">
+                      {project.description}
+                    </span>
+                    <span className="portfolio-card-view" aria-hidden="true">
+                      مشاهده پروژه
+                    </span>
+                  </div>
+
+                  <span className="portfolio-card-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="portfolio-footer reveal">
+          <span>{String(projects.length).padStart(2, "0")} نمونه‌کار</span>
+          <span>نمونه‌کارهای بیشتر، به‌زودی</span>
+        </div>
+      </div>
+
+      {selectedProject && selectedIndex !== null && (
+        <ProjectViewer
+          project={selectedProject}
+          index={selectedIndex}
+          total={projects.length}
+          onPrev={
+            selectedIndex > 0
+              ? () => setSelectedIndex(selectedIndex - 1)
+              : undefined
+          }
+          onNext={
+            selectedIndex < projects.length - 1
+              ? () => setSelectedIndex(selectedIndex + 1)
+              : undefined
+          }
+          onClose={() => setSelectedIndex(null)}
+        />
+      )}
+    </section>
+  );
+}
+
+function ProjectPreview({ id }: { id: string }) {
+  switch (id) {
+    case "project-01":
+      return (
+        <div className="preview-web" aria-hidden="true">
+          <div className="preview-web-sidebar" />
+          <div className="preview-web-main">
+            <div className="preview-web-hero" />
+            <div className="preview-web-blocks">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "project-02":
+      return (
+        <div className="preview-shop" aria-hidden="true">
+          <div className="preview-shop-cell accent" />
+          <div className="preview-shop-cell" />
+          <div className="preview-shop-cell" />
+          <div className="preview-shop-cell" />
+          <div className="preview-shop-cell accent" />
+          <div className="preview-shop-cell" />
+        </div>
+      );
+
+    case "project-03":
+      return (
+        <div className="preview-ai" aria-hidden="true">
+          <div className="preview-ai-swatch c1" />
+          <div className="preview-ai-swatch c2" />
+          <div className="preview-ai-swatch c3" />
+          <div className="preview-ai-swatch c4" />
+          <div className="preview-ai-swatch c5" />
+          <div className="preview-ai-swatch c6" />
+        </div>
+      );
+
+    case "project-04":
+      return (
+        <div className="preview-video" aria-hidden="true">
+          <div className="preview-video-frame">
+            <span>FRAME 01</span>
+            <span className="play">▶</span>
+          </div>
+          <div className="preview-video-frame accent">
+            <span>FRAME 02 · FEATURED</span>
+            <span className="play">▶</span>
+          </div>
+          <div className="preview-video-frame">
+            <span>FRAME 03</span>
+            <span className="play">▶</span>
+          </div>
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
+--------------------------------------------------------------------------------
+ FILE: src\components\PerfObserver.tsx
+--------------------------------------------------------------------------------
+"use client";
+
+import { useEffect } from "react";
+
+/* ═══════════════════════════════════════════════════════════
+   PERF OBSERVER — v3 (interaction-deferred · hydration-proof)
+   ────────────────────────────────────────────────────────────
+   Watches every top-level section/footer. When a section is
+   off-screen, sets data-perf-pause="true" so its animations
+   pause.
+
+   v3: Defers setup until the FIRST user interaction OR 2s
+   timeout, whichever comes first. This guarantees all
+   Suspense boundaries have finished hydrating before we
+   mutate the DOM.
+   ═══════════════════════════════════════════════════════════ */
+
+export default function PerfObserver() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (typeof document === "undefined") return;
+    if (typeof IntersectionObserver === "undefined") return;
+
+    let io: IntersectionObserver | null = null;
+    let started = false;
+    let timer: number | null = null;
+
+    const start = () => {
+      if (started) return;
+      started = true;
+
+      window.removeEventListener("scroll", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      window.removeEventListener("touchstart", start);
+      if (timer !== null) {
+        window.clearTimeout(timer);
+        timer = null;
+      }
+
+      const blocks = document.querySelectorAll<HTMLElement>(
+        "section, footer.site-footer"
+      );
+      if (!blocks.length) return;
+
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const el = entry.target as HTMLElement;
+            if (entry.isIntersecting) {
+              el.removeAttribute("data-perf-pause");
+            } else {
+              el.setAttribute("data-perf-pause", "true");
+            }
+          }
+        },
+        {
+          rootMargin: "300px 0px 300px 0px",
+          threshold: 0,
+        }
+      );
+
+      blocks.forEach((el) => io!.observe(el));
+    };
+
+    window.addEventListener("scroll", start, { once: true, passive: true });
+    window.addEventListener("pointerdown", start, { once: true, passive: true });
+    window.addEventListener("keydown", start, { once: true });
+    window.addEventListener("touchstart", start, { once: true, passive: true });
+    timer = window.setTimeout(start, 2000);
+
+    return () => {
+      window.removeEventListener("scroll", start);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("keydown", start);
+      window.removeEventListener("touchstart", start);
+      if (timer !== null) window.clearTimeout(timer);
+      io?.disconnect();
+    };
+  }, []);
+
+  return null;
+}
+
+--------------------------------------------------------------------------------
+ FILE: src\components\LazyChatBot.tsx
+--------------------------------------------------------------------------------
+[FILE NOT FOUND]
+
+--------------------------------------------------------------------------------
+ FILE: src\app\layout.tsx
+--------------------------------------------------------------------------------
+import type { Metadata, Viewport } from "next";
+import { Vazirmatn } from "next/font/google";
+
+/* ═══════════════════════════════════════════════════════════
+   CSS — Order matters!
+   ═══════════════════════════════════════════════════════════ */
+
+/* ------------------------------------------------------------------
+   CSS IMPORTS - ORDER MATTERS
+   ------------------------------------------------------------------ */
+
+/* 01-04 - Foundation */
+import "@/styles/tokens.css";
+import "@/styles/motion.css";
+import "@/styles/base.css";
+import "@/styles/magnetic.css";
+
+/* 05-09 - Core systems */
+import "@/styles/reveal.css";
+import "@/styles/mobile-touch.css";
+import "@/styles/mobile-modal.css";
+import "@/styles/mobile-typography.css";
+import "@/styles/mobile-nav-v2.css";
+
+/* 10-14 - Mobile foundations */
+import "@/styles/mobile-bottom-nav.css";
+import "@/styles/perceived-performance.css";
+import "@/styles/adaptive-navigation.css";
+import "@/styles/sensory.css";
+import "@/styles/welcome-onboarding.css";
+
+/* 15-17 - Forms */
+import "@/styles/order-form-v2.css";
+import "@/styles/order-premium.css";
+import "@/styles/mobile-declutter.css";
+
+/* 18-22 - Work + Layout */
+import "@/styles/work-pages.css";
+import "@/styles/work-premium.css";
+import "@/styles/layout.css";
+import "@/styles/layout-more.css";
+import "@/styles/footer-effects.css";
+
+/* 23-27 - Pages + Responsive */
+import "@/styles/pages.css";
+import "@/styles/responsive.css";
+import "@/styles/enhancements.css";
+import "@/styles/process.css";
+import "@/styles/commitments.css";
+
+/* 28-29 - Mobile overrides (MUST come after mobile-declutter) */
+import "@/styles/mobile-fix.css";
+import "@/styles/mobile-polish-v2.css";
+
+/* 31-33 - Blog extras + Theme + Hero */
+import "@/styles/blog-premium.css";
+import "@/styles/theme-toggle.css";
+import "@/styles/hero-editorial.css";
+
+/* 34-38 - Hero + Branding */
+import "@/styles/hero-premium.css";
+import "@/styles/signature-ink.css";
+import "@/styles/density-standardization.css";
+import "@/styles/services-premium.css";
+import "@/styles/manuscript-grid.css";
+
+/* 39-42 - Sections */
+import "@/styles/hero-bento-live.css";
+import "@/styles/testimonials.css";
+import "@/styles/brand-logo.css";
+import "@/styles/newsletter.css";
+
+/* 43-47 - Performance + Footer */
+import "@/styles/performance-boost.css";
+import "@/styles/footer-v2.css";
+import "@/styles/contact-links.css";
+import "@/styles/count-up.css";
+import "@/styles/chapter-rail.css";
+
+/* 48-50 - Performance + Nav */
+import "@/styles/performance-layer.css";
+import "@/styles/nav-premium.css";
+import "@/styles/performance-pro.css";
+
+/* 51-55 - Final polish + Blog editorial */
+import "@/styles/final-polish.css";
+import "@/styles/mobile-performance-fix.css";
+import "@/styles/editorial-structure.css";
+import "@/styles/blog-editorial.css";
+import "@/styles/blog-article-premium.css";
+
+/* 56 - Dev tools */
+import "@/styles/grid-overlay.css";
+
+/* 57 - ULTIMATE FINAL */
+import "@/styles/final-polish-2026.css";
+import "@/styles/balance-turquoise-burgundy.css";
+
+/* 50. ChatBot */
+import "@/components/chat/chat.css";
+
+/* ═══════════════════════════════════════════════════════════
+   Components
+   ═══════════════════════════════════════════════════════════ */
+import { ThemeProvider } from "@/components/ThemeProvider";
+import WelcomeOnboarding from "@/components/WelcomeOnboarding";
+import TouchFeedback from "@/components/TouchFeedback";
+import SensoryFeedback from "@/components/SensoryFeedback";
+import SignatureInk from "@/components/SignatureInk";
+import PerfObserver from "@/components/PerfObserver";
+import PageTransition from "@/components/PageTransition";
+import DevOnly from "@/components/DevOnly";
+import GridOverlay from "@/components/GridOverlay";
+import IntroExperience from "@/components/intro/IntroExperience";
+import { ChatBot } from "@/components/chat/LazyChatBot";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { allSchemas } from "@/lib/schema";
+
+const vazirmatn = Vazirmatn({
+  subsets: ["arabic", "latin"],
+  variable: "--font-vazirmatn",
+  display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ["system-ui", "arial"],
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
+const siteName = "امیرحسین شرکائی";
+const siteTitle = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
+const siteDescription = "امیرحسین شرکائی؛ طراحی و توسعه وب‌سایت‌های اختصاصی و خلق تجربه‌های بصری و تبلیغاتی با کمک هوش مصنوعی.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteTitle,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  keywords: [
+    "امیرحسین شرکائی", "Amirhossein Shorakaei", "طراحی سایت", "طراحی وب",
+    "توسعه وب", "طراحی سایت اختصاصی", "طراحی سایت حرفه‌ای", "هوش مصنوعی",
+    "AI", "UI UX", "فرانت‌اند", "Next.js", "React", "پورتفولیو",
+  ],
+  applicationName: "Amirhossein Shorakaei",
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  /* 
+    ⚠️ توجه: خط alternates از اینجا حذف شد 
+    تا گوگل صفحات بلاگ و نمونه‌کارها را نادیده نگیرد. 
+  */
+  icons: {
+    icon: "/icon.webp",
+    apple: "/apple-icon.webp",
+  },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    url: siteUrl,
+    siteName: siteName,
+    title: siteTitle,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
+  appleWebApp: {
+    capable: true,
+    title: siteName,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+  verification: {
+    google: "xJlni40EBpeF6mGC_CN1Hy5ko-0pjdMar6sEvc5O_wY",
+  },
+  referrer: "origin-when-cross-origin",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f3ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0908" },
+  ],
+};
+
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme;
+    if (stored === 'light' || stored === 'dark') {
+      theme = stored;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    } else {
+      theme = 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+`;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="fa"
+      dir="rtl"
+      className={vazirmatn.variable}
+      data-theme="light"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {allSchemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(schema),
+            }}
+          />
+        ))}
+      </head>
+
+      <body>
+        <a href="#main" className="skip-link">
+          پرش به محتوای اصلی
+        </a>
+
+        <IntroExperience />
+
+        <ThemeProvider>{children}</ThemeProvider>
+
+        <WelcomeOnboarding />
+        <TouchFeedback />
+        <SensoryFeedback />
+        <SignatureInk />
+        <PerfObserver />
+        <PageTransition />
+        <DevOnly><GridOverlay /></DevOnly>
+        <ChatBot />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
+}
+
+--------------------------------------------------------------------------------
+ FILE: src\app\page.tsx
+--------------------------------------------------------------------------------
+import dynamic from "next/dynamic";
+import Nav from "@/components/Nav";
+import MobileNav from "@/components/MobileNav";
+import Hero from "@/components/Hero";
+import { getAllPosts, getLatestPosts } from "@/lib/blog";
+import { projects } from "@/content/projects";
+
+/* ── Above-the-fold: direct import (need immediate render) ── */
+/* Nav, MobileNav, Hero */
+
+/* ── Below-the-fold: dynamic imports with SSR preserved ── */
+/* ssr: true means server renders them into HTML for SEO,
+   but client-side JS chunk loads separately = smaller initial bundle */
+
+const Services = dynamic(() => import("@/components/Services"), {
+  ssr: true,
+  loading: () => (
+    <section className="section" aria-busy="true">
+      <div className="container">
+        <div className="lazy-skeleton-grid" aria-hidden="true">
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+const Process = dynamic(() => import("@/components/Process"), { ssr: true });
+
+const Portfolio = dynamic(() => import("@/components/Portfolio"), {
+  ssr: true,
+  loading: () => (
+    <section
+      className="section portfolio-section"
+      aria-busy="true"
+      aria-label="در حال بارگذاری نمونه‌کارها"
+    >
+      <div className="container">
+        <div className="lazy-skeleton-grid" aria-hidden="true">
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+          <div className="lazy-skeleton-card" />
+        </div>
+      </div>
+    </section>
+  ),
+});
+
+const About = dynamic(() => import("@/components/About"), { ssr: true });
+
+const WhyMe = dynamic(() => import("@/components/WhyMe"), { ssr: true });
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"), {
+  ssr: true,
+});
+
+const LatestBlogPosts = dynamic(
+  () => import("@/components/LatestBlogPosts"),
+  { ssr: true }
+);
+
+const Newsletter = dynamic(() => import("@/components/Newsletter"), {
+  ssr: true,
+});
+
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: true });
+
+const FinalCTA = dynamic(() => import("@/components/FinalCTA"), { ssr: true });
+
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+
+const BackToTop = dynamic(() => import("@/components/BackToTop"), { ssr: true });
+
+const RevealObserver = dynamic(() => import("@/components/RevealObserver"), {
+  ssr: true,
+});
+
+const SectionSwipeHandler = dynamic(
+  () => import("@/components/SectionSwipeHandler"),
+  { ssr: true }
+);
+
+const SwipeHint = dynamic(() => import("@/components/SwipeHint"), {
+  ssr: true,
+});
+
+const PerfObserver = dynamic(() => import("@/components/PerfObserver"), {
+  ssr: true,
+});
+
+export default function Home() {
+  const allPosts = getAllPosts();
+  const recentPosts = getLatestPosts(6);
+
+  const latestPost = recentPosts[0]
+    ? {
+        slug: recentPosts[0].slug,
+        title: recentPosts[0].title,
+        date: recentPosts[0].date,
+      }
+    : null;
+
+  const archiveSource =
+    recentPosts.length > 4
+      ? recentPosts[4]
+      : recentPosts[recentPosts.length - 1];
+  const archivePost =
+    archiveSource && archiveSource.slug !== latestPost?.slug
+      ? {
+          slug: archiveSource.slug,
+          title: archiveSource.title,
+          date: archiveSource.date,
+        }
+      : null;
+
+  return (
+    <>
+      <Nav />
+      <MobileNav />
+
+      <main id="main">
+        <Hero
+          latestPost={latestPost}
+          archivePost={archivePost}
+          totalPosts={allPosts.length}
+          totalProjects={projects.length}
+        />
+        <Services />
+        <Process />
+        <Portfolio />
+        <About />
+        <WhyMe />
+        <Testimonials />
+        <LatestBlogPosts />
+        <Newsletter />
+        <FAQ />
+        <FinalCTA />
+      </main>
+
+      <Footer />
+      <BackToTop />
+      <RevealObserver />
+      <SectionSwipeHandler />
+      <SwipeHint />
+      <PerfObserver />
+    </>
+  );
+}
+
+--------------------------------------------------------------------------------
+ FILE: next.config.mjs
+--------------------------------------------------------------------------------
+/** @type {import('next').NextConfig} */
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+
+  /* Performance */
+  compress: true,
+  productionBrowserSourceMaps: false,
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? { exclude: ['error', 'warn'] }
+        : false,
+  },
+
+  /* Image optimization */
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [360, 480, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+    dangerouslyAllowSVG: false,
+  },
+
+  /* Modules & packages */
+  experimental: {
+    optimizePackageImports: [
+      'shiki',
+      '@vercel/analytics',
+      '@vercel/speed-insights',
+    ],
+  },
+
+  /* HTTP Headers: Cache + Security */
+  async headers() {
+    return [
+      /* 1) Static public assets */
+      {
+        source:
+          '/(.*)\\.(woff2|woff|ttf|otf|png|jpg|jpeg|gif|svg|webp|avif|ico|mp4|webm)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+
+      /* 2) HTML pages */
+      {
+        source: '/((?!api|_next|_vercel|.*\\..*).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=120, s-maxage=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+
+      /* 3) Blog posts - longer cache */
+      {
+        source: '/blog/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value:
+              'public, max-age=300, s-maxage=604800, stale-while-revalidate=2592000',
+          },
+        ],
+      },
+
+      /* 4) Security headers */
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+        ],
+      },
+    ];
+  },
+
+  /* 301 Redirects */
+  async redirects() {
+    return [
+      /* 1) Specific: www -> canonical */
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.shorakaei.ir' }],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+
+      /* 2) Specific: old vercel project */
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'amirhossein-portfolio.vercel.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+
+      /* 3) Wildcard: any other vercel.app */
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: '.*\\.vercel\\.app',
+          },
+        ],
+        destination: 'https://shorakaei.ir/:path*',
+        permanent: true,
+      },
+    ];
+  },
+};
+
+export default withBundleAnalyzer(nextConfig);

@@ -1,0 +1,350 @@
+/* ============================================================
+   PERCEIVED PERFORMANCE — Skeleton, Shimmer, Progressive
+   ------------------------------------------------------------
+   - GPU-accelerated shimmer (transform only, no repaint)
+   - Content-aware skeleton shapes
+   - Smooth fade-in for progressive images
+   - Respects prefers-reduced-motion
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   SHIMMER KEYFRAME — runs on compositor thread
+   ═══════════════════════════════════════════════════════════ */
+@keyframes ppshimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes ppshimmerRTL {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Base skeleton block */
+.skeleton-block {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-2);
+  border-radius: 8px;
+}
+
+.skeleton-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--surface) 70%, transparent) 50%,
+    transparent 100%
+  );
+  animation: ppshimmerRTL 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SMART IMAGE — progressive loading
+   ═══════════════════════════════════════════════════════════ */
+.smart-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--paper-2);
+}
+
+.smart-image-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--paper-2);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.smart-image-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--surface) 70%, transparent) 50%,
+    transparent 100%
+  );
+  animation: ppshimmerRTL 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.smart-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.smart-image.is-loaded {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PORTFOLIO CARD SKELETON
+   Mirrors the exact layout of the real card
+   ═══════════════════════════════════════════════════════════ */
+.portfolio-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  height: 100%;
+}
+
+.pcs-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.pcs-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  flex-shrink: 0;
+}
+
+.pcs-url {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line-strong);
+  margin-inline-start: 8px;
+  max-width: 60%;
+}
+
+.pcs-canvas {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.pcs-canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--surface) 70%, transparent) 50%,
+    transparent 100%
+  );
+  animation: ppshimmerRTL 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.pcs-caption {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+}
+
+.pcs-line {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line);
+}
+
+.pcs-line-sm { width: 30%; }
+.pcs-line-md { width: 60%; }
+.pcs-line-lg { width: 90%; height: 14px; }
+
+/* ═══════════════════════════════════════════════════════════
+   BLOG CARD SKELETON
+   ═══════════════════════════════════════════════════════════ */
+.blog-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  height: 100%;
+}
+
+.bcs-meta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bcs-chip {
+  width: 60px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line);
+}
+
+.bcs-chip-sm { width: 40px; }
+
+.bcs-title {
+  height: 20px;
+  border-radius: 6px;
+  background: var(--line);
+  margin-bottom: 14px;
+  width: 85%;
+}
+
+.bcs-excerpt {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--line);
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.bcs-excerpt-2 {
+  width: 70%;
+  margin-bottom: 24px;
+}
+
+.bcs-footer {
+  display: flex;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+}
+
+.bcs-tag {
+  width: 50px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOG POST SKELETON
+   ═══════════════════════════════════════════════════════════ */
+.blog-post-skeleton {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.bps-header {
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bps-meta {
+  width: 140px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--line);
+  margin-bottom: 20px;
+}
+
+.bps-title {
+  height: 32px;
+  border-radius: 8px;
+  background: var(--line);
+  margin-bottom: 16px;
+  width: 90%;
+}
+
+.bps-excerpt {
+  height: 16px;
+  border-radius: 8px;
+  background: var(--line);
+  width: 70%;
+}
+
+.bps-body {
+  display: grid;
+  gap: 14px;
+}
+
+.bps-line {
+  height: 14px;
+  border-radius: 7px;
+  background: var(--line);
+  width: 100%;
+}
+
+.bps-line-short { width: 60%; }
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="dark"] .skeleton-block::after,
+[data-theme="dark"] .smart-image-skeleton::after,
+[data-theme="dark"] .pcs-canvas::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block::after,
+  .smart-image-skeleton::after,
+  .pcs-canvas::after {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  .smart-image {
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — compact skeleton padding
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .portfolio-card-skeleton {
+    border-radius: 16px;
+  }
+
+  .pcs-chrome {
+    padding: 10px 12px;
+  }
+
+  .pcs-caption {
+    padding: 14px 16px;
+    gap: 6px;
+  }
+
+  .blog-card-skeleton {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .bcs-title {
+    height: 18px;
+  }
+
+  .bps-title {
+    height: 26px;
+  }
+
+  .bps-header {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+  }
+}

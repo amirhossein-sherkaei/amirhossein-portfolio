@@ -1,0 +1,483 @@
+/* ============================================================
+   PROCESS SECTION — 4-step workflow + scroll-driven timeline
+   ============================================================ */
+
+.process-section {
+  position: relative;
+  background: var(--paper-2);
+}
+
+.process-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 90% 10%,
+    color-mix(in srgb, var(--accent) 4%, transparent),
+    transparent 45%
+  );
+  pointer-events: none;
+}
+
+/* ═══ MASTHEAD ═══ */
+.process-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-3);
+  direction: ltr;
+}
+
+.process-masthead-left,
+.process-masthead-right {
+  opacity: 0.7;
+}
+
+.process-masthead-center {
+  font-size: 18px;
+  opacity: 0.5;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+/* ═══ HEADING ═══ */
+.process-section .section-heading h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.process-section .section-heading > p {
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 440px;
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL-DRIVEN TIMELINE — the amber progress line
+   ────────────────────────────────────────────────────────────
+   A thin rail below the heading. Grows as user scrolls.
+   Each step's number activates when the line passes it.
+   ═══════════════════════════════════════════════════════════ */
+.process-timeline {
+  display: none;
+}
+
+@media (min-width: 721px) {
+  .process-timeline {
+    display: block;
+    position: relative;
+    height: 28px;
+    margin: 0 0 clamp(28px, 3.5vw, 40px);
+    padding-inline: 8px;
+  }
+
+  .process-timeline-track {
+    position: relative;
+    height: 1px;
+    background: color-mix(in srgb, var(--line) 90%, transparent);
+    border-radius: 1px;
+  }
+
+  /* The growing fill */
+  .process-timeline-fill {
+    position: absolute;
+    inset-block: -1px;
+    inset-inline-start: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 60%, transparent) 0%,
+      var(--accent) 20%,
+      var(--accent) 80%,
+      color-mix(in srgb, var(--accent) 60%, transparent) 100%
+    );
+    box-shadow:
+      0 0 12px -1px var(--accent-glow),
+      0 0 24px -6px var(--accent-glow);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+
+  /* Fallback for browsers without scroll-timeline */
+  @supports not (animation-timeline: view()) {
+    .process-timeline-fill {
+      transform: scaleX(0);
+      transition: transform 120ms linear;
+    }
+  }
+
+  /* Scroll-driven animation (Chrome 115+, Edge 115+, Safari 26+) */
+  @supports (animation-timeline: view()) {
+    .process-timeline-fill {
+      animation: process-scroll-grow linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 60%;
+    }
+
+    @keyframes process-scroll-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  /* RTL: grow from the right */
+  [dir="rtl"] .process-timeline-fill {
+    transform-origin: right center;
+  }
+}
+
+/* ═══ GRID ═══ */
+.process-section .process-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 clamp(32px, 4vw, 48px) !important;
+  align-items: start !important;
+  border: 0 !important;
+}
+
+/* ═══ CARD ═══ */
+.process-section .process-step {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  padding: clamp(22px, 2.6vw, 28px) !important;
+  border-radius: 18px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  border-bottom: 1px solid var(--line) !important;
+  transition:
+    border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition-delay: calc(var(--step-index, 0) * 60ms);
+}
+
+.process-section .process-step:hover {
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line)) !important;
+  transform: translateY(-3px) !important;
+  box-shadow:
+    0 2px 8px -2px rgba(10, 9, 8, 0.04),
+    0 16px 40px -20px rgba(10, 9, 8, 0.12) !important;
+}
+
+/* Number badge glows when its step enters viewport */
+@supports (animation-timeline: view()) {
+  .process-section .process-step-num {
+    animation: step-num-activate linear both;
+    animation-timeline: view();
+    animation-range: entry 40% entry 80%;
+  }
+
+  @keyframes step-num-activate {
+    from {
+      background: var(--accent-tint);
+      color: var(--accent);
+      box-shadow:
+        0 0 0 0 transparent,
+        0 0 0 0 transparent;
+      transform: scale(0.94);
+    }
+    to {
+      background: var(--accent);
+      color: #fff;
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent),
+        0 0 20px -4px var(--accent-glow);
+      transform: scale(1);
+    }
+  }
+
+  .process-section .process-step-title {
+    animation: step-title-activate linear both;
+    animation-timeline: view();
+    animation-range: entry 45% entry 85%;
+  }
+
+  @keyframes step-title-activate {
+    from {
+      color: var(--ink-2);
+    }
+    to {
+      color: var(--ink);
+    }
+  }
+}
+
+/* ═══ Head ═══ */
+.process-section .process-step-head {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.process-section .process-step-num {
+  display: grid !important;
+  place-items: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: var(--accent-tint) !important;
+  color: var(--accent) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  transition:
+    background-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 400ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.process-section .process-step-line {
+  flex: 1 !important;
+  height: 1px !important;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 25%, transparent) 0%,
+    transparent 100%
+  ) !important;
+  min-width: 20px !important;
+}
+
+.process-section .process-step-short {
+  font-family: var(--font-mono) !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
+  direction: ltr !important;
+  flex-shrink: 0 !important;
+}
+
+/* ═══ Title ═══ */
+.process-section .process-step-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: clamp(17px, 1.5vw, 19px) !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--ink) !important;
+}
+
+/* ═══ Description ═══ */
+.process-section .process-step-desc {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 13.5px !important;
+  line-height: 1.85 !important;
+  color: var(--ink-2) !important;
+  text-wrap: pretty !important;
+}
+
+/* ═══ List ═══ */
+.process-section .process-step-list {
+  display: grid !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 14px 0 0 !important;
+  border-top: 1px solid var(--line) !important;
+  border-bottom: 0 !important;
+  list-style: none !important;
+}
+
+.process-section .process-step-list li {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 9px !important;
+  font-size: 12.5px !important;
+  line-height: 1.6 !important;
+  color: var(--ink-3-strong) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.process-section .process-step-bullet {
+  flex-shrink: 0 !important;
+  display: block !important;
+  width: 5px !important;
+  height: 5px !important;
+  margin-top: 7px !important;
+  border-radius: 50% !important;
+  background: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+  border: 1.5px solid var(--accent) !important;
+}
+
+/* ═══ Footer note ═══ */
+.process-section .process-footer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 18px !important;
+  text-align: center !important;
+}
+
+.process-section .process-footer-line {
+  width: 40px !important;
+  height: 1px !important;
+  background: var(--accent) !important;
+  opacity: 0.5 !important;
+}
+
+.process-section .process-footer-text {
+  max-width: 520px !important;
+  margin: 0 !important;
+  font-size: 13.5px !important;
+  line-height: 1.75 !important;
+  color: var(--ink-2) !important;
+  text-wrap: pretty !important;
+}
+
+.process-section .process-footer-text strong {
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .process-section .process-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .process-masthead {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+
+  .process-masthead-center {
+    font-size: 16px;
+  }
+
+  .process-section .section-heading h2 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .process-section .section-heading > p {
+    font-size: 13.5px;
+    line-height: 1.75;
+    max-width: 100%;
+  }
+
+  .process-section .process-step {
+    padding: 18px 16px !important;
+    border-radius: 14px !important;
+    gap: 12px !important;
+  }
+
+  .process-section .process-step-num {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 10px !important;
+  }
+
+  .process-section .process-step-short {
+    font-size: 9px !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .process-section .process-step-title {
+    font-size: 15.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .process-section .process-step-desc {
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+  }
+
+  .process-section .process-step-list {
+    padding-top: 12px !important;
+    gap: 6px !important;
+  }
+
+  .process-section .process-step-list li {
+    font-size: 12px !important;
+  }
+
+  .process-section .process-step-bullet {
+    margin-top: 6px !important;
+  }
+
+  .process-section .process-footer-text {
+    font-size: 12.5px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .process-section .process-step {
+    padding: 16px 14px !important;
+  }
+
+  .process-section .process-step-title {
+    font-size: 15px !important;
+  }
+
+  .process-section .process-step-desc {
+    font-size: 12.5px !important;
+  }
+
+  .process-section .process-step-list li {
+    font-size: 11.5px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .process-section .process-step {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .process-section .process-step-num {
+    animation: none !important;
+    background: var(--accent) !important;
+    color: #fff !important;
+    transform: none !important;
+  }
+
+  .process-section .process-step-title {
+    animation: none !important;
+  }
+
+  .process-timeline-fill {
+    animation: none !important;
+    transform: scaleX(1) !important;
+  }
+}

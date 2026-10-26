@@ -1,0 +1,290 @@
+/* ============================================================
+   SHORKAEI® — TYPOGRAPHY SYSTEM v05
+   Inspired by the clarity and rhythm of editorial/service pages
+   Estedad Variable · Persian-first · RTL-aware
+   ============================================================ */
+
+@font-face {
+  font-family: "Estedad";
+  src: url("/fonts/Estedad-VF.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --sh-font-fa: "Estedad", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sh-font-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --sh-weight-regular: 400;
+  --sh-weight-medium: 500;
+  --sh-weight-semibold: 600;
+  --sh-weight-bold: 700;
+
+  /* A compact, consistent scale tuned for Persian content */
+  --sh-type-caption: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem);      /* 12–13 */
+  --sh-type-small:   clamp(0.8125rem, 0.79rem + 0.10vw, 0.875rem);    /* 13–14 */
+  --sh-type-body:    clamp(1rem, 0.975rem + 0.125vw, 1.0625rem);      /* 16–17 */
+  --sh-type-lead:    clamp(1.0625rem, 1.02rem + 0.18vw, 1.1875rem);  /* 17–19 */
+  --sh-type-h3:      clamp(1.1875rem, 1.10rem + 0.35vw, 1.4375rem);   /* 19–23 */
+  --sh-type-h2:      clamp(1.5rem, 1.34rem + 0.65vw, 2rem);          /* 24–32 */
+  --sh-type-h1:      clamp(1.875rem, 1.58rem + 1.25vw, 2.75rem);     /* 30–44 */
+  --sh-type-display: clamp(2.25rem, 1.85rem + 1.8vw, 3.25rem);      /* 36–52 */
+
+  /* Persian script benefits from a calm line rhythm */
+  --sh-line-caption: 1.7;
+  --sh-line-small: 1.8;
+  --sh-line-body: 1.9;
+  --sh-line-lead: 1.9;
+  --sh-line-h3: 1.55;
+  --sh-line-h2: 1.5;
+  --sh-line-h1: 1.42;
+  --sh-line-display: 1.35;
+
+  /* Don't apply tracking tricks to Persian text */
+  --sh-tracking-fa: 0;
+  --sh-tracking-latin: 0.04em;
+}
+
+html {
+  font-family: var(--sh-font-fa);
+  font-synthesis: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-kerning: normal;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--sh-font-fa);
+  font-feature-settings: normal;
+  font-variant-numeric: normal;
+  letter-spacing: var(--sh-tracking-fa);
+}
+
+body {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-body);
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6,
+.sh-hero-title,
+.sh-display-title,
+.sh-section-title,
+.sh-card-title {
+  font-family: var(--sh-font-fa);
+  letter-spacing: var(--sh-tracking-fa);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+h1,
+.sh-hero-title {
+  font-size: var(--sh-type-h1);
+  font-weight: var(--sh-weight-bold);
+  line-height: var(--sh-line-h1);
+}
+
+h2,
+.sh-section-title {
+  font-size: var(--sh-type-h2);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-h2);
+}
+
+h3,
+.sh-card-title {
+  font-size: var(--sh-type-h3);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-h3);
+}
+
+h4 {
+  font-size: var(--sh-type-lead);
+  font-weight: var(--sh-weight-semibold);
+  line-height: 1.65;
+}
+
+h5 {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.7;
+}
+
+h6 {
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-semibold);
+  line-height: var(--sh-line-small);
+}
+
+.sh-display-title {
+  font-size: var(--sh-type-display);
+  font-weight: var(--sh-weight-bold);
+  line-height: var(--sh-line-display);
+}
+
+p {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-body);
+  letter-spacing: var(--sh-tracking-fa);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.sh-lead {
+  font-size: var(--sh-type-lead);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-lead);
+  text-wrap: pretty;
+}
+
+.sh-small,
+small,
+.sh-caption {
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-small);
+}
+
+.sh-caption {
+  font-size: var(--sh-type-caption);
+  line-height: var(--sh-line-caption);
+}
+
+nav,
+.sh-nav {
+  font-family: var(--sh-font-fa);
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+button,
+.sh-button {
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.55;
+}
+
+label,
+.sh-label {
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-medium);
+  line-height: 1.65;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: var(--sh-font-fa);
+  font-size: var(--sh-type-small);
+  font-weight: var(--sh-weight-regular);
+}
+
+.sh-prose {
+  font-size: var(--sh-type-body);
+  line-height: var(--sh-line-body);
+}
+
+.sh-prose h2 {
+  font-size: var(--sh-type-h2);
+  line-height: var(--sh-line-h2);
+  font-weight: var(--sh-weight-semibold);
+}
+
+.sh-prose h3 {
+  font-size: var(--sh-type-h3);
+  line-height: var(--sh-line-h3);
+  font-weight: var(--sh-weight-semibold);
+}
+
+.sh-prose li,
+li {
+  font-size: inherit;
+  line-height: var(--sh-line-body);
+}
+
+blockquote {
+  font-size: var(--sh-type-body);
+  font-weight: var(--sh-weight-regular);
+  line-height: var(--sh-line-body);
+}
+
+.sh-numeric,
+.sh-stat-number,
+.sh-price-number {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--sh-weight-semibold);
+  font-feature-settings: normal;
+}
+
+.sh-stat-number {
+  font-size: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  line-height: 1.35;
+}
+
+.sh-persian-numerals-feature-tested {
+  font-feature-settings: "ss20" 1;
+}
+
+.sh-meta-latin {
+  font-family: var(--sh-font-mono);
+  font-size: var(--sh-type-caption);
+  font-weight: var(--sh-weight-medium);
+  letter-spacing: var(--sh-tracking-latin);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--sh-font-mono);
+  font-size: 0.9em;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --sh-line-body: 1.85;
+    --sh-line-lead: 1.85;
+  }
+
+  .sh-display-title {
+    font-size: clamp(2rem, 7.5vw, 2.75rem);
+    line-height: 1.32;
+  }
+
+  .sh-hero-title,
+  h1 {
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --sh-type-h1: 1.75rem;
+    --sh-type-h2: 1.4375rem;
+    --sh-type-h3: 1.125rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
