@@ -145,7 +145,7 @@
      ═══════════════════════════════════════════════════════ */
   
   .blog-post-page {
-    padding-bottom: 120px !important; /* فاصله امن از نوار پایین */
+    padding-bottom: 120px !important;
   }
 
   .blog-post-page .blog-post-content.glass-panel {
@@ -159,15 +159,13 @@
     transition: font-size 0.2s ease !important;
   }
 
-  /* فاصله امن برای تیترها تا زیر نوار شیشه‌ای گیر نکنن */
   .blog-post-page .blog-post-content h2,
   .blog-post-page .blog-post-content h3 {
     scroll-margin-top: 100px !important;
   }
 
-  /* مخفی کردن TOC اصلی در موبایل (چون در مودال نمایش داده میشه) */
   .blog-post-page .blog-post-sidebar {
-    display: none !important;
+    display: none !important; /* مخفی کردن TOC اصلی در موبایل */
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -189,7 +187,6 @@
     width: calc(100% - 32px) !important;
     max-width: 380px !important;
     
-    /* شیشه مایع با اعوجاج */
     background: rgba(255, 255, 255, 0.35) !important;
     backdrop-filter: blur(24px) saturate(220%) contrast(110%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(220%) contrast(110%) !important;
@@ -209,7 +206,6 @@
     overflow: hidden !important;
   }
 
-  /* بازتاب نور */
   .article-glass-nav::after {
     content: "" !important;
     position: absolute !important;
@@ -494,5 +490,16 @@
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   5. DESKTOP SAFETY NET (رفع باگ دسکتاپ)
+   ═══════════════════════════════════════════════════════ */
+@media (min-width: 769px) {
+  /* مخفی کردن کامل نوار شیشه‌ای و مودال در دسکتاپ */
+  .article-glass-nav,
+  .toc-modal-backdrop {
+    display: none !important;
   }
 }
