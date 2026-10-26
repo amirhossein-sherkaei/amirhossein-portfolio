@@ -1,69 +1,75 @@
 /* ============================================================
-   INFINITY FORM — THE ULTIMATE OVERRIDE (NUCLEAR EDITION)
+   INFINITY ORDER FORM — NUCLEAR OVERRIDE (iOS Native)
    ============================================================ */
 
 @media (max-width: 768px) {
   
-  /* پس‌زمینه کل صفحه */
-  body {
+  /* ۱. پاکسازی کامل پس‌زمینه‌ها */
+  .order-page {
     background-color: #f2f2f7 !important;
     background-image: 
-      radial-gradient(circle at 0% 0%, rgba(46,196,196,0.1) 0%, transparent 40%),
-      radial-gradient(circle at 100% 100%, rgba(13,115,119,0.05) 0%, transparent 40%) !important;
-    background-attachment: fixed !important;
-  }
-
-  .order-page {
+      radial-gradient(circle at 10% 10%, rgba(46,196,196,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(255,59,48,0.04) 0%, transparent 40%) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     padding: 24px 16px 120px 16px !important;
+    min-height: 100dvh !important;
   }
 
   .order-page .container {
     width: 100% !important;
     max-width: 480px !important;
     margin: 0 auto !important;
+    padding: 0 !important;
   }
 
-  /* ============================================================
-     1. THE ULTIMATE STEP NAVIGATOR (ناوبری مراحل)
-     ============================================================ */
-  
-  /* مخفی کردن کادر کرم/زرد قدیمی و تبدیل به کپسول شیشه‌ای */
-  .oform-progress {
+  /* ۲. بدنه فرم (شیشه مات و یکپارچه) */
+  .order-page .oform {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(40px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 32px !important;
+    box-shadow: 
+      0 24px 64px -16px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    overflow: hidden !important;
+  }
+
+  /* ۳. نابودی کادر کرم/قهوه‌ای نوار مراحل */
+  .order-page .oform .oform-progress {
     background: transparent !important;
-    padding: 20px 20px 10px 20px !important;
+    padding: 24px 24px 10px 24px !important;
     border: none !important;
     margin-bottom: 10px !important;
   }
 
-  .oform-progress-track {
+  .order-page .oform .oform-progress-track {
     height: 4px !important;
-    background: rgba(0,0,0,0.05) !important;
+    background: rgba(0, 0, 0, 0.05) !important;
     border-radius: 99px !important;
     margin-bottom: 20px !important;
   }
-  
-  .oform-progress-fill {
+
+  .order-page .oform .oform-progress-fill {
     background: linear-gradient(90deg, #2ec4c4, #0d7377) !important;
     border-radius: 99px !important;
-    box-shadow: 0 0 12px rgba(46,196,196,0.6) !important;
+    box-shadow: 0 0 12px rgba(46, 196, 196, 0.5) !important;
   }
 
-  /* نوار مراحل به شکل یک کپسول شیشه‌ای */
-  .oform-progress-steps {
+  /* ۴. نوار مرحله‌ها (کپسول شیشه‌ای iOS) */
+  .order-page .oform .oform-progress-steps {
     display: flex !important;
-    background: rgba(118, 118, 128, 0.08) !important; /* خاکستری بسیار ملایم اپل */
-    padding: 6px !important;
-    border-radius: 99px !important; /* گردی کامل */
+    background: rgba(118, 118, 128, 0.1) !important; /* خاکستری ملایم سیستم‌عامل */
+    padding: 4px !important;
+    border-radius: 99px !important;
     border: 1px solid rgba(255, 255, 255, 0.5) !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
     gap: 4px !important;
   }
 
   /* دکمه‌های داخل کپسول */
-  .oform-step-pill {
+  .order-page .oform .oform-step-pill {
     flex: 1 !important;
     display: flex !important;
     align-items: center !important;
@@ -80,50 +86,44 @@
     box-shadow: none !important;
   }
 
-  .oform-step-pill-num {
+  .order-page .oform .oform-step-pill-num {
     display: grid !important;
     place-items: center !important;
     width: 20px !important;
     height: 20px !important;
-    background: rgba(0,0,0,0.06) !important;
+    background: rgba(0, 0, 0, 0.06) !important;
     border-radius: 50% !important;
     font-size: 11px !important;
     font-weight: 800 !important;
     color: #8e8e93 !important;
-    transition: all 0.3s ease !important;
   }
 
-  /* مرحله فعال (درخشش نئونی فیروزه‌ای) */
-  .oform-step-pill.is-active {
-    background: linear-gradient(135deg, #2ec4c4, #0d7377) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 16px rgba(13, 115, 119, 0.4) !important;
+  /* اضافه کردن کلاس تیتر دکمه */
+  .order-page .oform .oform-step-pill-title {
+    display: inline-block !important;
+  }
+
+  /* مرحله فعال (سفید درخشان) */
+  .order-page .oform .oform-step-pill.is-active {
+    background: #ffffff !important;
+    color: #0d7377 !important;
+    box-shadow: 
+      0 3px 8px rgba(0, 0, 0, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.04) !important;
     transform: scale(1.02) !important;
   }
 
-  .oform-step-pill.is-active .oform-step-pill-num {
-    background: rgba(255, 255, 255, 0.25) !important;
+  .order-page .oform .oform-step-pill.is-active .oform-step-pill-num {
+    background: #0d7377 !important;
     color: #ffffff !important;
   }
 
-  /* مرحله انجام شده */
-  .oform-step-pill.is-done {
-    color: #0d7377 !important;
-  }
-  .oform-step-pill.is-done .oform-step-pill-num {
-    background: rgba(13, 115, 119, 0.15) !important;
-    color: #0d7377 !important;
-  }
-
-  /* ============================================================
-     2. HEADINGS & TYPOGRAPHY (نابودی رنگ زرشکی)
-     ============================================================ */
-  
-  .oform-step {
+  /* ۵. تیترهای فرم (نابودی زرشکی) */
+  .order-page .oform .oform-step {
     padding: 16px 24px 32px 24px !important;
   }
 
-  .oform-step-head {
+  .order-page .oform .oform-step-head {
     display: flex !important;
     align-items: center !important;
     gap: 16px !important;
@@ -132,7 +132,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
   }
 
-  .oform-step-num {
+  .order-page .oform .oform-step-num {
     width: 48px !important;
     height: 48px !important;
     background: rgba(46, 196, 196, 0.1) !important;
@@ -145,8 +145,8 @@
     place-items: center !important;
   }
 
-  /* اجبار تیتر به رنگ مشکی/خاکستری تیره */
-  .oform-step-title {
+  /* این خط زرشکی را می‌کشد */
+  .order-page .oform .oform-step-title {
     font-size: 1.3rem !important;
     font-weight: 800 !important;
     color: #1c1c1e !important;
@@ -154,37 +154,39 @@
     -webkit-background-clip: unset !important;
     -webkit-text-fill-color: #1c1c1e !important;
     margin: 0 0 4px 0 !important;
-    letter-spacing: -0.02em !important;
   }
 
-  .oform-step-subtitle {
+  .order-page .oform .oform-step-subtitle {
     font-size: 0.85rem !important;
     color: #8e8e93 !important;
     margin: 0 !important;
   }
 
-  /* ============================================================
-     3. FORM FIELDS (فیلدهای شیشه‌ای و براق)
-     ============================================================ */
-  
-  .oform-field {
+  /* ۶. فیلدهای ورودی (تمیز، براق و مدرن) */
+  .order-page .oform .oform-field {
     margin-bottom: 24px !important;
   }
 
-  .oform-label {
+  .order-page .oform .oform-label {
     font-size: 0.9rem !important;
     font-weight: 700 !important;
     color: #1c1c1e !important;
     margin-bottom: 8px !important;
   }
 
-  .oform-input-wrap input,
-  .oform-input-wrap textarea {
+  .order-page .oform .oform-req {
+    color: #ff3b30 !important;
+    font-size: 1.1rem !important;
+    margin-right: 4px !important;
+  }
+
+  .order-page .oform .oform-input-wrap input,
+  .order-page .oform .oform-input-wrap textarea {
     width: 100% !important;
     min-height: 60px !important;
     padding: 16px 20px !important;
     background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
     border-radius: 16px !important;
     font-size: 16px !important;
     color: #1c1c1e !important;
@@ -192,95 +194,48 @@
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   }
 
-  /* حالت فوکوس */
-  .oform-input-wrap input:focus,
-  .oform-input-wrap textarea:focus {
-    background: #ffffff !important;
+  .order-page .oform .oform-input-wrap input:focus,
+  .order-page .oform .oform-input-wrap textarea:focus {
     border-color: #0d7377 !important;
     box-shadow: 0 0 0 4px rgba(13, 115, 119, 0.15) !important;
     outline: none !important;
   }
 
-  /* آیکون‌های خطا و موفقیت (ظریف و کوچک) */
-  .oform-icon {
+  /* آیکون‌های داخل فیلد (کوچک و ظریف) */
+  .order-page .oform .oform-icon {
     position: absolute !important;
     top: 50% !important;
     left: 16px !important;
     transform: translateY(-50%) !important;
-    width: 20px !important;
-    height: 20px !important;
+    width: 22px !important;
+    height: 22px !important;
     display: grid !important;
     place-items: center !important;
     border-radius: 50% !important;
   }
 
-  .oform-field[data-state="error"] .oform-icon {
+  .order-page .oform .oform-field[data-state="error"] .oform-icon {
     background: rgba(255, 59, 48, 0.1) !important;
     color: #ff3b30 !important;
   }
-  
-  .oform-field[data-state="success"] .oform-icon {
-    background: rgba(52, 199, 89, 0.1) !important;
-    color: #34c759 !important;
+
+  .order-page .oform .oform-field[data-state="error"] input {
+    border-color: #ff3b30 !important;
+    background: #fff9f9 !important;
   }
 
-  .oform-icon svg {
+  .order-page .oform .oform-icon svg {
     width: 12px !important;
     height: 12px !important;
     stroke-width: 3 !important;
   }
 
-  /* حالت خطا فیلد */
-  .oform-field[data-state="error"] input {
-    border-color: #ff3b30 !important;
-    background: #fff9f9 !important;
-  }
-
-  /* ============================================================
-     4. CARDS & BUTTONS
-     ============================================================ */
-  
-  .oform-options {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-  }
-
-  .oform-option {
-    display: flex !important;
-    align-items: center !important;
-    gap: 14px !important;
-    padding: 16px !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02) !important;
-  }
-
-  .oform-option.is-active {
-    background: rgba(46, 196, 196, 0.05) !important;
-    border-color: #0d7377 !important;
-  }
-
-  .oform-option-check {
-    width: 22px !important;
-    height: 22px !important;
-    background: #ffffff !important;
-    border: 1.5px solid rgba(0, 0, 0, 0.15) !important;
-    border-radius: 6px !important;
-  }
-
-  .oform-option.is-active .oform-option-check {
-    background: #0d7377 !important;
-    border-color: #0d7377 !important;
-  }
-
-  /* دکمه نهایی */
-  .oform-actions {
+  /* ۷. دکمه‌های نهایی */
+  .order-page .oform .oform-actions {
     padding: 0 24px 32px 24px !important;
   }
 
-  .oform-btn--primary {
+  .order-page .oform .oform-btn--primary {
     width: 100% !important;
     min-height: 62px !important;
     background: linear-gradient(135deg, #2ec4c4, #0d7377) !important;
@@ -289,10 +244,5 @@
     font-size: 16px !important;
     font-weight: 800 !important;
     box-shadow: 0 8px 24px -6px rgba(13, 115, 119, 0.5) !important;
-    transition: transform 0.2s ease !important;
-  }
-
-  .oform-btn--primary:active {
-    transform: scale(0.97) !important;
   }
 }
