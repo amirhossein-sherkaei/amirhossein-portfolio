@@ -1,6 +1,6 @@
 /* ============================================================
    INFINITY BLOG — Mobile Native iOS Feel (60 FPS)
-   Version 3.0 — Complete rewrite, matches infinity-order-mobile.css
+   Version 3.2 — Fixed layout, removed header cards
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -40,13 +40,14 @@
   }
 
   main.section:has(.blog-index-wrapper) > .container {
-    padding: 0 !important;
+    padding: 0 16px !important;
     max-width: 100% !important;
   }
 
+  /* هدر صفحه بلاگ (بدون کارت شیشه‌ای، فقط تمیز و خوانا) */
   main.section:has(.blog-index-wrapper) .section-heading {
-    padding: 0 16px !important;
-    margin-bottom: 20px !important;
+    padding: 0 !important;
+    margin: 0 0 20px 0 !important;
   }
 
   main.section:has(.blog-index-wrapper) .section-heading h1 {
@@ -74,21 +75,32 @@
     margin: 0 !important;
   }
 
-  /* ═══ 2. FILTER PILLS (iOS Segmented Control) ═══ */
+  /* ═══ 2. STICKY GLASS FILTER BAR (همون که پسندیدی) ═══ */
   .blog-index-wrapper .blog-filter-container {
+    position: sticky !important;
+    top: 8px !important;
+    z-index: 50 !important;
     display: flex !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
     gap: 4px !important;
-    padding: 4px !important;
+    padding: 5px !important;
     margin: 0 0 16px 0 !important;
-    background: rgba(118, 118, 128, 0.08) !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
     border-radius: 99px !important;
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     transform: translateZ(0) !important;
+    box-shadow:
+      0 8px 24px -8px rgba(13, 115, 119, 0.15),
+      0 2px 6px -2px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    isolation: isolate !important;
   }
 
   .blog-index-wrapper .blog-filter-container::-webkit-scrollbar {
@@ -100,8 +112,8 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 9px 16px !important;
-    min-height: 36px !important;
+    padding: 8px 15px !important;
+    min-height: 34px !important;
     background: transparent !important;
     border: none !important;
     border-radius: 99px !important;
@@ -109,24 +121,24 @@
     font-size: 13px !important;
     font-weight: 600 !important;
     line-height: 1 !important;
-    color: #8e8e93 !important;
-    -webkit-text-fill-color: #8e8e93 !important;
+    color: #636366 !important;
+    -webkit-text-fill-color: #636366 !important;
     white-space: nowrap !important;
     cursor: pointer !important;
-    transition: background-color 0.18s ease, color 0.18s ease, transform 0.1s ease !important;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease !important;
     -webkit-tap-highlight-color: transparent !important;
   }
 
   .blog-index-wrapper .blog-filter-container .blog-filter-btn.is-active {
-    background: #ffffff !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fdfd 100%) !important;
     color: #0d7377 !important;
     -webkit-text-fill-color: #0d7377 !important;
     font-weight: 700 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 2px 8px -2px rgba(13, 115, 119, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
   }
 
   .blog-index-wrapper .blog-filter-container .blog-filter-btn:active {
-    transform: scale(0.96) !important;
+    transform: scale(0.94) !important;
   }
 
   /* ═══ 3. GRID LAYOUTS ═══ */
@@ -389,26 +401,24 @@
     transform: scale(0.97) !important;
   }
 
-  /* ═══ 6. BREADCRUMB ═══ */
+  /* ═══ 6. BREADCRUMB (برگشت به حالت تمیز) ═══ */
   .blog-post-page .blog-breadcrumb,
   .blog-breadcrumb {
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
     gap: 6px !important;
-    padding: 10px 14px !important;
+    padding: 0 !important;
     margin: 0 0 16px 0 !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    border-radius: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     font-family: var(--font-estedad, system-ui) !important;
     font-size: 12px !important;
     font-weight: 500 !important;
     line-height: 1.4 !important;
     color: #8e8e93 !important;
     -webkit-text-fill-color: #8e8e93 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
 
   .blog-breadcrumb a {
@@ -417,16 +427,17 @@
     text-decoration: none !important;
   }
 
-  .blog-breadcrumb .blog-breadcrumb-sep {
-    color: #c7c7cc !important;
-    -webkit-text-fill-color: #c7c7cc !important;
-  }
-
-  /* ═══ 7. POST HEADER ═══ */
+  /* ═══ 7. POST HEADER (حذف کارت شیشه‌ای، برگشت به متن تمیز) ═══ */
   .blog-post-page .blog-post-header {
     padding: 0 0 20px 0 !important;
     margin: 0 0 20px 0 !important;
+    background: transparent !important;
+    border: none !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .blog-post-page .blog-post-header .blog-post-category {
@@ -1339,429 +1350,9 @@
 
   /* ═══ 16. REDUCED MOTION ═══ */
   @media (prefers-reduced-motion: reduce) {
-    .blog-card-featured,
-    .blog-card-regular,
-    .blog-filter-btn,
-    .blog-card-read-more span[aria-hidden="true"],
-    .blog-empty-btn,
-    .glass-toc-link,
-    .glass-toc-dot,
-    .blog-inline-cta-btn,
-    .blog-author-btn,
-    .blog-funnel-actions .button,
-    .related-post-card,
-    .blog-prevnext-card {
+    .blog-card-featured, .blog-card-regular, .blog-filter-btn, .blog-card-read-more span[aria-hidden="true"], .blog-empty-btn, .glass-toc-link, .glass-toc-dot, .blog-inline-cta-btn, .blog-author-btn, .blog-funnel-actions .button, .related-post-card, .blog-prevnext-card {
       transition: none !important;
       animation: none !important;
-    }
-  }
-}
-/* ============================================================
-   GLASS HEADERS v3.1 — Premium iOS Glass Treatment
-   Appended after v3.0 base
-   ------------------------------------------------------------
-   - Glass headers ONLY on small/fixed elements (perf-safe)
-   - No infinite animations
-   - No box-shadow animation
-   - GPU-only transitions (transform/opacity)
-   ============================================================ */
-
-@media (max-width: 768px) {
-
-  /* ═══════════════════════════════════════════════════════════
-     17. BLOG LIST — SECTION HEADING GLASS CARD
-     ═══════════════════════════════════════════════════════════ */
-
-  main.section:has(.blog-index-wrapper) {
-    padding: 88px 0 140px 0 !important;
-    background-color: #f2f2f7 !important;
-  }
-
-  main.section:has(.blog-index-wrapper) > .container {
-    padding: 0 16px !important;
-    max-width: 100% !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
-    margin: 0 0 18px 0 !important;
-    padding: 22px 20px 24px !important;
-    background:
-      radial-gradient(ellipse 80% 100% at 0% 0%, rgba(46, 196, 196, 0.14) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 100% 100%, rgba(255, 59, 48, 0.05) 0%, transparent 60%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(247, 251, 251, 0.72) 100%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.85) !important;
-    border-radius: 24px !important;
-    box-shadow:
-      0 12px 32px -16px rgba(13, 115, 119, 0.18),
-      0 4px 12px -6px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-    box-sizing: border-box !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading::before {
-    content: "" !important;
-    position: absolute !important;
-    top: 0 !important;
-    inset-inline-start: 0 !important;
-    width: 100% !important;
-    height: 1px !important;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(46, 196, 196, 0.4) 30%,
-      rgba(46, 196, 196, 0.7) 50%,
-      rgba(46, 196, 196, 0.4) 70%,
-      transparent 100%
-    ) !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading::after {
-    content: "" !important;
-    position: absolute !important;
-    top: -60px !important;
-    inset-inline-end: -60px !important;
-    width: 200px !important;
-    height: 200px !important;
-    border-radius: 50% !important;
-    background: radial-gradient(circle, rgba(46, 196, 196, 0.15) 0%, transparent 65%) !important;
-    pointer-events: none !important;
-    z-index: 0 !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading > * {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading h1 {
-    font-size: 26px !important;
-    line-height: 1.25 !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.025em !important;
-    margin: 0 0 8px 0 !important;
-    background: linear-gradient(135deg, #0f1518 0%, #0d7377 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading h1 em,
-  main.section:has(.blog-index-wrapper) .section-heading h1 .ink-word {
-    font-style: normal !important;
-    background: linear-gradient(135deg, #0d7377 0%, #2ec4c4 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-  }
-
-  main.section:has(.blog-index-wrapper) .section-heading p {
-    font-size: 13px !important;
-    line-height: 1.7 !important;
-    margin: 0 !important;
-    color: #636366 !important;
-    -webkit-text-fill-color: #636366 !important;
-    max-width: 100% !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     18. BLOG LIST — STICKY GLASS FILTER BAR
-     ═══════════════════════════════════════════════════════════ */
-
-  .blog-index-wrapper .blog-filter-container {
-    position: sticky !important;
-    top: 8px !important;
-    z-index: 50 !important;
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    gap: 4px !important;
-    padding: 5px !important;
-    margin: 0 0 16px 0 !important;
-    background: rgba(255, 255, 255, 0.72) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    border-radius: 99px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-    transform: translateZ(0) !important;
-    box-shadow:
-      0 8px 24px -8px rgba(13, 115, 119, 0.15),
-      0 2px 6px -2px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
-    isolation: isolate !important;
-  }
-
-  .blog-index-wrapper .blog-filter-container::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .blog-index-wrapper .blog-filter-container .blog-filter-btn {
-    flex-shrink: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 8px 15px !important;
-    min-height: 34px !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 99px !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    line-height: 1 !important;
-    color: #636366 !important;
-    -webkit-text-fill-color: #636366 !important;
-    white-space: nowrap !important;
-    cursor: pointer !important;
-    transition:
-      background-color 0.18s ease,
-      color 0.18s ease,
-      transform 0.1s ease,
-      box-shadow 0.18s ease !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-
-  .blog-index-wrapper .blog-filter-container .blog-filter-btn.is-active {
-    background: linear-gradient(135deg, #ffffff 0%, #f9fdfd 100%) !important;
-    color: #0d7377 !important;
-    -webkit-text-fill-color: #0d7377 !important;
-    font-weight: 700 !important;
-    box-shadow:
-      0 2px 8px -2px rgba(13, 115, 119, 0.15),
-      0 1px 2px 0 rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
-  }
-
-  .blog-index-wrapper .blog-filter-container .blog-filter-btn:active {
-    transform: scale(0.94) !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     19. ARTICLE — GLASS POST HEADER CARD
-     ═══════════════════════════════════════════════════════════ */
-
-  .blog-post-page .blog-post-header {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
-    margin: 0 0 20px 0 !important;
-    padding: 24px 20px 22px !important;
-    background:
-      radial-gradient(ellipse 90% 100% at 100% 0%, rgba(46, 196, 196, 0.16) 0%, transparent 55%),
-      radial-gradient(ellipse 60% 60% at 0% 100%, rgba(255, 59, 48, 0.05) 0%, transparent 55%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 251, 251, 0.75) 100%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.85) !important;
-    border-radius: 24px !important;
-    box-shadow:
-      0 12px 32px -16px rgba(13, 115, 119, 0.2),
-      0 4px 12px -6px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-    box-sizing: border-box !important;
-    border-bottom: none !important;
-  }
-
-  .blog-post-page .blog-post-header::before {
-    content: "" !important;
-    position: absolute !important;
-    top: -70px !important;
-    inset-inline-end: -50px !important;
-    width: 220px !important;
-    height: 220px !important;
-    border-radius: 50% !important;
-    background: radial-gradient(circle, rgba(46, 196, 196, 0.2) 0%, transparent 65%) !important;
-    pointer-events: none !important;
-    z-index: 0 !important;
-  }
-
-  .blog-post-page .blog-post-header::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    inset-inline-start: 20px !important;
-    width: 60px !important;
-    height: 2px !important;
-    background: linear-gradient(90deg, #0d7377 0%, #2ec4c4 100%) !important;
-    border-radius: 2px !important;
-    box-shadow: 0 0 8px rgba(46, 196, 196, 0.5) !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
-  }
-
-  .blog-post-page .blog-post-header > * {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  .blog-post-page .blog-post-header .blog-post-category {
-    display: inline-flex !important;
-    align-items: center !important;
-    padding: 5px 12px !important;
-    margin: 0 0 14px 0 !important;
-    background: linear-gradient(135deg, rgba(13, 115, 119, 0.12) 0%, rgba(46, 196, 196, 0.08) 100%) !important;
-    color: #0d7377 !important;
-    -webkit-text-fill-color: #0d7377 !important;
-    border: 1px solid rgba(13, 115, 119, 0.15) !important;
-    border-radius: 99px !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    line-height: 1.2 !important;
-    letter-spacing: 0.04em !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
-  }
-
-  .blog-post-page .blog-post-header .blog-post-title,
-  .blog-post-page .blog-post-header h1 {
-    margin: 0 0 16px 0 !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 26px !important;
-    line-height: 1.28 !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.025em !important;
-    background: linear-gradient(135deg, #0f1518 0%, #0d7377 100%) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent !important;
-  }
-
-  .blog-post-page .blog-post-header .blog-post-excerpt {
-    margin: 0 0 18px 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 14px !important;
-    line-height: 1.8 !important;
-    color: #636366 !important;
-    -webkit-text-fill-color: #636366 !important;
-  }
-
-  .blog-post-page .blog-post-header .blog-post-meta {
-    display: flex !important;
-    align-items: center !important;
-    gap: 14px !important;
-    margin: 0 !important;
-    padding: 12px 0 0 0 !important;
-    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    line-height: 1.4 !important;
-    color: #8e8e93 !important;
-    -webkit-text-fill-color: #8e8e93 !important;
-    font-variant-numeric: tabular-nums !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     20. ARTICLE — ENHANCED READING PROGRESS BAR
-     ═══════════════════════════════════════════════════════════ */
-
-  .reading-progress {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 4px !important;
-    z-index: 9999 !important;
-    background: rgba(255, 255, 255, 0.4) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
-    backdrop-filter: blur(10px) saturate(180%) !important;
-    pointer-events: none !important;
-  }
-
-  .reading-progress-bar {
-    height: 100% !important;
-    background: linear-gradient(90deg, #2ec4c4 0%, #0d7377 60%, #0a5a5e 100%) !important;
-    box-shadow:
-      0 0 10px rgba(46, 196, 196, 0.7),
-      0 0 20px rgba(46, 196, 196, 0.4) !important;
-    border-radius: 0 2px 2px 0 !important;
-    transition: width 0.1s ease-out !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     21. TOC — GLASS ENHANCEMENT (matching header)
-     ═══════════════════════════════════════════════════════════ */
-
-  .blog-post-page .glass-toc,
-  .glass-toc {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
-    padding: 18px !important;
-    margin: 0 !important;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(247, 251, 251, 0.75) 100%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.85) !important;
-    border-radius: 20px !important;
-    box-shadow:
-      0 8px 24px -12px rgba(13, 115, 119, 0.15),
-      0 2px 6px -2px rgba(0, 0, 0, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 1) !important;
-    transform: translateZ(0) !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-  }
-
-  .glass-toc .glass-toc-title {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    margin: 0 0 12px 0 !important;
-    padding: 0 0 12px 0 !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
-    font-family: var(--font-estedad, system-ui) !important;
-    font-size: 11px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.06em !important;
-    text-transform: uppercase !important;
-    color: #8e8e93 !important;
-    -webkit-text-fill-color: #8e8e93 !important;
-    line-height: 1.2 !important;
-    position: relative !important;
-    z-index: 1 !important;
-  }
-
-  .glass-toc .glass-toc-title::before {
-    content: "" !important;
-    display: block !important;
-    width: 3px !important;
-    height: 14px !important;
-    border-radius: 2px !important;
-    background: linear-gradient(180deg, #2ec4c4, #0d7377) !important;
-    box-shadow: 0 0 6px rgba(46, 196, 196, 0.5) !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     22. REDUCED MOTION
-     ═══════════════════════════════════════════════════════════ */
-
-  @media (prefers-reduced-motion: reduce) {
-    .blog-index-wrapper .blog-filter-container,
-    .blog-index-wrapper .blog-filter-container .blog-filter-btn,
-    .reading-progress-bar {
-      transition: none !important;
     }
   }
 }
