@@ -61,67 +61,55 @@ export default function ArticleGlassNav({ title, slug }: Props) {
   };
 
   return (
-    <>
-      {/* ⭐️ موتور اختصاصی اعوجاج شیشه (Liquid Distortion) */}
-      <svg style={{ position: "absolute", width: 0, height: 0, pointerEvents: "none" }} aria-hidden="true">
-        <defs>
-          <filter id="liquid-glass-distortion" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
+    <div className="article-glass-nav" aria-label="ابزارهای مقاله">
+      
+      {/* نوار پیشرفت مطالعه */}
+      <div 
+        className="nav-progress-fill" 
+        style={{ width: `${progress}%` }} 
+      />
 
-      <div className="article-glass-nav" aria-label="ابزارهای مقاله">
-        
-        {/* نوار پیشرفت مطالعه */}
-        <div 
-          className="nav-progress-fill" 
-          style={{ width: `${progress}%` }} 
-        />
+      <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </Link>
+      
+      <button type="button" onClick={handleTocClick} className="article-glass-nav-btn" aria-label="فهرست مطالب">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+      </button>
 
-        <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-        </Link>
-        
-        <button type="button" onClick={handleTocClick} className="article-glass-nav-btn" aria-label="فهرست مطالب">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="8" y1="6" x2="21" y2="6" />
-            <line x1="8" y1="12" x2="21" y2="12" />
-            <line x1="8" y1="18" x2="21" y2="18" />
-            <line x1="3" y1="6" x2="3.01" y2="6" />
-            <line x1="3" y1="12" x2="3.01" y2="12" />
-            <line x1="3" y1="18" x2="3.01" y2="18" />
-          </svg>
-        </button>
+      <button type="button" onClick={handleShare} className="article-glass-nav-btn" aria-label="اشتراک‌گذاری">
+        {copied ? (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" /></svg>
+        )}
+      </button>
 
-        <button type="button" onClick={handleShare} className="article-glass-nav-btn" aria-label="اشتراک‌گذاری">
-          {copied ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" /></svg>
-          )}
-        </button>
-
-        <div className="article-glass-nav-font">
-          <button type="button" onClick={() => setFontScale((s) => Math.max(0.85, +(s - 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A-</button>
-          <button type="button" onClick={() => setFontScale((s) => Math.min(1.35, +(s + 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A+</button>
-        </div>
-
-        <button type="button" onClick={() => setSaved(!saved)} className={`article-glass-nav-btn ${saved ? "is-active" : ""}`} aria-label="ذخیره">
-          <svg viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-          </svg>
-        </button>
-
-        <button type="button" onClick={scrollToTop} className="article-glass-nav-btn" aria-label="بازگشت به بالا">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 19V5M5 12l7-7 7 7" />
-          </svg>
-        </button>
+      <div className="article-glass-nav-font">
+        <button type="button" onClick={() => setFontScale((s) => Math.max(0.85, +(s - 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A-</button>
+        <button type="button" onClick={() => setFontScale((s) => Math.min(1.35, +(s + 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A+</button>
       </div>
-    </>
+
+      <button type="button" onClick={() => setSaved(!saved)} className={`article-glass-nav-btn ${saved ? "is-active" : ""}`} aria-label="ذخیره">
+        <svg viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        </svg>
+      </button>
+
+      <button type="button" onClick={scrollToTop} className="article-glass-nav-btn" aria-label="بازگشت به بالا">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
+      </button>
+    </div>
   );
 }

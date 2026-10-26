@@ -1,5 +1,5 @@
 /* ============================================================
-   INFINITY BLOG — ORIGINAL GLASS CARDS + LIQUID NAV
+   INFINITY BLOG — MOBILE (TRUE GLASS + PERFECT TYPOGRAPHY)
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -141,7 +141,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     2. ARTICLE BODY
+     2. ARTICLE BODY & TOC
      ═══════════════════════════════════════════════════════ */
   
   .blog-post-page .blog-post-content.glass-panel {
@@ -155,8 +155,46 @@
     transition: font-size 0.2s ease !important;
   }
 
+  /* اصلاح TOC: باکس اسکرول‌شونده تا مقاله رو هل نده */
+  .blog-post-page .blog-post-layout .blog-post-sidebar {
+    width: 100% !important;
+    position: static !important;
+    order: -1 !important;
+    margin: 0 0 16px 0 !important;
+    padding: 0 !important;
+  }
+
+  .glass-toc {
+    padding: var(--inf-s-4) !important;
+    background: #ffffff !important;
+    border-radius: var(--inf-r-xl) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    max-height: 200px !important; /* محدود کردن ارتفاع */
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .glass-toc-title {
+    flex-shrink: 0 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .glass-toc-list {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-right: 4px !important; /* برای اسکرول بار */
+  }
+
+  .glass-toc-list::-webkit-scrollbar {
+    width: 4px !important;
+  }
+  .glass-toc-list::-webkit-scrollbar-thumb {
+    background: rgba(13, 115, 119, 0.2) !important;
+    border-radius: 4px !important;
+  }
+
   /* ═══════════════════════════════════════════════════════
-     3. LIQUID GLASS ARTICLE NAV (با اعوجاج اختصاصی)
+     3. LIQUID GLASS ARTICLE NAV (اعوجاج نوری واقعی)
      ═══════════════════════════════════════════════════════ */
      
   .article-glass-nav {
@@ -175,59 +213,48 @@
     width: calc(100% - 32px) !important;
     max-width: 380px !important;
     
-    /* ─── موتور شیشه مایع با اعوجاج SVG (Liquid Distortion) ─── */
-    background: rgba(255, 255, 255, 0.45) !important;
-    /* فراخوانی فیلتر از فایل کامپوننت */
-    backdrop-filter: blur(20px) saturate(250%) url(#liquid-glass-distortion) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(250%) url(#liquid-glass-distortion) !important;
+    /* شیشه مایع با اعوجاج نوری (Lens Refraction) */
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(24px) saturate(200%) contrast(115%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(200%) contrast(115%) !important;
     
-    /* حاشیه‌های نوری */
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.4) !important;
+    /* لبه‌های شیشه‌ای که نور رو می‌شکنند */
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    border-top-color: rgba(255, 255, 255, 1) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.3) !important;
     border-radius: 99px !important;
     
     box-shadow: 
-      0 12px 32px -8px rgba(13, 115, 119, 0.2),
+      0 16px 40px -12px rgba(13, 115, 119, 0.25),
       0 4px 12px -4px rgba(0, 0, 0, 0.05),
       inset 0 1px 1px rgba(255, 255, 255, 1),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.03) !important;
+      inset 0 -1px 1px rgba(0, 0, 0, 0.05) !important;
       
     isolation: isolate !important;
     overflow: hidden !important;
   }
 
-  /* لایه بافت نویز */
-  .article-glass-nav::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E") !important;
-    pointer-events: none !important;
-    z-index: -1 !important;
-  }
-
-  /* بازتاب نور (Glare) */
+  /* شبیه‌سازی شکست نور (Refraction) روی لبه‌ها */
   .article-glass-nav::after {
     content: "" !important;
     position: absolute !important;
-    top: -50% !important;
-    left: -10% !important;
-    width: 120% !important;
-    height: 100% !important;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, transparent 100%) !important;
-    transform: rotate(-15deg) !important;
+    inset: 0 !important;
+    border-radius: 99px !important;
+    border: 1px solid transparent !important;
+    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 40%, transparent 60%, rgba(46,196,196,0.2) 100%) border-box !important;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0) !important;
+    -webkit-mask-composite: xor !important;
+    mask-composite: exclude !important;
     pointer-events: none !important;
-    z-index: -1 !important;
-    border-radius: 50% !important;
-    filter: blur(10px) !important;
+    z-index: 3 !important;
   }
 
   [data-theme="dark"] .article-glass-nav {
-    background: rgba(20, 20, 25, 0.55) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(20, 20, 25, 0.45) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
     box-shadow: 
-      0 12px 32px -8px rgba(0, 0, 0, 0.6),
-      inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+      0 16px 40px -12px rgba(0, 0, 0, 0.6),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
   }
 
   /* نوار پیشرفت مطالعه */
@@ -259,7 +286,7 @@
     -webkit-tap-highlight-color: transparent !important;
     padding: 0 !important;
     position: relative !important;
-    z-index: 2 !important; 
+    z-index: 4 !important; /* بالاتر از افکت ها */
   }
 
   [data-theme="dark"] .article-glass-nav-btn {
@@ -299,7 +326,7 @@
     height: 36px !important;
     box-sizing: border-box !important;
     margin: 0 4px !important;
-    z-index: 2 !important;
+    z-index: 4 !important;
     border: inset 1px solid rgba(0,0,0,0.05) !important;
   }
 
@@ -319,7 +346,6 @@
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     -webkit-tap-highlight-color: transparent !important;
-    pointer-events: auto !important;
   }
 
   [data-theme="dark"] .article-glass-nav-font {
