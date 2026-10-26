@@ -1,440 +1,482 @@
 /* ============================================================
-   INFINITY ORDER FORM — Masterpiece Edition
+   INFINITY ORDER FORM — THE ULTIMATE MOBILE EXPERIENCE
+   Design System: Apple iOS / Awwwards Level
    ============================================================ */
 
-/* ═══════════════════════════════════════════════════════════
-   KEYFRAMES — 10 Unique Animations
-   ═══════════════════════════════════════════════════════════ */
-@keyframes inf-shimmer {
-  0%   { --inf-shimmer: -100%; }
-  100% { --inf-shimmer: 200%; }
+/* ============================================================
+   SECTION 0: GLOBAL ANIMATIONS & KEYFRAMES
+   ============================================================ */
+@keyframes inf-aura-glow {
+  0%   { transform: scale(1) translate(0, 0); opacity: 0.6; }
+  50%  { transform: scale(1.05) translate(2%, 2%); opacity: 1; }
+  100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
 }
 
-@keyframes inf-glow-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.05); }
+@keyframes inf-shimmer-sweep {
+  0%   { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(200%) skewX(-20deg); }
 }
 
-@keyframes inf-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+@keyframes inf-input-lift {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-4px) scale(1.005); }
 }
 
-@keyframes inf-gradient-rotate {
-  0%   { --inf-glow-angle: 0deg; }
-  100% { --inf-glow-angle: 360deg; }
-}
-
-@keyframes inf-aura-breathe {
-  0%, 100% { opacity: 0.4; transform: scale(0.98); }
-  50%      { opacity: 0.8; transform: scale(1.04); }
-}
-
-@keyframes inf-step-pop {
-  0%   { transform: scale(0.8) rotate(-10deg); opacity: 0; }
-  60%  { transform: scale(1.15) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-@keyframes inf-ripple {
-  0%   { transform: scale(0); opacity: 0.6; }
-  100% { transform: scale(4); opacity: 0; }
+@keyframes inf-error-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px) rotate(-1deg); }
+  40% { transform: translateX(6px) rotate(1deg); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
 }
 
 @keyframes inf-success-pop {
-  0%   { transform: scale(0.4) rotate(-30deg); opacity: 0; }
-  50%  { transform: scale(1.2) rotate(10deg); opacity: 1; }
+  0%   { transform: scale(0.5) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.1) rotate(5deg); opacity: 1; }
   100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
-@keyframes inf-cursor-blink {
-  0%, 50%   { opacity: 1; }
-  51%, 100% { opacity: 0; }
+@keyframes inf-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(13, 115, 119, 0.4); }
+  70%  { box-shadow: 0 0 0 12px rgba(13, 115, 119, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(13, 115, 119, 0); }
 }
 
-@keyframes inf-shake {
-  0%, 100%      { transform: translateX(0); }
-  10%, 30%, 50% { transform: translateX(-4px); }
-  20%, 40%, 60% { transform: translateX(4px); }
+@keyframes inf-fade-slide-up {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ORDER FORM CONTAINER
-   ═══════════════════════════════════════════════════════════ */
+@keyframes inf-checkbox-draw {
+  0%   { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes inf-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes inf-float-element {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes inf-counter-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); color: var(--accent); }
+  100% { transform: scale(1); }
+}
+
+/* ============================================================
+   SECTION 1: LAYOUT & CENTERING (رفع مشکل چیدمان و وسط نبودن)
+   ============================================================ */
 @media (max-width: 768px) {
-  .oform {
-    position: relative !important;
-    background: var(--inf-glass-light) !important;
-    backdrop-filter: blur(40px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
-    border: 1px solid var(--inf-glass-border) !important;
-    border-radius: var(--inf-r-3xl) !important;
-    box-shadow:
-      var(--inf-shadow-lg),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.03) !important;
-    padding: var(--inf-s-6) var(--inf-s-4) !important;
-    margin: var(--inf-s-4) !important;
-    overflow: visible !important;
+  
+  /* پس‌زمینه زنده صفحه سفارش (Aurora Mesh) */
+  .order-page {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    background-color: var(--paper) !important;
+    background-image: 
+      radial-gradient(circle at 10% 10%, rgba(46,196,196,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(139,58,74,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, transparent 60%) !important;
+    background-attachment: fixed !important;
+    min-height: 100dvh !important;
+    padding: 24px 16px 120px 16px !important; /* فاصله از منوی پایین */
+    overflow-x: hidden !important;
   }
 
-  /* Aura glow behind form */
+  /* هدر صفحه (تیتر بالای فرم) */
+  .order-header {
+    width: 100% !important;
+    max-width: 500px !important;
+    margin: 0 auto 24px auto !important;
+    text-align: center !important;
+    animation: inf-fade-slide-up 0.6s ease-out !important;
+  }
+
+  .order-header h1 {
+    font-size: 1.8rem !important;
+    line-height: 1.3 !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    margin-bottom: 12px !important;
+  }
+
+  .order-header p {
+    font-size: 0.95rem !important;
+    color: var(--ink-3) !important;
+    line-height: 1.6 !important;
+    padding-inline: 16px !important;
+  }
+
+  /* کانتینر اصلی فرم */
+  .order-page .container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 500px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  /* ظرف اصلی فرم (شیشه اقیانوسی) */
+  .oform {
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 auto !important; /* دقیقاً وسط */
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 36px !important;
+    box-shadow: 
+      0 32px 80px -20px rgba(0, 0, 0, 0.15),
+      0 8px 24px -8px rgba(0, 0, 0, 0.05),
+      inset 0 2px 0 rgba(255, 255, 255, 1),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.03) !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    animation: inf-fade-slide-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  /* هاله نورانی پشت فرم */
   .oform::before {
     content: "" !important;
     position: absolute !important;
-    inset: -20px !important;
-    border-radius: inherit !important;
-    background: radial-gradient(
-      ellipse at center,
-      var(--inf-accent-glow) 0%,
-      transparent 70%
-    ) !important;
-    filter: blur(40px) !important;
-    opacity: 0.6 !important;
+    inset: -20% !important;
+    background: radial-gradient(circle at center, rgba(46,196,196,0.15) 0%, transparent 60%) !important;
     z-index: -1 !important;
     pointer-events: none !important;
-    animation: inf-aura-breathe 8s ease-in-out infinite !important;
+    animation: inf-aura-glow 8s ease-in-out infinite alternate !important;
   }
 
-  [data-theme="dark"] .oform {
-    background: var(--inf-glass-dark) !important;
-    border-color: var(--inf-glass-border) !important;
-    box-shadow:
-      var(--inf-shadow-lg),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     PROGRESS BAR
-     ═══════════════════════════════════════════════════════ */
-  .oform-progress {
-    background: transparent !important;
-    padding: 0 0 var(--inf-s-6) !important;
-    border: none !important;
-  }
-
-  .oform-progress-track {
-    position: relative !important;
-    height: 8px !important;
-    border-radius: var(--inf-r-full) !important;
-    background: var(--inf-bg-sunken) !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    overflow: hidden !important;
-  }
-
-  .oform-progress-fill {
-    position: relative !important;
-    height: 100% !important;
-    background: linear-gradient(
-      90deg,
-      var(--inf-accent) 0%,
-      var(--inf-accent-soft) 50%,
-      var(--inf-accent) 100%
-    ) !important;
-    background-size: 200% 100% !important;
-    border-radius: var(--inf-r-full) !important;
-    box-shadow:
-      0 0 16px var(--inf-accent-glow),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
-    animation: inf-shimmer 2.5s linear infinite !important;
-    transition: width 0.6s cubic-bezier(0.34, 1.15, 0.4, 1) !important;
-  }
-
-  /* Shimmer overlay on progress fill */
-  .oform-progress-fill::after {
+  /* لبه نوری روی فرم */
+  .oform::after {
     content: "" !important;
     position: absolute !important;
     inset: 0 !important;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.6) 50%,
-      transparent 100%
-    ) !important;
-    background-size: 200% 100% !important;
-    animation: inf-shimmer 1.8s ease-in-out infinite !important;
     border-radius: inherit !important;
+    padding: 1.5px !important;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(46,196,196,0.3) 100%) !important;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+    -webkit-mask-composite: xor !important;
+    mask-composite: exclude !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
   }
 
-  /* Step pills */
+  /* فرم در حالت دارک */
+  [data-theme="dark"] .oform {
+    background: rgba(20, 25, 30, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+      0 32px 80px -20px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* ============================================================
+   SECTION 2: PROGRESS BAR & STEP PILLS (رفع نوار زرد/کرم بالا)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* حذف پس‌زمینه زشت قدیمی */
+  .oform-progress {
+    background: transparent !important;
+    padding: 24px 24px 16px 24px !important;
+    border-bottom: none !important;
+    width: 100% !important;
+    position: relative !important;
+  }
+
+  /* نوار پیشرفت (Progress Track) */
+  .oform-progress-track {
+    height: 6px !important;
+    background: rgba(0, 0, 0, 0.06) !important;
+    border-radius: 99px !important;
+    margin-bottom: 20px !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1) !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  /* پرکننده نوار پیشرفت (Progress Fill) */
+  .oform-progress-fill {
+    background: linear-gradient(90deg, #2ec4c4, #14b1ab, #0d7377, #2ec4c4) !important;
+    background-size: 300% 100% !important;
+    border-radius: 99px !important;
+    box-shadow: 0 0 16px rgba(46,196,196,0.6) !important;
+    animation: inf-gradient-shift 3s linear infinite !important;
+    transition: width 0.6s cubic-bezier(0.34, 1.15, 0.4, 1) !important;
+    position: relative !important;
+  }
+
+  /* درخشش عبوری روی نوار */
+  .oform-progress-fill::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent) !important;
+    animation: inf-shimmer-sweep 2s infinite linear !important;
+  }
+
+  /* دکمه‌های مراحل (Step Pills) */
   .oform-progress-steps {
     display: flex !important;
-    gap: var(--inf-s-2) !important;
-    margin-top: var(--inf-s-4) !important;
-    overflow-x: auto !important;
-    scrollbar-width: none !important;
-  }
-
-  .oform-progress-steps::-webkit-scrollbar {
-    display: none !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
 
   .oform-step-pill {
-    flex-shrink: 0 !important;
-    display: inline-flex !important;
+    flex: 1 !important;
+    display: flex !important;
     align-items: center !important;
-    gap: var(--inf-s-2) !important;
-    padding: var(--inf-s-2) var(--inf-s-3) !important;
-    background: var(--inf-bg-sunken) !important;
-    border: 1px solid transparent !important;
-    border-radius: var(--inf-r-full) !important;
-    font-size: var(--inf-fs-small) !important;
-    font-weight: 600 !important;
-    color: var(--inf-text-muted) !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    padding: 8px 10px !important;
+    border-radius: 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: var(--ink-3) !important;
+    box-shadow: 0 2px 8px -4px rgba(0,0,0,0.05) !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
   .oform-step-pill-num {
     display: grid !important;
     place-items: center !important;
-    width: 22px !important;
-    height: 22px !important;
-    border-radius: 50% !important;
-    background: var(--inf-bg-raised) !important;
-    color: var(--inf-text-muted) !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: rgba(0, 0, 0, 0.06) !important;
+    color: var(--ink-3) !important;
     font-size: 10px !important;
     font-weight: 800 !important;
-    box-shadow: var(--inf-shadow-xs) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
   }
 
+  /* مرحله انجام شده */
   .oform-step-pill.is-done {
-    color: var(--inf-accent) !important;
-    background: var(--inf-accent-tint) !important;
-    border-color: var(--inf-accent) !important;
-    box-shadow: 0 0 0 2px var(--inf-accent-tint) !important;
+    color: var(--accent) !important;
+    background: rgba(46, 196, 196, 0.1) !important;
+    border-color: rgba(46, 196, 196, 0.3) !important;
   }
-
   .oform-step-pill.is-done .oform-step-pill-num {
-    background: var(--inf-accent) !important;
+    background: var(--accent) !important;
     color: white !important;
-    box-shadow: 0 0 12px var(--inf-accent-glow) !important;
   }
 
+  /* مرحله فعال */
   .oform-step-pill.is-active {
-    background: var(--inf-accent) !important;
+    background: linear-gradient(135deg, #2ec4c4, #0d7377) !important;
+    border-color: transparent !important;
     color: white !important;
-    border-color: var(--inf-accent) !important;
-    box-shadow:
-      0 4px 12px -2px var(--inf-accent-glow),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 20px -6px rgba(46,196,196,0.6) !important;
+    transform: translateY(-2px) !important;
   }
-
   .oform-step-pill.is-active .oform-step-pill-num {
     background: rgba(255, 255, 255, 0.25) !important;
     color: white !important;
-    animation: inf-step-pop 0.4s var(--inf-ease-spring-bold) !important;
+    animation: inf-pulse-ring 2s infinite !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     SECTION HEADINGS
-     ═══════════════════════════════════════════════════════ */
+  [data-theme="dark"] .oform-step-pill {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+}
+
+/* ============================================================
+   SECTION 3: STEP HEADINGS (تیترهای مراحل)
+   ============================================================ */
+@media (max-width: 768px) {
+  .oform-step {
+    padding: 0 24px 24px 24px !important;
+  }
+
   .oform-step-head {
     display: flex !important;
-    align-items: flex-start !important;
-    gap: var(--inf-s-3) !important;
-    margin-bottom: var(--inf-s-6) !important;
-    padding-bottom: var(--inf-s-4) !important;
-    border-bottom: 1px solid var(--inf-glass-border) !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-bottom: 28px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+    position: relative !important;
+  }
+
+  .oform-step-head::after {
+    content: "" !important;
+    position: absolute !important;
+    bottom: -1px !important;
+    right: 0 !important;
+    width: 40px !important;
+    height: 2px !important;
+    background: var(--accent) !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 10px rgba(46,196,196,0.5) !important;
   }
 
   .oform-step-num {
-    flex-shrink: 0 !important;
     display: grid !important;
     place-items: center !important;
-    width: 44px !important;
-    height: 44px !important;
-    border-radius: var(--inf-r-md) !important;
-    background: linear-gradient(135deg, var(--inf-accent-tint), transparent) !important;
-    border: 1px solid var(--inf-accent-ring) !important;
-    color: var(--inf-accent) !important;
-    font-size: var(--inf-fs-body) !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, rgba(46, 196, 196, 0.15), rgba(46, 196, 196, 0.05)) !important;
+    border: 1px solid rgba(46, 196, 196, 0.3) !important;
+    color: var(--accent) !important;
+    font-size: 18px !important;
     font-weight: 800 !important;
-    font-variant-numeric: tabular-nums !important;
-    box-shadow:
-      var(--inf-shadow-sm),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 4px 12px -4px rgba(46,196,196,0.2) !important;
+    flex-shrink: 0 !important;
   }
 
   .oform-step-title {
-    font-size: var(--inf-fs-h3) !important;
+    font-size: 1.25rem !important;
     font-weight: 800 !important;
-    line-height: var(--inf-lh-tight) !important;
-    letter-spacing: var(--inf-tracking-tight) !important;
-    color: var(--inf-text-strong) !important;
-    margin: 0 0 var(--inf-s-1) !important;
-    background: linear-gradient(135deg, var(--inf-text-strong), var(--inf-text-body)) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
+    color: var(--ink) !important;
+    margin: 0 0 4px 0 !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--ink) !important;
+    letter-spacing: -0.02em !important;
   }
 
   .oform-step-subtitle {
-    font-size: var(--inf-fs-small) !important;
-    line-height: var(--inf-lh-normal) !important;
-    color: var(--inf-text-muted) !important;
+    font-size: 0.85rem !important;
+    color: var(--ink-3) !important;
     margin: 0 !important;
+    line-height: 1.5 !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     FIELD CONTAINERS
-     ═══════════════════════════════════════════════════════ */
+  [data-theme="dark"] .oform-step-num {
+    background: linear-gradient(135deg, rgba(46, 196, 196, 0.2), rgba(46, 196, 196, 0.1)) !important;
+  }
+}
+
+/* ============================================================
+   SECTION 4: INPUT FIELDS (فیلدهای فوق‌العاده لوکس)
+   ============================================================ */
+@media (max-width: 768px) {
   .oform-field {
+    margin-bottom: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
     position: relative !important;
-    display: grid !important;
-    gap: var(--inf-s-2) !important;
-    margin-bottom: var(--inf-s-5) !important;
   }
 
   .oform-label {
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
-    gap: var(--inf-s-1) !important;
-    font-size: var(--inf-fs-small) !important;
+    gap: 4px !important;
+    font-size: 0.9rem !important;
     font-weight: 700 !important;
-    letter-spacing: var(--inf-tracking-wide) !important;
-    color: var(--inf-text-body) !important;
-    text-transform: uppercase !important;
+    color: var(--ink) !important;
+    letter-spacing: -0.01em !important;
   }
 
   .oform-req {
-    color: var(--inf-accent) !important;
-    font-weight: 800 !important;
-    font-size: 14px !important;
+    color: #e11d48 !important;
+    font-size: 1.1rem !important;
     line-height: 1 !important;
+    margin-top: -2px !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     INPUTS — Full State Machine
-     ═══════════════════════════════════════════════════════ */
+  /* فیلد ورودی */
   .oform-input-wrap {
     position: relative !important;
+    width: 100% !important;
   }
 
   .oform-input-wrap input,
   .oform-input-wrap textarea {
     width: 100% !important;
-    background: var(--inf-bg-sunken) !important;
-    border: 1.5px solid transparent !important;
-    border-radius: var(--inf-r-lg) !important;
-    min-height: 62px !important;
-    padding: var(--inf-s-4) var(--inf-s-4) !important;
-    font-size: 16px !important;
+    min-height: 60px !important;
+    padding: 16px 20px !important;
+    background: rgba(255, 255, 255, 0.65) !important; /* شیشه سفید */
+    backdrop-filter: blur(10px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    border-radius: 18px !important;
+    font-size: 16px !important; /* جلوگیری از زوم iOS */
     font-weight: 500 !important;
-    line-height: 1.5 !important;
-    color: var(--inf-text-strong) !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    transition:
-      background-color var(--inf-t-fast) ease,
-      border-color var(--inf-t-normal) ease,
-      box-shadow var(--inf-t-slow) var(--inf-ease-out-expo),
-      transform var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    color: var(--ink) !important;
+    box-shadow: 
+      0 4px 12px -4px rgba(0, 0, 0, 0.03),
+      inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     -webkit-appearance: none !important;
-    appearance: none !important;
   }
 
   .oform-input-wrap textarea {
     min-height: 140px !important;
-    line-height: var(--inf-lh-relaxed) !important;
+    line-height: 1.6 !important;
     resize: vertical !important;
   }
 
-  /* Placeholder */
+  /* پلیس‌هولدر */
   .oform-input-wrap input::placeholder,
   .oform-input-wrap textarea::placeholder {
-    color: var(--inf-text-subtle) !important;
+    color: var(--ink-3) !important;
+    opacity: 0.6 !important;
     font-weight: 400 !important;
-    opacity: 1 !important;
-    transition: opacity var(--inf-t-fast) ease !important;
   }
 
-  /* Hover state */
-  .oform-input-wrap input:hover:not(:focus):not(:disabled),
-  .oform-input-wrap textarea:hover:not(:focus):not(:disabled) {
-    background: var(--inf-bg-raised) !important;
-    border-color: var(--inf-accent-ring) !important;
-    box-shadow:
-      var(--inf-neu-inset),
-      0 0 0 3px var(--inf-accent-tint) !important;
+  /* حالت هاور */
+  .oform-input-wrap input:hover,
+  .oform-input-wrap textarea:hover {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(46, 196, 196, 0.4) !important;
   }
 
-  /* Focus state — field lifts up */
+  /* حالت فوکوس (فیلد بالا می‌آید و نور می‌گیرد) */
   .oform-input-wrap input:focus,
   .oform-input-wrap textarea:focus {
     outline: none !important;
-    background: var(--inf-bg-raised) !important;
-    border-color: var(--inf-accent) !important;
-    box-shadow:
-      0 0 0 4px var(--inf-accent-tint),
-      var(--inf-neu-raised),
-      0 8px 20px -6px var(--inf-accent-glow) !important;
-    transform: translateY(-3px) scale(1.005) !important;
+    background: #ffffff !important;
+    border-color: var(--accent) !important;
+    box-shadow: 
+      0 0 0 4px rgba(46, 196, 196, 0.15),
+      0 12px 24px -8px rgba(46, 196, 196, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 1) !important;
+    transform: translateY(-3px) !important;
+    animation: inf-input-lift 0.3s ease forwards !important;
   }
 
-  /* Focus text shimmer */
-  .oform-input-wrap input:focus::placeholder,
-  .oform-input-wrap textarea:focus::placeholder {
-    opacity: 0.5 !important;
-  }
-
-  /* Disabled */
-  .oform-input-wrap input:disabled,
-  .oform-input-wrap textarea:disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-    background: var(--inf-bg-surface) !important;
-    box-shadow: none !important;
-    border-color: var(--inf-glass-border) !important;
-  }
-
-  /* ─── Field States (data-state attribute) ─── */
-  .oform-field[data-state="success"] input,
-  .oform-field[data-state="success"] textarea {
-    border-color: var(--inf-success) !important;
-    background: var(--inf-success-tint) !important;
-    box-shadow:
-      var(--inf-neu-inset),
-      0 0 0 3px var(--inf-success-tint) !important;
-  }
-
-  .oform-field[data-state="error"] input,
-  .oform-field[data-state="error"] textarea {
-    border-color: var(--inf-danger) !important;
-    background: var(--inf-danger-tint) !important;
-    box-shadow:
-      var(--inf-neu-inset),
-      0 0 0 3px var(--inf-danger-tint) !important;
-    animation: inf-shake 0.4s var(--inf-ease-out-expo) !important;
-  }
-
-  /* Field icons */
+  /* آیکون‌های وضعیت (تیک / ضربدر) */
   .oform-icon {
     position: absolute !important;
     top: 50% !important;
-    right: var(--inf-s-4) !important;
+    left: 20px !important;
     transform: translateY(-50%) !important;
-    display: grid !important;
-    place-items: center !important;
     width: 24px !important;
     height: 24px !important;
+    display: grid !important;
+    place-items: center !important;
     border-radius: 50% !important;
-    background: var(--inf-bg-raised) !important;
-    box-shadow: var(--inf-shadow-sm) !important;
-    pointer-events: none !important;
-    animation: inf-step-pop 0.3s var(--inf-ease-spring-bold) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    animation: inf-success-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
   .oform-field[data-state="success"] .oform-icon {
-    background: var(--inf-success) !important;
-    color: white !important;
-    box-shadow: 0 0 12px var(--inf-success) !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
   }
 
   .oform-field[data-state="error"] .oform-icon {
-    background: var(--inf-danger) !important;
-    color: white !important;
-    box-shadow: 0 0 12px var(--inf-danger) !important;
+    background: rgba(225, 29, 72, 0.1) !important;
+    color: #e11d48 !important;
   }
 
   .oform-icon svg {
@@ -443,106 +485,129 @@
     stroke-width: 3 !important;
   }
 
-  /* Hints */
-  .oform-hint {
-    font-size: var(--inf-fs-caption) !important;
-    line-height: var(--inf-lh-normal) !important;
-    color: var(--inf-text-muted) !important;
-    margin: 0 !important;
+  /* حالت خطا (لرزش + هاله قرمز) */
+  .oform-field[data-state="error"] input,
+  .oform-field[data-state="error"] textarea {
+    border-color: #e11d48 !important;
+    background: #fff1f2 !important;
+    animation: inf-error-shake 0.4s ease !important;
+    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1) !important;
   }
 
-  /* Character counter */
+  /* حالت موفقیت */
+  .oform-field[data-state="success"] input,
+  .oform-field[data-state="success"] textarea {
+    border-color: #10b981 !important;
+    background: #ecfdf5 !important;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+  }
+
+  /* متن راهنما زیر فیلد */
+  .oform-hint {
+    font-size: 0.75rem !important;
+    color: var(--ink-3) !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding-inline: 4px !important;
+  }
+
+  /* شمارنده کاراکتر */
   .oform-meta-row {
     display: flex !important;
-    align-items: center !important;
     justify-content: space-between !important;
-    gap: var(--inf-s-3) !important;
-    margin-top: var(--inf-s-1) !important;
+    align-items: center !important;
+    padding-inline: 4px !important;
+    margin-top: 4px !important;
   }
 
   .oform-counter {
-    font-family: var(--sh-font-mono, monospace) !important;
-    font-size: 11px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.7rem !important;
     font-weight: 600 !important;
-    font-variant-numeric: tabular-nums !important;
-    color: var(--inf-text-muted) !important;
-    letter-spacing: 0.02em !important;
-    transition: color var(--inf-t-fast) ease !important;
+    color: var(--ink-3) !important;
+    transition: color 0.3s ease !important;
   }
 
-  .oform-counter.is-near {
-    color: var(--inf-warning) !important;
+  .oform-counter.is-near { color: #f59e0b !important; }
+  .oform-counter.is-over { color: #e11d48 !important; }
+
+  /* دارک مود */
+  [data-theme="dark"] .oform-input-wrap input,
+  [data-theme="dark"] .oform-input-wrap textarea {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
   }
 
-  .oform-counter.is-over {
-    color: var(--inf-danger) !important;
+  [data-theme="dark"] .oform-field[data-state="error"] input {
+    background: rgba(225, 29, 72, 0.15) !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     OPTION CARDS (Project Types)
-     ═══════════════════════════════════════════════════════ */
+  [data-theme="dark"] .oform-field[data-state="success"] input {
+    background: rgba(16, 185, 129, 0.15) !important;
+  }
+}
+
+/* ============================================================
+   SECTION 5: PROJECT TYPE CARDS (کارت‌های انتخاب - فوق‌العاده)
+   ============================================================ */
+@media (max-width: 768px) {
   .oform-fieldset {
-    border: 0 !important;
+    border: none !important;
     padding: 0 !important;
-    margin: 0 0 var(--inf-s-5) !important;
-    min-width: 0 !important;
+    margin: 0 0 24px 0 !important;
   }
 
   .oform-fieldset legend {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: var(--inf-s-1) !important;
-    font-size: var(--inf-fs-small) !important;
+    font-size: 0.9rem !important;
     font-weight: 700 !important;
-    letter-spacing: var(--inf-tracking-wide) !important;
-    color: var(--inf-text-body) !important;
-    text-transform: uppercase !important;
-    margin-bottom: var(--inf-s-3) !important;
-    padding: 0 !important;
+    color: var(--ink) !important;
+    margin-bottom: 12px !important;
   }
 
   .oform-options {
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: var(--inf-s-2) !important;
+    grid-template-columns: 1fr !important; /* تک ستونه در موبایل */
+    gap: 12px !important;
   }
 
   .oform-option {
     position: relative !important;
     display: flex !important;
     align-items: center !important;
-    gap: var(--inf-s-3) !important;
-    padding: var(--inf-s-4) !important;
-    background: var(--inf-bg-sunken) !important;
-    border: 1.5px solid transparent !important;
-    border-radius: var(--inf-r-lg) !important;
-    min-height: 64px !important;
+    gap: 16px !important;
+    padding: 18px 20px !important;
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 20px !important;
     cursor: pointer !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
     overflow: hidden !important;
-    isolation: isolate !important;
   }
 
-  /* Shimmer sweep on hover */
+  /* افکت درخشش عبوری (Shimmer Sweep) */
   .oform-option::before {
     content: "" !important;
     position: absolute !important;
-    inset: 0 !important;
-    background: linear-gradient(
-      120deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.4) 50%,
-      transparent 70%
-    ) !important;
-    transform: translateX(-150%) !important;
-    transition: transform 0.7s var(--inf-ease-out-expo) !important;
-    pointer-events: none !important;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent) !important;
+    transform: skewX(-20deg) !important;
+    transition: all 0.6s ease !important;
     z-index: 1 !important;
   }
 
-  .oform-option:active::before {
-    transform: translateX(150%) !important;
+  .oform-option:hover::before {
+    left: 150% !important;
+  }
+
+  .oform-option:hover {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border-color: rgba(46, 196, 196, 0.4) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.08) !important;
   }
 
   .oform-option input {
@@ -551,157 +616,140 @@
     pointer-events: none !important;
   }
 
+  /* آیکون انتخاب (Checkbox) */
   .oform-option-check {
-    position: relative !important;
     display: grid !important;
     place-items: center !important;
     flex-shrink: 0 !important;
     width: 24px !important;
     height: 24px !important;
-    border-radius: var(--inf-r-sm) !important;
-    background: var(--inf-bg-raised) !important;
-    border: 1.5px solid var(--inf-glass-border) !important;
-    color: transparent !important;
-    box-shadow: var(--inf-shadow-xs) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    background: #ffffff !important;
+    border: 2px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    z-index: 2 !important;
   }
 
   .oform-option-check svg {
     width: 14px !important;
     height: 14px !important;
-    stroke-width: 3.5 !important;
-    transition: opacity var(--inf-t-fast) ease !important;
+    stroke-width: 3 !important;
     opacity: 0 !important;
+    transform: scale(0.5) !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
   .oform-option-label {
     flex: 1 !important;
-    font-size: var(--inf-fs-body) !important;
+    font-size: 1rem !important;
     font-weight: 600 !important;
-    line-height: var(--inf-lh-snug) !important;
-    color: var(--inf-text-body) !important;
+    color: var(--ink-2) !important;
     z-index: 2 !important;
-    transition: color var(--inf-t-fast) ease !important;
+    transition: color 0.3s ease !important;
   }
 
-  /* Hover state */
-  .oform-option:hover {
-    background: var(--inf-bg-raised) !important;
-    border-color: var(--inf-accent-ring) !important;
-    transform: translateY(-2px) !important;
-    box-shadow:
-      var(--inf-neu-raised),
-      0 4px 12px -4px var(--inf-accent-glow) !important;
-  }
-
-  /* Active state */
+  /* کارت انتخاب شده */
   .oform-option.is-active {
-    background: linear-gradient(135deg, var(--inf-accent-tint), transparent) !important;
-    border-color: var(--inf-accent) !important;
-    transform: translateY(-3px) scale(1.01) !important;
-    box-shadow:
-      var(--inf-shadow-md),
-      0 0 0 3px var(--inf-accent-tint),
-      0 8px 20px -6px var(--inf-accent-glow) !important;
+    background: rgba(46, 196, 196, 0.1) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 8px 24px -8px rgba(46, 196, 196, 0.4) !important;
   }
 
   .oform-option.is-active .oform-option-check {
-    background: var(--inf-accent) !important;
-    border-color: var(--inf-accent) !important;
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
     color: white !important;
-    box-shadow: 0 0 12px var(--inf-accent-glow) !important;
-    animation: inf-step-pop 0.3s var(--inf-ease-spring-bold) !important;
+    animation: inf-pulse-ring 2s infinite !important;
   }
 
   .oform-option.is-active .oform-option-check svg {
     opacity: 1 !important;
+    transform: scale(1) !important;
   }
 
   .oform-option.is-active .oform-option-label {
-    color: var(--inf-text-strong) !important;
-    font-weight: 700 !important;
+    color: var(--ink) !important;
+    font-weight: 800 !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     CONTACT METHODS (Radio)
-     ═══════════════════════════════════════════════════════ */
+  [data-theme="dark"] .oform-option {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  [data-theme="dark"] .oform-option.is-active {
+    background: rgba(46, 196, 196, 0.2) !important;
+    border-color: var(--accent) !important;
+  }
+}
+
+/* ============================================================
+   SECTION 6: CONTACT METHODS & CHECKBOX (روش تماس و تیک قوانین)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* شبکه روش‌های تماس */
   .oform-contacts {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: var(--inf-s-2) !important;
+    gap: 12px !important;
+    margin-top: 8px !important;
   }
 
   .oform-contact {
-    position: relative !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: var(--inf-s-2) !important;
-    padding: var(--inf-s-4) var(--inf-s-2) !important;
-    min-height: 80px !important;
-    background: var(--inf-bg-sunken) !important;
-    border: 1.5px solid transparent !important;
-    border-radius: var(--inf-r-lg) !important;
+    gap: 8px !important;
+    padding: 16px 8px !important;
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 16px !important;
     cursor: pointer !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    transition: all 0.3s ease !important;
   }
 
-  .oform-contact input {
-    position: absolute !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+  .oform-contact input { display: none !important; }
 
   .oform-contact-radio {
-    position: relative !important;
     display: grid !important;
     place-items: center !important;
-    width: 22px !important;
-    height: 22px !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: #ffffff !important;
+    border: 2px solid rgba(0,0,0,0.1) !important;
     border-radius: 50% !important;
-    background: var(--inf-bg-raised) !important;
-    border: 1.5px solid var(--inf-glass-border) !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    transition: all 0.3s ease !important;
   }
 
   .oform-contact-radio::after {
     content: "" !important;
     width: 10px !important;
     height: 10px !important;
-    border-radius: 50% !important;
     background: white !important;
+    border-radius: 50% !important;
     transform: scale(0) !important;
-    transition: transform var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
   .oform-contact-label {
-    font-size: var(--inf-fs-small) !important;
+    font-size: 0.85rem !important;
     font-weight: 700 !important;
-    color: var(--inf-text-body) !important;
-    transition: color var(--inf-t-fast) ease !important;
+    color: var(--ink-2) !important;
   }
 
-  .oform-contact:hover {
-    background: var(--inf-bg-raised) !important;
-    border-color: var(--inf-accent-ring) !important;
-    transform: translateY(-2px) !important;
-  }
-
+  /* روش تماس انتخاب شده */
   .oform-contact.is-active {
-    background: var(--inf-accent-tint) !important;
-    border-color: var(--inf-accent) !important;
-    box-shadow:
-      0 0 0 3px var(--inf-accent-tint),
-      0 8px 20px -8px var(--inf-accent-glow) !important;
-    transform: translateY(-2px) !important;
+    background: rgba(46, 196, 196, 0.1) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 4px 12px -4px rgba(46, 196, 196, 0.3) !important;
   }
 
   .oform-contact.is-active .oform-contact-radio {
-    background: var(--inf-accent) !important;
-    border-color: var(--inf-accent) !important;
-    box-shadow: 0 0 12px var(--inf-accent-glow) !important;
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
   }
 
   .oform-contact.is-active .oform-contact-radio::after {
@@ -709,297 +757,162 @@
   }
 
   .oform-contact.is-active .oform-contact-label {
-    color: var(--inf-accent) !important;
-    font-weight: 800 !important;
+    color: var(--accent) !important;
   }
 
-  /* ═══════════════════════════════════════════════════════
-     CHECKBOX
-     ═══════════════════════════════════════════════════════ */
+  /* چک‌باکس قوانین */
   .oform-check {
     display: flex !important;
     align-items: center !important;
-    gap: var(--inf-s-3) !important;
-    padding: var(--inf-s-4) !important;
-    background: var(--inf-bg-sunken) !important;
-    border: 1.5px dashed var(--inf-glass-border) !important;
-    border-radius: var(--inf-r-lg) !important;
-    min-height: 60px !important;
+    gap: 12px !important;
+    padding: 16px !important;
+    background: rgba(255, 255, 255, 0.4) !important;
+    border: 1.5px dashed rgba(0,0,0,0.15) !important;
+    border-radius: 16px !important;
     cursor: pointer !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
-    margin-bottom: var(--inf-s-4) !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 24px !important;
   }
 
-  .oform-check input {
-    position: absolute !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+  .oform-check input { display: none !important; }
 
   .oform-check-box {
     display: grid !important;
     place-items: center !important;
-    flex-shrink: 0 !important;
     width: 24px !important;
     height: 24px !important;
-    border-radius: var(--inf-r-sm) !important;
-    background: var(--inf-bg-raised) !important;
-    border: 1.5px solid var(--inf-glass-border) !important;
-    color: transparent !important;
-    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    background: #ffffff !important;
+    border: 2px solid rgba(0,0,0,0.15) !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+    transition: all 0.3s ease !important;
   }
 
   .oform-check-box svg {
     width: 14px !important;
     height: 14px !important;
     opacity: 0 !important;
-    transition: opacity var(--inf-t-fast) ease !important;
+    transform: scale(0.5) !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
-  .oform-check:hover {
-    border-color: var(--inf-accent-ring) !important;
-    background: var(--inf-bg-raised) !important;
+  .oform-check-label {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--ink-2) !important;
+    line-height: 1.5 !important;
   }
 
+  /* وقتی تیک زده شد */
   .oform-check:has(input:checked) {
     border-style: solid !important;
-    border-color: var(--inf-accent) !important;
-    background: var(--inf-accent-tint) !important;
+    border-color: var(--accent) !important;
+    background: rgba(46, 196, 196, 0.05) !important;
   }
 
   .oform-check:has(input:checked) .oform-check-box {
-    background: var(--inf-accent) !important;
-    border-color: var(--inf-accent) !important;
-    color: white !important;
-    box-shadow: 0 0 12px var(--inf-accent-glow) !important;
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
   }
 
   .oform-check:has(input:checked) .oform-check-box svg {
     opacity: 1 !important;
+    transform: scale(1) !important;
   }
+}
 
-  .oform-check-label {
-    font-size: var(--inf-fs-body) !important;
-    font-weight: 600 !important;
-    color: var(--inf-text-body) !important;
-    line-height: var(--inf-lh-snug) !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     SUMMARY CARD
-     ═══════════════════════════════════════════════════════ */
-  .oform-summary {
-    padding: var(--inf-s-4) !important;
-    background: var(--inf-bg-sunken) !important;
-    border-radius: var(--inf-r-lg) !important;
-    box-shadow: var(--inf-neu-inset) !important;
-    margin-bottom: var(--inf-s-5) !important;
-  }
-
-  .oform-summary-title {
-    display: block !important;
-    font-size: var(--inf-fs-caption) !important;
-    font-weight: 700 !important;
-    letter-spacing: var(--inf-tracking-wider) !important;
-    text-transform: uppercase !important;
-    color: var(--inf-text-muted) !important;
-    margin-bottom: var(--inf-s-3) !important;
-  }
-
-  .oform-summary-list {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: grid !important;
-    gap: var(--inf-s-2) !important;
-  }
-
-  .oform-summary-list li {
-    display: flex !important;
-    justify-content: space-between !important;
-    gap: var(--inf-s-3) !important;
-    font-size: var(--inf-fs-small) !important;
-    padding-block: var(--inf-s-1) !important;
-    border-bottom: 1px solid var(--inf-glass-border) !important;
-  }
-
-  .oform-summary-list li:last-child {
-    border-bottom: none !important;
-  }
-
-  .oform-summary-list span {
-    color: var(--inf-text-muted) !important;
-  }
-
-  .oform-summary-list strong {
-    color: var(--inf-text-strong) !important;
-    font-weight: 700 !important;
-    text-align: end !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     ERROR BANNER
-     ═══════════════════════════════════════════════════════ */
-  .oform-error {
-    display: flex !important;
-    align-items: flex-start !important;
-    gap: var(--inf-s-3) !important;
-    padding: var(--inf-s-4) !important;
-    background: var(--inf-danger-tint) !important;
-    border: 1px solid var(--inf-danger) !important;
-    border-radius: var(--inf-r-lg) !important;
-    font-size: var(--inf-fs-small) !important;
-    font-weight: 600 !important;
-    color: var(--inf-danger) !important;
-    line-height: var(--inf-lh-normal) !important;
-    margin-bottom: var(--inf-s-4) !important;
-    animation: inf-shake 0.4s var(--inf-ease-out-expo) !important;
-  }
-
-  .oform-error-icon {
-    display: grid !important;
-    place-items: center !important;
-    flex-shrink: 0 !important;
-    width: 24px !important;
-    height: 24px !important;
-    border-radius: 50% !important;
-    background: var(--inf-danger) !important;
-    color: white !important;
-    margin-top: 1px !important;
-  }
-
-  .oform-error-icon svg {
-    width: 12px !important;
-    height: 12px !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     SUBMIT BUTTON — Hero
-     ═══════════════════════════════════════════════════════ */
+/* ============================================================
+   SECTION 7: THE SUBMIT BUTTON (دکمه نهایی - شاهکار)
+   ============================================================ */
+@media (max-width: 768px) {
   .oform-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: var(--inf-s-3) !important;
-    padding-top: var(--inf-s-4) !important;
-    border-top: 1px solid var(--inf-glass-border) !important;
+    padding: 0 24px 32px 24px !important;
+    background: transparent !important;
+    border: none !important;
   }
 
-  .oform-btn {
+  .oform-actions-note {
+    text-align: center !important;
+    font-size: 0.8rem !important;
+    color: var(--ink-3) !important;
+    margin-bottom: 16px !important;
+  }
+
+  .oform-btn--primary {
     position: relative !important;
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: var(--inf-s-2) !important;
-    min-height: 62px !important;
-    padding: 0 var(--inf-s-6) !important;
-    border-radius: var(--inf-r-xl) !important;
-    font-size: 16px !important;
+    width: 100% !important;
+    min-height: 64px !important;
+    padding: 0 24px !important;
+    background: linear-gradient(135deg, #2ec4c4 0%, #0d7377 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-radius: 20px !important;
+    color: white !important;
+    font-size: 1.1rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.02em !important;
-    cursor: pointer !important;
-    border: none !important;
+    box-shadow: 
+      0 16px 32px -12px rgba(13, 115, 119, 0.5),
+      inset 0 2px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.2) !important;
     overflow: hidden !important;
-    isolation: isolate !important;
-    transition:
-      transform var(--inf-t-normal) var(--inf-ease-spring-bold),
-      box-shadow var(--inf-t-normal) var(--inf-ease-out-expo) !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    cursor: pointer !important;
   }
 
-  /* Primary button */
-  .oform-btn--primary {
-    background: linear-gradient(
-      135deg,
-      var(--inf-turquoise-400) 0%,
-      var(--inf-turquoise-600) 50%,
-      var(--inf-turquoise-700) 100%
-    ) !important;
-    color: white !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.4) inset,
-      0 2px 0 rgba(0, 0, 0, 0.15) inset,
-      0 12px 24px -8px var(--inf-accent-glow),
-      0 4px 8px -2px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  /* Shine sweep */
+  /* درخشش روی دکمه */
   .oform-btn--primary::before {
     content: "" !important;
     position: absolute !important;
-    inset: 0 !important;
-    background: linear-gradient(
-      110deg,
-      transparent 25%,
-      rgba(255, 255, 255, 0.4) 50%,
-      transparent 75%
-    ) !important;
-    background-size: 200% 100% !important;
-    background-position: 200% 0 !important;
-    transition: background-position 0.8s var(--inf-ease-out-expo) !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+    transform: skewX(-20deg) !important;
+    animation: inf-shimmer-sweep 3s infinite ease-in-out !important;
   }
 
   .oform-btn--primary:hover {
-    transform: translateY(-2px) scale(1.01) !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.4) inset,
-      0 2px 0 rgba(0, 0, 0, 0.15) inset,
-      0 20px 40px -12px var(--inf-accent-glow),
-      0 8px 16px -4px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  .oform-btn--primary:hover::before {
-    background-position: -100% 0 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 
+      0 24px 48px -12px rgba(13, 115, 119, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.5) !important;
   }
 
   .oform-btn--primary:active {
-    transform: translateY(0) scale(0.97) !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.2) inset,
-      0 2px 4px rgba(0, 0, 0, 0.2) inset,
-      0 4px 12px -4px var(--inf-accent-glow) !important;
+    transform: scale(0.96) translateY(0) !important;
+    box-shadow: 
+      0 8px 16px -4px rgba(13, 115, 119, 0.4),
+      inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
   }
 
-  /* Ghost button */
+  .oform-btn--primary svg {
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 8px !important;
+  }
+
   .oform-btn--ghost {
-    background: var(--inf-bg-sunken) !important;
-    color: var(--inf-text-body) !important;
-    box-shadow: var(--inf-neu-raised) !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    color: var(--ink-2) !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    box-shadow: none !important;
+    border-radius: 16px !important;
+    min-height: 52px !important;
   }
+}
 
-  .oform-btn--ghost:hover {
-    color: var(--inf-accent) !important;
-    transform: translateY(-1px) !important;
-  }
-
-  .oform-btn--ghost:active {
-    transform: translateY(0) scale(0.98) !important;
-    box-shadow: var(--inf-neu-pressed) !important;
-  }
-
-  .oform-btn:disabled {
-    opacity: 0.6 !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-  }
-
-  .oform-btn svg {
-    width: 18px !important;
-    height: 18px !important;
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     SUCCESS STATE
-     ═══════════════════════════════════════════════════════ */
+/* ============================================================
+   SECTION 8: SUCCESS SCREEN (صفحه موفقیت - جشن)
+   ============================================================ */
+@media (max-width: 768px) {
   .oform-success-card {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
-    padding: var(--inf-s-9) var(--inf-s-5) !important;
-    gap: var(--inf-s-4) !important;
+    padding: 48px 24px !important;
+    animation: inf-fade-slide-up 0.6s ease !important;
   }
 
   .oform-success-icon {
@@ -1007,16 +920,12 @@
     place-items: center !important;
     width: 96px !important;
     height: 96px !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), transparent) !important;
+    border: 2px solid #10b981 !important;
     border-radius: 50% !important;
-    background: linear-gradient(135deg, var(--inf-success-tint), transparent) !important;
-    border: 2px solid var(--inf-success) !important;
-    color: var(--inf-success) !important;
-    box-shadow:
-      0 0 0 8px var(--inf-success-tint),
-      0 0 32px var(--inf-success-tint),
-      inset 0 2px 0 rgba(255, 255, 255, 0.5) !important;
-    animation: inf-success-pop 0.7s var(--inf-ease-spring-bold) !important;
-    margin-bottom: var(--inf-s-4) !important;
+    color: #10b981 !important;
+    margin-bottom: 24px !important;
+    animation: inf-success-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, inf-pulse-ring 2s infinite !important;
   }
 
   .oform-success-icon svg {
@@ -1026,67 +935,16 @@
   }
 
   .oform-success-title {
-    font-size: var(--inf-fs-h2) !important;
+    font-size: 1.5rem !important;
     font-weight: 800 !important;
-    letter-spacing: var(--inf-tracking-tight) !important;
-    color: var(--inf-text-strong) !important;
-    margin: 0 !important;
+    color: var(--ink) !important;
+    margin-bottom: 12px !important;
   }
 
   .oform-success-text {
-    font-size: var(--inf-fs-body) !important;
-    line-height: var(--inf-lh-relaxed) !important;
-    color: var(--inf-text-muted) !important;
-    max-width: 40ch !important;
-    margin: 0 !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     DARK MODE REFINEMENTS
-     ═══════════════════════════════════════════════════════ */
-  [data-theme="dark"] .oform-input-wrap input,
-  [data-theme="dark"] .oform-input-wrap textarea {
-    background: oklch(0.16 0.02 240) !important;
-    color: var(--inf-text-strong) !important;
-  }
-
-  [data-theme="dark"] .oform-input-wrap input:focus,
-  [data-theme="dark"] .oform-input-wrap textarea:focus {
-    background: oklch(0.19 0.022 240) !important;
-  }
-
-  [data-theme="dark"] .oform-option,
-  [data-theme="dark"] .oform-contact,
-  [data-theme="dark"] .oform-check,
-  [data-theme="dark"] .oform-summary {
-    background: oklch(0.16 0.02 240) !important;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     REDUCED MOTION
-     ═══════════════════════════════════════════════════════ */
-  @media (prefers-reduced-motion: reduce) {
-    .oform::before,
-    .oform-progress-fill,
-    .oform-progress-fill::after {
-      animation: none !important;
-    }
-    .oform-btn--primary::before {
-      display: none !important;
-    }
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   DESKTOP UPGRADE (Optional preview)
-   ═══════════════════════════════════════════════════════════ */
-@media (min-width: 769px) {
-  .oform {
-    background: var(--inf-glass-light) !important;
-    backdrop-filter: blur(40px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
-    border: 1px solid var(--inf-glass-border) !important;
-    border-radius: var(--inf-r-3xl) !important;
-    box-shadow: var(--inf-shadow-lg) !important;
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    color: var(--ink-3) !important;
+    margin-bottom: 32px !important;
   }
 }
