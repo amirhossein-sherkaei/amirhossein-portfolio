@@ -112,7 +112,7 @@ import "@/styles/mobile-navbar-nuclear.css";
 
 /* ⭐️ سیستم متریال سه‌بعدی */
 import "@/styles/3d-material.css";
-import "@/styles/infinity-ultimate-v2.css";
+import "@/styles/infinity-mobile-luxe.css";
 
 /* Absolute Infinity UI */
 
