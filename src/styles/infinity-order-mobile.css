@@ -1,239 +1,162 @@
 /* ============================================================
-   INFINITY ORDER FORM — THE ULTIMATE MOBILE EXPERIENCE
-   Design System: Apple iOS / Awwwards Level
+   INFINITY ORDER FORM — THE ULTIMATE APPLE-GRADE UI
    ============================================================ */
 
 /* ============================================================
-   SECTION 0: GLOBAL ANIMATIONS & KEYFRAMES
+   SECTION 0: VARIABLES & ANIMATIONS
    ============================================================ */
-@keyframes inf-aura-glow {
-  0%   { transform: scale(1) translate(0, 0); opacity: 0.6; }
-  50%  { transform: scale(1.05) translate(2%, 2%); opacity: 1; }
-  100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+:root {
+  --inf-apple-glass: rgba(255, 255, 255, 0.65);
+  --inf-apple-border: rgba(255, 255, 255, 0.9);
+  --inf-apple-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.08);
+  --inf-segment-bg: rgba(118, 118, 128, 0.12);
+  --inf-segment-active: #ffffff;
+  --inf-focus-ring: 0 0 0 4px rgba(46, 196, 196, 0.15);
+  --inf-error: #ff3b30;
+  --inf-error-bg: rgba(255, 59, 48, 0.08);
+  --inf-success: #34c759;
+  --inf-success-bg: rgba(52, 199, 89, 0.08);
 }
 
-@keyframes inf-shimmer-sweep {
+@keyframes inf-mesh-move {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes inf-shimmer {
   0%   { transform: translateX(-150%) skewX(-20deg); }
   100% { transform: translateX(200%) skewX(-20deg); }
 }
 
-@keyframes inf-input-lift {
-  0%   { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-4px) scale(1.005); }
+@keyframes inf-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
 }
 
 @keyframes inf-error-shake {
   0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px) rotate(-1deg); }
-  40% { transform: translateX(6px) rotate(1deg); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
 }
 
-@keyframes inf-success-pop {
-  0%   { transform: scale(0.5) rotate(-20deg); opacity: 0; }
-  60%  { transform: scale(1.1) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+@keyframes inf-pop-in {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes inf-pulse-ring {
-  0%   { box-shadow: 0 0 0 0 rgba(13, 115, 119, 0.4); }
-  70%  { box-shadow: 0 0 0 12px rgba(13, 115, 119, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(13, 115, 119, 0); }
-}
-
-@keyframes inf-fade-slide-up {
-  0%   { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes inf-checkbox-draw {
-  0%   { stroke-dashoffset: 24; }
-  100% { stroke-dashoffset: 0; }
-}
-
-@keyframes inf-gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes inf-float-element {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-
-@keyframes inf-counter-pop {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.1); color: var(--accent); }
-  100% { transform: scale(1); }
+@keyframes inf-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(46, 196, 196, 0.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(46, 196, 196, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 196, 196, 0); }
 }
 
 /* ============================================================
-   SECTION 1: LAYOUT & CENTERING (رفع مشکل چیدمان و وسط نبودن)
+   SECTION 1: LAYOUT & APPLE MESH BACKGROUND
    ============================================================ */
 @media (max-width: 768px) {
   
-  /* پس‌زمینه زنده صفحه سفارش (Aurora Mesh) */
   .order-page {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    background-color: var(--paper) !important;
+    background-color: #f2f2f7 !important; /* Apple iOS System Background */
     background-image: 
-      radial-gradient(circle at 10% 10%, rgba(46,196,196,0.12) 0%, transparent 40%),
-      radial-gradient(circle at 90% 90%, rgba(139,58,74,0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, transparent 60%) !important;
-    background-attachment: fixed !important;
+      radial-gradient(circle at 0% 0%, rgba(46, 196, 196, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, rgba(255, 59, 48, 0.05) 0%, transparent 50%) !important;
+    background-size: 200% 200% !important;
+    animation: inf-mesh-move 15s ease-in-out infinite alternate !important;
     min-height: 100dvh !important;
     padding: 24px 16px 120px 16px !important; /* فاصله از منوی پایین */
     overflow-x: hidden !important;
   }
 
-  /* هدر صفحه (تیتر بالای فرم) */
+  .order-page .container {
+    width: 100% !important;
+    max-width: 480px !important; /* عرض استاندارد آیفون */
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
+  /* هدر صفحه */
   .order-header {
     width: 100% !important;
-    max-width: 500px !important;
-    margin: 0 auto 24px auto !important;
+    margin: 0 auto 32px auto !important;
     text-align: center !important;
-    animation: inf-fade-slide-up 0.6s ease-out !important;
   }
 
   .order-header h1 {
-    font-size: 1.8rem !important;
-    line-height: 1.3 !important;
-    font-weight: 900 !important;
-    background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    margin-bottom: 12px !important;
+    font-size: 1.9rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    color: #1c1c1e !important;
+    margin-bottom: 8px !important;
   }
 
   .order-header p {
     font-size: 0.95rem !important;
-    color: var(--ink-3) !important;
-    line-height: 1.6 !important;
-    padding-inline: 16px !important;
+    color: #8e8e93 !important;
+    line-height: 1.5 !important;
   }
 
-  /* کانتینر اصلی فرم */
-  .order-page .container {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    width: 100% !important;
-    max-width: 500px !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-  }
-
-  /* ظرف اصلی فرم (شیشه اقیانوسی) */
+  /* ============================================================
+     THE FORM CONTAINER (Apple Frosted Glass)
+     ============================================================ */
   .oform {
     position: relative !important;
     width: 100% !important;
-    margin: 0 auto !important; /* دقیقاً وسط */
-    background: rgba(255, 255, 255, 0.55) !important;
-    backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
-    border-radius: 36px !important;
+    background: var(--inf-apple-glass) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid var(--inf-apple-border) !important;
+    border-radius: 32px !important;
     box-shadow: 
-      0 32px 80px -20px rgba(0, 0, 0, 0.15),
-      0 8px 24px -8px rgba(0, 0, 0, 0.05),
-      inset 0 2px 0 rgba(255, 255, 255, 1),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.03) !important;
+      0 1px 1px rgba(0,0,0,0.02),
+      0 12px 40px -10px rgba(0,0,0,0.1),
+      inset 0 1px 0 rgba(255,255,255,1) !important;
     overflow: hidden !important;
-    isolation: isolate !important;
-    animation: inf-fade-slide-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    animation: inf-pop-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
   }
 
-  /* هاله نورانی پشت فرم */
-  .oform::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: -20% !important;
-    background: radial-gradient(circle at center, rgba(46,196,196,0.15) 0%, transparent 60%) !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
-    animation: inf-aura-glow 8s ease-in-out infinite alternate !important;
-  }
-
-  /* لبه نوری روی فرم */
-  .oform::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: inherit !important;
-    padding: 1.5px !important;
-    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(46,196,196,0.3) 100%) !important;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
-    -webkit-mask-composite: xor !important;
-    mask-composite: exclude !important;
-    pointer-events: none !important;
-    z-index: 10 !important;
-  }
-
-  /* فرم در حالت دارک */
   [data-theme="dark"] .oform {
-    background: rgba(20, 25, 30, 0.7) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 
-      0 32px 80px -20px rgba(0, 0, 0, 0.6),
-      inset 0 2px 0 rgba(255, 255, 255, 0.1) !important;
+    background: rgba(28, 28, 30, 0.75) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 12px 40px -10px rgba(0,0,0,0.5) !important;
   }
-}
 
-/* ============================================================
-   SECTION 2: PROGRESS BAR & STEP PILLS (رفع نوار زرد/کرم بالا)
-   ============================================================ */
-@media (max-width: 768px) {
-  /* حذف پس‌زمینه زشت قدیمی */
+  /* ============================================================
+     SECTION 2: THE ULTIMATE SEGMENTED CONTROL (ناوبری مراحل)
+     ============================================================ */
   .oform-progress {
+    padding: 24px 24px 8px 24px !important;
     background: transparent !important;
-    padding: 24px 24px 16px 24px !important;
-    border-bottom: none !important;
-    width: 100% !important;
-    position: relative !important;
   }
 
-  /* نوار پیشرفت (Progress Track) */
+  /* نوار پیشرفت بالای کادر مراحل (خیلی ظریف) */
   .oform-progress-track {
-    height: 6px !important;
-    background: rgba(0, 0, 0, 0.06) !important;
+    height: 4px !important;
+    background: rgba(0,0,0,0.05) !important;
     border-radius: 99px !important;
     margin-bottom: 20px !important;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1) !important;
     overflow: hidden !important;
-    position: relative !important;
   }
-
-  /* پرکننده نوار پیشرفت (Progress Fill) */
   .oform-progress-fill {
-    background: linear-gradient(90deg, #2ec4c4, #14b1ab, #0d7377, #2ec4c4) !important;
-    background-size: 300% 100% !important;
+    background: linear-gradient(90deg, #2ec4c4, #0d7377) !important;
     border-radius: 99px !important;
-    box-shadow: 0 0 16px rgba(46,196,196,0.6) !important;
-    animation: inf-gradient-shift 3s linear infinite !important;
-    transition: width 0.6s cubic-bezier(0.34, 1.15, 0.4, 1) !important;
-    position: relative !important;
+    box-shadow: 0 0 12px rgba(46,196,196,0.5) !important;
   }
 
-  /* درخشش عبوری روی نوار */
-  .oform-progress-fill::after {
-    content: "" !important;
-    position: absolute !important;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent) !important;
-    animation: inf-shimmer-sweep 2s infinite linear !important;
-  }
-
-  /* دکمه‌های مراحل (Step Pills) */
+  /* نوار ناوبری (Segmented Control) - دقیقاً مثل تنظیمات اپل */
   .oform-progress-steps {
     display: flex !important;
-    justify-content: space-between !important;
-    gap: 8px !important;
-    width: 100% !important;
+    background: var(--inf-segment-bg) !important;
+    padding: 4px !important;
+    border-radius: 16px !important;
+    position: relative !important;
+    gap: 4px !important;
   }
 
   .oform-step-pill {
@@ -242,89 +165,86 @@
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    background: rgba(255, 255, 255, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    padding: 8px 10px !important;
-    border-radius: 14px !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    color: var(--ink-3) !important;
-    box-shadow: 0 2px 8px -4px rgba(0,0,0,0.05) !important;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    padding: 10px 8px !important;
+    border-radius: 12px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #8e8e93 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
 
+  /* دایره شماره مرحله */
   .oform-step-pill-num {
     display: grid !important;
     place-items: center !important;
     width: 20px !important;
     height: 20px !important;
-    background: rgba(0, 0, 0, 0.06) !important;
-    color: var(--ink-3) !important;
-    font-size: 10px !important;
-    font-weight: 800 !important;
+    background: rgba(0,0,0,0.05) !important;
     border-radius: 50% !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: inherit !important;
     transition: all 0.3s ease !important;
+  }
+
+  /* مرحله فعال (با پس‌زمینه سفید شناور و سایه اپل) */
+  .oform-step-pill.is-active {
+    color: #0d7377 !important;
+    background: var(--inf-segment-active) !important;
+    box-shadow: 
+      0 3px 8px rgba(0,0,0,0.06),
+      0 1px 1px rgba(0,0,0,0.04) !important;
+    transform: scale(1.02) !important;
+  }
+
+  .oform-step-pill.is-active .oform-step-pill-num {
+    background: #0d7377 !important;
+    color: white !important;
   }
 
   /* مرحله انجام شده */
   .oform-step-pill.is-done {
-    color: var(--accent) !important;
-    background: rgba(46, 196, 196, 0.1) !important;
-    border-color: rgba(46, 196, 196, 0.3) !important;
+    color: #0d7377 !important;
   }
   .oform-step-pill.is-done .oform-step-pill-num {
-    background: var(--accent) !important;
-    color: white !important;
+    background: rgba(13, 115, 119, 0.1) !important;
+    color: #0d7377 !important;
   }
 
-  /* مرحله فعال */
-  .oform-step-pill.is-active {
-    background: linear-gradient(135deg, #2ec4c4, #0d7377) !important;
-    border-color: transparent !important;
-    color: white !important;
-    box-shadow: 0 8px 20px -6px rgba(46,196,196,0.6) !important;
-    transform: translateY(-2px) !important;
+  [data-theme="dark"] .oform-progress-steps {
+    background: rgba(118, 118, 128, 0.24) !important;
   }
-  .oform-step-pill.is-active .oform-step-pill-num {
-    background: rgba(255, 255, 255, 0.25) !important;
+  [data-theme="dark"] .oform-step-pill.is-active {
+    background: #3a3a3c !important;
     color: white !important;
-    animation: inf-pulse-ring 2s infinite !important;
   }
-
-  [data-theme="dark"] .oform-step-pill {
-    background: rgba(255,255,255,0.05) !important;
-    border-color: rgba(255,255,255,0.1) !important;
+  [data-theme="dark"] .oform-step-pill.is-active .oform-step-pill-num {
+    background: #2ec4c4 !important;
+    color: #000 !important;
   }
 }
 
 /* ============================================================
-   SECTION 3: STEP HEADINGS (تیترهای مراحل)
+   SECTION 3: STEP HEADINGS & FORM FIELDS (تایپوگرافی و فیلدها)
    ============================================================ */
 @media (max-width: 768px) {
   .oform-step {
     padding: 0 24px 24px 24px !important;
   }
 
+  /* هدر هر مرحله (تیتر) */
   .oform-step-head {
     display: flex !important;
     align-items: center !important;
     gap: 16px !important;
-    margin-bottom: 28px !important;
-    padding-bottom: 20px !important;
-    border-bottom: 1px solid rgba(0,0,0,0.06) !important;
-    position: relative !important;
-  }
-
-  .oform-step-head::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: -1px !important;
-    right: 0 !important;
-    width: 40px !important;
-    height: 2px !important;
-    background: var(--accent) !important;
-    border-radius: 2px !important;
-    box-shadow: 0 0 10px rgba(46,196,196,0.5) !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
   }
 
   .oform-step-num {
@@ -332,225 +252,145 @@
     place-items: center !important;
     width: 48px !important;
     height: 48px !important;
+    background: rgba(46, 196, 196, 0.1) !important;
+    border: 1px solid rgba(46, 196, 196, 0.2) !important;
     border-radius: 16px !important;
-    background: linear-gradient(135deg, rgba(46, 196, 196, 0.15), rgba(46, 196, 196, 0.05)) !important;
-    border: 1px solid rgba(46, 196, 196, 0.3) !important;
-    color: var(--accent) !important;
+    color: #0d7377 !important;
     font-size: 18px !important;
     font-weight: 800 !important;
-    box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 4px 12px -4px rgba(46,196,196,0.2) !important;
-    flex-shrink: 0 !important;
   }
 
   .oform-step-title {
     font-size: 1.25rem !important;
     font-weight: 800 !important;
-    color: var(--ink) !important;
+    color: #1c1c1e !important;
     margin: 0 0 4px 0 !important;
-    background: none !important;
-    -webkit-text-fill-color: var(--ink) !important;
     letter-spacing: -0.02em !important;
   }
 
   .oform-step-subtitle {
     font-size: 0.85rem !important;
-    color: var(--ink-3) !important;
+    color: #8e8e93 !important;
     margin: 0 !important;
-    line-height: 1.5 !important;
   }
 
-  [data-theme="dark"] .oform-step-num {
-    background: linear-gradient(135deg, rgba(46, 196, 196, 0.2), rgba(46, 196, 196, 0.1)) !important;
-  }
-}
-
-/* ============================================================
-   SECTION 4: INPUT FIELDS (فیلدهای فوق‌العاده لوکس)
-   ============================================================ */
-@media (max-width: 768px) {
+  /* ---------------- فیلدهای ورودی ---------------- */
   .oform-field {
-    margin-bottom: 24px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
+    margin-bottom: 20px !important;
     position: relative !important;
   }
 
   .oform-label {
     display: flex !important;
     align-items: center !important;
-    gap: 4px !important;
     font-size: 0.9rem !important;
     font-weight: 700 !important;
-    color: var(--ink) !important;
-    letter-spacing: -0.01em !important;
+    color: #1c1c1e !important;
+    margin-bottom: 8px !important;
   }
 
   .oform-req {
-    color: #e11d48 !important;
+    color: #ff3b30 !important;
     font-size: 1.1rem !important;
+    margin-right: 4px !important;
     line-height: 1 !important;
-    margin-top: -2px !important;
   }
 
-  /* فیلد ورودی */
-  .oform-input-wrap {
-    position: relative !important;
-    width: 100% !important;
-  }
-
+  /* خود فیلد (Apple Style) */
   .oform-input-wrap input,
   .oform-input-wrap textarea {
     width: 100% !important;
-    min-height: 60px !important;
+    min-height: 56px !important;
     padding: 16px 20px !important;
-    background: rgba(255, 255, 255, 0.65) !important; /* شیشه سفید */
-    backdrop-filter: blur(10px) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
-    border-radius: 18px !important;
-    font-size: 16px !important; /* جلوگیری از زوم iOS */
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 16px !important;
+    font-size: 16px !important;
     font-weight: 500 !important;
-    color: var(--ink) !important;
-    box-shadow: 
-      0 4px 12px -4px rgba(0, 0, 0, 0.03),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-    -webkit-appearance: none !important;
+    color: #1c1c1e !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   }
 
   .oform-input-wrap textarea {
-    min-height: 140px !important;
+    min-height: 120px !important;
     line-height: 1.6 !important;
-    resize: vertical !important;
   }
 
-  /* پلیس‌هولدر */
-  .oform-input-wrap input::placeholder,
-  .oform-input-wrap textarea::placeholder {
-    color: var(--ink-3) !important;
-    opacity: 0.6 !important;
-    font-weight: 400 !important;
-  }
-
-  /* حالت هاور */
-  .oform-input-wrap input:hover,
-  .oform-input-wrap textarea:hover {
-    background: rgba(255, 255, 255, 0.85) !important;
-    border-color: rgba(46, 196, 196, 0.4) !important;
-  }
-
-  /* حالت فوکوس (فیلد بالا می‌آید و نور می‌گیرد) */
+  /* حالت فوکوس فیلد (درخشش نرم فیروزه‌ای) */
   .oform-input-wrap input:focus,
   .oform-input-wrap textarea:focus {
-    outline: none !important;
     background: #ffffff !important;
-    border-color: var(--accent) !important;
-    box-shadow: 
-      0 0 0 4px rgba(46, 196, 196, 0.15),
-      0 12px 24px -8px rgba(46, 196, 196, 0.3),
-      inset 0 2px 0 rgba(255, 255, 255, 1) !important;
-    transform: translateY(-3px) !important;
-    animation: inf-input-lift 0.3s ease forwards !important;
+    border-color: #0d7377 !important;
+    box-shadow: var(--inf-focus-ring) !important;
+    outline: none !important;
+    transform: translateY(-1px) !important;
+  }
+
+  [data-theme="dark"] .oform-input-wrap input,
+  [data-theme="dark"] .oform-input-wrap textarea {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  [data-theme="dark"] .oform-input-wrap input:focus {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-color: #2ec4c4 !important;
   }
 
   /* آیکون‌های وضعیت (تیک / ضربدر) */
   .oform-icon {
     position: absolute !important;
     top: 50% !important;
-    left: 20px !important;
+    left: 16px !important;
     transform: translateY(-50%) !important;
-    width: 24px !important;
-    height: 24px !important;
+    width: 20px !important;
+    height: 20px !important;
     display: grid !important;
     place-items: center !important;
     border-radius: 50% !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    animation: inf-success-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  }
-
-  .oform-field[data-state="success"] .oform-icon {
-    background: rgba(16, 185, 129, 0.1) !important;
-    color: #10b981 !important;
+    animation: inf-pop-in 0.3s ease !important;
   }
 
   .oform-field[data-state="error"] .oform-icon {
-    background: rgba(225, 29, 72, 0.1) !important;
-    color: #e11d48 !important;
+    background: var(--inf-error-bg) !important;
+    color: var(--inf-error) !important;
+  }
+  
+  .oform-field[data-state="success"] .oform-icon {
+    background: var(--inf-success-bg) !important;
+    color: var(--inf-success) !important;
   }
 
   .oform-icon svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 12px !important;
+    height: 12px !important;
     stroke-width: 3 !important;
   }
 
-  /* حالت خطا (لرزش + هاله قرمز) */
-  .oform-field[data-state="error"] input,
-  .oform-field[data-state="error"] textarea {
-    border-color: #e11d48 !important;
-    background: #fff1f2 !important;
+  /* حالت‌های خطا و موفقیت */
+  .oform-field[data-state="error"] input {
+    border-color: var(--inf-error) !important;
+    background: var(--inf-error-bg) !important;
     animation: inf-error-shake 0.4s ease !important;
-    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1) !important;
   }
 
-  /* حالت موفقیت */
-  .oform-field[data-state="success"] input,
-  .oform-field[data-state="success"] textarea {
-    border-color: #10b981 !important;
-    background: #ecfdf5 !important;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+  .oform-field[data-state="success"] input {
+    border-color: var(--inf-success) !important;
+    background: var(--inf-success-bg) !important;
   }
 
-  /* متن راهنما زیر فیلد */
+  /* متن راهنما */
   .oform-hint {
     font-size: 0.75rem !important;
-    color: var(--ink-3) !important;
-    line-height: 1.5 !important;
-    margin: 0 !important;
+    color: #8e8e93 !important;
+    margin-top: 6px !important;
     padding-inline: 4px !important;
-  }
-
-  /* شمارنده کاراکتر */
-  .oform-meta-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding-inline: 4px !important;
-    margin-top: 4px !important;
-  }
-
-  .oform-counter {
-    font-family: var(--font-mono) !important;
-    font-size: 0.7rem !important;
-    font-weight: 600 !important;
-    color: var(--ink-3) !important;
-    transition: color 0.3s ease !important;
-  }
-
-  .oform-counter.is-near { color: #f59e0b !important; }
-  .oform-counter.is-over { color: #e11d48 !important; }
-
-  /* دارک مود */
-  [data-theme="dark"] .oform-input-wrap input,
-  [data-theme="dark"] .oform-input-wrap textarea {
-    background: rgba(0, 0, 0, 0.2) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  [data-theme="dark"] .oform-field[data-state="error"] input {
-    background: rgba(225, 29, 72, 0.15) !important;
-  }
-
-  [data-theme="dark"] .oform-field[data-state="success"] input {
-    background: rgba(16, 185, 129, 0.15) !important;
   }
 }
 
 /* ============================================================
-   SECTION 5: PROJECT TYPE CARDS (کارت‌های انتخاب - فوق‌العاده)
+   SECTION 4: PROJECT TYPE CARDS (کارت‌های انتخاب پروژه)
    ============================================================ */
 @media (max-width: 768px) {
   .oform-fieldset {
@@ -562,72 +402,59 @@
   .oform-fieldset legend {
     font-size: 0.9rem !important;
     font-weight: 700 !important;
-    color: var(--ink) !important;
+    color: #1c1c1e !important;
     margin-bottom: 12px !important;
   }
 
   .oform-options {
     display: grid !important;
-    grid-template-columns: 1fr !important; /* تک ستونه در موبایل */
-    gap: 12px !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 
   .oform-option {
     position: relative !important;
     display: flex !important;
     align-items: center !important;
-    gap: 16px !important;
-    padding: 18px 20px !important;
-    background: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
-    border-radius: 20px !important;
+    gap: 14px !important;
+    padding: 16px 20px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 16px !important;
     cursor: pointer !important;
-    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.02) !important;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
     overflow: hidden !important;
   }
 
-  /* افکت درخشش عبوری (Shimmer Sweep) */
+  /* درخشش عبوری */
   .oform-option::before {
     content: "" !important;
     position: absolute !important;
     top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent) !important;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent) !important;
     transform: skewX(-20deg) !important;
-    transition: all 0.6s ease !important;
-    z-index: 1 !important;
+    transition: all 0.5s ease !important;
   }
-
-  .oform-option:hover::before {
-    left: 150% !important;
-  }
+  .oform-option:hover::before { left: 150% !important; }
 
   .oform-option:hover {
-    background: rgba(255, 255, 255, 0.7) !important;
-    border-color: rgba(46, 196, 196, 0.4) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
   }
 
-  .oform-option input {
-    position: absolute !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+  .oform-option input { display: none !important; }
 
-  /* آیکون انتخاب (Checkbox) */
+  /* مربع انتخاب */
   .oform-option-check {
     display: grid !important;
     place-items: center !important;
-    flex-shrink: 0 !important;
-    width: 24px !important;
-    height: 24px !important;
+    width: 22px !important;
+    height: 22px !important;
     background: #ffffff !important;
-    border: 2px solid rgba(0, 0, 0, 0.1) !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-    z-index: 2 !important;
+    border: 1.5px solid rgba(0, 0, 0, 0.15) !important;
+    border-radius: 7px !important;
+    transition: all 0.2s ease !important;
   }
 
   .oform-option-check svg {
@@ -636,31 +463,24 @@
     stroke-width: 3 !important;
     opacity: 0 !important;
     transform: scale(0.5) !important;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   }
 
   .oform-option-label {
-    flex: 1 !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
     font-weight: 600 !important;
-    color: var(--ink-2) !important;
-    z-index: 2 !important;
-    transition: color 0.3s ease !important;
+    color: #1c1c1e !important;
   }
 
   /* کارت انتخاب شده */
   .oform-option.is-active {
-    background: rgba(46, 196, 196, 0.1) !important;
-    border-color: var(--accent) !important;
-    transform: translateY(-2px) scale(1.01) !important;
-    box-shadow: 0 8px 24px -8px rgba(46, 196, 196, 0.4) !important;
+    background: rgba(46, 196, 196, 0.08) !important;
+    border-color: #0d7377 !important;
   }
 
   .oform-option.is-active .oform-option-check {
-    background: var(--accent) !important;
-    border-color: var(--accent) !important;
-    color: white !important;
-    animation: inf-pulse-ring 2s infinite !important;
+    background: #0d7377 !important;
+    border-color: #0d7377 !important;
   }
 
   .oform-option.is-active .oform-option-check svg {
@@ -669,173 +489,25 @@
   }
 
   .oform-option.is-active .oform-option-label {
-    color: var(--ink) !important;
-    font-weight: 800 !important;
+    color: #0d7377 !important;
+    font-weight: 700 !important;
   }
 
   [data-theme="dark"] .oform-option {
     background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
   }
-  
   [data-theme="dark"] .oform-option.is-active {
-    background: rgba(46, 196, 196, 0.2) !important;
-    border-color: var(--accent) !important;
+    background: rgba(46, 196, 196, 0.15) !important;
   }
 }
 
 /* ============================================================
-   SECTION 6: CONTACT METHODS & CHECKBOX (روش تماس و تیک قوانین)
-   ============================================================ */
-@media (max-width: 768px) {
-  /* شبکه روش‌های تماس */
-  .oform-contacts {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 12px !important;
-    margin-top: 8px !important;
-  }
-
-  .oform-contact {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    padding: 16px 8px !important;
-    background: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
-    border-radius: 16px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .oform-contact input { display: none !important; }
-
-  .oform-contact-radio {
-    display: grid !important;
-    place-items: center !important;
-    width: 20px !important;
-    height: 20px !important;
-    background: #ffffff !important;
-    border: 2px solid rgba(0,0,0,0.1) !important;
-    border-radius: 50% !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .oform-contact-radio::after {
-    content: "" !important;
-    width: 10px !important;
-    height: 10px !important;
-    background: white !important;
-    border-radius: 50% !important;
-    transform: scale(0) !important;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  }
-
-  .oform-contact-label {
-    font-size: 0.85rem !important;
-    font-weight: 700 !important;
-    color: var(--ink-2) !important;
-  }
-
-  /* روش تماس انتخاب شده */
-  .oform-contact.is-active {
-    background: rgba(46, 196, 196, 0.1) !important;
-    border-color: var(--accent) !important;
-    box-shadow: 0 4px 12px -4px rgba(46, 196, 196, 0.3) !important;
-  }
-
-  .oform-contact.is-active .oform-contact-radio {
-    background: var(--accent) !important;
-    border-color: var(--accent) !important;
-  }
-
-  .oform-contact.is-active .oform-contact-radio::after {
-    transform: scale(1) !important;
-  }
-
-  .oform-contact.is-active .oform-contact-label {
-    color: var(--accent) !important;
-  }
-
-  /* چک‌باکس قوانین */
-  .oform-check {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    padding: 16px !important;
-    background: rgba(255, 255, 255, 0.4) !important;
-    border: 1.5px dashed rgba(0,0,0,0.15) !important;
-    border-radius: 16px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    margin-bottom: 24px !important;
-  }
-
-  .oform-check input { display: none !important; }
-
-  .oform-check-box {
-    display: grid !important;
-    place-items: center !important;
-    width: 24px !important;
-    height: 24px !important;
-    background: #ffffff !important;
-    border: 2px solid rgba(0,0,0,0.15) !important;
-    border-radius: 6px !important;
-    flex-shrink: 0 !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .oform-check-box svg {
-    width: 14px !important;
-    height: 14px !important;
-    opacity: 0 !important;
-    transform: scale(0.5) !important;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  }
-
-  .oform-check-label {
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    color: var(--ink-2) !important;
-    line-height: 1.5 !important;
-  }
-
-  /* وقتی تیک زده شد */
-  .oform-check:has(input:checked) {
-    border-style: solid !important;
-    border-color: var(--accent) !important;
-    background: rgba(46, 196, 196, 0.05) !important;
-  }
-
-  .oform-check:has(input:checked) .oform-check-box {
-    background: var(--accent) !important;
-    border-color: var(--accent) !important;
-  }
-
-  .oform-check:has(input:checked) .oform-check-box svg {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-  }
-}
-
-/* ============================================================
-   SECTION 7: THE SUBMIT BUTTON (دکمه نهایی - شاهکار)
+   SECTION 5: THE MASTER SUBMIT BUTTON (دکمه نهایی)
    ============================================================ */
 @media (max-width: 768px) {
   .oform-actions {
     padding: 0 24px 32px 24px !important;
-    background: transparent !important;
-    border: none !important;
-  }
-
-  .oform-actions-note {
-    text-align: center !important;
-    font-size: 0.8rem !important;
-    color: var(--ink-3) !important;
-    margin-bottom: 16px !important;
   }
 
   .oform-btn--primary {
@@ -845,106 +517,32 @@
     justify-content: center !important;
     width: 100% !important;
     min-height: 64px !important;
-    padding: 0 24px !important;
-    background: linear-gradient(135deg, #2ec4c4 0%, #0d7377 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    border-radius: 20px !important;
+    background: linear-gradient(135deg, #2ec4c4, #0d7377) !important;
+    border: none !important;
+    border-radius: 18px !important;
     color: white !important;
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
-    letter-spacing: 0.02em !important;
     box-shadow: 
-      0 16px 32px -12px rgba(13, 115, 119, 0.5),
-      inset 0 2px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.2) !important;
+      0 8px 24px -8px rgba(13, 115, 119, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
     overflow: hidden !important;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    cursor: pointer !important;
+    transition: all 0.2s ease !important;
   }
 
-  /* درخشش روی دکمه */
+  /* افکت فشرده شدن */
+  .oform-btn--primary:active {
+    transform: scale(0.97) !important;
+    box-shadow: 0 4px 12px -4px rgba(13, 115, 119, 0.5) !important;
+  }
+
+  /* درخشش عبوری روی دکمه */
   .oform-btn--primary::before {
     content: "" !important;
     position: absolute !important;
     top: 0; left: -100%; width: 50%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
     transform: skewX(-20deg) !important;
-    animation: inf-shimmer-sweep 3s infinite ease-in-out !important;
-  }
-
-  .oform-btn--primary:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 
-      0 24px 48px -12px rgba(13, 115, 119, 0.6),
-      inset 0 2px 0 rgba(255, 255, 255, 0.5) !important;
-  }
-
-  .oform-btn--primary:active {
-    transform: scale(0.96) translateY(0) !important;
-    box-shadow: 
-      0 8px 16px -4px rgba(13, 115, 119, 0.4),
-      inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  .oform-btn--primary svg {
-    width: 20px !important;
-    height: 20px !important;
-    margin-right: 8px !important;
-  }
-
-  .oform-btn--ghost {
-    background: rgba(255, 255, 255, 0.6) !important;
-    color: var(--ink-2) !important;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    box-shadow: none !important;
-    border-radius: 16px !important;
-    min-height: 52px !important;
-  }
-}
-
-/* ============================================================
-   SECTION 8: SUCCESS SCREEN (صفحه موفقیت - جشن)
-   ============================================================ */
-@media (max-width: 768px) {
-  .oform-success-card {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 48px 24px !important;
-    animation: inf-fade-slide-up 0.6s ease !important;
-  }
-
-  .oform-success-icon {
-    display: grid !important;
-    place-items: center !important;
-    width: 96px !important;
-    height: 96px !important;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), transparent) !important;
-    border: 2px solid #10b981 !important;
-    border-radius: 50% !important;
-    color: #10b981 !important;
-    margin-bottom: 24px !important;
-    animation: inf-success-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, inf-pulse-ring 2s infinite !important;
-  }
-
-  .oform-success-icon svg {
-    width: 40px !important;
-    height: 40px !important;
-    stroke-width: 3 !important;
-  }
-
-  .oform-success-title {
-    font-size: 1.5rem !important;
-    font-weight: 800 !important;
-    color: var(--ink) !important;
-    margin-bottom: 12px !important;
-  }
-
-  .oform-success-text {
-    font-size: 1rem !important;
-    line-height: 1.7 !important;
-    color: var(--ink-3) !important;
-    margin-bottom: 32px !important;
+    animation: inf-shimmer 3s infinite ease-in-out !important;
   }
 }
