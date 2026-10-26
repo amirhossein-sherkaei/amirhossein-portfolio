@@ -1,10 +1,10 @@
 /* ============================================================
-   INFINITY BLOG — MOBILE (ORIGINAL GLASS CARDS + INFINITY NAV)
+   INFINITY BLOG — ORIGINAL GLASS CARDS + LIQUID NAV
    ============================================================ */
 
 @media (max-width: 768px) {
   /* ═══════════════════════════════════════════════════════
-     BLOG CARDS — EXACT ORIGINAL GLASS SYSTEM
+     1. BLOG CARDS — EXACT ORIGINAL GLASS SYSTEM
      ═══════════════════════════════════════════════════════ */
   
   .blog-index-wrapper {
@@ -27,7 +27,7 @@
   .blog-regular-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: var(--inf-s-3) !important; /* بازگشت به فاصله اصلی */
+    gap: var(--inf-s-3) !important;
   }
 
   .blog-card-regular,
@@ -49,7 +49,7 @@
     color: inherit !important;
     transform: translateZ(0) !important;
     -webkit-tap-highlight-color: transparent !important;
-    margin-bottom: 0 !important; /* جلوگیری از دوبار فاصله افتادن */
+    margin-bottom: 0 !important;
   }
 
   .blog-card-regular:active,
@@ -58,14 +58,6 @@
     box-shadow: var(--inf-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
   }
 
-  [data-theme="dark"] .blog-card-regular,
-  [data-theme="dark"] .blog-card-featured {
-    background: var(--inf-glass-dark) !important;
-    border-color: var(--inf-glass-border) !important;
-    box-shadow: var(--inf-shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  }
-
-  /* محتویات کارت */
   .blog-card-content,
   .blog-card-featured-content {
     position: relative !important;
@@ -94,16 +86,13 @@
     font-weight: 800 !important;
     letter-spacing: var(--inf-tracking-wide) !important;
     text-transform: uppercase !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px -1px var(--inf-accent-tint) !important;
   }
 
   .blog-card-date {
     font-family: var(--sh-font-mono, monospace) !important;
     font-size: var(--inf-fs-caption) !important;
     font-weight: 600 !important;
-    letter-spacing: 0.04em !important;
     color: var(--inf-text-muted) !important;
-    font-variant-numeric: tabular-nums !important;
   }
 
   .blog-card-title,
@@ -111,7 +100,6 @@
     font-size: var(--inf-fs-h3) !important;
     font-weight: 800 !important;
     line-height: var(--inf-lh-tight) !important;
-    letter-spacing: var(--inf-tracking-tight) !important;
     color: var(--inf-text-strong) !important;
     margin: 0 !important;
     background: linear-gradient(135deg, var(--inf-text-strong), var(--inf-text-body)) !important;
@@ -126,7 +114,7 @@
     color: var(--inf-text-muted) !important;
     margin: 0 !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important; /* دقیقاً ۳ خط مثل اول */
+    -webkit-line-clamp: 3 !important;
     line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
@@ -136,33 +124,11 @@
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: var(--inf-s-3) !important;
     padding-top: var(--inf-s-3) !important;
     margin-top: var(--inf-s-2) !important;
     border-top: 1px solid var(--inf-glass-border) !important;
   }
 
-  .blog-card-read-more {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: var(--inf-s-1) !important;
-    font-size: var(--inf-fs-small) !important;
-    font-weight: 700 !important;
-    color: var(--inf-accent) !important;
-  }
-
-  .blog-card-reading-time {
-    font-family: var(--sh-font-mono, monospace) !important;
-    font-size: var(--inf-fs-caption) !important;
-    font-weight: 600 !important;
-    color: var(--inf-text-muted) !important;
-    padding: var(--inf-s-1) var(--inf-s-2) !important;
-    background: var(--inf-bg-sunken) !important;
-    border-radius: var(--inf-r-sm) !important;
-    box-shadow: var(--inf-neu-inset) !important;
-  }
-
-  /* کارت شاخص (بزرگتر) */
   .blog-card-featured {
     padding: var(--inf-s-6) !important;
     border-radius: var(--inf-r-3xl) !important;
@@ -174,71 +140,109 @@
     line-height: var(--inf-lh-snug) !important;
   }
 
+  /* ═══════════════════════════════════════════════════════
+     2. ARTICLE BODY — FONT SIZE SCALING FIX
+     ═══════════════════════════════════════════════════════ */
+  
+  .blog-post-page .blog-post-content.glass-panel {
+    font-size: calc(16px * var(--article-font-scale, 1)) !important;
+    transition: font-size 0.2s ease !important;
+  }
+  
+  /* تمام تگ‌های داخلی هم با متغیر جلو برن */
+  .blog-post-page .blog-post-content p,
+  .blog-post-page .blog-post-content li {
+    font-size: calc(16px * var(--article-font-scale, 1)) !important;
+    transition: font-size 0.2s ease !important;
+  }
+
 
   /* ═══════════════════════════════════════════════════════
-     INFINITY GLASS NAV (ناوبری شیشه‌ای فوق لوکس مقاله)
+     3. LIQUID GLASS ARTICLE NAV (ناوبری شیشه‌ای مایع)
      ═══════════════════════════════════════════════════════ */
      
   .article-glass-nav {
     position: fixed !important;
     top: 16px !important;
     left: 50% !important;
-    transform: translate(-50%, -150%) scale(0.9) !important;
+    /* همیشه قابل رویت */
+    transform: translate(-50%, 0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    
     z-index: 9999 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 2px !important;
     padding: 6px !important;
     width: calc(100% - 32px) !important;
     max-width: 380px !important;
-    /* شیشه مایع فوق‌العاده */
-    background: rgba(255, 255, 255, 0.65) !important;
-    backdrop-filter: blur(24px) saturate(200%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    
+    /* ─── شیشه مایع با اعوجاج بالا (Liquid Glass) ─── */
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(20px) saturate(250%) contrast(110%) brightness(1.1) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(250%) contrast(110%) brightness(1.1) !important;
+    
+    /* حاشیه‌های نوری برای شکست نور */
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.4) !important;
     border-radius: 99px !important;
+    
     box-shadow: 
-      0 12px 32px -8px rgba(13, 115, 119, 0.25),
+      0 12px 32px -8px rgba(13, 115, 119, 0.2),
       0 4px 12px -4px rgba(0, 0, 0, 0.05),
-      inset 0 1px 1px rgba(255, 255, 255, 1) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease !important;
+      inset 0 1px 1px rgba(255, 255, 255, 1),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.03) !important;
+      
     isolation: isolate !important;
+    overflow: hidden !important;
+  }
+
+  /* لایه بافت/نویز برای حس واقعی شیشه */
+  .article-glass-nav::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E") !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+  }
+
+  /* افکت بازتاب نور (Glare) */
+  .article-glass-nav::after {
+    content: "" !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -10% !important;
+    width: 120% !important;
+    height: 100% !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, transparent 100%) !important;
+    transform: rotate(-15deg) !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+    border-radius: 50% !important;
+    filter: blur(10px) !important;
   }
 
   [data-theme="dark"] .article-glass-nav {
-    background: rgba(20, 20, 25, 0.75) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+    background: rgba(20, 20, 25, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+      0 12px 32px -8px rgba(0, 0, 0, 0.6),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
   }
 
-  /* حالت نمایش */
-  .article-glass-nav.is-visible {
-    transform: translate(-50%, 0) scale(1) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-
-  /* نوار پیشرفت مطالعه در پایین شیشه */
-  .nav-progress-track {
+  /* نوار پیشرفت مطالعه */
+  .nav-progress-fill {
     position: absolute !important;
     bottom: 0 !important;
-    left: 24px !important;
-    right: 24px !important;
-    height: 2px !important;
-    background: rgba(0, 0, 0, 0.05) !important;
-    border-radius: 99px !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-  }
-
-  .nav-progress-fill {
-    height: 100% !important;
+    left: 0 !important;
+    height: 2.5px !important;
     background: linear-gradient(90deg, #2ec4c4, #0d7377) !important;
-    border-radius: 99px !important;
-    transition: width 0.1s ease-out !important;
-    box-shadow: 0 0 8px rgba(46, 196, 196, 0.8) !important;
+    box-shadow: 0 0 10px rgba(46, 196, 196, 0.8) !important;
+    transition: width 0.1s linear !important;
+    z-index: 10 !important;
+    border-radius: 0 99px 99px 0 !important;
   }
 
   /* دکمه‌ها */
@@ -247,39 +251,42 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    height: 42px !important;
+    height: 40px !important;
     background: transparent !important;
     border: none !important;
     border-radius: 99px !important;
-    color: #636366 !important;
+    color: #3a3a3c !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     -webkit-tap-highlight-color: transparent !important;
     padding: 0 !important;
     position: relative !important;
+    z-index: 2 !important; /* بالاتر از افکت ها */
   }
 
   [data-theme="dark"] .article-glass-nav-btn {
-    color: #aeaeb2 !important;
+    color: #e5e5ea !important;
   }
 
   .article-glass-nav-btn svg {
-    width: 20px !important;
-    height: 20px !important;
+    width: 19px !important;
+    height: 19px !important;
+    pointer-events: none !important; /* کلیک روی خود دکمه ثبت شود */
     transition: transform 0.2s ease !important;
   }
 
   .article-glass-nav-btn:active {
     transform: scale(0.85) !important;
+    background: rgba(255, 255, 255, 0.4) !important;
   }
 
   .article-glass-nav-btn.is-active {
-    background: rgba(13, 115, 119, 0.12) !important;
+    background: rgba(13, 115, 119, 0.15) !important;
     color: #0d7377 !important;
   }
 
   [data-theme="dark"] .article-glass-nav-btn.is-active {
-    background: rgba(46, 196, 196, 0.15) !important;
+    background: rgba(46, 196, 196, 0.2) !important;
     color: #2ec4c4 !important;
   }
 
@@ -287,12 +294,15 @@
   .article-glass-nav-font {
     display: flex !important;
     align-items: center !important;
-    flex: 1.4 !important;
-    background: rgba(118, 118, 128, 0.08) !important;
+    flex: 1.2 !important;
+    background: rgba(118, 118, 128, 0.1) !important;
     border-radius: 99px !important;
-    padding: 3px !important;
-    height: 42px !important;
+    padding: 2px !important;
+    height: 36px !important;
     box-sizing: border-box !important;
+    margin: 0 4px !important;
+    z-index: 2 !important;
+    border: inset 1px solid rgba(0,0,0,0.05) !important;
   }
 
   .article-glass-nav-font-btn {
@@ -305,27 +315,33 @@
     border: none !important;
     border-radius: 99px !important;
     font-family: var(--font-estedad, system-ui) !important;
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: 800 !important;
-    color: #636366 !important;
+    color: #3a3a3c !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     -webkit-tap-highlight-color: transparent !important;
+    pointer-events: auto !important;
+  }
+
+  [data-theme="dark"] .article-glass-nav-font {
+    background: rgba(118, 118, 128, 0.2) !important;
+    border-color: rgba(255,255,255,0.05) !important;
+  }
+
+  [data-theme="dark"] .article-glass-nav-font-btn {
+    color: #e5e5ea !important;
   }
 
   .article-glass-nav-font-btn:active {
     background: #ffffff !important;
     color: #0d7377 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
     transform: scale(0.9) !important;
   }
 
-  [data-theme="dark"] .article-glass-nav-font {
-    background: rgba(118, 118, 128, 0.15) !important;
-  }
-
   [data-theme="dark"] .article-glass-nav-font-btn:active {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
     color: #2ec4c4 !important;
   }
 }

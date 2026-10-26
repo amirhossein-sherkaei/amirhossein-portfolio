@@ -9,8 +9,6 @@ type Props = {
 };
 
 export default function ArticleGlassNav({ title, slug }: Props) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [progress, setProgress] = useState(0);
   const [fontScale, setFontScale] = useState(1);
   const [saved, setSaved] = useState(false);
@@ -19,58 +17,60 @@ export default function ArticleGlassNav({ title, slug }: Props) {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      // محاسبه درصد پیشرفت مطالعه
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         setProgress((currentScrollY / totalHeight) * 100);
       }
-
-      // منطق نمایش و پنهان شدن (iOS Style)
-      // اگر به پایین اسکرول کنیم پنهان شود، اگر به بالا بیاییم ظاهر شود
-      if (currentScrollY > 80 && currentScrollY < lastScrollY) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
-    const article = document.querySelector(".blog-post-content") as HTMLElement | null;
-    if (article) {
-      article.style.fontSize = `${16 * fontScale}px`;
-      // انتقال نرم برای تغییر سایز فونت
-      article.style.transition = "font-size 0.2s ease";
-    }
+    // استفاده از متغیر CSS برای تغییر سایز فونت به جای استایل مستقیم
+    // این کار باعث میشه !important های فایل CSS مانع کار نشوند
+    document.documentElement.style.setProperty('--article-font-scale', fontScale.toString());
   }, [fontScale]);
 
-  const handleShare = async () => {
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
     const url = `https://shorakaei.ir/blog/${slug}`;
     if (navigator.share) {
       try { await navigator.share({ title, url }); } catch {}
     } else {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Failed to copy", err);
+      }
     }
   };
 
-  const handleTocClick = () => {
+  const handleTocClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     const toc = document.querySelector(".glass-toc");
     if (toc) {
       toc.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <div className={`article-glass-nav ${isVisible ? "is-visible" : ""}`} aria-label="ابزارهای مقاله">
+    <div className="article-glass-nav" aria-label="ابزارهای مقاله">
+      
+      {/* نوار پیشرفت مطالعه در پس‌زمینه شیشه */}
+      <div 
+        className="nav-progress-fill" 
+        style={{ width: `${progress}%` }} 
+      />
+
       <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -96,21 +96,23 @@ export default function ArticleGlassNav({ title, slug }: Props) {
         )}
       </button>
 
+      {/* دکمه‌های تنظیم فونت */}
       <div className="article-glass-nav-font">
         <button type="button" onClick={() => setFontScale((s) => Math.max(0.85, +(s - 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A-</button>
-        <button type="button" onClick={() => setFontScale((s) => Math.min(1.25, +(s + 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A+</button>
+        <button type="button" onClick={() => setFontScale((s) => Math.min(1.35, +(s + 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A+</button>
       </div>
+
+      <button type="button" onClick={() => setSaved(!saved)} className={`article-glass-nav-btn ${saved ? "is-active" : ""}`} aria-label="ذخیره">
+        <svg viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        </svg>
+      </button>
 
       <button type="button" onClick={scrollToTop} className="article-glass-nav-btn" aria-label="بازگشت به بالا">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 19V5M5 12l7-7 7 7" />
         </svg>
       </button>
-
-      {/* نوار پیشرفت مطالعه در پایین شیشه */}
-      <div className="nav-progress-track">
-        <div className="nav-progress-fill" style={{ width: `${progress}%` }} />
-      </div>
     </div>
   );
 }
