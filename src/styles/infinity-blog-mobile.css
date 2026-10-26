@@ -4,7 +4,7 @@
 
 @media (max-width: 768px) {
   /* ═══════════════════════════════════════════════════════
-     1. BLOG CARDS — EXACT ORIGINAL GLASS SYSTEM
+     1. BLOG CARDS
      ═══════════════════════════════════════════════════════ */
   
   .blog-index-wrapper {
@@ -141,7 +141,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     2. ARTICLE BODY — FONT SIZE SCALING FIX
+     2. ARTICLE BODY
      ═══════════════════════════════════════════════════════ */
   
   .blog-post-page .blog-post-content.glass-panel {
@@ -149,23 +149,20 @@
     transition: font-size 0.2s ease !important;
   }
   
-  /* تمام تگ‌های داخلی هم با متغیر جلو برن */
   .blog-post-page .blog-post-content p,
   .blog-post-page .blog-post-content li {
     font-size: calc(16px * var(--article-font-scale, 1)) !important;
     transition: font-size 0.2s ease !important;
   }
 
-
   /* ═══════════════════════════════════════════════════════
-     3. LIQUID GLASS ARTICLE NAV (ناوبری شیشه‌ای مایع)
+     3. LIQUID GLASS ARTICLE NAV (با اعوجاج اختصاصی)
      ═══════════════════════════════════════════════════════ */
      
   .article-glass-nav {
     position: fixed !important;
     top: 16px !important;
     left: 50% !important;
-    /* همیشه قابل رویت */
     transform: translate(-50%, 0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
@@ -178,12 +175,13 @@
     width: calc(100% - 32px) !important;
     max-width: 380px !important;
     
-    /* ─── شیشه مایع با اعوجاج بالا (Liquid Glass) ─── */
+    /* ─── موتور شیشه مایع با اعوجاج SVG (Liquid Distortion) ─── */
     background: rgba(255, 255, 255, 0.45) !important;
-    backdrop-filter: blur(20px) saturate(250%) contrast(110%) brightness(1.1) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(250%) contrast(110%) brightness(1.1) !important;
+    /* فراخوانی فیلتر از فایل کامپوننت */
+    backdrop-filter: blur(20px) saturate(250%) url(#liquid-glass-distortion) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(250%) url(#liquid-glass-distortion) !important;
     
-    /* حاشیه‌های نوری برای شکست نور */
+    /* حاشیه‌های نوری */
     border: 1px solid rgba(255, 255, 255, 0.8) !important;
     border-bottom-color: rgba(255, 255, 255, 0.4) !important;
     border-radius: 99px !important;
@@ -198,7 +196,7 @@
     overflow: hidden !important;
   }
 
-  /* لایه بافت/نویز برای حس واقعی شیشه */
+  /* لایه بافت نویز */
   .article-glass-nav::before {
     content: "" !important;
     position: absolute !important;
@@ -208,7 +206,7 @@
     z-index: -1 !important;
   }
 
-  /* افکت بازتاب نور (Glare) */
+  /* بازتاب نور (Glare) */
   .article-glass-nav::after {
     content: "" !important;
     position: absolute !important;
@@ -261,7 +259,7 @@
     -webkit-tap-highlight-color: transparent !important;
     padding: 0 !important;
     position: relative !important;
-    z-index: 2 !important; /* بالاتر از افکت ها */
+    z-index: 2 !important; 
   }
 
   [data-theme="dark"] .article-glass-nav-btn {
@@ -271,7 +269,7 @@
   .article-glass-nav-btn svg {
     width: 19px !important;
     height: 19px !important;
-    pointer-events: none !important; /* کلیک روی خود دکمه ثبت شود */
+    pointer-events: none !important; 
     transition: transform 0.2s ease !important;
   }
 
