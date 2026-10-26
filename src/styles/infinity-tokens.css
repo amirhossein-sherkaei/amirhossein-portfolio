@@ -1,51 +1,53 @@
 /* ============================================================
-   INFINITY TOKENS — The Foundation of Beauty
+   INFINITY TOKENS — The Foundation of Absolute Beauty
    ============================================================ */
 :root {
-  /* رنگ‌های خنثی (Zinc Scale) */
-  --inf-bg: #fafafa;
-  --inf-surface: rgba(255, 255, 255, 0.65);
-  --inf-border: rgba(255, 255, 255, 0.8);
+  /* سیستم رنگی فوق‌العاده لوکس (Zinc + Turquoise Mesh) */
+  --inf-bg: #f8f9fa;
+  --inf-surface: rgba(255, 255, 255, 0.75);
+  --inf-surface-hover: rgba(255, 255, 255, 0.95);
+  --inf-border: rgba(255, 255, 255, 0.9);
   
-  --inf-text-main: #18181b;
-  --inf-text-muted: #52525b;
+  --inf-text-main: #111827;
+  --inf-text-muted: #6b7280;
   
   --inf-accent: #0d7377;
-  --inf-accent-glow: rgba(13, 115, 119, 0.2);
+  --inf-accent-glow: rgba(13, 115, 119, 0.25);
 
-  --inf-space-sm: 8px;
-  --inf-space-md: 16px;
-  --inf-space-lg: 24px;
-  --inf-space-xl: 32px;
-
-  --inf-shadow-ambient: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
-  --inf-shadow-elevation: 0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  --inf-shadow-ambient: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --inf-shadow-elevation: 0 24px 48px -12px rgba(0, 0, 0, 0.12);
   
-  --inf-neu-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.04), inset -4px -4px 8px rgba(255, 255, 255, 0.9);
-  --inf-neu-raised: 6px 6px 12px rgba(0, 0, 0, 0.04), -6px -6px 12px rgba(255, 255, 255, 0.9);
+  /* سایه‌های نئومورفیک اپل (Apple-style Neumorphism) */
+  --inf-neu-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.05), inset -2px -2px 5px rgba(255, 255, 255, 1);
+  --inf-neu-raised: 4px 4px 10px rgba(0, 0, 0, 0.05), -4px -4px 10px rgba(255, 255, 255, 1);
 }
 
 [data-theme="dark"] {
   --inf-bg: #09090b;
-  --inf-surface: rgba(24, 24, 27, 0.65);
-  --inf-border: rgba(255, 255, 255, 0.08);
+  --inf-surface: rgba(24, 24, 27, 0.7);
+  --inf-surface-hover: rgba(39, 39, 42, 0.9);
+  --inf-border: rgba(255, 255, 255, 0.1);
   
   --inf-text-main: #f4f4f5;
   --inf-text-muted: #a1a1aa;
   
-  --inf-shadow-ambient: 0 4px 20px -4px rgba(0, 0, 0, 0.4);
-  --inf-shadow-elevation: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+  --inf-shadow-ambient: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --inf-shadow-elevation: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
   
-  --inf-neu-inset: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.02);
-  --inf-neu-raised: 6px 6px 12px rgba(0, 0, 0, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.02);
+  --inf-neu-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+  --inf-neu-raised: 4px 4px 10px rgba(0, 0, 0, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.05);
 }
 
+/* پس‌زمینه مایع و زنده برای موبایل (Aurora Mesh) */
 @media (max-width: 768px) {
   body {
     background: 
-      radial-gradient(circle at 0% 0%, rgba(13,115,119,0.06) 0%, transparent 50%),
-      radial-gradient(circle at 100% 100%, rgba(125,41,63,0.04) 0%, transparent 50%),
+      radial-gradient(at 0% 0%, rgba(13,115,119,0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(125,41,63,0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(13,115,119,0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(125,41,63,0.1) 0px, transparent 50%),
       var(--inf-bg) !important;
     background-attachment: fixed !important;
+    -webkit-font-smoothing: antialiased;
   }
 }
