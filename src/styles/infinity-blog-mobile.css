@@ -2,7 +2,6 @@
    INFINITY BLOG — Editorial Mobile Experience
    ============================================================ */
 @media (max-width: 768px) {
-  /* کارت‌های مقاله (شیشه‌ای با عمق) */
   .blog-card, 
   .blog-card-featured {
     background: var(--inf-surface) !important;
@@ -16,12 +15,10 @@
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   }
 
-  /* لمس کارت (واکنش فیزیکی) */
   .blog-card:active {
     transform: scale(0.98) !important;
   }
 
-  /* تیتر مقاله (خوانایی بالا و مدرن) */
   .blog-card-title, 
   .blog-card-title-featured {
     font-size: 1.4rem !important;
@@ -32,14 +29,12 @@
     margin-bottom: var(--inf-space-sm) !important;
   }
 
-  /* خلاصه مقاله */
   .blog-card-excerpt {
     font-size: 15px !important;
     line-height: 1.7 !important;
     color: var(--inf-text-muted) !important;
   }
 
-  /* فهرست مطالب (TOC) */
   .glass-toc {
     background: var(--inf-surface) !important;
     backdrop-filter: blur(24px) !important;
@@ -60,7 +55,6 @@
     transition: background 0.2s ease !important;
   }
 
-  /* لمس لینک‌های فهرست */
   .glass-toc-link:active {
     background: rgba(13, 115, 119, 0.1) !important;
     color: var(--inf-accent) !important;
