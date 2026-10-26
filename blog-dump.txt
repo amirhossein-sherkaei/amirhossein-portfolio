@@ -1,0 +1,3682 @@
+
+====================================================================================================
+  BLOG INFINITY REDESIGN - COMPLETE FILE DUMP
+====================================================================================================
+Generated: 1405-08-04 11:30:28
+Project:   C:\Users\AmirHossien\Desktop\amirhossein-portfolio
+
+====================================================================================================
+  PRIORITY FILES (CRITICAL)
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+FILE: src\styles\infinity-blog-mobile.css
+LABEL: BLOG STYLES - TO REWRITE
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 23703 bytes | LINES: 648
+----------------------------------------------------------------------------------------------------
+/* ============================================================
+   INFINITY BLOG — Award-Winning Editorial Mobile
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════════
+   KEYFRAMES
+   ═══════════════════════════════════════════════════════════ */
+@keyframes inf-card-shimmer {
+  0%   { --inf-shimmer: -100%; }
+  100% { --inf-shimmer: 200%; }
+}
+
+@keyframes inf-card-lift {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-4px) scale(1.005); }
+}
+
+@keyframes inf-tag-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--inf-accent-tint); }
+  50%      { box-shadow: 0 0 0 4px var(--inf-accent-tint); }
+}
+
+@keyframes inf-arrow-slide {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-4px); }
+}
+
+@media (max-width: 768px) {
+  /* ═══════════════════════════════════════════════════════
+     BLOG CARD — Base System
+     ═══════════════════════════════════════════════════════ */
+  .blog-card,
+  .blog-card-featured {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: var(--inf-s-5) !important;
+    margin-bottom: var(--inf-s-4) !important;
+    background: var(--inf-glass-light) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid var(--inf-glass-border) !important;
+    border-radius: var(--inf-r-2xl) !important;
+    box-shadow:
+      var(--inf-shadow-md),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    transition:
+      transform var(--inf-t-normal) var(--inf-ease-spring-bold),
+      box-shadow var(--inf-t-normal) var(--inf-ease-out-expo),
+      border-color var(--inf-t-fast) ease !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+  }
+
+  /* Gradient border glow on hover */
+  .blog-card::before,
+  .blog-card-featured::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -1px !important;
+    border-radius: inherit !important;
+    padding: 1px !important;
+    background: linear-gradient(
+      135deg,
+      var(--inf-accent) 0%,
+      transparent 40%,
+      transparent 60%,
+      var(--inf-burgundy-400) 100%
+    ) !important;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0) !important;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0) !important;
+    -webkit-mask-composite: xor !important;
+    mask-composite: exclude !important;
+    opacity: 0 !important;
+    transition: opacity var(--inf-t-normal) ease !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+  }
+
+  /* Ambient glow behind card */
+  .blog-card::after,
+  .blog-card-featured::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    border-radius: inherit !important;
+    background: radial-gradient(
+      ellipse at top right,
+      var(--inf-accent-tint) 0%,
+      transparent 60%
+    ) !important;
+    opacity: 0 !important;
+    transition: opacity var(--inf-t-normal) ease !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+
+  .blog-card:active,
+  .blog-card-featured:active {
+    transform: scale(0.985) !important;
+    box-shadow:
+      var(--inf-shadow-sm),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .blog-card:hover::before,
+  .blog-card-featured:hover::before,
+  .blog-card:hover::after,
+  .blog-card-featured:hover::after {
+    opacity: 1 !important;
+  }
+
+  [data-theme="dark"] .blog-card,
+  [data-theme="dark"] .blog-card-featured {
+    background: var(--inf-glass-dark) !important;
+    border-color: var(--inf-glass-border) !important;
+    box-shadow:
+      var(--inf-shadow-md),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     CARD CONTENT
+     ═══════════════════════════════════════════════════════ */
+  .blog-card-content,
+  .blog-card-featured-content {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--inf-s-3) !important;
+  }
+
+  /* Meta row (date + category) */
+  .blog-card-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--inf-s-2) !important;
+    flex-wrap: wrap !important;
+    margin-bottom: var(--inf-s-1) !important;
+  }
+
+  .blog-card-category {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: var(--inf-s-1) var(--inf-s-3) !important;
+    border-radius: var(--inf-r-full) !important;
+    background: var(--inf-accent-tint) !important;
+    color: var(--inf-accent) !important;
+    font-size: var(--inf-fs-caption) !important;
+    font-weight: 800 !important;
+    letter-spacing: var(--inf-tracking-wide) !important;
+    text-transform: uppercase !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 2px 4px -1px var(--inf-accent-tint) !important;
+  }
+
+  .blog-card-date {
+    font-family: var(--sh-font-mono, monospace) !important;
+    font-size: var(--inf-fs-caption) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    color: var(--inf-text-muted) !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* Title */
+  .blog-card-title,
+  .blog-card-title-featured {
+    font-size: var(--inf-fs-h3) !important;
+    font-weight: 800 !important;
+    line-height: var(--inf-lh-tight) !important;
+    letter-spacing: var(--inf-tracking-tight) !important;
+    color: var(--inf-text-strong) !important;
+    margin: 0 !important;
+    transition: color var(--inf-t-fast) ease !important;
+    background: linear-gradient(135deg, var(--inf-text-strong), var(--inf-text-body)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  .blog-card:hover .blog-card-title,
+  .blog-card-featured:hover .blog-card-title-featured {
+    background: linear-gradient(135deg, var(--inf-accent), var(--inf-turquoise-400)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  /* Excerpt */
+  .blog-card-excerpt,
+  .blog-card-excerpt-featured {
+    font-size: var(--inf-fs-body) !important;
+    line-height: var(--inf-lh-relaxed) !important;
+    color: var(--inf-text-muted) !important;
+    margin: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  /* Footer (read more + time) */
+  .blog-card-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: var(--inf-s-3) !important;
+    padding-top: var(--inf-s-3) !important;
+    margin-top: var(--inf-s-2) !important;
+    border-top: 1px solid var(--inf-glass-border) !important;
+  }
+
+  .blog-card-read-more {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: var(--inf-s-1) !important;
+    font-size: var(--inf-fs-small) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    color: var(--inf-accent) !important;
+    transition: gap var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+  }
+
+  .blog-card-read-more span[aria-hidden="true"] {
+    display: inline-block !important;
+    transition: transform var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+  }
+
+  .blog-card:active .blog-card-read-more span[aria-hidden="true"] {
+    transform: translateX(-4px) !important;
+  }
+
+  .blog-card-reading-time {
+    font-family: var(--sh-font-mono, monospace) !important;
+    font-size: var(--inf-fs-caption) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    color: var(--inf-text-muted) !important;
+    padding: var(--inf-s-1) var(--inf-s-2) !important;
+    background: var(--inf-bg-sunken) !important;
+    border-radius: var(--inf-r-sm) !important;
+    box-shadow: var(--inf-neu-inset) !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* Tag chips */
+  .blog-card-tag,
+  .blog-post-tags .blog-card-tag {
+    display: inline-flex !important;
+    padding: var(--inf-s-1) var(--inf-s-2) !important;
+    background: var(--inf-bg-sunken) !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--inf-r-full) !important;
+    font-family: var(--sh-font-mono, monospace) !important;
+    font-size: var(--inf-fs-caption) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    color: var(--inf-text-muted) !important;
+    transition: all var(--inf-t-fast) ease !important;
+  }
+
+  .blog-card-tag:hover,
+  .blog-post-tags .blog-card-tag:hover {
+    border-color: var(--inf-accent-ring) !important;
+    color: var(--inf-accent) !important;
+    background: var(--inf-accent-tint) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     FEATURED CARD (Bigger, More Premium)
+     ═══════════════════════════════════════════════════════ */
+  .blog-card-featured {
+    padding: var(--inf-s-6) !important;
+    border-radius: var(--inf-r-3xl) !important;
+    background: linear-gradient(
+      135deg,
+      var(--inf-glass-light) 0%,
+      rgba(46, 196, 196, 0.04) 100%
+    ) !important;
+  }
+
+  .blog-card-featured .blog-card-title-featured {
+    font-size: var(--inf-fs-h2) !important;
+    line-height: var(--inf-lh-snug) !important;
+  }
+
+  /* Featured badge */
+  .blog-featured-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: var(--inf-s-1) !important;
+    padding: var(--inf-s-1) var(--inf-s-3) !important;
+    background: linear-gradient(135deg, var(--inf-turquoise-500), var(--inf-turquoise-700)) !important;
+    color: white !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: var(--inf-tracking-wider) !important;
+    text-transform: uppercase !important;
+    border-radius: var(--inf-r-full) !important;
+    box-shadow:
+      0 2px 8px -2px var(--inf-accent-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    animation: inf-tag-pulse 2s ease-in-out infinite !important;
+    margin-bottom: var(--inf-s-2) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     TOC — Premium Sidebar
+     ═══════════════════════════════════════════════════════ */
+  .glass-toc {
+    position: relative !important;
+    padding: var(--inf-s-5) !important;
+    margin: var(--inf-s-4) !important;
+    background: var(--inf-glass-light) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid var(--inf-glass-border) !important;
+    border-radius: var(--inf-r-2xl) !important;
+    box-shadow:
+      var(--inf-shadow-md),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  }
+
+  [data-theme="dark"] .glass-toc {
+    background: var(--inf-glass-dark) !important;
+    border-color: var(--inf-glass-border) !important;
+  }
+
+  .glass-toc-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--inf-s-2) !important;
+    font-size: var(--inf-fs-caption) !important;
+    font-weight: 800 !important;
+    letter-spacing: var(--inf-tracking-wider) !important;
+    text-transform: uppercase !important;
+    color: var(--inf-text-muted) !important;
+    margin: 0 0 var(--inf-s-4) !important;
+    padding-bottom: var(--inf-s-3) !important;
+    border-bottom: 1px solid var(--inf-glass-border) !important;
+  }
+
+  .glass-toc-title::before {
+    content: "" !important;
+    display: block !important;
+    width: 4px !important;
+    height: 14px !important;
+    border-radius: 2px !important;
+    background: var(--inf-accent) !important;
+    box-shadow: 0 0 8px var(--inf-accent-glow) !important;
+  }
+
+  .glass-toc-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--inf-s-1) !important;
+  }
+
+  .glass-toc-item {
+    position: relative !important;
+  }
+
+  .glass-toc-item.is-sub {
+    padding-inline-start: var(--inf-s-3) !important;
+  }
+
+  .glass-toc-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--inf-s-2) !important;
+    padding: var(--inf-s-3) var(--inf-s-3) !important;
+    border-radius: var(--inf-r-md) !important;
+    font-size: var(--inf-fs-small) !important;
+    font-weight: 600 !important;
+    line-height: var(--inf-lh-snug) !important;
+    color: var(--inf-text-body) !important;
+    text-decoration: none !important;
+    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+    position: relative !important;
+  }
+
+  .glass-toc-dot {
+    display: block !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: var(--inf-gray-300) !important;
+    flex-shrink: 0 !important;
+    transition: all var(--inf-t-normal) var(--inf-ease-spring-bold) !important;
+  }
+
+  .glass-toc-link:hover {
+    background: var(--inf-bg-sunken) !important;
+    color: var(--inf-text-strong) !important;
+  }
+
+  .glass-toc-link:hover .glass-toc-dot {
+    background: var(--inf-accent-soft) !important;
+  }
+
+  .glass-toc-link.is-active {
+    background: var(--inf-accent-tint) !important;
+    color: var(--inf-accent) !important;
+    font-weight: 800 !important;
+    box-shadow: inset 3px 0 0 var(--inf-accent) !important;
+  }
+
+  .glass-toc-link.is-active .glass-toc-dot {
+    width: 10px !important;
+    height: 10px !important;
+    background: var(--inf-accent) !important;
+    box-shadow: 0 0 10px var(--inf-accent-glow) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ARTICLE CONTENT ENHANCEMENTS
+     ═══════════════════════════════════════════════════════ */
+  .blog-post-content {
+    font-size: 17px !important;
+    line-height: 1.8 !important;
+    color: var(--inf-text-body) !important;
+  }
+
+  .blog-post-content p {
+    margin-bottom: 1.4em !important;
+  }
+
+  .blog-post-content h2 {
+    font-size: var(--inf-fs-h3) !important;
+    font-weight: 800 !important;
+    line-height: var(--inf-lh-snug) !important;
+    letter-spacing: var(--inf-tracking-tight) !important;
+    color: var(--inf-text-strong) !important;
+    margin-top: 2.2em !important;
+    margin-bottom: 0.8em !important;
+    padding-bottom: 0.6em !important;
+    border-bottom: 1px solid var(--inf-glass-border) !important;
+    position: relative !important;
+  }
+
+  .blog-post-content h2::before {
+    content: "" !important;
+    position: absolute !important;
+    bottom: -1px !important;
+    inset-inline-start: 0 !important;
+    width: 40px !important;
+    height: 2px !important;
+    background: var(--inf-accent) !important;
+    border-radius: 1px !important;
+    box-shadow: 0 0 8px var(--inf-accent-glow) !important;
+  }
+
+  .blog-post-content h3 {
+    font-size: var(--inf-fs-h4) !important;
+    font-weight: 700 !important;
+    line-height: var(--inf-lh-snug) !important;
+    color: var(--inf-text-strong) !important;
+    margin-top: 1.8em !important;
+    margin-bottom: 0.6em !important;
+  }
+
+  /* Blockquote — Editorial */
+  .blog-post-content blockquote {
+    position: relative !important;
+    margin: 2em 0 !important;
+    padding: var(--inf-s-5) var(--inf-s-5) !important;
+    background: linear-gradient(
+      135deg,
+      var(--inf-accent-tint) 0%,
+      transparent 100%
+    ) !important;
+    border-inline-start: 4px solid var(--inf-accent) !important;
+    border-radius: 0 var(--inf-r-lg) var(--inf-r-lg) 0 !important;
+    font-size: var(--inf-fs-lead) !important;
+    line-height: var(--inf-lh-relaxed) !important;
+    color: var(--inf-text-strong) !important;
+    font-style: italic !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 4px 12px -4px var(--inf-accent-tint) !important;
+  }
+
+  .blog-post-content blockquote::before {
+    content: "\201C" !important;
+    position: absolute !important;
+    top: 8px !important;
+    inset-inline-end: 12px !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 64px !important;
+    line-height: 1 !important;
+    color: var(--inf-accent) !important;
+    opacity: 0.15 !important;
+    pointer-events: none !important;
+  }
+
+  /* Code blocks */
+  .blog-post-content pre {
+    position: relative !important;
+    margin: 1.8em 0 !important;
+    padding: var(--inf-s-5) !important;
+    background: oklch(0.18 0.02 240) !important;
+    border-radius: var(--inf-r-lg) !important;
+    border: 1px solid oklch(0.28 0.02 240) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 8px 24px -8px rgba(0, 0, 0, 0.3) !important;
+    overflow-x: auto !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+  }
+
+  .blog-post-content pre::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 14px !important;
+    inset-inline-start: 16px !important;
+    width: 44px !important;
+    height: 10px !important;
+    background:
+      radial-gradient(circle at 5px 5px, #ff5f57 4px, transparent 4.5px),
+      radial-gradient(circle at 17px 5px, #febc2e 4px, transparent 4.5px),
+      radial-gradient(circle at 29px 5px, #28c840 4px, transparent 4.5px) !important;
+    background-repeat: no-repeat !important;
+    opacity: 0.85 !important;
+  }
+
+  /* Inline code */
+  .blog-post-content :not(pre) > code {
+    padding: 2px 6px !important;
+    background: var(--inf-bg-sunken) !important;
+    border: 1px solid var(--inf-glass-border) !important;
+    border-radius: var(--inf-r-xs) !important;
+    font-family: var(--sh-font-mono, monospace) !important;
+    font-size: 0.88em !important;
+    color: var(--inf-accent) !important;
+    box-shadow: var(--inf-neu-inset) !important;
+  }
+
+  /* Links inside article */
+  .blog-post-content a {
+    color: var(--inf-accent) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    background-image: linear-gradient(
+      90deg,
+      var(--inf-accent) 0%,
+      var(--inf-accent) 100%
+    ) !important;
+    background-size: 0 1.5px !important;
+    background-position: 0 100% !important;
+    background-repeat: no-repeat !important;
+    padding-bottom: 1px !important;
+    transition: background-size var(--inf-t-normal) var(--inf-ease-out-expo) !important;
+  }
+
+  .blog-post-content a:hover {
+    background-size: 100% 1.5px !important;
+  }
+
+  /* Tables */
+  .blog-post-content table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    margin: 1.8em 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: var(--inf-r-md) !important;
+    font-size: var(--inf-fs-small) !important;
+    box-shadow:
+      inset 0 0 0 1px var(--inf-glass-border),
+      0 4px 12px -4px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .blog-post-content th {
+    padding: var(--inf-s-3) !important;
+    background: var(--inf-bg-sunken) !important;
+    font-weight: 800 !important;
+    text-align: start !important;
+    color: var(--inf-text-strong) !important;
+    white-space: nowrap !important;
+  }
+
+  .blog-post-content td {
+    padding: var(--inf-s-3) !important;
+    border-top: 1px solid var(--inf-glass-border) !important;
+    color: var(--inf-text-body) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     BREADCRUMB & HEADER
+     ═══════════════════════════════════════════════════════ */
+  .blog-breadcrumb {
+    padding: var(--inf-s-3) !important;
+    margin-bottom: var(--inf-s-4) !important;
+    background: var(--inf-glass-light) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--inf-glass-border) !important;
+    border-radius: var(--inf-r-md) !important;
+    box-shadow: var(--inf-shadow-sm) !important;
+  }
+
+  .blog-post-header h1 {
+    font-size: var(--inf-fs-h2) !important;
+    font-weight: 800 !important;
+    line-height: var(--inf-lh-snug) !important;
+    letter-spacing: var(--inf-tracking-tight) !important;
+    color: var(--inf-text-strong) !important;
+    margin-bottom: var(--inf-s-4) !important;
+  }
+
+  .blog-post-excerpt {
+    font-size: var(--inf-fs-lead) !important;
+    line-height: var(--inf-lh-relaxed) !important;
+    color: var(--inf-text-muted) !important;
+    padding-bottom: var(--inf-s-4) !important;
+    border-bottom: 1px solid var(--inf-glass-border) !important;
+    margin-bottom: var(--inf-s-4) !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     REDUCED MOTION
+     ═══════════════════════════════════════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card,
+    .blog-card-featured,
+    .blog-card::before,
+    .blog-card-featured::before,
+    .blog-card::after,
+    .blog-card-featured::after,
+    .glass-toc-link,
+    .glass-toc-dot,
+    .blog-featured-badge {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\styles\infinity-order-mobile.css
+LABEL: GOLDEN TEMPLATE - INSPIRATION
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 10877 bytes | LINES: 276
+----------------------------------------------------------------------------------------------------
+/* ============================================================
+   INFINITY ORDER FORM — ULTRA FAST & LUXURIOUS (60 FPS)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  
+  /* ═══════════════════════════════════════════════════════════
+     1. BASE LAYOUT & SCROLL PERFORMANCE (رفع کامل لگ)
+     ═══════════════════════════════════════════════════════════ */
+  
+  /* پس‌زمینه کل صفحه: به جای background-attachment: fixed از یک شبه‌المان ثابت استفاده می‌کنیم */
+  .order-page {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 24px 16px 140px 16px !important; /* 140px برای فاصله از دکمه چت */
+    min-height: 100dvh !important;
+    background-color: #f2f2f7 !important; /* رنگ پایه خاکستری روشن */
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* ایجاد هاله نوری به صورت ثابت و بدون لگ */
+  .order-page::before {
+    content: "" !important;
+    position: fixed !important;
+    top: 0; left: 0; right: 0; bottom: 0 !important;
+    background-image: 
+      radial-gradient(circle at 10% 10%, rgba(46,196,196,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(255,59,48,0.03) 0%, transparent 40%) !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+
+  .order-page .container {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* بدنه فرم: رنگ مات و لوکس (حذف backdrop-filter سنگین) */
+  .order-page .oform {
+    background: #ffffff !important; /* سفید مات برای رندر فوری */
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 32px !important;
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.08) !important; /* سایه بهینه */
+    overflow: hidden !important;
+    position: relative !important;
+    transform: translateZ(0) !important; /* فعال‌سازی شتاب سخت‌افزاری */
+    will-change: transform !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     2. STEP NAVIGATOR (ناوبری مراحل)
+     ═══════════════════════════════════════════════════════════ */
+  .order-page .oform .oform-progress {
+    background: #ffffff !important;
+    padding: 24px 24px 12px 24px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0,0,0,0.04) !important;
+    margin-bottom: 8px !important;
+  }
+
+  .order-page .oform .oform-progress-track {
+    height: 4px !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 99px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .order-page .oform .oform-progress-fill {
+    background: #0d7377 !important;
+    border-radius: 99px !important;
+  }
+
+  .order-page .oform .oform-progress-steps {
+    display: flex !important;
+    background: rgba(118, 118, 128, 0.08) !important;
+    padding: 4px !important;
+    border-radius: 99px !important;
+    gap: 4px !important;
+  }
+
+  .order-page .oform .oform-step-pill {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 10px 4px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 99px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #8e8e93 !important;
+    transition: all 0.2s ease !important; /* انتقال سریع */
+  }
+
+  .order-page .oform .oform-step-pill-num {
+    display: grid !important;
+    place-items: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: rgba(0, 0, 0, 0.06) !important;
+    border-radius: 50% !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: #8e8e93 !important;
+  }
+
+  .order-page .oform .oform-step-pill.is-active {
+    background: #ffffff !important;
+    color: #0d7377 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    transform: scale(1.02) !important;
+  }
+
+  .order-page .oform .oform-step-pill.is-active .oform-step-pill-num {
+    background: #0d7377 !important;
+    color: #ffffff !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     3. TYPOGRAPHY & HEADINGS
+     ═══════════════════════════════════════════════════════════ */
+  .order-page .oform .oform-step {
+    padding: 16px 24px 32px 24px !important;
+  }
+
+  .order-page .oform .oform-step-head {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .order-page .oform .oform-step-num {
+    width: 48px !important;
+    height: 48px !important;
+    background: rgba(46, 196, 196, 0.08) !important;
+    border: 1px solid rgba(46, 196, 196, 0.2) !important;
+    border-radius: 14px !important;
+    color: #0d7377 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .order-page .oform .oform-step-title {
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    color: #1c1c1e !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #1c1c1e !important;
+    margin: 0 0 4px 0 !important;
+  }
+
+  .order-page .oform .oform-step-subtitle {
+    font-size: 0.85rem !important;
+    color: #8e8e93 !important;
+    margin: 0 !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     4. INPUT FIELDS (سریع و تمیز)
+     ═══════════════════════════════════════════════════════════ */
+  .order-page .oform .oform-field {
+    margin-bottom: 24px !important;
+    position: relative !important;
+  }
+
+  .order-page .oform .oform-label {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    color: #1c1c1e !important;
+    margin-bottom: 8px !important;
+    transition: color 0.2s ease !important;
+  }
+
+  .order-page .oform .oform-field:has(input:focus) .oform-label {
+    color: #0d7377 !important;
+  }
+
+  .order-page .oform .oform-req {
+    color: #ff3b30 !important;
+    font-size: 1.1rem !important;
+    margin-right: 4px !important;
+  }
+
+  .order-page .oform .oform-input-wrap input,
+  .order-page .oform .oform-input-wrap textarea {
+    width: 100% !important;
+    min-height: 60px !important;
+    padding: 16px 20px 16px 48px !important; /* جلوگیری از تداخل آیکون */
+    background: #f9f9fb !important; /* خاکستری بسیار ملایم برای تمایز از پس‌زمینه سفید */
+    border: 1.5px solid rgba(0, 0, 0, 0.06) !important;
+    border-radius: 16px !important;
+    font-size: 16px !important;
+    color: #1c1c1e !important;
+    transition: all 0.2s ease !important; /* انتقال سریع برای فوکوس */
+  }
+
+  .order-page .oform .oform-input-wrap input:focus,
+  .order-page .oform .oform-input-wrap textarea:focus {
+    background: #ffffff !important;
+    border-color: #0d7377 !important;
+    box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1) !important;
+    outline: none !important;
+  }
+
+  .order-page .oform .oform-icon {
+    position: absolute !important;
+    top: 50% !important;
+    left: 16px !important;
+    transform: translateY(-50%) !important;
+    width: 22px !important;
+    height: 22px !important;
+    display: grid !important;
+    place-items: center !important;
+    border-radius: 50% !important;
+  }
+
+  .order-page .oform .oform-field[data-state="error"] .oform-icon {
+    background: rgba(255, 59, 48, 0.1) !important;
+    color: #ff3b30 !important;
+  }
+
+  .order-page .oform .oform-field[data-state="success"] .oform-icon {
+    background: rgba(52, 199, 89, 0.1) !important;
+    color: #34c759 !important;
+  }
+
+  .order-page .oform .oform-field[data-state="error"] input {
+    border-color: #ff3b30 !important;
+    background: #fff9f9 !important;
+  }
+
+  .order-page .oform .oform-icon svg {
+    width: 12px !important;
+    height: 12px !important;
+    stroke-width: 3 !important;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     5. SUBMIT BUTTON (بدون انیمیشن سنگین)
+     ═══════════════════════════════════════════════════════════ */
+  .order-page .oform .oform-actions {
+    padding: 0 24px 32px 24px !important;
+  }
+
+  .order-page .oform .oform-btn--primary {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 62px !important;
+    background: linear-gradient(135deg, #2ec4c4, #0d7377) !important; /* گرادیان ثابت (بدون انیمیشن) */
+    border-radius: 18px !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 8px 16px -4px rgba(13, 115, 119, 0.4) !important;
+    transition: transform 0.1s ease !important; /* واکنش سریع به لمس */
+  }
+
+  .order-page .oform .oform-btn--primary:active {
+    transform: scale(0.98) !important;
+    box-shadow: 0 4px 8px -2px rgba(13, 115, 119, 0.4) !important;
+  }
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\styles\infinity-tokens.css
+LABEL: DESIGN TOKENS
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 9494 bytes | LINES: 286
+----------------------------------------------------------------------------------------------------
+/* ============================================================
+   INFINITY TOKENS — Complete Design System Foundation
+   ============================================================ */
+
+:root {
+  /* ─── OKLCH Color Scale (Perceptually Uniform) ─── */
+  --inf-gray-50:  oklch(0.985 0.002 240);
+  --inf-gray-100: oklch(0.967 0.003 240);
+  --inf-gray-200: oklch(0.925 0.005 240);
+  --inf-gray-300: oklch(0.872 0.008 240);
+  --inf-gray-400: oklch(0.705 0.012 240);
+  --inf-gray-500: oklch(0.551 0.014 240);
+  --inf-gray-600: oklch(0.446 0.016 240);
+  --inf-gray-700: oklch(0.373 0.018 240);
+  --inf-gray-800: oklch(0.278 0.020 240);
+  --inf-gray-900: oklch(0.207 0.022 240);
+  --inf-gray-950: oklch(0.145 0.024 240);
+
+  /* ─── Brand Accent (Turquoise / Burgundy) ─── */
+  --inf-turquoise-300: oklch(0.82 0.10 190);
+  --inf-turquoise-400: oklch(0.74 0.14 190);
+  --inf-turquoise-500: oklch(0.63 0.16 190);
+  --inf-turquoise-600: oklch(0.52 0.14 190);
+  --inf-turquoise-700: oklch(0.42 0.12 190);
+
+  --inf-burgundy-400: oklch(0.55 0.15 15);
+  --inf-burgundy-500: oklch(0.44 0.17 15);
+  --inf-burgundy-600: oklch(0.36 0.15 15);
+
+  /* ─── Semantic Surfaces (Light) ─── */
+  --inf-bg-canvas:       var(--inf-gray-50);
+  --inf-bg-surface:      var(--inf-gray-100);
+  --inf-bg-raised:       oklch(1 0 0);
+  --inf-bg-sunken:       var(--inf-gray-200);
+  --inf-bg-overlay:      rgba(15, 15, 20, 0.72);
+
+  --inf-glass-light:     rgba(255, 255, 255, 0.72);
+  --inf-glass-dark:      rgba(15, 15, 20, 0.72);
+  --inf-glass-border:    rgba(255, 255, 255, 0.85);
+  --inf-glass-tint:      rgba(13, 115, 119, 0.05);
+
+  /* ─── Text ─── */
+  --inf-text-strong:  var(--inf-gray-900);
+  --inf-text-body:    var(--inf-gray-700);
+  --inf-text-muted:   var(--inf-gray-500);
+  --inf-text-subtle:  var(--inf-gray-400);
+  --inf-text-inverse: var(--inf-gray-50);
+
+  /* ─── Accent Semantic ─── */
+  --inf-accent:        var(--inf-turquoise-600);
+  --inf-accent-soft:   var(--inf-turquoise-400);
+  --inf-accent-glow:   oklch(0.63 0.16 190 / 0.22);
+  --inf-accent-tint:   oklch(0.63 0.16 190 / 0.08);
+  --inf-accent-ring:   oklch(0.63 0.16 190 / 0.35);
+
+  --inf-danger:       oklch(0.55 0.22 25);
+  --inf-danger-tint:  oklch(0.55 0.22 25 / 0.1);
+  --inf-success:      oklch(0.6 0.15 155);
+  --inf-success-tint: oklch(0.6 0.15 155 / 0.1);
+  --inf-warning:      oklch(0.72 0.16 75);
+
+  /* ─── Shadow System (4 elevation levels) ─── */
+  --inf-shadow-xs:
+    0 1px 2px 0 oklch(0.145 0.024 240 / 0.04);
+  --inf-shadow-sm:
+    0 1px 2px -0.5px oklch(0.145 0.024 240 / 0.05),
+    0 2px 4px -1px oklch(0.145 0.024 240 / 0.04);
+  --inf-shadow-md:
+    0 2px 4px -1px oklch(0.145 0.024 240 / 0.06),
+    0 4px 8px -2px oklch(0.145 0.024 240 / 0.05),
+    0 8px 16px -4px oklch(0.145 0.024 240 / 0.04);
+  --inf-shadow-lg:
+    0 4px 8px -2px oklch(0.145 0.024 240 / 0.06),
+    0 8px 16px -4px oklch(0.145 0.024 240 / 0.05),
+    0 16px 32px -8px oklch(0.145 0.024 240 / 0.08),
+    0 32px 64px -16px oklch(0.145 0.024 240 / 0.12);
+
+  /* ─── Neumorphic Shadows (Apple-style) ─── */
+  --inf-neu-raised:
+    -3px -3px 8px oklch(1 0 0 / 0.9),
+    3px 3px 8px oklch(0.145 0.024 240 / 0.06);
+  --inf-neu-inset:
+    inset 2px 2px 6px oklch(0.145 0.024 240 / 0.06),
+    inset -2px -2px 6px oklch(1 0 0 / 0.95);
+  --inf-neu-pressed:
+    inset 3px 3px 8px oklch(0.145 0.024 240 / 0.08),
+    inset -3px -3px 8px oklch(1 0 0 / 0.6);
+
+  /* ─── Glass Effect Composite ─── */
+  --inf-glass-composite:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.03) 50%,
+      rgba(255, 255, 255, 0.08) 100%);
+
+  /* ─── Spacing (Extended 8px Grid) ─── */
+  --inf-s-0:  0;
+  --inf-s-1:  4px;
+  --inf-s-2:  8px;
+  --inf-s-3:  12px;
+  --inf-s-4:  16px;
+  --inf-s-5:  20px;
+  --inf-s-6:  24px;
+  --inf-s-7:  32px;
+  --inf-s-8:  40px;
+  --inf-s-9:  48px;
+  --inf-s-10: 64px;
+  --inf-s-11: 80px;
+  --inf-s-12: 96px;
+
+  /* ─── Border Radius Scale ─── */
+  --inf-r-xs:  6px;
+  --inf-r-sm:  10px;
+  --inf-r-md:  14px;
+  --inf-r-lg:  18px;
+  --inf-r-xl:  24px;
+  --inf-r-2xl: 28px;
+  --inf-r-3xl: 36px;
+  --inf-r-4xl: 44px;
+  --inf-r-full: 9999px;
+
+  /* ─── Typography Scale (Fluid) ─── */
+  --inf-fs-caption:  clamp(0.6875rem, 0.66rem + 0.15vw, 0.75rem);
+  --inf-fs-small:    clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);
+  --inf-fs-body:     clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --inf-fs-lead:     clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  --inf-fs-h4:       clamp(1.125rem, 1.04rem + 0.4vw, 1.25rem);
+  --inf-fs-h3:       clamp(1.25rem, 1.13rem + 0.6vw, 1.5rem);
+  --inf-fs-h2:       clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --inf-fs-h1:       clamp(1.875rem, 1.55rem + 1.6vw, 2.75rem);
+
+  --inf-lh-tight:  1.2;
+  --inf-lh-snug:   1.35;
+  --inf-lh-normal: 1.55;
+  --inf-lh-relaxed: 1.75;
+  --inf-lh-loose:  1.9;
+
+  --inf-tracking-tight: -0.02em;
+  --inf-tracking-normal: 0;
+  --inf-tracking-wide: 0.05em;
+  --inf-tracking-wider: 0.1em;
+
+  /* ─── Motion Curves (Spring Physics) ─── */
+  --inf-ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+  --inf-ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+  --inf-ease-out-quint:   cubic-bezier(0.22, 1, 0.36, 1);
+  --inf-ease-spring-soft: cubic-bezier(0.34, 1.26, 0.64, 1);
+  --inf-ease-spring-bold: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --inf-ease-in-out:      cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ─── Durations ─── */
+  --inf-t-fast:    150ms;
+  --inf-t-normal:  250ms;
+  --inf-t-slow:    400ms;
+  --inf-t-slower:  600ms;
+
+  /* ─── Z-Index Scale ─── */
+  --inf-z-base:     0;
+  --inf-z-raised:   10;
+  --inf-z-overlay:  100;
+  --inf-z-modal:    1000;
+  --inf-z-toast:    10000;
+}
+
+/* ─── Animated Custom Properties (@property) ─── */
+@property --inf-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --inf-shimmer {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -100%;
+}
+
+@property --inf-aura-opacity {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.5;
+}
+
+/* ─── Dark Mode ─── */
+[data-theme="dark"] {
+  --inf-bg-canvas:  var(--inf-gray-950);
+  --inf-bg-surface: var(--inf-gray-900);
+  --inf-bg-raised:  var(--inf-gray-800);
+  --inf-bg-sunken:  oklch(0.1 0.02 240);
+  --inf-bg-overlay: rgba(0, 0, 0, 0.85);
+
+  --inf-glass-light:  rgba(20, 20, 28, 0.72);
+  --inf-glass-dark:   rgba(5, 5, 10, 0.85);
+  --inf-glass-border: rgba(255, 255, 255, 0.1);
+  --inf-glass-tint:   rgba(46, 196, 196, 0.08);
+
+  --inf-text-strong:  var(--inf-gray-50);
+  --inf-text-body:    var(--inf-gray-300);
+  --inf-text-muted:   var(--inf-gray-400);
+  --inf-text-subtle:  var(--inf-gray-500);
+  --inf-text-inverse: var(--inf-gray-900);
+
+  --inf-accent:      var(--inf-turquoise-400);
+  --inf-accent-soft: var(--inf-turquoise-300);
+  --inf-accent-glow: oklch(0.74 0.14 190 / 0.35);
+  --inf-accent-tint: oklch(0.74 0.14 190 / 0.12);
+
+  --inf-neu-raised:
+    -3px -3px 8px rgba(255, 255, 255, 0.02),
+    3px 3px 8px rgba(0, 0, 0, 0.5);
+  --inf-neu-inset:
+    inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.02);
+  --inf-neu-pressed:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.6),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.02);
+
+  --inf-shadow-xs:
+    0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --inf-shadow-sm:
+    0 1px 2px -0.5px rgba(0, 0, 0, 0.4),
+    0 2px 4px -1px rgba(0, 0, 0, 0.35);
+  --inf-shadow-md:
+    0 2px 4px -1px rgba(0, 0, 0, 0.4),
+    0 4px 8px -2px rgba(0, 0, 0, 0.35),
+    0 8px 16px -4px rgba(0, 0, 0, 0.3);
+  --inf-shadow-lg:
+    0 4px 8px -2px rgba(0, 0, 0, 0.4),
+    0 8px 16px -4px rgba(0, 0, 0, 0.35),
+    0 16px 32px -8px rgba(0, 0, 0, 0.45),
+    0 32px 64px -16px rgba(0, 0, 0, 0.55);
+}
+
+/* ─── Body Ambient Background (Aurora Mesh) ─── */
+@media (max-width: 768px) {
+  body {
+    background-color: var(--inf-bg-canvas) !important;
+    background-image:
+      radial-gradient(at 12% 8%, oklch(0.63 0.16 190 / 0.10) 0px, transparent 45%),
+      radial-gradient(at 88% 12%, oklch(0.44 0.17 15 / 0.06) 0px, transparent 45%),
+      radial-gradient(at 92% 92%, oklch(0.63 0.16 190 / 0.08) 0px, transparent 50%),
+      radial-gradient(at 8% 88%, oklch(0.44 0.17 15 / 0.05) 0px, transparent 50%) !important;
+    background-attachment: fixed !important;
+    background-size: 100% 100% !important;
+    min-height: 100dvh;
+  }
+}
+
+/* ─── Global Improvements ─── */
+::selection {
+  background: var(--inf-accent);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--inf-accent);
+  outline-offset: 3px;
+  border-radius: var(--inf-r-sm);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── High Contrast Mode ─── */
+@media (prefers-contrast: more) {
+  :root {
+    --inf-text-muted: var(--inf-gray-700);
+    --inf-glass-border: var(--inf-gray-300);
+  }
+}
+
+/* ─── Print Styles ─── */
+@media print {
+  body::before,
+  body::after {
+    display: none !important;
+  }
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\app\blog\page.tsx
+LABEL: BLOG LIST PAGE
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 1425 bytes | LINES: 35
+----------------------------------------------------------------------------------------------------
+import type { Metadata } from "next";
+import { getAllPosts, getAllTags } from "@/lib/blog";
+import { getBlogIndexSchema } from "@/lib/schema";
+import BlogList from "@/components/BlogList";
+import "@/styles/blog-index-premium.css";
+import "@/styles/blog-mobile-fix.css";
+
+export const metadata: Metadata = {
+  title: "بلاگ | امیرحسین شرکائی",
+  description: "مقالات امیرحسین شرکائی درباره طراحی وب، توسعه فرانت‌اند، UI/UX و هوش مصنوعی.",
+  alternates: { canonical: "/blog" },
+};
+
+export default function BlogPage() {
+  const posts = getAllPosts();
+  const tags = getAllTags();
+  const blogSchema = getBlogIndexSchema(posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date })));
+
+  return (
+    <main id="main" className="section">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
+      
+      <div className="container">
+        <header className="section-heading reveal" style={{ marginBottom: '48px' }}>
+          <div>
+            <h1>مجله و <em className="ink-word">مقالات</em></h1>
+          </div>
+          <p>یادداشت‌ها و تجربه‌های من درباره طراحی وب، توسعه، هوش مصنوعی و رشد کسب‌وکار.</p>
+        </header>
+        
+        <BlogList posts={posts} tags={tags} />
+      </div>
+    </main>
+  );
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\app\blog\[slug]\page.tsx
+LABEL: BLOG POST PAGE
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 5132 bytes | LINES: 137
+----------------------------------------------------------------------------------------------------
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/blog";
+import { getBlogPostSchema } from "@/lib/schema";
+import MarkdownContent from "@/components/MarkdownContent";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import TableOfContents from "@/components/blog/TableOfContents";
+import AIActions from "@/components/blog/AIActions";
+import BlogComments from "@/components/blog/BlogComments";
+import BlogShare from "@/components/BlogShare";
+import BlogAuthorBox from "@/components/BlogAuthorBox";
+import BlogPrevNext from "@/components/BlogPrevNext";
+import BlogEndCTA from "@/components/BlogEndCTA";
+import BlogInlineCTA from "@/components/BlogInlineCTA";
+import BlogBreadcrumb from "@/components/BlogBreadcrumb";
+
+// ⭐️ ایمپورت کردن فایل استایل جدید
+import "@/styles/blog-post-premium.css";
+import "@/styles/blog-mobile-fix.css";
+
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+  
+  if (!post) return { title: "یافت نشد" };
+  
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `https://shorakaei.ir/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://shorakaei.ir/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.date,
+    },
+  };
+}
+
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+  
+  if (!post) notFound();
+
+  const articleSchema = getBlogPostSchema({
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    slug: post.slug,
+  });
+
+  const relatedPosts = getRelatedPosts(post.slug, post.tags, 3);
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "خانه", item: "https://shorakaei.ir" },
+      { "@type": "ListItem", position: 2, name: "بلاگ", item: "https://shorakaei.ir/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://shorakaei.ir/blog/${post.slug}` },
+    ],
+  };
+
+  return (
+    <>
+      <ReadingProgress />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      
+      <main className="blog-post-page">
+        <div className="container">
+          
+          <BlogBreadcrumb title={post.title} />
+
+          <header className="blog-post-header">
+            <span className="blog-post-category">{post.category}</span>
+            <h1 className="blog-post-title">{post.title}</h1>
+            <p className="blog-post-excerpt">{post.excerpt}</p>
+            <div className="blog-post-meta">
+              <span>{post.dateFormatted}</span>
+              <span>{post.readingTime} دقیقه مطالعه</span>
+            </div>
+          </header>
+
+          <div className="blog-post-layout">
+            <article className="blog-post-content glass-panel">
+              <MarkdownContent content={post.content || ""} />
+              
+              <AIActions title={post.title} slug={post.slug} />
+              
+              <BlogInlineCTA />
+              <BlogShare title={post.title} />
+              <BlogAuthorBox />
+              <BlogEndCTA />
+              
+              <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
+            </article>
+            
+            {post.toc && post.toc.length > 0 && (
+              <aside className="blog-post-sidebar">
+                <TableOfContents items={post.toc} />
+              </aside>
+            )}
+          </div>
+
+          {relatedPosts.length > 0 && (
+            <section className="related-posts-section">
+              <h2 className="related-posts-title">مقالات مرتبط</h2>
+              <div className="related-posts-grid">
+                {relatedPosts.map((related) => (
+                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card">
+                    <span className="blog-post-category" style={{ fontSize: '0.65rem' }}>{related.category}</span>
+                    <h3 style={{ fontSize: '1rem', margin: '12px 0', color: 'var(--sh-color-ink)' }}>{related.title}</h3>
+                    <time style={{ fontSize: '0.8rem', color: 'var(--sh-color-muted)' }}>{related.dateFormatted}</time>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+          
+          <BlogPrevNext currentSlug={post.slug} />
+
+        </div>
+      </main>
+    </>
+  );
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\BlogList.tsx
+LABEL: BLOG LIST COMPONENT
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 3479 bytes | LINES: 87
+----------------------------------------------------------------------------------------------------
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import type { BlogPost } from "@/lib/blog";
+
+export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { tag: string; count: number }[] }) {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  
+  const filteredPosts = selectedTag ? posts.filter((post) => post.tags.includes(selectedTag)) : posts;
+  
+  if (filteredPosts.length === 0) {
+    return (
+      <div className="blog-empty-state">
+        <p>مقاله‌ای با این دسته‌بندی یافت نشد.</p>
+        <button onClick={() => setSelectedTag(null)} className="blog-empty-btn">مشاهده همه مقالات</button>
+      </div>
+    );
+  }
+
+  const featuredPost = filteredPosts[0];
+  const restPosts = filteredPosts.slice(1);
+
+  return (
+    <div className="blog-index-wrapper">
+      {/* فیلترها */}
+      <div className="blog-filter-container">
+        <button 
+          className={`blog-filter-btn ${selectedTag === null ? "is-active" : ""}`} 
+          onClick={() => setSelectedTag(null)}
+        >
+          همه مقالات
+        </button>
+        {tags.map((t) => (
+          <button 
+            key={t.tag} 
+            className={`blog-filter-btn ${selectedTag === t.tag ? "is-active" : ""}`} 
+            onClick={() => setSelectedTag(t.tag)}
+          >
+            {t.tag}
+          </button>
+        ))}
+      </div>
+
+      {/* گرید بلاگ */}
+      <div className="blog-editorial-grid">
+        
+        {/* مقاله شاخص */}
+        <Link href={`/blog/${featuredPost.slug}`} className="blog-card-featured">
+          <div className="blog-card-featured-bg" />
+          <div className="blog-card-featured-content">
+            <div className="blog-card-meta">
+              <span className="blog-card-category">{featuredPost.category}</span>
+              <span className="blog-card-date">{featuredPost.dateFormatted}</span>
+            </div>
+            <h2 className="blog-card-title-featured">{featuredPost.title}</h2>
+            <p className="blog-card-excerpt-featured">{featuredPost.excerpt}</p>
+            <div className="blog-card-footer">
+              <span className="blog-card-read-more">مطالعه مقاله <span aria-hidden="true">←</span></span>
+              <span className="blog-card-reading-time">{featuredPost.readingTime} دقیقه</span>
+            </div>
+          </div>
+        </Link>
+
+        {/* بقیه مقالات */}
+        <div className="blog-regular-grid">
+          {restPosts.map((post) => (
+            <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card-regular">
+              <div className="blog-card-content">
+                <div className="blog-card-meta">
+                  <span className="blog-card-category">{post.category}</span>
+                  <span className="blog-card-date">{post.dateFormatted}</span>
+                </div>
+                <h2 className="blog-card-title">{post.title}</h2>
+                <p className="blog-card-excerpt">{post.excerpt}</p>
+                <div className="blog-card-footer">
+                  <span className="blog-card-read-more">مطالعه مقاله <span aria-hidden="true">←</span></span>
+                  <span className="blog-card-reading-time">{post.readingTime} دقیقه</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\app\layout.tsx
+LABEL: ROOT LAYOUT (IMPORT ORDER)
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 7528 bytes | LINES: 192
+----------------------------------------------------------------------------------------------------
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
+
+/* 01-04 - Foundation */
+import "@/styles/tokens.css";
+import "@/styles/motion.css";
+import "@/styles/base.css";
+import "@/styles/magnetic.css";
+
+/* 05-09 - Core systems */
+import "@/styles/reveal.css";
+import "@/styles/mobile-touch.css";
+import "@/styles/mobile-modal.css";
+import "@/styles/mobile-typography.css";
+import "@/styles/mobile-nav-v2.css";
+
+/* 10-14 - Mobile foundations */
+import "@/styles/mobile-bottom-nav.css";
+import "@/styles/perceived-performance.css";
+import "@/styles/adaptive-navigation.css";
+import "@/styles/sensory.css";
+import "@/styles/welcome-onboarding.css";
+
+/* 15-17 - Forms */
+import "@/styles/order-form-v2.css";
+import "@/styles/order-premium.css";
+import "@/styles/mobile-declutter.css";
+
+/* 18-22 - Work + Layout */
+import "@/styles/work-pages.css";
+import "@/styles/work-premium.css";
+import "@/styles/layout.css";
+import "@/styles/layout-more.css";
+import "@/styles/footer-effects.css";
+
+/* 23-27 - Pages + Responsive */
+import "@/styles/pages.css";
+import "@/styles/responsive.css";
+import "@/styles/enhancements.css";
+import "@/styles/process.css";
+import "@/styles/commitments.css";
+
+/* 28-29 - Mobile overrides */
+import "@/styles/mobile-fix.css";
+import "@/styles/mobile-polish-v2.css";
+
+/* 31 - Theme + Hero */
+import "@/styles/theme-toggle.css";
+import "@/styles/hero-editorial.css";
+
+/* 34-38 - Hero + Branding */
+import "@/styles/hero-premium.css";
+import "@/styles/signature-ink.css";
+import "@/styles/density-standardization.css";
+import "@/styles/services-premium.css";
+import "@/styles/manuscript-grid.css";
+
+/* 39-42 - Sections */
+import "@/styles/hero-bento-live.css";
+import "@/styles/testimonials.css";
+import "@/styles/brand-logo.css";
+import "@/styles/newsletter.css";
+
+/* 43-47 - Performance + Footer */
+import "@/styles/performance-boost.css";
+import "@/styles/footer-v2.css";
+import "@/styles/contact-links.css";
+import "@/styles/count-up.css";
+import "@/styles/chapter-rail.css";
+
+/* 48-50 - Performance + Nav */
+import "@/styles/performance-layer.css";
+import "@/styles/nav-premium.css";
+import "@/styles/performance-pro.css";
+
+/* 51-55 - Final polish + Editorial */
+import "@/styles/final-polish.css";
+import "@/styles/mobile-performance-fix.css";
+import "@/styles/editorial-structure.css";
+
+/* 56 - Dev tools */
+import "@/styles/grid-overlay.css";
+
+/* 57 - ULTIMATE FINAL (Desktop Base) */
+import "@/styles/final-polish-2026.css";
+import "@/styles/balance-turquoise-burgundy.css";
+import "@/styles/waline-custom.css";
+import "@/styles/shahkar-typography.css";
+import "@/styles/shahkar-ui-fixes.css";
+import "@/styles/liquid-glass-infinity.css";
+import "@/styles/infinity-icons.css";
+import "@/styles/chat-bubble-glass.css";
+import "@/styles/theme-smooth-fix.css";
+import "@/styles/mobile-ultimate-fix.css";
+import "@/styles/mobile-navbar-nuclear.css";
+import "@/styles/3d-material.css";
+
+/* ============================================================
+   ⭐️ INFINITY MOBILE LUXURY (The New Design System)
+   ============================================================ */
+import "@/styles/infinity-tokens.css";
+import "@/styles/infinity-order-mobile.css";
+import "@/styles/infinity-blog-mobile.css";
+
+/* Components */
+import { ThemeProvider } from "@/components/ThemeProvider";
+import ClientOverlays from "@/components/ClientOverlays";
+import GlassFilters from "@/components/GlassFilters";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { allSchemas } from "@/lib/schema";
+
+const estedad = localFont({
+  src: "../../public/fonts/Estedad-Variable.woff2",
+  variable: "--font-estedad",
+  display: "swap",
+  weight: "100 900",
+  style: "normal",
+  fallback: ["system-ui", "arial"],
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shorakaei.ir";
+const siteName = "امیرحسین شرکائی";
+const siteTitle = "طراحی سایت اختصاصی و حرفه‌ای در تهران | امیرحسین شرکائی";
+const siteDescription = "طراحی و توسعه وب‌سایت‌های اختصاصی، سریع و مدرن در تهران. خلق تجربه‌های دیجیتال با هوش مصنوعی و تمرکز بر رشد کسب‌وکار شما. مشاوره رایگان.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: { default: siteTitle, template: `%s | ${siteName}` },
+  description: siteDescription,
+  keywords: ["طراحی سایت اختصاصی", "طراحی سایت در تهران", "طراح سایت حرفه‌ای", "طراحی سایت فروشگاهی", "قیمت طراحی سایت", "طراحی وب سایت", "توسعه وب", "هوش مصنوعی", "طراحی سایت با هوش مصنوعی", "امیرحسین شرکائی", "Amirhossein Shorakaei", "Next.js", "React"],
+  applicationName: "Amirhossein Shorakaei",
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  category: "technology",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+  icons: { icon: "/icon.webp", apple: "/apple-icon.webp" },
+  openGraph: { type: "website", locale: "fa_IR", url: siteUrl, siteName: siteName, title: siteTitle, description: siteDescription },
+  twitter: { card: "summary_large_image", title: siteTitle, description: siteDescription },
+  appleWebApp: { capable: true, title: siteName, statusBarStyle: "default" },
+  formatDetection: { telephone: false, email: false, address: false },
+  verification: { google: "xJlni40EBpeF6mGC_CN1Hy5ko-0pjdMar6sEvc5O_wY" },
+  referrer: "origin-when-cross-origin",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+};
+
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme;
+    if (stored === 'light' || stored === 'dark') { theme = stored; } 
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { theme = 'dark'; } 
+    else { theme = 'light'; }
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+`;
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {allSchemas.map((schema, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        ))}
+      </head>
+      <body>
+        <a href="#main" className="skip-link">پرش به محتوای اصلی</a>
+        <GlassFilters />
+        <ThemeProvider>{children}</ThemeProvider>
+        <ClientOverlays />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
+}
+----------------------------------------------------------------------------------------------------
+
+====================================================================================================
+  SECONDARY FILES (IMPORTANT IF EXIST)
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+FILE: src\app\blog\blog.css
+LABEL: BASE BLOG STYLES
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 38094 bytes | LINES: 1687
+----------------------------------------------------------------------------------------------------
+/* ═══════════════════════════════════════════════════════════════
+   BLOG — Premium Editorial Design
+   Version: 3.0 — Token-based, no hardcoded colors
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Reading Progress ── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  background: transparent;
+  pointer-events: none;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-2),
+    var(--accent),
+    color-mix(in srgb, var(--accent) 70%, #000)
+  );
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: width 0.1s ease-out;
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── Back Home ── */
+.blog-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: all 0.3s var(--ease-out);
+}
+
+.blog-back-home:hover {
+  color: var(--accent);
+  background: var(--accent-tint);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: translateX(-4px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-page,
+.blog-post-page {
+  padding: 140px 0 100px;
+  min-height: 100vh;
+}
+
+.blog-header {
+  margin-bottom: 48px;
+  max-width: 720px;
+}
+
+.blog-header h1 {
+  margin: 16px 0 20px;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.blog-header p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TAGS FILTER
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-tags-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.blog-tags-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.blog-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.blog-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.blog-tag-chip:hover {
+  color: var(--accent);
+  background: var(--accent-tint);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.blog-tag-chip.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  border-color: transparent;
+  box-shadow:
+    0 2px 8px color-mix(in srgb, var(--accent) 25%, transparent),
+    0 4px 16px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.blog-tag-chip:active {
+  transform: scale(0.96);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FEATURED POST
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-featured-card {
+  position: relative;
+  display: block;
+  margin-bottom: 48px;
+  padding: 48px;
+  border-radius: 28px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-tint) 0%,
+      color-mix(in srgb, var(--paper-2) 60%, transparent) 100%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface) 70%, transparent) 0%,
+      color-mix(in srgb, var(--paper) 50%, transparent) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  transition:
+    transform 0.4s var(--ease-out),
+    box-shadow 0.4s ease;
+}
+
+.blog-featured-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 8px color-mix(in srgb, var(--ink) 4%, transparent),
+    0 24px 48px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.blog-featured-badge {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  border-radius: 999px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.blog-featured-content h2 {
+  margin: 12px 0 16px;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.blog-featured-card:hover h2 {
+  color: var(--accent);
+}
+
+.blog-featured-content p {
+  margin: 0 0 24px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+  max-width: 600px;
+}
+
+.blog-featured-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  transition: gap 0.3s ease;
+}
+
+.blog-featured-card:hover .blog-featured-cta {
+  gap: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GRID & CARDS
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface) 60%, transparent) 0%,
+    color-mix(in srgb, var(--paper) 40%, transparent) 100%
+  );
+  border: 1px solid var(--line);
+  transition:
+    transform 0.4s var(--ease-out),
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  box-shadow:
+    0 2px 8px color-mix(in srgb, var(--ink) 4%, transparent),
+    0 24px 48px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.blog-card-reading::before {
+  content: "·";
+  margin-left: 12px;
+  margin-right: 12px;
+  opacity: 0.5;
+}
+
+.blog-card-title {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .blog-card-title {
+  color: var(--accent);
+}
+
+.blog-card-excerpt {
+  margin: 0 0 24px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+  flex: 1;
+}
+
+.blog-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.blog-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blog-card-tag {
+  display: inline-flex;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  background: var(--paper-2);
+  border-radius: 999px;
+}
+
+.blog-card-arrow {
+  font-size: 1.1rem;
+  color: var(--accent);
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-card-arrow {
+  transform: translateX(-4px);
+}
+
+.blog-empty {
+  padding: 80px 20px;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--ink-3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOG POST PAGE
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-post-container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.blog-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  font-size: 0.88rem;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blog-back-link:hover {
+  color: var(--accent);
+}
+
+.blog-post-header {
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.blog-post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.blog-post-header h1 {
+  margin: 0 0 24px;
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.blog-post-excerpt {
+  margin: 0 0 24px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.blog-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ── Content typography ── */
+.blog-post-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+
+.blog-post-content h2 {
+  margin: 48px 0 20px;
+  font-size: 1.65rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  scroll-margin-top: 100px;
+}
+
+.blog-post-content h3 {
+  margin: 36px 0 16px;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: var(--ink);
+  scroll-margin-top: 100px;
+}
+
+.blog-post-content p {
+  margin: 0 0 22px;
+}
+
+.blog-post-content ul,
+.blog-post-content ol {
+  margin: 0 0 24px;
+  padding-right: 24px;
+}
+
+.blog-post-content li {
+  margin-bottom: 10px;
+}
+
+.blog-post-content blockquote {
+  margin: 32px 0;
+  padding: 20px 24px;
+  border-right: 3px solid var(--accent);
+  border-radius: 4px 16px 16px 4px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-tint) 0%,
+    color-mix(in srgb, var(--accent-tint) 40%, transparent) 100%
+  );
+  font-style: italic;
+  color: var(--ink);
+}
+
+.blog-post-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-post-content code {
+  padding: 2px 8px;
+  font-family: "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--paper-2);
+  color: var(--ink);
+  border-radius: 6px;
+  direction: ltr;
+  display: inline-block;
+}
+
+.blog-post-content pre {
+  margin: 28px 0;
+  padding: 20px 24px;
+  background: var(--ink);
+  border-radius: 16px;
+  overflow-x: auto;
+  direction: ltr;
+  text-align: left;
+}
+
+.blog-post-content pre code {
+  background: none;
+  padding: 0;
+  color: var(--paper);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  display: block;
+}
+
+.blog-post-content hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid var(--line);
+}
+
+.blog-post-content strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.blog-post-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-post-content table {
+  width: 100%;
+  margin: 28px 0;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.92rem;
+}
+
+.blog-post-content th {
+  padding: 12px 16px;
+  background: var(--accent-tint);
+  font-weight: 600;
+  text-align: right;
+  color: var(--ink);
+}
+
+.blog-post-content td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOC
+   ═══════════════════════════════════════════════════════════════ */
+
+.toc-inline {
+  margin: 32px 0;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.toc-inline summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  list-style: none;
+}
+
+.toc-inline summary::before {
+  content: "فهرست مطالب";
+}
+
+.toc-inline nav {
+  margin-top: 16px;
+}
+
+.toc-inline ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-inline li {
+  margin: 8px 0;
+}
+
+.toc-inline li a {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.toc-inline li a:hover {
+  color: var(--accent);
+}
+
+.toc-inline .toc-level-3 {
+  padding-right: 16px;
+}
+
+.toc-sidebar {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .toc-sidebar {
+    display: block;
+    position: fixed;
+    top: 120px;
+    left: calc((100vw - 720px) / 2 + 720px + 60px);
+    width: 240px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--paper) 50%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--line);
+  }
+
+  .toc-sidebar-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .toc-sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-sidebar li {
+    margin: 6px 0;
+  }
+
+  .toc-sidebar li a {
+    display: block;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.25s ease;
+  }
+
+  .toc-sidebar li a:hover {
+    color: var(--accent);
+    background: var(--accent-tint);
+  }
+
+  .toc-sidebar li.is-active a {
+    color: var(--accent);
+    font-weight: 600;
+    border-left-color: var(--accent);
+    background: var(--accent-tint);
+  }
+
+  .toc-sidebar .toc-level-3 {
+    padding-right: 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RELATED POSTS
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-related {
+  margin-top: 80px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.blog-related-title {
+  margin: 0 0 32px;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.blog-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.blog-related-card {
+  display: block;
+  padding: 24px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  transition: all 0.3s ease;
+}
+
+.blog-related-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  box-shadow: 0 16px 32px color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.blog-related-card h4 {
+  margin: 12px 0 10px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.blog-related-card:hover h4 {
+  color: var(--accent);
+}
+
+.blog-related-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.blog-post-footer {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.blog-post-cta {
+  padding: 32px;
+  border-radius: 20px;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--accent-tint) 0%,
+    color-mix(in srgb, var(--accent-tint) 40%, transparent) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.blog-post-cta p {
+  margin: 0 0 20px;
+  font-size: 1.05rem;
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SKELETON LOADING
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-back-home-skeleton,
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    var(--paper-2) 0%,
+    color-mix(in srgb, var(--paper-2) 60%, var(--line)) 50%,
+    var(--paper-2) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.blog-back-home-skeleton {
+  width: 160px;
+  height: 38px;
+  border-radius: 999px;
+  margin-bottom: 32px;
+}
+
+.blog-header-skeleton {
+  margin-bottom: 48px;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin-bottom: 14px;
+}
+
+.skeleton-line-sm {
+  width: 80px;
+  height: 12px;
+}
+
+.skeleton-line-md {
+  width: 60%;
+}
+
+.skeleton-line-lg {
+  width: 90%;
+  height: 28px;
+}
+
+.blog-card-skeleton {
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — TABLET (max-width: 900px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .blog-page,
+  .blog-post-page {
+    padding: 120px 0 80px;
+  }
+
+  .blog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+  }
+
+  .blog-featured-card {
+    padding: 40px 32px;
+    border-radius: 24px;
+  }
+
+  .blog-featured-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .blog-related-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (max-width: 720px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .blog-page,
+  .blog-post-page {
+    padding: 100px 16px 100px;
+  }
+
+  .blog-back-home {
+    margin-bottom: 20px;
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+
+  .blog-header {
+    margin-bottom: 28px;
+  }
+
+  .blog-header h1 {
+    font-size: clamp(1.6rem, 7vw, 2rem);
+    line-height: 1.2;
+    margin: 10px 0 14px;
+  }
+
+  .blog-header p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .blog-tags-filter {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    gap: 8px;
+  }
+
+  .blog-tags-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .blog-tags-list {
+    gap: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  .blog-tags-list::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .blog-tags-list::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 3px;
+  }
+
+  .blog-tag-chip {
+    flex-shrink: 0;
+    padding: 7px 13px;
+    font-size: 0.74rem;
+    white-space: nowrap;
+  }
+
+  .blog-featured-card {
+    padding: 24px 20px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+  }
+
+  .blog-featured-badge {
+    padding: 4px 11px;
+    font-size: 0.65rem;
+    margin-bottom: 14px;
+  }
+
+  .blog-featured-content h2 {
+    font-size: 1.15rem;
+    line-height: 1.35;
+    margin: 8px 0 10px;
+  }
+
+  .blog-featured-content p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .blog-featured-cta {
+    font-size: 0.82rem;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .blog-card {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .blog-card-meta {
+    font-size: 0.68rem;
+    margin-bottom: 12px;
+    gap: 6px;
+  }
+
+  .blog-card-reading::before {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+
+  .blog-card-title {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .blog-card-excerpt {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .blog-card-footer {
+    padding-top: 12px;
+    gap: 8px;
+  }
+
+  .blog-card-tag {
+    padding: 3px 8px;
+    font-size: 0.64rem;
+  }
+
+  .blog-card-arrow {
+    font-size: 0.95rem;
+  }
+
+  .blog-post-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .blog-back-link {
+    margin-bottom: 24px;
+    font-size: 0.8rem;
+  }
+
+  .blog-post-header {
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+  }
+
+  .blog-post-meta {
+    font-size: 0.72rem;
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+
+  .blog-post-header h1 {
+    font-size: clamp(1.4rem, 6vw, 1.75rem);
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+
+  .blog-post-excerpt {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .blog-post-content {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.3rem;
+    line-height: 1.3;
+    margin: 32px 0 14px;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1.08rem;
+    line-height: 1.4;
+    margin: 26px 0 12px;
+  }
+
+  .blog-post-content p {
+    margin-bottom: 18px;
+  }
+
+  .blog-post-content ul,
+  .blog-post-content ol {
+    padding-right: 20px;
+    margin-bottom: 18px;
+  }
+
+  .blog-post-content li {
+    margin-bottom: 8px;
+  }
+
+  .blog-post-content blockquote {
+    padding: 14px 18px;
+    margin: 22px 0;
+    font-size: 0.92rem;
+    border-radius: 4px 12px 12px 4px;
+  }
+
+  .blog-post-content pre {
+    padding: 14px 16px;
+    margin: 18px 0;
+    border-radius: 12px;
+    font-size: 0.78rem;
+  }
+
+  .blog-post-content code {
+    padding: 2px 6px;
+    font-size: 0.85em;
+  }
+
+  .blog-post-content table {
+    font-size: 0.8rem;
+    margin: 18px 0;
+  }
+
+  .blog-post-content th,
+  .blog-post-content td {
+    padding: 9px 10px;
+  }
+
+  .toc-inline {
+    padding: 14px 16px;
+    margin: 20px 0;
+    border-radius: 12px;
+  }
+
+  .toc-inline summary {
+    font-size: 0.88rem;
+  }
+
+  .toc-inline li a {
+    font-size: 0.82rem;
+  }
+
+  .blog-related {
+    margin-top: 40px;
+    padding-top: 28px;
+  }
+
+  .blog-related-title {
+    font-size: 1.15rem;
+    margin-bottom: 18px;
+  }
+
+  .blog-related-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .blog-related-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .blog-related-card h4 {
+    font-size: 0.92rem;
+    margin: 6px 0 6px;
+  }
+
+  .blog-related-card p {
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  .blog-post-footer {
+    margin-top: 40px;
+    padding-top: 28px;
+  }
+
+  .blog-post-cta {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .blog-post-cta p {
+    font-size: 0.92rem;
+    margin-bottom: 14px;
+  }
+
+  .blog-post-cta .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blog-card-skeleton {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .skeleton-line-lg {
+    height: 22px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE (max-width: 420px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 420px) {
+  .blog-page,
+  .blog-post-page {
+    padding: 90px 14px 90px;
+  }
+
+  .blog-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .blog-featured-card {
+    padding: 20px 16px;
+  }
+
+  .blog-featured-content h2 {
+    font-size: 1.05rem;
+  }
+
+  .blog-card {
+    padding: 16px 14px;
+  }
+
+  .blog-card-title {
+    font-size: 1rem;
+  }
+
+  .blog-post-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .blog-post-content {
+    font-size: 0.92rem;
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .blog-card,
+  .blog-featured-card,
+  .blog-related-card,
+  .blog-back-home,
+  .blog-tag-chip {
+    transition: none;
+  }
+
+  .reading-progress-bar,
+  .skeleton-line,
+  .blog-back-home-skeleton {
+    animation: none;
+  }
+}
+/* ═══════════════════════════════════════════════════════════════
+   LEAD FUNNEL — Author Box + End CTA
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── AUTHOR BOX ─── */
+.blog-author {
+  margin-top: 56px;
+  padding: 24px 26px;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface) 70%, transparent) 0%,
+    color-mix(in srgb, var(--paper-2) 60%, transparent) 100%
+  );
+  border: 1px solid var(--line);
+}
+
+.blog-author-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.blog-author-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 12px -4px var(--accent-glow);
+}
+
+.blog-author-meta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.blog-author-name {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.blog-author-role {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0;
+}
+
+.blog-author-bio {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.blog-author-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.blog-author-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding-inline: 16px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  transition:
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blog-author-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.blog-author-btn--primary {
+  color: #fff;
+  background: linear-gradient(145deg, #0a0908 0%, #211c18 55%, #0a0908 100%);
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 6px 16px -8px rgba(10, 9, 8, 0.35);
+}
+
+.blog-author-btn--primary:hover {
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%);
+  border-color: transparent;
+}
+
+[data-theme="dark"] .blog-author-btn--primary {
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%);
+}
+
+/* ─── END CTA (LEAD FUNNEL) ─── */
+.blog-funnel {
+  margin-top: 64px;
+  padding: clamp(36px, 5vw, 56px) clamp(24px, 4vw, 48px);
+  border-radius: 24px;
+  text-align: center;
+  background:
+    radial-gradient(
+      ellipse 70% 80% at 50% 0%,
+      color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface) 80%, transparent) 0%,
+      color-mix(in srgb, var(--paper-2) 60%, transparent) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-funnel::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  inset-inline-end: -20%;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.blog-funnel-eyebrow {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  direction: ltr;
+  position: relative;
+}
+
+.blog-funnel-title {
+  margin: 0 0 16px;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: balance;
+  position: relative;
+}
+
+.blog-funnel-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.blog-funnel-text {
+  max-width: 520px;
+  margin: 0 auto 28px;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--ink-2);
+  text-wrap: pretty;
+  position: relative;
+}
+
+.blog-funnel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.blog-funnel-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 44px);
+  margin: 0;
+  padding: 24px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+.blog-funnel-trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.blog-funnel-trust-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.blog-funnel-trust-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Remove old footer/CTA (deprecated) ─── */
+.blog-post-footer {
+  display: none;
+}
+
+.blog-post-cta {
+  display: none;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 720px) {
+  .blog-author {
+    margin-top: 40px;
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .blog-author-mark {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .blog-author-name {
+    font-size: 0.875rem;
+  }
+
+  .blog-author-bio {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .blog-author-btn {
+    flex: 1;
+    min-height: 42px;
+  }
+
+  .blog-funnel {
+    margin-top: 44px;
+    padding: 32px 20px;
+    border-radius: 20px;
+  }
+
+  .blog-funnel-title {
+    font-size: 1.25rem;
+    line-height: 1.35;
+  }
+
+  .blog-funnel-text {
+    font-size: 0.875rem;
+    margin-bottom: 22px;
+  }
+
+  .blog-funnel-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .blog-funnel-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .blog-funnel-trust {
+    gap: 18px;
+    padding-top: 20px;
+  }
+
+  .blog-funnel-trust-value {
+    font-size: 1.125rem;
+  }
+
+  .blog-funnel-trust-label {
+    font-size: 0.625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-author-btn {
+    transition: none;
+  }
+}
+/* ═══════════════════════════════════════════════════════════════
+   INLINE CTA — mid-article lead capture
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-inline-cta {
+  margin: 48px 0;
+  padding: 28px 26px;
+  border-radius: 20px;
+  text-align: center;
+  background:
+    radial-gradient(
+      ellipse 70% 80% at 50% 0%,
+      color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface) 80%, transparent) 0%,
+      color-mix(in srgb, var(--paper-2) 60%, transparent) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-inline-cta::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  inset-inline-end: -15%;
+  width: 50%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.blog-inline-cta-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+  position: relative;
+}
+
+.blog-inline-cta-title {
+  margin: 0 0 20px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+  position: relative;
+}
+
+.blog-inline-cta-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.blog-inline-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.blog-inline-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 42px;
+  padding-inline: 20px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  transition:
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blog-inline-cta-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.blog-inline-cta-btn--primary {
+  color: #fff;
+  background: linear-gradient(145deg, #0a0908 0%, #211c18 55%, #0a0908 100%);
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 6px 16px -8px rgba(10, 9, 8, 0.35);
+}
+
+.blog-inline-cta-btn--primary:hover {
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%);
+  border-color: transparent;
+}
+
+[data-theme="dark"] .blog-inline-cta-btn--primary {
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-2) 100%);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 720px) {
+  .blog-inline-cta {
+    margin: 32px 0;
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .blog-inline-cta-title {
+    font-size: 0.9375rem;
+    margin-bottom: 16px;
+  }
+
+  .blog-inline-cta-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .blog-inline-cta-btn {
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-inline-cta-btn {
+    transition: none;
+  }
+  .blog-inline-cta-btn:hover {
+    transform: none;
+  }
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\blog\TableOfContents.tsx
+LABEL: TOC COMPONENT
+----------------------------------------------------------------------------------------------------
+STATUS: FOUND
+SIZE: 1346 bytes | LINES: 45
+----------------------------------------------------------------------------------------------------
+"use client";
+import { useEffect, useState } from "react";
+
+type TOCItem = { id: string; title: string; level: number };
+
+export default function TableOfContents({ items }: { items: TOCItem[] }) {
+  const [activeId, setActiveId] = useState("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        });
+      },
+      { rootMargin: "0% 0% -80% 0%" }
+    );
+    items.forEach((item) => {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [items]);
+
+  if (!items.length) return null;
+
+  return (
+    <nav className="glass-toc" aria-label="فهرست مطالب">
+      <h3 className="glass-toc-title">در این مقاله می‌خوانید</h3>
+      <ul className="glass-toc-list">
+        {items.map((item) => (
+          <li key={item.id} className={`glass-toc-item ${item.level === 3 ? "is-sub" : ""}`}>
+            <a
+              href={`#${item.id}`}
+              className={`glass-toc-link ${activeId === item.id ? "is-active" : ""}`}
+            >
+              <span className="glass-toc-dot" />
+              {item.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\blog\BlogCard.tsx
+LABEL: BLOG CARD (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\blog\BlogPost.tsx
+LABEL: BLOG POST (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\blog\BlogFunnel.tsx
+LABEL: BLOG FUNNEL (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\components\blog\BlogInlineCTA.tsx
+LABEL: INLINE CTA (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\styles\paper-blog.css
+LABEL: PAPER BLOG (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+FILE: src\styles\paper-article.css
+LABEL: PAPER ARTICLE (if exists)
+----------------------------------------------------------------------------------------------------
+STATUS: NOT FOUND
+----------------------------------------------------------------------------------------------------
+
+====================================================================================================
+  AUTO-DISCOVERED BLOG-RELATED FILES
+====================================================================================================
+  - src\app\blog\[slug]\loading.tsx
+  - src\app\blog\[slug]\page.tsx
+  - src\app\blog\blog.css
+  - src\app\blog\loading.tsx
+  - src\app\blog\page.tsx
+  - src\components\blog\AIActions.tsx
+  - src\components\blog\BlogComments.tsx
+  - src\components\blog\TableOfContents.tsx
+  - src\components\BlogAuthorBox.tsx
+  - src\components\BlogBreadcrumb.tsx
+  - src\components\BlogEndCTA.tsx
+  - src\components\BlogInlineCTA.tsx
+  - src\components\BlogList.tsx
+  - src\components\BlogPrevNext.tsx
+  - src\components\BlogShare.tsx
+  - src\components\LatestBlogPosts.tsx
+  - src\content\blog\5-simple-changes-double-impact.md
+  - src\content\blog\7-website-mistakes.md
+  - src\content\blog\8-questions-before-order.md
+  - src\content\blog\ai-design-speed.md
+  - src\content\blog\barbershop-online-booking.md
+  - src\content\blog\cheap-website-expensive.md
+  - src\content\blog\clinic-website-trust.md
+  - src\content\blog\clothing-store-5-mistakes.md
+  - src\content\blog\ecommerce-trust-signals-iran-2026.md
+  - src\content\blog\how-long-until-traffic.md
+  - src\content\blog\how-to-build-premium-portfolio.md
+  - src\content\blog\language-school-double-enrollment.md
+  - src\content\blog\local-seo-iran-2026-google-maps-alternative.md
+  - src\content\blog\mobile-first-design-iran-2026.md
+  - src\content\blog\mobile-traffic-loss.md
+  - src\content\blog\nextjs-vs-react.md
+  - src\content\blog\restaurant-online-menu.md
+  - src\content\blog\ui-design-mistakes.md
+  - src\content\blog\website-design-standards-2026.md
+  - src\content\blog\website-pricing-1405.md
+  - src\content\blog\website-sales-machine-cro-2026.md
+  - src\content\blog\website-sales-machine.md
+  - src\content\blog\why-no-sales-despite-traffic.md
+  - src\content\blog\wordpress-vs-custom.md
+  - src\lib\blog.ts
+  - src\styles\blog-article-premium.css
+  - src\styles\blog-comments-premium.css
+  - src\styles\blog-components-premium.css
+  - src\styles\blog-editorial.css
+  - src\styles\blog-editorial.css.backup-14050717-095733
+  - src\styles\blog-index-premium.css
+  - src\styles\blog-index-ultimate.css
+  - src\styles\blog-mobile-fix.css
+  - src\styles\blog-post-premium.css
+  - src\styles\blog-premium.css
+  - src\styles\blog-premium.css.backup-14050717-095733
+  - src\styles\blog-ultimate.css
+  - src\styles\fix-blog-layout.css
+  - src\styles\infinity-blog-mobile.css
+
+====================================================================================================
+  ALL CSS FILES IN src\styles (REFERENCE LIST)
+====================================================================================================
+  Total: 87 files
+
+  3d-material.css                                             6958 bytes
+  absolute-infinity.css                                       8508 bytes
+  adaptive-navigation.css                                     6771 bytes
+  balance-turquoise-burgundy.css                             16032 bytes
+  base.css                                                   27004 bytes
+  blog-article-premium.css                                   15957 bytes
+  blog-comments-premium.css                                   5051 bytes
+  blog-components-premium.css                                13451 bytes
+  blog-editorial.css                                         34833 bytes
+  blog-index-premium.css                                      4950 bytes
+  blog-index-ultimate.css                                     3500 bytes
+  blog-mobile-fix.css                                         3702 bytes
+  blog-post-premium.css                                      10186 bytes
+  blog-premium.css                                           49570 bytes
+  blog-ultimate.css                                           3903 bytes
+  brand-logo.css                                             11935 bytes
+  chapter-rail.css                                           11078 bytes
+  chat-bubble-glass.css                                        903 bytes
+  chat-infinity.css                                           4709 bytes
+  commitments.css                                             7457 bytes
+  contact-links.css                                          10243 bytes
+  count-up.css                                                2140 bytes
+  density-standardization.css                                21449 bytes
+  editorial-structure.css                                    11860 bytes
+  enhancements.css                                          162904 bytes
+  final-polish-2026.css                                      44840 bytes
+  final-polish.css                                           12754 bytes
+  fix-blog-layout.css                                         1239 bytes
+  footer-effects.css                                          8165 bytes
+  footer-v2.css                                              26242 bytes
+  form-progress.css                                           7655 bytes
+  grid-overlay.css                                            3488 bytes
+  hero-bento-live.css                                         7582 bytes
+  hero-editorial.css                                         41739 bytes
+  hero-premium.css                                           22620 bytes
+  infinity-blog-mobile.css                                   23703 bytes
+  infinity-icons.css                                          3125 bytes
+  infinity-master.css                                        11964 bytes
+  infinity-mobile-luxe.css                                    6215 bytes
+  infinity-order-mobile.css                                  10877 bytes
+  infinity-tokens.css                                         9494 bytes
+  infinity-ultimate-v2.css                                    9460 bytes
+  layout-more.css                                            12646 bytes
+  layout.css                                                159985 bytes
+  liquid-glass-infinity.css                                   9451 bytes
+  magnetic.css                                                1550 bytes
+  manuscript-grid.css                                         2594 bytes
+  mobile-bottom-nav.css                                      15222 bytes
+  mobile-declutter.css                                       11369 bytes
+  mobile-fix.css                                             14823 bytes
+  mobile-forms.css                                           11192 bytes
+  mobile-modal.css                                            5851 bytes
+  mobile-nav-v2.css                                           4856 bytes
+  mobile-navbar-nuclear.css                                   3406 bytes
+  mobile-perfect-fix.css                                      4416 bytes
+  mobile-performance-fix.css                                  6001 bytes
+  mobile-polish-v2.css                                       21644 bytes
+  mobile-touch.css                                            7741 bytes
+  mobile-typography.css                                      18004 bytes
+  mobile-ultimate-fix.css                                     7554 bytes
+  motion.css                                                  9622 bytes
+  nav-premium.css                                            13859 bytes
+  newsletter.css                                             12624 bytes
+  order-form-v2.css                                          32869 bytes
+  order-premium.css                                          34687 bytes
+  pages.css                                                  10973 bytes
+  perceived-performance.css                                   9278 bytes
+  performance-boost.css                                       8025 bytes
+  performance-layer.css                                      10457 bytes
+  performance-pro.css                                        11403 bytes
+  process.css                                                13151 bytes
+  responsive.css                                              6915 bytes
+  reveal.css                                                  2413 bytes
+  sensory.css                                                 7457 bytes
+  services-premium.css                                        3426 bytes
+  shahkar-typography-fix.css                                  3239 bytes
+  shahkar-typography.css                                      6542 bytes
+  shahkar-ui-fixes.css                                        2749 bytes
+  signature-ink.css                                           4920 bytes
+  testimonials.css                                            5997 bytes
+  theme-smooth-fix.css                                        1120 bytes
+  theme-toggle.css                                            7647 bytes
+  tokens.css                                                  5193 bytes
+  waline-custom.css                                           5006 bytes
+  welcome-onboarding.css                                     20914 bytes
+  work-pages.css                                             19307 bytes
+  work-premium.css                                           40767 bytes

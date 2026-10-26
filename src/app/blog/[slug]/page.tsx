@@ -14,8 +14,8 @@ import BlogPrevNext from "@/components/BlogPrevNext";
 import BlogEndCTA from "@/components/BlogEndCTA";
 import BlogInlineCTA from "@/components/BlogInlineCTA";
 import BlogBreadcrumb from "@/components/BlogBreadcrumb";
+import ArticleGlassNav from "@/components/blog/ArticleGlassNav";
 
-// ⭐️ ایمپورت کردن فایل استایل جدید
 import "@/styles/blog-post-premium.css";
 import "@/styles/blog-mobile-fix.css";
 
@@ -78,6 +78,8 @@ export default async function BlogPostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       
       <main className="blog-post-page">
+        <ArticleGlassNav title={post.title} slug={post.slug} />
+        
         <div className="container">
           
           <BlogBreadcrumb title={post.title} />
