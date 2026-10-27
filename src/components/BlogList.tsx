@@ -1,11 +1,28 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { BlogPost } from "@/lib/blog";
+
+const WORKER_URL = (process.env.NEXT_PUBLIC_SVI_WORKER_URL || "").replace(/\/+$/, "");
 
 export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { tag: string; count: number }[] }) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [covers, setCovers] = useState<Record<string, string>>({});
   
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    fetch(`${WORKER_URL}/index`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.items) {
+          const map: Record<string, string> = {};
+          data.items.forEach((item: any) => { map[item.slug] = item.cover; });
+          setCovers(map);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
   const filteredPosts = selectedTag ? posts.filter((post) => post.tags.includes(selectedTag)) : posts;
   
   if (filteredPosts.length === 0) {
@@ -22,30 +39,24 @@ export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { t
 
   return (
     <div className="blog-index-wrapper">
-      {/* فیلترها */}
       <div className="blog-filter-container">
-        <button 
-          className={`blog-filter-btn ${selectedTag === null ? "is-active" : ""}`} 
-          onClick={() => setSelectedTag(null)}
-        >
+        <button className={`blog-filter-btn ${selectedTag === null ? "is-active" : ""}`} onClick={() => setSelectedTag(null)}>
           همه مقالات
         </button>
         {tags.map((t) => (
-          <button 
-            key={t.tag} 
-            className={`blog-filter-btn ${selectedTag === t.tag ? "is-active" : ""}`} 
-            onClick={() => setSelectedTag(t.tag)}
-          >
+          <button key={t.tag} className={`blog-filter-btn ${selectedTag === t.tag ? "is-active" : ""}`} onClick={() => setSelectedTag(t.tag)}>
             {t.tag}
           </button>
         ))}
       </div>
 
-      {/* گرید بلاگ */}
       <div className="blog-editorial-grid">
-        
-        {/* مقاله شاخص */}
         <Link href={`/blog/${featuredPost.slug}`} className="blog-card-featured">
+          {covers[featuredPost.slug] && (
+            <div className="svi-card-img-wrapper">
+              <img src={covers[featuredPost.slug]} alt={featuredPost.title} loading="eager" />
+            </div>
+          )}
           <div className="blog-card-featured-bg" />
           <div className="blog-card-featured-content">
             <div className="blog-card-meta">
@@ -61,10 +72,14 @@ export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { t
           </div>
         </Link>
 
-        {/* بقیه مقالات */}
         <div className="blog-regular-grid">
           {restPosts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card-regular">
+              {covers[post.slug] && (
+                <div className="svi-card-img-wrapper">
+                  <img src={covers[post.slug]} alt={post.title} loading="lazy" />
+                </div>
+              )}
               <div className="blog-card-content">
                 <div className="blog-card-meta">
                   <span className="blog-card-category">{post.category}</span>
@@ -80,7 +95,6 @@ export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { t
             </Link>
           ))}
         </div>
-
       </div>
     </div>
   );

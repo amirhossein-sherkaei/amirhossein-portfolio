@@ -98,6 +98,7 @@ import "@/styles/3d-material.css";
 import "@/styles/infinity-tokens.css";
 import "@/styles/infinity-order-mobile.css";
 import "@/styles/infinity-blog-mobile.css";
+import "@/styles/infinity-visual-system.css";
 
 /* ⭐️ NEW: ULTIMATE PERFORMANCE ENGINE */
 import "@/styles/infinity-speed-engine.css";
@@ -202,3 +203,4 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+

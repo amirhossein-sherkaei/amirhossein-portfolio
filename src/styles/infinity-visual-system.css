@@ -1,0 +1,140 @@
+/* ============================================================
+   INFINITY VISUAL SYSTEM & MOBILE EXTREME PERFORMANCE
+   ============================================================ */
+
+/* ─── 1. BLOG CARD IMAGES (Desktop & Mobile) ─── */
+.svi-card-img-wrapper {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  position: relative;
+  background: #f2f2f7;
+}
+
+.blog-card-featured .svi-card-img-wrapper {
+  border-radius: var(--inf-r-3xl, 32px) var(--inf-r-3xl, 32px) 0 0;
+}
+
+.blog-card-regular .svi-card-img-wrapper {
+  border-radius: var(--inf-r-2xl, 24px) var(--inf-r-2xl, 24px) 0 0;
+}
+
+.svi-card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Gradient fade at bottom of image */
+.svi-card-img-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 70%,
+    rgba(255, 255, 255, 0.1) 90%,
+    var(--inf-glass-light, rgba(255, 255, 255, 0.9)) 100%
+  );
+  pointer-events: none;
+}
+
+[data-theme="dark"] .svi-card-img-wrapper::after {
+  background: linear-gradient(
+    to bottom,
+    transparent 70%,
+    rgba(0, 0, 0, 0.2) 90%,
+    var(--inf-glass-dark, rgba(15, 15, 20, 0.9)) 100%
+  );
+}
+
+/* Hover zoom */
+.blog-card-featured:hover .svi-card-img-wrapper img,
+.blog-card-regular:hover .svi-card-img-wrapper img {
+  transform: scale(1.04);
+}
+
+/* Fix card padding when image exists */
+.blog-card-featured:has(> .svi-card-img-wrapper),
+.blog-card-regular:has(> .svi-card-img-wrapper) {
+  padding: 0 !important;
+}
+
+.blog-card-featured > .blog-card-featured-content,
+.blog-card-regular > .blog-card-content {
+  padding: var(--inf-s-5, 1.5rem) !important;
+  padding-top: var(--inf-s-3, 1rem) !important;
+}
+
+.blog-card-featured > .blog-card-featured-content {
+  padding: var(--inf-s-6, 2rem) !important;
+  padding-top: var(--inf-s-4, 1.5rem) !important;
+}
+
+/* ─── 2. MOBILE EXTREME PERFORMANCE (Home Page) ─── */
+@media (max-width: 768px) {
+  /* Kill all infinite animations */
+  .hero-bg-orb, 
+  .hero-aurora-blob,
+  .hero-aperture,
+  .hero-marquee-track,
+  .hero-bento-live-dot,
+  .hero-bento-status-dot,
+  .hero-masthead-dot,
+  .hero-role-dot,
+  .hero-eyebrow-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Hide heavy visual elements */
+  .hero-bg-orb-2, 
+  .hero-bg-orb-3,
+  .hero-bg-grain {
+    display: none !important;
+  }
+
+  /* Disable all backdrop-filters (glass) on mobile */
+  .hero-section .hero-bento-cell,
+  .hero-section .hero-role,
+  .hero-section .hero-eyebrow,
+  .about-statement,
+  .service-preview,
+  .final-cta-aside,
+  .testimonial-card,
+  .faq-item,
+  .site-nav.is-scrolled .nav-inner,
+  .mobile-nav,
+  .glass-panel {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+  }
+
+  [data-theme="dark"] .hero-section .hero-bento-cell,
+  [data-theme="dark"] .hero-section .hero-role,
+  [data-theme="dark"] .hero-section .hero-eyebrow,
+  [data-theme="dark"] .about-statement,
+  [data-theme="dark"] .service-preview,
+  [data-theme="dark"] .final-cta-aside,
+  [data-theme="dark"] .testimonial-card,
+  [data-theme="dark"] .faq-item,
+  [data-theme="dark"] .site-nav.is-scrolled .nav-inner,
+  [data-theme="dark"] .mobile-nav,
+  [data-theme="dark"] .glass-panel {
+    background: #1c1c1e !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+
+  /* Force hardware acceleration */
+  main, 
+  .section,
+  .hero-section {
+    transform: translateZ(0) !important;
+    will-change: transform;
+  }
+}
