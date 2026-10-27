@@ -62,16 +62,13 @@ import "@/styles/brand-logo.css";
 import "@/styles/newsletter.css";
 
 /* 43-47 - Performance + Footer */
-// import "@/styles/performance-boost.css";
 import "@/styles/footer-v2.css";
 import "@/styles/contact-links.css";
 import "@/styles/count-up.css";
 import "@/styles/chapter-rail.css";
 
 /* 48-50 - Performance + Nav */
-// import "@/styles/performance-layer.css";
 import "@/styles/nav-premium.css";
-// import "@/styles/performance-pro.css";
 
 /* 51-55 - Final polish + Editorial */
 import "@/styles/final-polish.css";
@@ -87,16 +84,11 @@ import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 import "@/styles/shahkar-typography.css";
 import "@/styles/shahkar-ui-fixes.css";
-import "@/styles/liquid-glass-infinity.css";
-import "@/styles/infinity-icons.css";
 import "@/styles/chat-bubble-glass.css";
 import "@/styles/theme-smooth-fix.css";
-import "@/styles/mobile-ultimate-fix.css";
-import "@/styles/mobile-navbar-nuclear.css";
-import "@/styles/3d-material.css";
 
 /* ============================================================
-   ⭐️ INFINITY MOBILE LUXURY (The New Design System)
+   ⭐️ INFINITY MOBILE LUXURY & SPEED ENGINE
    ============================================================ */
 import "@/styles/infinity-tokens.css";
 import "@/styles/infinity-order-mobile.css";
@@ -109,10 +101,11 @@ import "@/styles/infinity-speed-engine.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ClientOverlays from "@/components/ClientOverlays";
 import GlassFilters from "@/components/GlassFilters";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import WebVitals from "@/components/WebVitals";
 import MicrosoftClarity from "@/components/MicrosoftClarity";
+import AutoArticleVisuals from "@/components/AutoArticleVisuals";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 
 const estedad = localFont({
@@ -189,12 +182,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <GlassFilters />
         <ThemeProvider>{children}</ThemeProvider>
         <ClientOverlays />
+        
+        {/* ⭐️ Performance & Analytics */}
+        <WebVitals />
+        <MicrosoftClarity />
+        
+        {/* ⭐️ Visual Intelligence Engine */}
+        <AutoArticleVisuals />
+
         <Analytics />
         <SpeedInsights />
-        <WebVitals />
-  <MicrosoftClarity />
       </body>
     </html>
   );
 }
-
