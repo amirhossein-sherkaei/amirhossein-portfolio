@@ -1,12 +1,12 @@
 /**
  * Shorakaei Visual Intelligence
  * Free-tier, scheduled article visual generation for shorakaei.ir.
- * Uses Cloudflare Workers AI + R2. No paid third-party API is called.
+ * Uses Cloudflare Workers AI + KV. No paid third-party API is called.
  */
 
 interface Env {
   AI: { run(model: string, input: Record<string, unknown>): Promise<any> };
-  VISUAL_ASSETS: R2Bucket;
+  VISUAL_ASSETS: KVNamespace;
   SITE_ORIGIN: string;
   ADMIN_SECRET: string;
   IMAGE_MODEL?: string;
@@ -60,7 +60,7 @@ export default {
 
     try {
       if (url.pathname === "/health" && request.method === "GET") {
-        return json({ ok: true, service: BRAND, model: env.IMAGE_MODEL || DEFAULT_MODEL, mode: "free-tier-guarded" }, 200, cors);
+        return json({ ok: true, service: BRAND, model: env.IMAGE_MODEL || DEFAULT_MODEL, mode: "free-tier-kv-guarded" }, 200, cors);
       }
 
       if (url.pathname === "/manifest" && request.method === "GET") {
@@ -87,20 +87,21 @@ export default {
       if (url.pathname === "/assets" && request.method === "GET") {
         const key = url.searchParams.get("key") || "";
         if (!isAllowedAssetKey(key)) return json({ error: "Invalid asset key" }, 400, cors);
-        const object = await env.VISUAL_ASSETS.get(key);
-        if (!object) return new Response("Not found", { status: 404, headers: cors });
+        
+        const buffer = await env.VISUAL_ASSETS.get(key, "arrayBuffer");
+        if (!buffer) return new Response("Not found", { status: 404, headers: cors });
+        
         const headers = new Headers(cors);
-        object.writeHttpMetadata(headers);
-        headers.set("Content-Type", object.httpMetadata?.contentType || "image/jpeg");
+        headers.set("Content-Type", "image/jpeg");
         headers.set("Cache-Control", "public, max-age=31536000, immutable");
         headers.set("X-Content-Type-Options", "nosniff");
-        return new Response(object.body, { status: 200, headers });
+        return new Response(buffer, { status: 200, headers });
       }
 
       if (url.pathname === "/admin/status" && request.method === "GET") {
         if (!isAdmin(request, env)) return json({ error: "Unauthorized" }, 401, cors);
-        const status = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}last-job.json`);
-        return json(status ? await status.json() : { state: "idle", message: "No job has run yet." }, 200, cors);
+        const status = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}last-job.json`, "json");
+        return json(status || { state: "idle", message: "No job has run yet." }, 200, cors);
       }
 
       if (url.pathname === "/admin/run" && request.method === "POST") {
@@ -115,7 +116,7 @@ export default {
           force,
           message: "The background sweep has been queued.",
         };
-        await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(job), { httpMetadata: { contentType: "application/json; charset=utf-8" } });
+        await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(job));
         ctx.waitUntil(runSweep(env, limit, force, "manual"));
         return json({ ok: true, ...job, statusUrl: `${url.origin}/admin/status` }, 202, cors);
       }
@@ -128,7 +129,6 @@ export default {
   },
 
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    // 2 articles every 3 hours: gradual backfill and refresh without exhausting daily free quota.
     ctx.waitUntil(runSweep(env, 2, false, "cron"));
   },
 };
@@ -211,16 +211,12 @@ function withAssetUrls(manifest: ArticleManifest, origin: string) {
 type IndexEntry = { slug: string; title: string; coverKey: string; alt: string; canonicalUrl: string; generatedAt: string };
 
 async function getIndex(env: Env): Promise<IndexEntry[]> {
-  const object = await env.VISUAL_ASSETS.get(INDEX_KEY);
-  if (!object) return [];
-  const value = await object.json() as { items?: IndexEntry[] };
-  return Array.isArray(value.items) ? value.items : [];
+  const value = await env.VISUAL_ASSETS.get(INDEX_KEY, "json") as { items?: IndexEntry[] } | null;
+  return value && Array.isArray(value.items) ? value.items : [];
 }
 
 async function saveManifest(env: Env, manifest: ArticleManifest): Promise<void> {
-  await env.VISUAL_ASSETS.put(manifestKey(manifest.slug), JSON.stringify(manifest), {
-    httpMetadata: { contentType: "application/json; charset=utf-8", cacheControl: "public, max-age=300" },
-  });
+  await env.VISUAL_ASSETS.put(manifestKey(manifest.slug), JSON.stringify(manifest));
   const current = await getIndex(env);
   const cover = manifest.images.find((image) => image.kind === "cover");
   if (!cover) return;
@@ -233,15 +229,12 @@ async function saveManifest(env: Env, manifest: ArticleManifest): Promise<void> 
     generatedAt: manifest.generatedAt,
   };
   const items = [...current.filter((item) => item.slug !== manifest.slug), entry].sort((a, b) => a.title.localeCompare(b.title));
-  await env.VISUAL_ASSETS.put(INDEX_KEY, JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), items }), {
-    httpMetadata: { contentType: "application/json; charset=utf-8", cacheControl: "public, max-age=300" },
-  });
+  await env.VISUAL_ASSETS.put(INDEX_KEY, JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), items }));
 }
 
 async function getManifest(env: Env, slug: string): Promise<ArticleManifest | null> {
-  const object = await env.VISUAL_ASSETS.get(manifestKey(slug));
-  if (!object) return null;
-  try { return await object.json() as ArticleManifest; } catch { return null; }
+  const value = await env.VISUAL_ASSETS.get(manifestKey(slug), "json");
+  return value ? (value as ArticleManifest) : null;
 }
 
 async function getSitemapArticleUrls(siteOrigin: string): Promise<string[]> {
@@ -300,7 +293,7 @@ function decodeXml(value: string): string {
 function slugFromUrl(urlString: string): string {
   const url = new URL(urlString);
   const parts = url.pathname.split("/").filter(Boolean);
-  return parts[parts.length - 1] || ""; // Keep the URL-encoded slug stable for R2 keys and browser paths.
+  return parts[parts.length - 1] || "";
 }
 
 async function extractArticle(url: string): Promise<ArticleSnapshot | null> {
@@ -448,13 +441,11 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   const images: VisualAsset[] = [];
   const version = article.fingerprint.slice(0, 12);
   const seedBase = seedFromText(`${article.slug}:${article.fingerprint}`);
-  // Fingerprinted URLs avoid stale browser/CDN cache when an article is updated.
+  
   const coverKey = `images/${article.slug}/${version}/cover.jpg`;
   const coverBytes = await generateImage(env, buildPrompt(article, "cover"), seedBase);
-  await env.VISUAL_ASSETS.put(coverKey, coverBytes, {
-    httpMetadata: { contentType: "image/jpeg", cacheControl: "public, max-age=31536000, immutable" },
-    customMetadata: { articleSlug: article.slug, kind: "cover", generatedBy: BRAND },
-  });
+  // ارسال Uint8Array مستقیم به KV (نه buffer)
+  await env.VISUAL_ASSETS.put(coverKey, coverBytes);
   images.push({ kind: "cover", key: coverKey, alt: `تصویر مفهومی مقالهٔ «${article.title}»`.slice(0, 180), caption: "" });
 
   let index = 0;
@@ -462,10 +453,8 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
     index++;
     const key = `images/${article.slug}/${version}/inline-${index}.jpg`;
     const bytes = await generateImage(env, buildPrompt(article, "inline", heading.text), (seedBase + index * 7919) >>> 0);
-    await env.VISUAL_ASSETS.put(key, bytes, {
-      httpMetadata: { contentType: "image/jpeg", cacheControl: "public, max-age=31536000, immutable" },
-      customMetadata: { articleSlug: article.slug, kind: "inline", generatedBy: BRAND },
-    });
+    // ارسال Uint8Array مستقیم به KV (نه buffer)
+    await env.VISUAL_ASSETS.put(key, bytes);
     images.push({ kind: "inline", key, alt: `تصویر مفهومی برای بخش «${heading.text}» از مقالهٔ «${article.title}»`.slice(0, 180), heading: heading.text, headingIndex: heading.index });
   }
 
@@ -496,16 +485,14 @@ async function runSweep(env: Env, requestedLimit: number, force: boolean, trigge
     const urls = await getSitemapArticleUrls(siteOrigin);
     if (!urls.length) throw new Error(`No /blog/ article URLs were found in ${siteOrigin}/sitemap.xml. Check sitemap availability and SITE_ORIGIN.`);
 
-    const stateObject = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}cursor.json`);
-    const state = stateObject ? await stateObject.json() as { cursor?: number } : { cursor: 0 };
-    const cursor = Math.max(0, Number(state.cursor) || 0) % urls.length;
+    const state = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}cursor.json`, "json") as { cursor?: number } | null;
+    const cursor = Math.max(0, Number(state?.cursor) || 0) % urls.length;
     const limit = Math.min(urls.length, clampInt(requestedLimit, 1, trigger === "cron" ? 2 : 3));
     const selected: string[] = [];
     for (let i = 0; i < limit; i++) selected.push(urls[(cursor + i) % urls.length]);
     const nextCursor = (cursor + limit) % urls.length;
-    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}cursor.json`, JSON.stringify({ cursor: nextCursor, totalUrls: urls.length, updatedAt: new Date().toISOString() }), {
-      httpMetadata: { contentType: "application/json; charset=utf-8" },
-    });
+    
+    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}cursor.json`, JSON.stringify({ cursor: nextCursor, totalUrls: urls.length, updatedAt: new Date().toISOString() }));
 
     for (const url of selected) {
       try {
@@ -538,9 +525,7 @@ async function runSweep(env: Env, requestedLimit: number, force: boolean, trigge
       nextCursor,
       note: "The free daily AI allocation is finite. The scheduler deliberately processes a small batch each run.",
     };
-    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(report), {
-      httpMetadata: { contentType: "application/json; charset=utf-8" },
-    });
+    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(report));
   } catch (error) {
     const report = {
       state: "error",
@@ -549,8 +534,6 @@ async function runSweep(env: Env, requestedLimit: number, force: boolean, trigge
       finishedAt: new Date().toISOString(),
       message: error instanceof Error ? error.message : "Unknown error",
     };
-    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(report), {
-      httpMetadata: { contentType: "application/json; charset=utf-8" },
-    });
+    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(report));
   }
 }
