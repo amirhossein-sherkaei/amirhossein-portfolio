@@ -104,7 +104,8 @@ import "@/styles/infinity-visual-system.css";
 import "@/styles/blog-skeleton.css";
 import "@/styles/view-transitions.css";
 import "@/styles/infinity-pwa-cro.css";
-import "@/styles/mdx-infinity.css";`nimport "@/styles/infinity-search.css";
+import "@/styles/mdx-infinity.css";
+import "@/styles/infinity-search.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -113,7 +114,8 @@ import GlassFilters from "@/components/GlassFilters";
 import WebVitals from "@/components/WebVitals";
 import MicrosoftClarity from "@/components/MicrosoftClarity";
 import AutoArticleVisuals from "@/components/AutoArticleVisuals";
-import NewsletterPopup from "@/components/NewsletterPopup";`nimport SearchCommand from "@/components/SearchCommand";
+import NewsletterPopup from "@/components/NewsletterPopup";
+import SearchCommand from "@/components/SearchCommand";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -197,11 +199,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <WebVitals />
         <MicrosoftClarity />
         <AutoArticleVisuals />
-        <NewsletterPopup />`n        <SearchCommand />
+        <NewsletterPopup />
+        <SearchCommand />
         <Analytics />
         <SpeedInsights />
       </body>
     </html>
   );
 }
-
