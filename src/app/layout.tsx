@@ -93,16 +93,18 @@ import "@/styles/mobile-navbar-nuclear.css";
 import "@/styles/3d-material.css";
 
 /* ============================================================
-   ⭐️ INFINITY MOBILE LUXURY (The New Design System)
+   INFINITY MOBILE LUXURY (The New Design System)
    ============================================================ */
 import "@/styles/infinity-tokens.css";
 import "@/styles/infinity-order-mobile.css";
 import "@/styles/infinity-blog-mobile.css";
-import "@/styles/infinity-visual-system.css";
-
-/* ⭐️ NEW: ULTIMATE PERFORMANCE ENGINE */
 import "@/styles/infinity-speed-engine.css";
 import "@/styles/infinity-home-performance.css";
+import "@/styles/infinity-visual-system.css";
+import "@/styles/blog-skeleton.css";
+import "@/styles/view-transitions.css";
+import "@/styles/infinity-pwa-cro.css";
+import "@/styles/mdx-infinity.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -110,7 +112,8 @@ import ClientOverlays from "@/components/ClientOverlays";
 import GlassFilters from "@/components/GlassFilters";
 import WebVitals from "@/components/WebVitals";
 import MicrosoftClarity from "@/components/MicrosoftClarity";
-import AutoArticleVisuals from "@/components/AutoArticleVisuals";`nimport NewsletterPopup from "@/components/NewsletterPopup";
+import AutoArticleVisuals from "@/components/AutoArticleVisuals";
+import NewsletterPopup from "@/components/NewsletterPopup";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
@@ -179,7 +182,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <link rel="manifest" href="/manifest.json" />`n        <link rel="alternate" type="application/rss+xml" title="مجله امیرحسین شرکائی" href="/feed.xml" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="alternate" type="application/rss+xml" title="مجله امیرحسین شرکائی" href="/feed.xml" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {allSchemas.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -190,20 +194,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <GlassFilters />
         <ThemeProvider>{children}</ThemeProvider>
         <ClientOverlays />
-        
-        {/* ⭐️ Performance & Analytics */}
         <WebVitals />
         <MicrosoftClarity />
-        
-        {/* ⭐️ Visual Intelligence Engine */}
-        <AutoArticleVisuals />`n        <NewsletterPopup />
-
+        <AutoArticleVisuals />
+        <NewsletterPopup />
         <Analytics />
         <SpeedInsights />
       </body>
     </html>
   );
 }
-
-
-

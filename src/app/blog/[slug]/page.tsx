@@ -33,12 +33,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.excerpt,
     alternates: { canonical: `https://shorakaei.ir/blog/${post.slug}` },
-    openGraph: {`n      images: [{ url: `https://shorakaei.ir/api/og?slug=${post.slug}`, width: 1200, height: 630 }],
+    openGraph: {
       title: post.title,
       description: post.excerpt,
       url: `https://shorakaei.ir/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
+      images: [{ url: `https://shorakaei.ir/api/og?slug=${post.slug}`, width: 1200, height: 630 }],
     },
   };
 }
@@ -78,7 +79,6 @@ export default async function BlogPostPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       
       <main className="blog-post-page">
-        {/* ⭐️ نوار شیشه‌ای شناور با پراپ toc برای فهرست مطالب */}
         <ArticleGlassNav 
           title={post.title} 
           slug={post.slug} 
@@ -113,7 +113,6 @@ export default async function BlogPostPage({ params }: Props) {
               <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
             </article>
             
-            {/* فهرست مطالب کناری (در موبایل با CSS مخفی شده و در مودال شیشه‌ای نمایش داده می‌شود) */}
             {post.toc && post.toc.length > 0 && (
               <aside className="blog-post-sidebar">
                 <TableOfContents items={post.toc} />
