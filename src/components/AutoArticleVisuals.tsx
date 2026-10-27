@@ -23,14 +23,6 @@ interface ArticleManifest {
   images: ManifestImage[];
 }
 
-interface IndexEntry {
-  slug: string;
-  title: string;
-  cover: string;
-  alt: string;
-  canonicalUrl: string;
-}
-
 function normalize(value: string): string {
   return value.normalize("NFKC").replace(/[\u200b-\u200f\u202a-\u202e]/g, "").replace(/\s+/g, " ").trim().toLocaleLowerCase("fa-IR");
 }
@@ -144,32 +136,6 @@ function placeArticleImages(root: HTMLElement, manifest: ArticleManifest): void 
   }
 }
 
-function placeCardCovers(items: IndexEntry[]): void {
-  injectStyles();
-  const map = new Map(items.map((item) => [item.slug, item]));
-  const anchors = Array.from(document.querySelectorAll<HTMLAnchorElement>("a[href*='/blog/']"));
-  const processed = new WeakSet<HTMLElement>();
-
-  for (const anchor of anchors) {
-    let url: URL;
-    try { url = new URL(anchor.href, window.location.origin); } catch { continue; }
-    if (url.origin !== window.location.origin || !url.pathname.startsWith("/blog/")) continue;
-    
-    const slug = url.pathname.replace(/\/+$/, "").split("/").filter(Boolean).pop() || "";
-    const entry = map.get(slug);
-    if (!entry) continue;
-
-    const card = anchor.closest<HTMLElement>('.blog-card-featured, .blog-card-regular, .blog-card, article') || anchor.parentElement;
-    if (!card || processed.has(card) || card.querySelector(`[${IMAGE_MARKER}="card"]`) || card.querySelector("img, picture, figure")) continue;
-    
-    processed.add(card);
-    const figure = createFigure({ kind: "cover", key: `card-${slug}`, src: entry.cover, alt: entry.alt }, false);
-    figure.className = "svi-auto-figure svi-auto-figure--card";
-    figure.setAttribute(IMAGE_MARKER, "card");
-    card.prepend(figure);
-  }
-}
-
 export default function AutoArticleVisuals() {
   useEffect(() => {
     if (!WORKER_URL) return;
@@ -180,25 +146,24 @@ export default function AutoArticleVisuals() {
     const run = async () => {
       const path = window.location.pathname.replace(/\/+$/, "") || "/";
       if (cancelled || running || path === lastHandledPath) return;
-      const isListing = path === BLOG_ROOT;
+      
+      // 🔥 مهم: فقط در صفحات مقاله اجرا شود، نه در صفحه لیست بلاگ
       const isArticle = path.startsWith(`${BLOG_ROOT}/`);
-      if (!isListing && !isArticle) { lastHandledPath = path; return; }
-      if (isArticle && !findArticleRoot()) return;
+      if (!isArticle) { 
+        lastHandledPath = path; 
+        return; 
+      }
+
+      if (!findArticleRoot()) return;
 
       running = true;
       try {
-        if (isListing) {
-          const response = await fetch(`${WORKER_URL}/index`, { cache: "force-cache" });
-          if (!response.ok) { lastHandledPath = path; return; }
-          const data = await response.json() as { items?: IndexEntry[] };
-          if (!cancelled && Array.isArray(data.items)) placeCardCovers(data.items);
-          lastHandledPath = path;
-          return;
-        }
         const slug = currentSlug(path);
         if (!slug) { lastHandledPath = path; return; }
+        
         const response = await fetch(`${WORKER_URL}/manifest?slug=${encodeURIComponent(slug)}`, { cache: "no-store" });
         if (!response.ok) { lastHandledPath = path; return; }
+        
         const manifest = await response.json() as ArticleManifest;
         if (cancelled) return;
         const root = findArticleRoot();
