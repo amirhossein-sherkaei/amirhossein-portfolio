@@ -1,11 +1,22 @@
-import { BlogPost } from "./blog"; // Assuming this type exists
+/* ============================================================
+   ADVANCED SCHEMA — Structured Data Helpers (2026)
+   ============================================================ */
 
-export const getArticleSchema = (post: BlogPost) => ({
+/**
+ * Article Schema for blog posts
+ * Note: Blog posts are text-only (no cover images)
+ */
+export const getArticleSchema = (post: {
+  title: string;
+  excerpt: string;
+  date: string;
+  slug: string;
+}) => ({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: post.title,
   description: post.excerpt,
-  image: post.coverImage ? `https://shorakaei.ir${post.coverImage}` : "https://shorakaei.ir/icon.webp",
+  image: "https://shorakaei.ir/icon.webp",
   datePublished: post.date,
   dateModified: post.date,
   author: {
@@ -27,12 +38,23 @@ export const getArticleSchema = (post: BlogPost) => ({
   },
 });
 
-export const getCreativeWorkSchema = (project: any) => ({
+/**
+ * CreativeWork Schema for portfolio projects
+ */
+export const getCreativeWorkSchema = (project: {
+  title: string;
+  description: string;
+  slug: string;
+  year?: string;
+  coverImage?: string;
+}) => ({
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   name: project.title,
   description: project.description,
-  image: project.coverImage ? `https://shorakaei.ir${project.coverImage}` : undefined,
+  image: project.coverImage
+    ? `https://shorakaei.ir${project.coverImage}`
+    : "https://shorakaei.ir/icon.webp",
   creator: {
     "@type": "Person",
     name: "امیرحسین شرکائی",
