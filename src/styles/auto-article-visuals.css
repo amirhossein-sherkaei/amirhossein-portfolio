@@ -1,8 +1,8 @@
 /* ============================================================
-   SHORAKAEI VISUAL INTELLIGENCE — Premium Image Display
+   SHORAKAEI VISUAL INTELLIGENCE — Infinity Card Integration
    ============================================================ */
 
-/* ─── تصویر شاخص داخل مقاله ─── */
+/* ─── تصویر شاخص داخل صفحه مقاله (تغییری نکرده) ─── */
 .svi-auto-figure {
   display: block;
   width: 100%;
@@ -10,10 +10,6 @@
   position: relative;
   isolation: isolate;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.svi-auto-figure:hover {
-  transform: scale(1.01);
 }
 
 .svi-auto-figure img {
@@ -25,119 +21,140 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 
     0 24px 60px -12px rgba(22, 35, 38, 0.15),
-    0 8px 20px -8px rgba(22, 35, 38, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  background: linear-gradient(135deg, rgba(13, 115, 119, 0.05), rgba(139, 58, 74, 0.03));
-  transition: box-shadow 0.4s ease;
-}
-
-.svi-auto-figure:hover img {
-  box-shadow: 
-    0 32px 72px -16px rgba(22, 35, 38, 0.2),
-    0 12px 24px -8px rgba(22, 35, 38, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-/* ─── کاور مقاله (16:10) ─── */
-.svi-auto-figure--cover {
-  margin-block: 1.5rem 3rem;
+    0 8px 20px -8px rgba(22, 35, 38, 0.08);
 }
 
 .svi-auto-figure--cover img {
   aspect-ratio: 16 / 10;
 }
 
-/* ─── تصاویر داخلی مقاله (4:3) ─── */
 .svi-auto-figure:not(.svi-auto-figure--cover):not(.svi-auto-figure--card) img {
   aspect-ratio: 4 / 3;
 }
 
-/* ─── کپشن ─── */
-.svi-auto-figure figcaption {
-  margin: 0.8rem auto 0;
-  max-width: 68ch;
-  color: var(--muted, #6b7280);
-  font-size: 0.85rem;
-  line-height: 1.8;
-  text-align: center;
-  font-style: italic;
-  opacity: 0.8;
-}
-
 /* ============================================================
-   🔥 INFINITY CARD COVERS (اینفینیتی برای کارت‌های بلاگ)
+   🔥 INFINITY CARD COVERS (طراحی ادیتوریال برای کارت‌ها)
    ============================================================ */
 
+/* ۱. آماده‌سازی کارت‌ها */
+.blog-card-featured,
+.blog-card-regular,
+.blog-card {
+  position: relative !important;
+  overflow: hidden !important;
+  /* جلوگیری از پرش هنگام هاور */
+  transform: translateZ(0) !important; 
+}
+
+/* ۲. کانتینر تصویر - چسبیده به لبه‌های بالا و کناره‌ها */
 .svi-auto-figure--card {
-  position: relative;
-  overflow: hidden;
-  width: calc(100% + var(--inf-s-5) * 2) !important;
-  margin: calc(var(--inf-s-5) * -1) calc(var(--inf-s-5) * -1) var(--inf-s-3) calc(var(--inf-s-5) * -1) !important;
-  border-radius: 0 !important;
-  aspect-ratio: 16 / 10;
-  background: var(--inf-bg-sunken);
-  z-index: 10;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  aspect-ratio: 16 / 10 !important;
+  background: var(--inf-bg-sunken, #f2f2f7) !important;
+  z-index: 5 !important;
+  
+  /* انطباق دقیق با گوشه‌های کارت (بالا چپ و راست) */
+  border-radius: var(--inf-r-2xl) var(--inf-r-2xl) 0 0 !important;
+  overflow: hidden !important;
 }
 
-/* تنظیم دقیق برای کارت شاخص (Featured) */
-.blog-card-featured > .svi-auto-figure--card {
-  width: calc(100% + var(--inf-s-6) * 2) !important;
-  margin: calc(var(--inf-s-6) * -1) calc(var(--inf-s-6) * -1) var(--inf-s-4) calc(var(--inf-s-6) * -1) !important;
+/* برای کارت شاخص که گردی بیشتری دارد */
+.blog-card-featured .svi-auto-figure--card {
+  border-radius: var(--inf-r-3xl) var(--inf-r-3xl) 0 0 !important;
 }
 
-/* خود تصویر داخل کارت */
+/* ۳. خود تصویر */
 .svi-auto-figure--card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
+  
+  /* انتقال بسیار نرم برای افکت زوم */
+  transition: 
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s ease !important;
 }
 
-/* افکت زوم نرم هنگام هاور روی کارت */
-.blog-card-featured:hover .svi-auto-figure--card img,
-.blog-card-regular:hover .svi-auto-figure--card img {
-  transform: scale(1.04) !important;
+/* ۴. افکت شیشه‌ای روی تصویر (بازتاب نور ملایم) */
+.svi-auto-figure--card::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
 }
 
-/* گرادیانت تیره در پایین تصویر برای خوانایی بهتر متن‌ها (اختیاری) */
+/* ۵. محو شدن تدریجی تصویر در پایین (Gradient Fade) */
 .svi-auto-figure--card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%);
-  pointer-events: none;
-  z-index: 1;
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(255, 255, 255, 0.15) 90%,
+    var(--inf-glass-light, rgba(255, 255, 255, 0.72)) 100%
+  ) !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
 }
 
-/* ─── دارک مود ─── */
+/* پشتیبانی از دارک مود برای گرادیانت */
+[data-theme="dark"] .svi-auto-figure--card::after {
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(0, 0, 0, 0.2) 90%,
+    var(--inf-glass-dark, rgba(15, 15, 20, 0.72)) 100%
+  ) !important;
+}
+
+/* ۶. افکت هاور لوکس: زوم نرم و افزایش جزئی روشنایی */
+.blog-card-featured:hover .svi-auto-figure--card img,
+.blog-card-regular:hover .svi-auto-figure--card img,
+.blog-card:hover .svi-auto-figure--card img {
+  transform: scale(1.04) !important;
+  filter: brightness(1.03) !important;
+}
+
+/* ۷. تکنیک جادویی: حذف پدینگ کارت و برگرداندن آن به محتوا */
+.blog-card-featured:has(> .svi-auto-figure--card),
+.blog-card-regular:has(> .svi-auto-figure--card),
+.blog-card:has(> .svi-auto-figure--card) {
+  padding: 0 !important;
+}
+
+/* برگرداندن پدینگ به محتوای داخلی کارت (متن‌ها) */
+.blog-card-featured:has(> .svi-auto-figure--card) > .blog-card-featured-content,
+.blog-card-regular:has(> .svi-auto-figure--card) > .blog-card-content {
+  padding: var(--inf-s-5, 1.5rem) !important;
+  padding-top: var(--inf-s-3, 1rem) !important; /* کمی فاصله از تصویر */
+}
+
+/* برای کارت شاخص */
+.blog-card-featured:has(> .svi-auto-figure--card) > .blog-card-featured-content {
+  padding: var(--inf-s-6, 2rem) !important;
+  padding-top: var(--inf-s-4, 1.5rem) !important;
+}
+
+/* ─── دارک مود برای تصاویر داخل مقاله ─── */
 [data-theme="dark"] .svi-auto-figure img {
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 
     0 24px 60px -12px rgba(0, 0, 0, 0.5),
-    0 8px 20px -8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="dark"] .svi-auto-figure figcaption {
-  color: #9ca3af;
-}
-
-/* ─── ریسپانسیو ─── */
-@media (max-width: 768px) {
-  .svi-auto-figure {
-    margin: clamp(1.5rem, 3vw, 2.5rem) 0;
-  }
-  
-  .svi-auto-figure img {
-    border-radius: clamp(12px, 2vw, 20px);
-  }
-  
-  .svi-auto-figure--cover {
-    margin-block: 1rem 2rem;
-  }
+    0 8px 20px -8px rgba(0, 0, 0, 0.3);
 }
 
 /* ─── Reduced Motion ─── */
@@ -145,5 +162,7 @@
   .svi-auto-figure,
   .svi-auto-figure img {
     transition: none !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
