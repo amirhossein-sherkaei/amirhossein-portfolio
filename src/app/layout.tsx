@@ -111,6 +111,8 @@ import ClientOverlays from "@/components/ClientOverlays";
 import GlassFilters from "@/components/GlassFilters";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import WebVitals from "@/components/WebVitals";
+import MicrosoftClarity from "@/components/MicrosoftClarity";
 import { allSchemas } from "@/lib/schema";
 
 const estedad = localFont({
@@ -189,7 +191,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ClientOverlays />
         <Analytics />
         <SpeedInsights />
+        <WebVitals />
+  <MicrosoftClarity />
       </body>
     </html>
   );
 }
+

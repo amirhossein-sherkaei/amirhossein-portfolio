@@ -100,3 +100,13 @@ html[data-tab-hidden="true"] .hero-bento-status-dot,
 html[data-tab-hidden="true"] .hero-aperture {
   animation-play-state: paused !important;
 }
+
+/* ─── WCAG 2.2 Accessibility Fix: Restore Focus Visible ─── */
+*:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+*:focus:not(:focus-visible) {
+  outline: none !important;
+}
