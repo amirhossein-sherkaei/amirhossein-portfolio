@@ -1,37 +1,26 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
-import Callout from "./mdx/Callout";
-import Quote from "./mdx/Quote";
-
-interface MarkdownContentProps {
-  content: string;
-}
+import Callout from "@/components/mdx/Callout";
+import Stat from "@/components/mdx/Stat";
+import { Steps, Step } from "@/components/mdx/Steps";
 
 const components = {
   Callout,
-  Quote,
+  Stat,
+  Steps,
+  Step,
 };
 
-export default function MarkdownContent({ content }: MarkdownContentProps) {
+const options = {
+  mdxOptions: {
+    rehypePlugins: [
+      [rehypePrettyCode, { theme: "github-dark" }],
+    ],
+  },
+};
+
+export default function MarkdownContent({ content }: { content: string }) {
   return (
-    <div className="mdx-content">
-      <MDXRemote
-        source={content}
-        components={components}
-        options={{
-          mdxOptions: {
-            rehypePlugins: [
-              [
-                rehypePrettyCode,
-                {
-                  theme: "one-dark-pro",
-                  keepBackground: false,
-                },
-              ],
-            ],
-          },
-        }}
-      />
-    </div>
+    <MDXRemote source={content} components={components} options={options} />
   );
 }
