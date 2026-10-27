@@ -84,11 +84,16 @@ import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 import "@/styles/shahkar-typography.css";
 import "@/styles/shahkar-ui-fixes.css";
+import "@/styles/liquid-glass-infinity.css";
+import "@/styles/infinity-icons.css";
 import "@/styles/chat-bubble-glass.css";
 import "@/styles/theme-smooth-fix.css";
+import "@/styles/mobile-ultimate-fix.css";
+import "@/styles/mobile-navbar-nuclear.css";
+import "@/styles/3d-material.css";
 
 /* ============================================================
-   ⭐️ INFINITY MOBILE LUXURY & SPEED ENGINE
+   ⭐️ INFINITY MOBILE LUXURY (The New Design System)
    ============================================================ */
 import "@/styles/infinity-tokens.css";
 import "@/styles/infinity-order-mobile.css";
