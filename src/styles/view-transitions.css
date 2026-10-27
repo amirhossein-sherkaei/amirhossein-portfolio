@@ -1,0 +1,27 @@
+/* View Transitions */
+::view-transition-old(root) {
+  animation: none;
+}
+::view-transition-new(root) {
+  animation: fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+::view-transition-old(blog-card) {
+  animation: fade-out 0.3s ease;
+}
+::view-transition-new(blog-card) {
+  animation: fade-in 0.4s ease;
+}
+
+/* Micro-interactions for buttons and cards */
+@media (hover: none) and (pointer: coarse) {
+  .blog-card-featured, .blog-card-regular, .blog-filter-btn, .nav-order-button, .hero-btn {
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  }
+  .blog-card-featured:active, .blog-card-regular:active, .blog-filter-btn:active, .nav-order-button:active, .hero-btn:active {
+    transform: scale(0.97) !important;
+  }
+}
