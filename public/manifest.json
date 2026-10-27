@@ -1,0 +1,25 @@
+{
+  "name": "امیرحسین شرکائی | طراحی سایت اختصاصی",
+  "short_name": "شورکائی",
+  "description": "طراحی و توسعه وب‌سایت‌های اختصاصی، سریع و مدرن در تهران",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#0d7377",
+  "dir": "rtl",
+  "lang": "fa",
+  "icons": [
+    {
+      "src": "/icon.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}

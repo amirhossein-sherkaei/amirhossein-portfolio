@@ -15,6 +15,25 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
   const [progress, setProgress] = useState(0);
   const [fontScale, setFontScale] = useState(1);
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
+    if (savedArticles.includes(slug)) {
+      setSaved(true);
+    }
+  }, [slug]);
+
+  const toggleSave = () => {
+    setSaved(!saved);
+    const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
+    if (!saved) {
+      savedArticles.push(slug);
+    } else {
+      const index = savedArticles.indexOf(slug);
+      if (index > -1) savedArticles.splice(index, 1);
+    }
+    localStorage.setItem("svi-saved-articles", JSON.stringify(savedArticles));
+  };
   const [copied, setCopied] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(false);
 
@@ -109,7 +128,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
           <button type="button" onClick={() => setFontScale((s) => Math.min(1.35, +(s + 0.1).toFixed(2)))} className="article-glass-nav-font-btn">A+</button>
         </div>
 
-        <button type="button" onClick={() => setSaved(!saved)} className={`article-glass-nav-btn ${saved ? "is-active" : ""}`} aria-label="ذخیره">
+        <button type="button" onClick={toggleSave} className={`article-glass-nav-btn ${saved ? "is-active is-bookmarked" : ""}`} aria-label="ذخیره">
           <svg viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
           </svg>
