@@ -414,9 +414,10 @@ function buildPrompt(article: ArticleSnapshot, kind: "cover" | "inline", heading
   ].join(" ").slice(0, 2000);
 }
 
-async function generateImage(env: Env, prompt: string, seed: number): Promise<Uint8Array> {
+async function generateImage(env: Env, prompt: string, _seed: number): Promise<Uint8Array> {
   const model = env.IMAGE_MODEL || DEFAULT_MODEL;
-  const result = await env.AI.run(model, { prompt, steps: 4, seed });
+  // پارامتر seed از این مدل پشتیبانی نمی‌شود و باعث خطای 5006 می‌شود. بنابراین فقط prompt و steps ارسال می‌شوند.
+  const result = await env.AI.run(model, { prompt, steps: 4 });
   const base64 = typeof result?.image === "string" ? result.image : "";
   if (!base64) throw new Error(`Image model ${model} returned no image data.`);
   const raw = atob(base64);
@@ -444,7 +445,6 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   
   const coverKey = `images/${article.slug}/${version}/cover.jpg`;
   const coverBytes = await generateImage(env, buildPrompt(article, "cover"), seedBase);
-  // ارسال Uint8Array مستقیم به KV (نه buffer)
   await env.VISUAL_ASSETS.put(coverKey, coverBytes);
   images.push({ kind: "cover", key: coverKey, alt: `تصویر مفهومی مقالهٔ «${article.title}»`.slice(0, 180), caption: "" });
 
@@ -453,7 +453,6 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
     index++;
     const key = `images/${article.slug}/${version}/inline-${index}.jpg`;
     const bytes = await generateImage(env, buildPrompt(article, "inline", heading.text), (seedBase + index * 7919) >>> 0);
-    // ارسال Uint8Array مستقیم به KV (نه buffer)
     await env.VISUAL_ASSETS.put(key, bytes);
     images.push({ kind: "inline", key, alt: `تصویر مفهومی برای بخش «${heading.text}» از مقالهٔ «${article.title}»`.slice(0, 180), heading: heading.text, headingIndex: heading.index });
   }
