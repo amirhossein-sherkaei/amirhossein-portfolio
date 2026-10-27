@@ -3,6 +3,7 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-10-27",
   "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
   "ai": {
     "binding": "AI"
   },
@@ -17,6 +18,12 @@
     "IMAGE_MODEL": "@cf/black-forest-labs/flux-1-schnell",
     "MAX_INLINE_IMAGES": "1"
   },
+  "routes": [
+    {
+      "pattern": "img.shorakaei.ir/*",
+      "custom_domain": true
+    }
+  ],
   "triggers": {
     "crons": ["0 */3 * * *"]
   }
