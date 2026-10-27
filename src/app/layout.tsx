@@ -179,6 +179,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        <link rel="alternate" type="application/rss+xml" title="مجله امیرحسین شرکائی" href="/feed.xml" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {allSchemas.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -203,4 +204,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+
 

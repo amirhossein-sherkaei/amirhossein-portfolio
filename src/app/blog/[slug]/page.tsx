@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.excerpt,
     alternates: { canonical: `https://shorakaei.ir/blog/${post.slug}` },
-    openGraph: {
+    openGraph: {`n      images: [{ url: `https://shorakaei.ir/api/og?slug=${post.slug}`, width: 1200, height: 630 }],
       title: post.title,
       description: post.excerpt,
       url: `https://shorakaei.ir/blog/${post.slug}`,
