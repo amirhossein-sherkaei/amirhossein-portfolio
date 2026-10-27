@@ -1,0 +1,76 @@
+/* ============================================================
+   INFINITY HOME PERFORMANCE — 60 FPS Mobile Scroll
+   ============================================================ */
+
+/* 1. Render Optimization */
+.services-section, .process-section, .portfolio-section, .about-section,
+.why-section, .testimonials-section, .latest-blog-section, .newsletter-section,
+.faq-section, .final-cta-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+/* 2. Kill Heavy Mobile Animations & Effects */
+@media (max-width: 768px) {
+  /* Stop floating orbs */
+  .hero-bg-orb, .hero-aurora-blob {
+    animation: none !important;
+    opacity: 0.3 !important;
+  }
+  .hero-bg-orb-2, .hero-bg-orb-3 {
+    display: none !important;
+  }
+
+  /* Stop rotating aperture */
+  .hero-aperture {
+    animation: none !important;
+    opacity: 0.15 !important;
+  }
+
+  /* Remove heavy backdrop filters (glass) on large cards */
+  .hero-section .hero-bento-cell,
+  .about-statement,
+  .service-preview,
+  .final-cta-aside,
+  .testimonial-card,
+  .faq-item {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  [data-theme="dark"] .hero-section .hero-bento-cell,
+  [data-theme="dark"] .about-statement,
+  [data-theme="dark"] .service-preview,
+  [data-theme="dark"] .final-cta-aside,
+  [data-theme="dark"] .testimonial-card,
+  [data-theme="dark"] .faq-item {
+    background: #1c1c1e !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Reduce nav glass blur */
+  .site-nav.is-scrolled .nav-inner,
+  .mobile-nav {
+    backdrop-filter: blur(12px) saturate(1.4) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(1.4) !important;
+  }
+}
+
+/* 3. Pause Animations When Out of View */
+.hero-section:not(.hero-in-view) .hero-bg-orb,
+.hero-section:not(.hero-in-view) .hero-aperture,
+.hero-section:not(.hero-in-view) .hero-marquee-track,
+.hero-section:not(.hero-in-view) .hero-bento-status-dot,
+.hero-section:not(.hero-in-view) .hero-bento-live-dot,
+.hero-section:not(.hero-in-view) .hero-role-dot {
+  animation-play-state: paused !important;
+}
+
+/* 4. GPU Compositing */
+.hero-marquee-track, .hero-bg-orb, .hero-aperture, .hero-bento-cell,
+.hero-bento-live-dot, .reveal {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

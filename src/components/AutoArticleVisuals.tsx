@@ -47,7 +47,7 @@ function injectStyles(): void {
   style.id = STYLE_ID;
   style.textContent = `
     .svi-auto-figure{display:block;width:100%;margin:clamp(1.5rem,3vw,2.5rem) 0;position:relative;isolation:isolate;}
-    .svi-auto-figure img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:clamp(14px,2vw,24px);border:1px solid rgba(13,115,119,.18);box-shadow:0 18px 45px rgba(22,35,38,.10),0 2px 8px rgba(22,35,38,.05);background:linear-gradient(135deg,rgba(13,115,119,.08),rgba(139,58,74,.07));}
+    .svi-auto-figure img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:clamp(14px,2vw,24px);border:1px solid rgba(13,115,119,.18);box-shadow:0 18px 45px rgba(22,35,38,.10);}
     .svi-auto-figure--cover{margin-block:1.25rem 2.25rem;}
     .svi-auto-figure--cover img{aspect-ratio:16/10;}
     .svi-auto-figure figcaption{margin:.6rem auto 0;max-width:68ch;color:var(--muted, #6b7280);font-size:.82rem;line-height:1.8;text-align:center;}
@@ -81,21 +81,10 @@ function createFigure(image: ManifestImage, cover = false): HTMLElement {
 }
 
 function findArticleRoot(): HTMLElement | null {
-  const selectors = [
-    "[data-article-content]",
-    "[data-blog-content]",
-    ".article-content",
-    ".blog-content",
-    "article .prose",
-    "main article",
-    "main .prose",
-    "article",
-  ];
+  const selectors = ["[data-article-content]", "[data-blog-content]", ".article-content", ".blog-content", "article .prose", "main article", "main .prose", "article"];
   for (const selector of selectors) {
     const candidates = Array.from(document.querySelectorAll<HTMLElement>(selector));
-    const candidate = candidates
-      .filter((node) => node.querySelector("h1, h2, p") && (node.innerText || "").trim().length > 120)
-      .sort((a, b) => (b.innerText || "").length - (a.innerText || "").length)[0];
+    const candidate = candidates.filter((node) => node.querySelector("h1, h2, p") && (node.innerText || "").trim().length > 120).sort((a, b) => (b.innerText || "").length - (a.innerText || "").length)[0];
     if (candidate) return candidate;
   }
   return null;
@@ -145,8 +134,7 @@ function placeArticleImages(root: HTMLElement, manifest: ArticleManifest): void 
   }
 
   for (const image of manifest.images.filter((candidate) => candidate.kind === "inline")) {
-    const alreadyInserted = Array.from(root.querySelectorAll<HTMLElement>(`[${IMAGE_MARKER}="inline"]`))
-      .some((node) => node.dataset.sviKey === image.key);
+    const alreadyInserted = Array.from(root.querySelectorAll<HTMLElement>(`[${IMAGE_MARKER}="inline"]`)).some((node) => node.dataset.sviKey === image.key);
     if (alreadyInserted) continue;
     const heading = headingForImage(root, image);
     if (!heading || nearbyImageExists(heading)) continue;
@@ -156,7 +144,6 @@ function placeArticleImages(root: HTMLElement, manifest: ArticleManifest): void 
   }
 }
 
-// 🔥 تغییر اصلی: تزریق دقیق داخل کارت‌های بلاگ با استایل اختصاصی
 function placeCardCovers(items: IndexEntry[]): void {
   injectStyles();
   const map = new Map(items.map((item) => [item.slug, item]));
@@ -172,30 +159,20 @@ function placeCardCovers(items: IndexEntry[]): void {
     const entry = map.get(slug);
     if (!entry) continue;
 
-    // پیدا کردن دقیق کارت شیشه‌ای
-    const card = anchor.closest<HTMLElement>('.blog-card-featured, .blog-card-regular');
+    const card = anchor.closest<HTMLElement>('.blog-card-featured, .blog-card-regular, .blog-card, article') || anchor.parentElement;
     if (!card || processed.has(card) || card.querySelector(`[${IMAGE_MARKER}="card"]`) || card.querySelector("img, picture, figure")) continue;
     
     processed.add(card);
-
     const figure = createFigure({ kind: "cover", key: `card-${slug}`, src: entry.cover, alt: entry.alt }, false);
-    
-    // اعمال کلاس اختصاصی برای کارت
     figure.className = "svi-auto-figure svi-auto-figure--card";
     figure.setAttribute(IMAGE_MARKER, "card");
-    
-    // قرار دادن به عنوان اولین فرزند کارت (دقیقاً بالای کارت)
     card.prepend(figure);
   }
 }
 
 export default function AutoArticleVisuals() {
   useEffect(() => {
-    if (!WORKER_URL) {
-      if (process.env.NODE_ENV === "development") console.info("[SVI] Set NEXT_PUBLIC_SVI_WORKER_URL to enable auto article visuals.");
-      return;
-    }
-
+    if (!WORKER_URL) return;
     let cancelled = false;
     let running = false;
     let lastHandledPath = "";
@@ -205,36 +182,23 @@ export default function AutoArticleVisuals() {
       if (cancelled || running || path === lastHandledPath) return;
       const isListing = path === BLOG_ROOT;
       const isArticle = path.startsWith(`${BLOG_ROOT}/`);
-      if (!isListing && !isArticle) {
-        lastHandledPath = path;
-        return;
-      }
+      if (!isListing && !isArticle) { lastHandledPath = path; return; }
       if (isArticle && !findArticleRoot()) return;
 
       running = true;
       try {
         if (isListing) {
           const response = await fetch(`${WORKER_URL}/index`, { cache: "force-cache" });
-          if (!response.ok) {
-            lastHandledPath = path;
-            return;
-          }
+          if (!response.ok) { lastHandledPath = path; return; }
           const data = await response.json() as { items?: IndexEntry[] };
           if (!cancelled && Array.isArray(data.items)) placeCardCovers(data.items);
           lastHandledPath = path;
           return;
         }
-
         const slug = currentSlug(path);
-        if (!slug) {
-          lastHandledPath = path;
-          return;
-        }
+        if (!slug) { lastHandledPath = path; return; }
         const response = await fetch(`${WORKER_URL}/manifest?slug=${encodeURIComponent(slug)}`, { cache: "no-store" });
-        if (!response.ok) {
-          lastHandledPath = path;
-          return;
-        }
+        if (!response.ok) { lastHandledPath = path; return; }
         const manifest = await response.json() as ArticleManifest;
         if (cancelled) return;
         const root = findArticleRoot();
@@ -242,7 +206,6 @@ export default function AutoArticleVisuals() {
         lastHandledPath = path;
       } catch (error) {
         lastHandledPath = path;
-        if (process.env.NODE_ENV === "development") console.warn("[SVI] Article visuals could not be loaded.", error);
       } finally {
         running = false;
       }
@@ -254,10 +217,7 @@ export default function AutoArticleVisuals() {
       if (!cancelled && current !== lastHandledPath) void run();
     });
     observer.observe(document.body, { childList: true, subtree: true });
-    return () => {
-      cancelled = true;
-      observer.disconnect();
-    };
+    return () => { cancelled = true; observer.disconnect(); };
   }, []);
 
   return null;

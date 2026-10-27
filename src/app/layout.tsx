@@ -101,6 +101,7 @@ import "@/styles/infinity-blog-mobile.css";
 
 /* ⭐️ NEW: ULTIMATE PERFORMANCE ENGINE */
 import "@/styles/infinity-speed-engine.css";
+import "@/styles/infinity-home-performance.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
