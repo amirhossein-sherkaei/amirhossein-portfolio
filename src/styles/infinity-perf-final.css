@@ -1,0 +1,64 @@
+/* ============================================================
+   INFINITY PERFORMANCE — 2026 Core Web Vitals Optimizations
+   ============================================================ */
+
+/* 1. Content Visibility for Off-Screen Sections (LCP & INP) */
+.services-section,
+.process-section,
+.portfolio-section,
+.about-section,
+.why-section,
+.testimonials-section,
+.latest-blog-section,
+.newsletter-section,
+.faq-section,
+.final-cta-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px; /* Prevent scrollbar jump */
+}
+
+.hero-section {
+  content-visibility: visible; /* LCP element must not be deferred */
+}
+
+/* 2. Optimize Animations: Only transform and opacity (INP & Jank) */
+.hero-marquee-track,
+.hero-bg-orb,
+.hero-aperture,
+.hero-bento-cell {
+  will-change: transform, opacity;
+}
+
+/* 3. Image Optimization Defaults (CLS & LCP) */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 4. Font Loading: Swap to prevent FOIT (LCP) */
+@font-face {
+  font-display: swap;
+}
+
+/* 5. Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 6. Mobile-Specific: Kill Heavy Animations (INP) */
+@media (max-width: 768px) {
+  .hero-bg-orb, .hero-aurora-blob { animation: none !important; }
+  .hero-bg-orb-2, .hero-bg-orb-3 { display: none !important; }
+  .hero-aperture { animation: none !important; }
+}
+
+/* 7. Promote Compositor Layers Only When Necessary */
+.reveal:not(.is-visible) {
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  will-change: auto;
+}
