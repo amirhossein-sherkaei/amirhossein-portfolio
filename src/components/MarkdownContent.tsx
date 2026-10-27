@@ -11,7 +11,8 @@ const components = {
   Step,
 };
 
-const options = {
+// Cast to any to avoid type mismatch between next-mdx-remote and rehype-pretty-code
+const options: any = {
   mdxOptions: {
     rehypePlugins: [
       [rehypePrettyCode, { theme: "github-dark" }],
