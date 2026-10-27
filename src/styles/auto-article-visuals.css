@@ -2,6 +2,7 @@
    SHORAKAEI VISUAL INTELLIGENCE — Premium Image Display
    ============================================================ */
 
+/* ─── تصویر شاخص داخل مقاله ─── */
 .svi-auto-figure {
   display: block;
   width: 100%;
@@ -37,7 +38,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-/* --- Cover Images (16:10) --- */
+/* ─── کاور مقاله (16:10) ─── */
 .svi-auto-figure--cover {
   margin-block: 1.5rem 3rem;
 }
@@ -46,12 +47,12 @@
   aspect-ratio: 16 / 10;
 }
 
-/* --- Inline Images (4:3) --- */
-.svi-auto-figure:not(.svi-auto-figure--cover) img {
+/* ─── تصاویر داخلی مقاله (4:3) ─── */
+.svi-auto-figure:not(.svi-auto-figure--cover):not(.svi-auto-figure--card) img {
   aspect-ratio: 4 / 3;
 }
 
-/* --- Caption --- */
+/* ─── کپشن ─── */
 .svi-auto-figure figcaption {
   margin: 0.8rem auto 0;
   max-width: 68ch;
@@ -63,7 +64,55 @@
   opacity: 0.8;
 }
 
-/* --- Dark Mode --- */
+/* ============================================================
+   🔥 INFINITY CARD COVERS (اینفینیتی برای کارت‌های بلاگ)
+   ============================================================ */
+
+.svi-auto-figure--card {
+  position: relative;
+  overflow: hidden;
+  width: calc(100% + var(--inf-s-5) * 2) !important;
+  margin: calc(var(--inf-s-5) * -1) calc(var(--inf-s-5) * -1) var(--inf-s-3) calc(var(--inf-s-5) * -1) !important;
+  border-radius: 0 !important;
+  aspect-ratio: 16 / 10;
+  background: var(--inf-bg-sunken);
+  z-index: 10;
+}
+
+/* تنظیم دقیق برای کارت شاخص (Featured) */
+.blog-card-featured > .svi-auto-figure--card {
+  width: calc(100% + var(--inf-s-6) * 2) !important;
+  margin: calc(var(--inf-s-6) * -1) calc(var(--inf-s-6) * -1) var(--inf-s-4) calc(var(--inf-s-6) * -1) !important;
+}
+
+/* خود تصویر داخل کارت */
+.svi-auto-figure--card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* افکت زوم نرم هنگام هاور روی کارت */
+.blog-card-featured:hover .svi-auto-figure--card img,
+.blog-card-regular:hover .svi-auto-figure--card img {
+  transform: scale(1.04) !important;
+}
+
+/* گرادیانت تیره در پایین تصویر برای خوانایی بهتر متن‌ها (اختیاری) */
+.svi-auto-figure--card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── دارک مود ─── */
 [data-theme="dark"] .svi-auto-figure img {
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 
@@ -72,18 +121,11 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .svi-auto-figure:hover img {
-  box-shadow: 
-    0 32px 72px -16px rgba(0, 0, 0, 0.6),
-    0 12px 24px -8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
 [data-theme="dark"] .svi-auto-figure figcaption {
   color: #9ca3af;
 }
 
-/* --- Responsive Adjustments --- */
+/* ─── ریسپانسیو ─── */
 @media (max-width: 768px) {
   .svi-auto-figure {
     margin: clamp(1.5rem, 3vw, 2.5rem) 0;
@@ -98,10 +140,10 @@
   }
 }
 
-/* --- Reduced Motion --- */
+/* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .svi-auto-figure,
   .svi-auto-figure img {
-    transition: none;
+    transition: none !important;
   }
 }

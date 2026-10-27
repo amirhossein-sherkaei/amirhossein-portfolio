@@ -156,36 +156,35 @@ function placeArticleImages(root: HTMLElement, manifest: ArticleManifest): void 
   }
 }
 
-function findCardRoot(anchor: HTMLAnchorElement): HTMLElement | null {
-  const explicit = anchor.closest<HTMLElement>("[data-blog-card], article");
-  if (explicit) return explicit;
-  let node: HTMLElement | null = anchor.parentElement;
-  for (let depth = 0; node && depth < 4; depth++, node = node.parentElement) {
-    if (node.querySelectorAll("a[href^='/blog/']").length <= 3 && (node.innerText || "").trim().length > 30) return node;
-  }
-  return anchor.parentElement;
-}
-
+// 🔥 تغییر اصلی: تزریق دقیق داخل کارت‌های بلاگ با استایل اختصاصی
 function placeCardCovers(items: IndexEntry[]): void {
   injectStyles();
   const map = new Map(items.map((item) => [item.slug, item]));
   const anchors = Array.from(document.querySelectorAll<HTMLAnchorElement>("a[href*='/blog/']"));
   const processed = new WeakSet<HTMLElement>();
+
   for (const anchor of anchors) {
     let url: URL;
     try { url = new URL(anchor.href, window.location.origin); } catch { continue; }
     if (url.origin !== window.location.origin || !url.pathname.startsWith("/blog/")) continue;
+    
     const slug = url.pathname.replace(/\/+$/, "").split("/").filter(Boolean).pop() || "";
     const entry = map.get(slug);
     if (!entry) continue;
-    const card = findCardRoot(anchor);
+
+    // پیدا کردن دقیق کارت شیشه‌ای
+    const card = anchor.closest<HTMLElement>('.blog-card-featured, .blog-card-regular');
     if (!card || processed.has(card) || card.querySelector(`[${IMAGE_MARKER}="card"]`) || card.querySelector("img, picture, figure")) continue;
+    
     processed.add(card);
-    const figure = createFigure({ kind: "cover", key: `card-${slug}`, src: entry.cover, alt: entry.alt }, true);
+
+    const figure = createFigure({ kind: "cover", key: `card-${slug}`, src: entry.cover, alt: entry.alt }, false);
+    
+    // اعمال کلاس اختصاصی برای کارت
+    figure.className = "svi-auto-figure svi-auto-figure--card";
     figure.setAttribute(IMAGE_MARKER, "card");
-    figure.style.margin = "0 0 1rem";
-    const image = figure.querySelector("img");
-    if (image) image.loading = "lazy";
+    
+    // قرار دادن به عنوان اولین فرزند کارت (دقیقاً بالای کارت)
     card.prepend(figure);
   }
 }
