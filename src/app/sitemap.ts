@@ -1,42 +1,35 @@
-import type { MetadataRoute } from "next";
+import { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
-import { projects } from "@/content/projects";
-import { services } from "@/content/services";
+import { getArticleManifest } from "@/lib/visual-intelligence";
 
-const siteUrl = "https://shorakaei.ir"; // هاردکد بدون www برای هماهنگی کامل با کنونیکال
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getAllPosts();
-  const now = new Date();
+  const baseUrl = "https://shorakaei.ir";
 
-  const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${siteUrl}/blog/${post.slug}`,
-    lastModified: post.date ? new Date(post.date) : now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
+  const blogEntries = await Promise.all(
+    posts.map(async (post) => {
+      let images: string[] = [];
+      try {
+        const manifest = await getArticleManifest(post.slug);
+        if (manifest?.images) {
+          images = manifest.images.map((img: any) => img.src);
+        }
+      } catch (e) {}
 
-  const workEntries: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${siteUrl}/work/${project.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+      return {
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.date),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+        images,
+      };
+    })
+  );
 
-  const serviceEntries: MetadataRoute.Sitemap = services.map((service) => ({
-    url: `${siteUrl}/services/${service.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.9,
-  }));
-
-  const staticEntries: MetadataRoute.Sitemap = [
-    { url: siteUrl, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${siteUrl}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${siteUrl}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${siteUrl}/order`, lastModified: now, changeFrequency: "yearly", priority: 0.8 },
+  return [
+    { url: baseUrl, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/order`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    ...blogEntries,
   ];
-
-  return [...staticEntries, ...workEntries, ...blogEntries, ...serviceEntries];
 }
