@@ -146,12 +146,12 @@ export default function AutoArticleVisuals() {
     const run = async () => {
       const path = window.location.pathname.replace(/\/+$/, "") || "/";
       if (cancelled || running || path === lastHandledPath) return;
-      
-      // 🔥 مهم: فقط در صفحات مقاله اجرا شود، نه در صفحه لیست بلاگ
-      const isArticle = path.startsWith(`${BLOG_ROOT}/`);
-      if (!isArticle) { 
-        lastHandledPath = path; 
-        return; 
+
+      // ONLY run on article pages, NEVER on the /blog list page
+      const isArticle = path.startsWith(BLOG_ROOT + "/") && path !== BLOG_ROOT;
+      if (!isArticle) {
+        lastHandledPath = path;
+        return;
       }
 
       if (!findArticleRoot()) return;
@@ -160,10 +160,10 @@ export default function AutoArticleVisuals() {
       try {
         const slug = currentSlug(path);
         if (!slug) { lastHandledPath = path; return; }
-        
-        const response = await fetch(`${WORKER_URL}/manifest?slug=${encodeURIComponent(slug)}`, { cache: "no-store" });
+
+        const response = await fetch(WORKER_URL + "/manifest?slug=" + encodeURIComponent(slug), { cache: "no-store" });
         if (!response.ok) { lastHandledPath = path; return; }
-        
+
         const manifest = await response.json() as ArticleManifest;
         if (cancelled) return;
         const root = findArticleRoot();

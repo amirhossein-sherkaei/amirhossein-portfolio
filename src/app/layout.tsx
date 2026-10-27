@@ -105,7 +105,8 @@ import "@/styles/blog-skeleton.css";
 import "@/styles/view-transitions.css";
 import "@/styles/infinity-pwa-cro.css";
 import "@/styles/mdx-infinity.css";
-import "@/styles/infinity-search.css";`nimport "@/styles/infinity-perf-final.css";
+import "@/styles/infinity-search.css";
+import "@/styles/infinity-perf-final.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -136,7 +137,7 @@ const siteDescription = "طراحی و توسعه وب‌سایت‌های اخ�
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: siteTitle, template: `%s | ${siteName}` },
+  title: { default: siteTitle, template: "%s | " + siteName },
   description: siteDescription,
   keywords: ["طراحی سایت اختصاصی", "طراحی سایت در تهران", "طراح سایت حرفه‌ای", "طراحی سایت فروشگاهی", "قیمت طراحی سایت", "طراحی وب سایت", "توسعه وب", "هوش مصنوعی", "طراحی سایت با هوش مصنوعی", "امیرحسین شرکائی", "Amirhossein Shorakaei", "Next.js", "React"],
   applicationName: "Amirhossein Shorakaei",
@@ -165,20 +166,7 @@ export const viewport: Viewport = {
   ],
 };
 
-const themeInitScript = `
-(function () {
-  try {
-    var stored = localStorage.getItem('theme');
-    var theme;
-    if (stored === 'light' || stored === 'dark') { theme = stored; } 
-    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { theme = 'dark'; } 
-    else { theme = 'light'; }
-    document.documentElement.setAttribute('data-theme', theme);
-  } catch (e) {
-    document.documentElement.setAttribute('data-theme', 'light');
-  }
-})();
-`;
+const themeInitScript = "(function(){try{var s=localStorage.getItem('theme');var t;if(s==='light'||s==='dark'){t=s;}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){t='dark';}else{t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -207,4 +195,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-
