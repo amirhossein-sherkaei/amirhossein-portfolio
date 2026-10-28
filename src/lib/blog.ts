@@ -53,7 +53,7 @@ export function getAllPosts(): BlogPost[] {
         featured: data.featured || false,
       };
     })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 /* ─── Get single post ─── */
@@ -64,9 +64,13 @@ export function getPostBySlug(slug: string): BlogPost | null {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  const wordCount = content.split(/\s+/).length;
+  // Remove the first H1 (e.g., "# Title") from the markdown content
+  // to prevent duplicating the title on the page.
+  const contentWithoutH1 = content.replace(/^# .+$/m, "").trim();
+
+  const wordCount = contentWithoutH1.split(/\s+/).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-  const toc = extractTOC(content);
+  const toc = extractTOC(contentWithoutH1);
 
   return {
     slug,
@@ -78,7 +82,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags || [],
     category: data.category || "عمومی",
     featured: data.featured || false,
-    content,
+    content: contentWithoutH1,
     toc,
   };
 }
@@ -151,6 +155,7 @@ function formatDate(dateStr: string): string {
     return dateStr;
   }
 }
+
 /* ─── Get latest N posts (for homepage) ─── */
 export function getLatestPosts(limit: number = 3): BlogPost[] {
   const allPosts = getAllPosts();

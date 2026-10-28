@@ -9,6 +9,9 @@ export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { t
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [covers, setCovers] = useState<Record<string, string>>({});
   
+  // Limit to top 8 most used tags
+  const displayedTags = tags.slice(0, 8);
+
   useEffect(() => {
     if (!WORKER_URL) return;
     fetch(`${WORKER_URL}/index`)
@@ -43,7 +46,7 @@ export default function BlogList({ posts, tags }: { posts: BlogPost[]; tags: { t
         <button className={`blog-filter-btn ${selectedTag === null ? "is-active" : ""}`} onClick={() => setSelectedTag(null)}>
           همه مقالات
         </button>
-        {tags.map((t) => (
+        {displayedTags.map((t) => (
           <button key={t.tag} className={`blog-filter-btn ${selectedTag === t.tag ? "is-active" : ""}`} onClick={() => setSelectedTag(t.tag)}>
             {t.tag}
           </button>
