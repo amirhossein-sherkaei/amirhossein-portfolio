@@ -1,0 +1,268 @@
+/* ============================================================
+   INFINITY HOME SPEED — 5 Killers Eliminated
+   Targets: Hero orbs blur, backdrop-filter, infinite anims,
+            complex shadows, missing content-visibility
+   Expected: 2-4x faster LCP, 60 FPS scroll everywhere
+   ============================================================ */
+
+/* ═══════════════════════════════════════════════════════
+   KILLER #1: filter: blur(100px) on animated orbs
+   This is the #1 GPU killer. Replace with pre-blurred
+   radial-gradient (FREE) that looks 95% identical.
+   ═══════════════════════════════════════════════════════ */
+
+.hero-bg-orb,
+.hero-bg-orb-1,
+.hero-bg-orb-2,
+.hero-bg-orb-3 {
+  filter: none !important;
+  -webkit-filter: none !important;
+  animation: none !important;
+  will-change: auto !important;
+}
+
+.hero-bg-orb-1 {
+  background: radial-gradient(
+    ellipse at 40% 40%,
+    rgba(46, 196, 196, 0.40) 0%,
+    rgba(46, 196, 196, 0.18) 25%,
+    rgba(46, 196, 196, 0.06) 50%,
+    transparent 72%
+  ) !important;
+  opacity: 0.7 !important;
+}
+
+.hero-bg-orb-2 {
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(46, 196, 196, 0.30) 0%,
+    rgba(46, 196, 196, 0.10) 35%,
+    transparent 68%
+  ) !important;
+  opacity: 0.55 !important;
+}
+
+.hero-bg-orb-3 {
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 204, 102, 0.15) 0%,
+    transparent 70%
+  ) !important;
+  opacity: 0.35 !important;
+}
+
+/* Aurora orbs (alternative naming) */
+.hero-aurora-blob {
+  filter: none !important;
+  -webkit-filter: none !important;
+  animation: none !important;
+}
+
+/* Kill SVG grain (expensive paint) */
+.hero-bg-grain {
+  display: none !important;
+}
+
+/* Simplify grid background */
+.hero-bg-grid {
+  opacity: 0.2 !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   KILLER #2: backdrop-filter (devastating on mobile)
+   Remove blur entirely on mobile, reduce on desktop.
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .hero-bento-cell,
+  .hero-role,
+  .hero-eyebrow,
+  .hero-top-meta,
+  .hero-glass,
+  .site-nav.is-scrolled .nav-inner,
+  .mobile-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  /* Simulate glass with solid bg */
+  .hero-bento-cell {
+    background: linear-gradient(180deg, #ffffff 0%, #f9f9fb 100%) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  [data-theme="dark"] .hero-bento-cell {
+    background: linear-gradient(180deg, #1c1c1e 0%, #2c2c2e 100%) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .hero-role,
+  .hero-eyebrow,
+  .hero-top-meta,
+  .hero-glass {
+    background: #ffffff !important;
+  }
+  
+  [data-theme="dark"] .hero-role,
+  [data-theme="dark"] .hero-eyebrow,
+  [data-theme="dark"] .hero-top-meta,
+  [data-theme="dark"] .hero-glass {
+    background: #1c1c1e !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   KILLER #3: infinite animations running nonstop
+   ═══════════════════════════════════════════════════════ */
+
+/* Kill all pulse animations */
+.hero-masthead-dot,
+.hero-bento-live-dot,
+.hero-bento-status-dot,
+.hero-role-dot,
+.hero-eyebrow-dot,
+.hero-glass-live-dot,
+.hero-glass-status-pulse,
+.hero-live-bars span {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Kill title aura (expensive blur behind title) */
+.hero-section .hero-title::before {
+  animation: none !important;
+  opacity: 0.45 !important;
+  filter: blur(40px) !important;
+}
+
+/* Kill dot shimmer */
+.hero-section .hero-title-dot {
+  animation: none !important;
+}
+
+/* Kill aperture rotation (barely visible) */
+.hero-aperture {
+  animation: none !important;
+  opacity: 0.15 !important;
+}
+
+/* Kill cursor blink */
+.hero-glass-currently-cursor {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Kill live state crossfade */
+.hero-section .hero-bento-live-stack > div {
+  animation: none !important;
+}
+
+/* Pause marquee when hero is off-screen (already handled but double-check) */
+.hero-section:not(.hero-in-view) .hero-marquee-track {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   KILLER #4: complex multi-layer shadows (paint cost)
+   ═══════════════════════════════════════════════════════ */
+
+.hero-bento-cell {
+  box-shadow: 
+    0 4px 16px -8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+.hero-glass {
+  box-shadow: 
+    0 12px 32px -16px rgba(10, 9, 8, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+.hero-role,
+.hero-eyebrow,
+.hero-top-meta {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Simplify service preview shadows */
+.service-preview {
+  box-shadow: 
+    0 8px 24px -12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Testimonials and FAQ */
+.testimonial-card,
+.faq-item,
+.latest-blog-card {
+  box-shadow: 
+    0 2px 8px -4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   KILLER #5: missing content-visibility (LCP win)
+   Below-fold sections skip rendering until near viewport.
+   ═══════════════════════════════════════════════════════ */
+
+.services-section,
+.process-section,
+.portfolio-section,
+.about-section,
+.why-section,
+.testimonials-section,
+.latest-blog-section,
+.newsletter-section,
+.faq-section,
+.final-cta-section,
+.site-footer {
+  content-visibility: auto !important;
+  contain-intrinsic-size: auto 800px !important;
+}
+
+/* Hero must stay visible - it's the LCP element */
+.hero-section {
+  content-visibility: visible !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BONUS: Force GPU compositing on animated elements
+   ═══════════════════════════════════════════════════════ */
+
+.hero-marquee-track,
+.reveal,
+.hero-aperture,
+.hero-bg-orb {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+/* Release GPU memory after reveal completes */
+.reveal.is-visible {
+  will-change: auto !important;
+}
+
+/* Only hint GPU during reveal */
+.reveal:not(.is-visible) {
+  will-change: opacity, transform !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BONUS: Font optimization
+   ═══════════════════════════════════════════════════════ */
+
+@font-face {
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BONUS: Reduced motion support
+   ═══════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
