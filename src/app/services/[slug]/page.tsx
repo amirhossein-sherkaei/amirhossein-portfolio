@@ -3,11 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { services, getServiceBySlug } from "@/content/services";
 
-// تولید متادیتای اختصاصی برای هر خدمت
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const service = getServiceBySlug(params.slug);
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const service = getServiceBySlug(resolvedParams.slug);
   if (!service) return { title: "یافت نشد" };
-  
+
   return {
     title: `${service.title} | امیرحسین شرکائی`,
     description: service.description,
@@ -21,16 +25,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// تولید مسیرهای استاتیک
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = getServiceBySlug(params.slug);
+export default async function ServiceDetailPage({ params }: Props) {
+  const resolvedParams = await params;
+  const service = getServiceBySlug(resolvedParams.slug);
   if (!service) notFound();
 
-  // اسکیمای داده ساختاریافته برای این سرویس
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -39,15 +42,14 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
     provider: {
       "@type": "Person",
       name: "امیرحسین شرکائی",
-      url: "https://shorakaei.ir"
+      url: "https://shorakaei.ir",
     },
     areaServed: "IR",
-    url: `https://shorakaei.ir/services/${service.slug}`
+    url: `https://shorakaei.ir/services/${service.slug}`,
   };
 
   return (
     <main className="section container" style={{ paddingTop: "140px", maxWidth: "800px", margin: "0 auto" }}>
-      {/* تزریق اسکیما */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}

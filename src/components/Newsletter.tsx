@@ -69,7 +69,7 @@ export default function Newsletter() {
 
         <div className="newsletter-card reveal">
           <span className="newsletter-eyebrow">
-            07 — NEWSLETTER
+            08 — NEWSLETTER
           </span>
 
           <h2 id="newsletter-title" className="newsletter-title">

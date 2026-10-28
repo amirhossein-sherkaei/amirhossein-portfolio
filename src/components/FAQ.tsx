@@ -1,6 +1,5 @@
 "use client";
 
-
 import SectionNumber from "@/components/SectionNumber";
 import { useState } from "react";
 import { faqItems } from "@/lib/schema";
@@ -17,7 +16,7 @@ export default function FAQ() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <SectionNumber num="۰۸" label="FAQ" />
+            <SectionNumber num="۰۹" label="FAQ" />
             <h2 id="faq-title">
               سوال‌هایی که
               <em className="ink-word"> زیاد می‌شنوم</em>

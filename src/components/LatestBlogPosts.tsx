@@ -16,7 +16,7 @@ export default function LatestBlogPosts() {
       <div className="container">
         <div className="section-heading reveal">
           <div>
-            <SectionNumber num="۰۹" label="BLOG" />
+            <SectionNumber num="۰۷" label="BLOG" />
             <h2 id="latest-blog-title">
               مقالات و
               <em className="ink-word"> یادداشت‌ها</em>
