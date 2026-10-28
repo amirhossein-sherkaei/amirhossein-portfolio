@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import MobileNav from "@/components/MobileNav";

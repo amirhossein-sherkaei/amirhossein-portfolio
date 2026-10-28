@@ -109,6 +109,7 @@ import "@/styles/infinity-search.css";
 import "@/styles/infinity-perf-final.css";
 import "@/styles/infinity-master-polish.css";
 import "@/styles/infinity-home-speed.css";
+import "@/styles/infinity-hero-lcp.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -175,6 +176,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="preconnect" href="https://img.shorakaei.ir" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://img.shorakaei.ir" />
+        <link rel="preconnect" href="https://shorakaei-comments.vercel.app" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://shorakaei-comments.vercel.app" />
+        <link rel="preconnect" href="https://va.vercel-scripts.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
+
         <link rel="alternate" type="application/rss+xml" title="مجله امیرحسین شرکائی" href="/feed.xml" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {allSchemas.map((schema, i) => (
@@ -197,3 +205,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+
+

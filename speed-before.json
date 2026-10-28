@@ -1,0 +1,44 @@
+[
+  {
+    "Page": "Homepage",
+    "TTFB_ms": 460.0,
+    "Total_ms": 766.0,
+    "Size_KB": 161.2,
+    "CSS": 7,
+    "JS": 13,
+    "Images": 18,
+    "Compression": "NONE (BAD!)",
+    "CacheControl": "NONE",
+    "Preload": true,
+    "Preconnect": false,
+    "FetchPriority": false
+  },
+  {
+    "Page": "Blog List",
+    "TTFB_ms": 267.0,
+    "Total_ms": 445.0,
+    "Size_KB": 93.7,
+    "CSS": 9,
+    "JS": 11,
+    "Images": 0,
+    "Compression": "NONE (BAD!)",
+    "CacheControl": "NONE",
+    "Preload": true,
+    "Preconnect": false,
+    "FetchPriority": false
+  },
+  {
+    "Page": "Article",
+    "TTFB_ms": 177.0,
+    "Total_ms": 296.0,
+    "Size_KB": 85.5,
+    "CSS": 10,
+    "JS": 11,
+    "Images": 0,
+    "Compression": "NONE (BAD!)",
+    "CacheControl": "NONE",
+    "Preload": true,
+    "Preconnect": false,
+    "FetchPriority": false
+  }
+]

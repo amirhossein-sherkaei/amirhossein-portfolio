@@ -1,0 +1,7 @@
+/* Hero LCP Priority */
+.hero-section img[fetchpriority='high'],
+.hero-editorial-band img,
+.hero-inner > img {
+  content-visibility: visible !important;
+  contain: none !important;
+}
