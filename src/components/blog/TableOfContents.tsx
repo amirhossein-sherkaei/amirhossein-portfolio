@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 
 type TOCItem = { id: string; title: string; level: number };
 
-export default function TableOfContents({ items }: { items: TOCItem[] }) {
+export default function TableOfContents({
+  items,
+  variant = "sidebar",
+}: {
+  items: TOCItem[];
+  variant?: "sidebar" | "inline";
+}) {
   const [activeId, setActiveId] = useState("");
 
   useEffect(() => {
@@ -23,6 +29,23 @@ export default function TableOfContents({ items }: { items: TOCItem[] }) {
   }, [items]);
 
   if (!items.length) return null;
+
+  if (variant === "inline") {
+    return (
+      <details className="toc-inline" open>
+        <summary>در این مقاله می‌خوانید</summary>
+        <nav>
+          <ul>
+            {items.map((item) => (
+              <li key={item.id} className={item.level === 3 ? "toc-level-3" : ""}>
+                <a href={`#${item.id}`}>{item.title}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </details>
+    );
+  }
 
   return (
     <nav className="glass-toc" aria-label="فهرست مطالب">

@@ -24,7 +24,6 @@ export type TOCItem = {
   level: number;
 };
 
-/* ─── Get all posts ─── */
 export function getAllPosts(): BlogPost[] {
   if (!fs.existsSync(postsDirectory)) return [];
 
@@ -53,10 +52,13 @@ export function getAllPosts(): BlogPost[] {
         featured: data.featured || false,
       };
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => {
+      const dateA = new Date(a.date).getTime() || 0;
+      const dateB = new Date(b.date).getTime() || 0;
+      return dateB - dateA;
+    });
 }
 
-/* ─── Get single post ─── */
 export function getPostBySlug(slug: string): BlogPost | null {
   const fullPath = path.join(postsDirectory, `${slug}.md`);
   if (!fs.existsSync(fullPath)) return null;
@@ -64,13 +66,9 @@ export function getPostBySlug(slug: string): BlogPost | null {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  // Remove the first H1 (e.g., "# Title") from the markdown content
-  // to prevent duplicating the title on the page.
-  const contentWithoutH1 = content.replace(/^# .+$/m, "").trim();
-
-  const wordCount = contentWithoutH1.split(/\s+/).length;
+  const wordCount = content.split(/\s+/).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-  const toc = extractTOC(contentWithoutH1);
+  const toc = extractTOC(content);
 
   return {
     slug,
@@ -82,12 +80,11 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags || [],
     category: data.category || "عمومی",
     featured: data.featured || false,
-    content: contentWithoutH1,
+    content,
     toc,
   };
 }
 
-/* ─── Get all unique tags ─── */
 export function getAllTags(): { tag: string; count: number }[] {
   const allPosts = getAllPosts();
   const tagMap = new Map<string, number>();
@@ -103,7 +100,6 @@ export function getAllTags(): { tag: string; count: number }[] {
     .sort((a, b) => b.count - a.count);
 }
 
-/* ─── Get related posts ─── */
 export function getRelatedPosts(
   currentSlug: string,
   currentTags: string[],
@@ -120,7 +116,6 @@ export function getRelatedPosts(
     .slice(0, limit);
 }
 
-/* ─── Extract TOC ─── */
 function extractTOC(content: string): TOCItem[] {
   const headings: TOCItem[] = [];
   const lines = content.split("\n");
@@ -141,7 +136,6 @@ function extractTOC(content: string): TOCItem[] {
   return headings;
 }
 
-/* ─── Format date ─── */
 function formatDate(dateStr: string): string {
   if (!dateStr) return "";
   try {
@@ -156,7 +150,6 @@ function formatDate(dateStr: string): string {
   }
 }
 
-/* ─── Get latest N posts (for homepage) ─── */
 export function getLatestPosts(limit: number = 3): BlogPost[] {
   const allPosts = getAllPosts();
   return allPosts.slice(0, limit);

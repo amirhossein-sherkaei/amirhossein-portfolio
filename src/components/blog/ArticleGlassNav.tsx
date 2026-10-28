@@ -15,48 +15,45 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
   const [progress, setProgress] = useState(0);
   const [fontScale, setFontScale] = useState(1);
   const [saved, setSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [isTocOpen, setIsTocOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
-    if (savedArticles.includes(slug)) {
-      setSaved(true);
-    }
+    try {
+      const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
+      if (savedArticles.includes(slug)) setSaved(true);
+    } catch (e) {}
   }, [slug]);
 
   const toggleSave = () => {
     setSaved(!saved);
-    const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
-    if (!saved) {
-      savedArticles.push(slug);
-    } else {
-      const index = savedArticles.indexOf(slug);
-      if (index > -1) savedArticles.splice(index, 1);
-    }
-    localStorage.setItem("svi-saved-articles", JSON.stringify(savedArticles));
+    try {
+      const savedArticles = JSON.parse(localStorage.getItem("svi-saved-articles") || "[]");
+      if (!saved) savedArticles.push(slug);
+      else {
+        const i = savedArticles.indexOf(slug);
+        if (i > -1) savedArticles.splice(i, 1);
+      }
+      localStorage.setItem("svi-saved-articles", JSON.stringify(savedArticles));
+    } catch (e) {}
   };
-  const [copied, setCopied] = useState(false);
-  const [isTocOpen, setIsTocOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const y = window.scrollY;
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setProgress((currentScrollY / totalHeight) * 100);
-      }
+      if (totalHeight > 0) setProgress((y / totalHeight) * 100);
+      setIsVisible(y > 200);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // قفل کردن اسکرول پشت مودال فهرست مطالب
   useEffect(() => {
-    if (isTocOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (isTocOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [isTocOpen]);
 
@@ -74,9 +71,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
         await navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error("Failed to copy", err);
-      }
+      } catch (err) { console.error("Failed to copy", err); }
     }
   };
 
@@ -87,9 +82,11 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
 
   return (
     <>
-      <div className="article-glass-nav" aria-label="ابزارهای مقاله">
-        
-        {/* نوار پیشرفت مطالعه */}
+      <div
+        className={`article-glass-nav${isVisible ? " is-visible" : ""}`}
+        aria-label="ابزارهای مقاله"
+        aria-hidden={!isVisible}
+      >
         <div className="nav-progress-fill" style={{ width: `${progress}%` }} />
 
         <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
@@ -97,14 +94,8 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </Link>
-        
-        {/* دکمه فهرست مطالب - حالا مودال باز میکنه */}
-        <button 
-          type="button" 
-          onClick={() => setIsTocOpen(true)} 
-          className="article-glass-nav-btn" 
-          aria-label="فهرست مطالب"
-        >
+
+        <button type="button" onClick={() => setIsTocOpen(true)} className="article-glass-nav-btn" aria-label="فهرست مطالب">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="8" y1="6" x2="21" y2="6" />
             <line x1="8" y1="12" x2="21" y2="12" />
@@ -141,7 +132,6 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
         </button>
       </div>
 
-      {/* ⭐️ پنجره شیشه‌ای فهرست مطالب (Bottom Sheet) */}
       {isTocOpen && (
         <div className="toc-modal-backdrop" onClick={() => setIsTocOpen(false)}>
           <div className="toc-modal-sheet" onClick={(e) => e.stopPropagation()}>

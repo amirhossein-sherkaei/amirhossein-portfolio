@@ -1,10 +1,7 @@
 /* ============================================================
-   INFINITY MASTER POLISH — Speed-Optimized Edition
-   No heavy blur, no backdrop-filter, no expensive effects.
-   Only typography, haptics, and micro-interactions.
+   INFINITY MASTER POLISH - Speed-Optimized Edition
    ============================================================ */
 
-/* ─── 1. TYPOGRAPHY (Persian Perfect) ─── */
 body {
   font-family: var(--font-estedad, system-ui, sans-serif);
   font-feature-settings: "ss20", "ss01", "tnum";
@@ -27,7 +24,6 @@ p, li {
   line-height: 1.85;
 }
 
-/* ─── 2. HAPTIC MICRO-INTERACTIONS (iOS Feel) ─── */
 button,
 a,
 .btn,
@@ -38,7 +34,7 @@ a,
 .mobile-nav-item,
 .mobile-nav-cta,
 .nav-order-button {
-  transition: 
+  transition:
     transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.2s ease,
     box-shadow 0.3s ease,
@@ -56,31 +52,27 @@ a:active,
   transform: scale(0.96) !important;
 }
 
-/* ─── 3. CLEAN SHADOWS (2-layer only) ─── */
 .btn-primary,
 .nav-order-button,
 .mobile-nav-cta {
-  box-shadow: 
+  box-shadow:
     0 4px 8px rgba(13, 115, 119, 0.15),
     0 12px 24px -6px rgba(13, 115, 119, 0.3) !important;
 }
 
-/* ─── 4. FOCUS RINGS (Accessibility & Beauty) ─── */
 :focus-visible {
   outline: none !important;
-  box-shadow: 
+  box-shadow:
     0 0 0 2px #ffffff,
     0 0 0 5px rgba(46, 196, 196, 0.5) !important;
   border-radius: 8px;
 }
 
-/* ─── 5. IMAGE RENDERING (Crisp & Fast) ─── */
 img {
   content-visibility: auto;
   image-rendering: -webkit-optimize-contrast;
 }
 
-/* ─── 6. CUSTOM SCROLLBAR (Minimal) ─── */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -99,10 +91,9 @@ img {
   background-clip: content-box;
 }
 
-/* ─── 7. SCROLL REVEAL (GPU Only) ─── */
 .reveal {
   will-change: opacity, transform;
-  transition: 
+  transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -110,7 +101,6 @@ img {
   will-change: auto;
 }
 
-/* ─── 8. MOBILE PERFORMANCE (60 FPS) ─── */
 @media (max-width: 768px) {
   .blog-card-featured:active,
   .blog-card-regular:active,
@@ -120,11 +110,30 @@ img {
   }
 }
 
-/* ─── 9. REDUCED MOTION ─── */
+@media (max-width: 768px) {
+  .article-glass-nav {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translate(-50%, -24px) !important;
+    transition:
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+  }
+
+  .article-glass-nav.is-visible {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, 0) !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-    transform: none !important;
+  }
+
+  .article-glass-nav {
+    transform: translate(-50%, 0) !important;
   }
 }

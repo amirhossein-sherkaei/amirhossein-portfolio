@@ -1,80 +1,150 @@
-"use client";
-import { useEffect, useState } from "react";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/blog";
+import { getBlogPostSchema } from "@/lib/schema";
+import MarkdownContent from "@/components/MarkdownContent";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import TableOfContents from "@/components/blog/TableOfContents";
+import AIActions from "@/components/blog/AIActions";
+import BlogComments from "@/components/blog/BlogComments";
+import BlogShare from "@/components/BlogShare";
+import BlogAuthorBox from "@/components/BlogAuthorBox";
+import BlogPrevNext from "@/components/BlogPrevNext";
+import BlogEndCTA from "@/components/BlogEndCTA";
+import BlogBreadcrumb from "@/components/BlogBreadcrumb";
+import ArticleGlassNav from "@/components/blog/ArticleGlassNav";
 
-type TOCItem = { id: string; title: string; level: number };
+import "@/styles/blog-post-premium.css";
+import "@/styles/blog-mobile-fix.css";
 
-export default function TableOfContents({
-  items,
-  variant = "sidebar",
-}: {
-  items: TOCItem[];
-  variant?: "sidebar" | "inline";
-}) {
-  const [activeId, setActiveId] = useState("");
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-        });
-      },
-      { rootMargin: "0% 0% -80% 0%" }
-    );
-    items.forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, [items]);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+  if (!post) return { title: "یافت نشد" };
 
-  if (!items.length) return null;
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `https://shorakaei.ir/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://shorakaei.ir/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.date,
+      images: [{ url: `https://shorakaei.ir/api/og?slug=${post.slug}`, width: 1200, height: 630 }],
+    },
+  };
+}
 
-  /* ─── Inline variant (بالای مقاله) ─── */
-  if (variant === "inline") {
-    return (
-      <details className="toc-inline" open>
-        <summary>در این مقاله می‌خوانید</summary>
-        <nav>
-          <ul>
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className={item.level === 3 ? "toc-level-3" : ""}
-              >
-                <a href={`#${item.id}`}>{item.title}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </details>
-    );
-  }
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
 
-  /* ─── Sidebar variant (پنل کناری دسکتاپ) ─── */
+export default async function BlogPostPage({ params }: Props) {
+  const resolvedParams = await params;
+  const post = getPostBySlug(resolvedParams.slug);
+
+  if (!post) notFound();
+
+  const articleSchema = getBlogPostSchema({
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    slug: post.slug,
+  });
+
+  const relatedPosts = getRelatedPosts(post.slug, post.tags, 3);
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "خانه", item: "https://shorakaei.ir" },
+      { "@type": "ListItem", position: 2, name: "بلاگ", item: "https://shorakaei.ir/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://shorakaei.ir/blog/${post.slug}` },
+    ],
+  };
+
+  // Remove the first H1 from rendered content (prevents duplicate title)
+  const cleanContent = (post.content || "").replace(/^# .+$/m, "").trim();
+
   return (
-    <nav className="glass-toc" aria-label="فهرست مطالب">
-      <h3 className="glass-toc-title">در این مقاله می‌خوانید</h3>
-      <ul className="glass-toc-list">
-        {items.map((item) => (
-          <li
-            key={item.id}
-            className={`glass-toc-item ${
-              item.level === 3 ? "is-sub" : ""
-            }`}
-          >
-            <a
-              href={`#${item.id}`}
-              className={`glass-toc-link ${
-                activeId === item.id ? "is-active" : ""
-              }`}
-            >
-              <span className="glass-toc-dot" />
-              {item.title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <>
+      <ReadingProgress />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      <main className="blog-post-page">
+        <ArticleGlassNav
+          title={post.title}
+          slug={post.slug}
+          toc={post.toc || []}
+        />
+
+        <div className="container">
+          <BlogBreadcrumb title={post.title} />
+
+          <header className="blog-post-header">
+            <span className="blog-post-category">{post.category}</span>
+            <h1 className="blog-post-title">{post.title}</h1>
+            <p className="blog-post-excerpt">{post.excerpt}</p>
+            <div className="blog-post-meta">
+              <span>{post.dateFormatted}</span>
+              <span>{post.readingTime} دقیقه مطالعه</span>
+            </div>
+          </header>
+
+          {post.toc && post.toc.length > 0 && (
+            <div style={{ marginBottom: "32px" }}>
+              <TableOfContents items={post.toc} variant="inline" />
+            </div>
+          )}
+
+          <div className="blog-post-layout">
+            <article className="blog-post-content glass-panel">
+              <MarkdownContent content={cleanContent} />
+
+              <BlogShare title={post.title} />
+              <BlogAuthorBox />
+              <BlogEndCTA />
+
+              <div style={{ marginTop: "24px" }}>
+                <AIActions title={post.title} slug={post.slug} />
+              </div>
+
+              <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
+            </article>
+
+            {post.toc && post.toc.length > 0 && (
+              <aside className="blog-post-sidebar">
+                <TableOfContents items={post.toc} />
+              </aside>
+            )}
+          </div>
+
+          {relatedPosts.length > 0 && (
+            <section className="related-posts-section">
+              <h2 className="related-posts-title">مقالات مرتبط</h2>
+              <div className="related-posts-grid">
+                {relatedPosts.map((related) => (
+                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card">
+                    <span className="blog-post-category" style={{ fontSize: '0.65rem' }}>{related.category}</span>
+                    <h3 style={{ fontSize: '1rem', margin: '12px 0', color: 'var(--sh-color-ink)' }}>{related.title}</h3>
+                    <time style={{ fontSize: '0.8rem', color: 'var(--sh-color-muted)' }}>{related.dateFormatted}</time>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <BlogPrevNext currentSlug={post.slug} />
+        </div>
+      </main>
+    </>
   );
 }
