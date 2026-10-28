@@ -106,7 +106,9 @@ import "@/styles/view-transitions.css";
 import "@/styles/infinity-pwa-cro.css";
 import "@/styles/mdx-infinity.css";
 import "@/styles/infinity-search.css";
-import "@/styles/infinity-perf-final.css";`nimport "@/styles/infinity-home-speed.css";
+import "@/styles/infinity-perf-final.css";
+import "@/styles/infinity-master-polish.css";
+import "@/styles/infinity-home-speed.css";
 
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -195,4 +197,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-
