@@ -18,7 +18,24 @@ img { content-visibility: auto; image-rendering: -webkit-optimize-contrast; }
 .reveal.is-visible { will-change: auto; }
 @media (max-width: 768px) {
   .blog-card-featured:active, .blog-card-regular:active, .service-item:active, .portfolio-card:active { transform: scale(0.98) !important; }
+
+  /* Article nav: appears with scroll, stays visible after */
+  .article-glass-nav {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translate(-50%, -24px) !important;
+    transition:
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) !important;
+  }
+
+  .article-glass-nav.has-appeared {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, 0) !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .article-glass-nav { transform: translate(-50%, 0) !important; }
 }

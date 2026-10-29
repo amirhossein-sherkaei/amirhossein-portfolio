@@ -13,6 +13,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(false);
+  const [hasAppeared, setHasAppeared] = useState(false);
 
   useEffect(() => {
     try {
@@ -31,6 +32,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
     } catch (e) {}
   };
 
+  // Progress bar updates on scroll
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
@@ -41,6 +43,20 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Appear on scroll: never hides after appearing
+  useEffect(() => {
+    if (hasAppeared) return;
+    if (window.scrollY > 150) {
+      setHasAppeared(true);
+      return;
+    }
+    const handleScroll = () => {
+      if (window.scrollY > 150) setHasAppeared(true);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasAppeared]);
 
   useEffect(() => {
     if (isTocOpen) document.body.style.overflow = "hidden";
@@ -66,7 +82,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
 
   return (
     <>
-      <div className="article-glass-nav" aria-label="ابزارهای مقاله">
+      <div className={`article-glass-nav${hasAppeared ? " has-appeared" : ""}`} aria-label="ابزارهای مقاله">
         <div className="nav-progress-fill" style={{ width: `${progress}%` }} />
         <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
