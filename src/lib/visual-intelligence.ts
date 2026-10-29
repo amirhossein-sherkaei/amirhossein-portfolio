@@ -4,7 +4,7 @@ export async function getArticleManifest(slug: string) {
   if (!WORKER_URL) return null;
   try {
     const res = await fetch(`${WORKER_URL}/manifest?slug=${encodeURIComponent(slug)}`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+      cache: 'no-store' // Cache for 1 hour
     });
     if (!res.ok) return null;
     return await res.json();
@@ -12,3 +12,4 @@ export async function getArticleManifest(slug: string) {
     return null;
   }
 }
+
