@@ -10,11 +10,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     posts.map(async (post) => {
       let images: string[] = [];
       try {
-        const manifest = await getArticleManifest(post.slug);
+        // یک تایم‌اوت ۲ ثانیه‌ای تعریف می‌کنیم تا اگر ورکر شلوغ بود، بیلد متوقف نشه
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Timeout")), 2000)
+        );
+        
+        // بین گرفتن دیتا و تایم‌اوت، هر کدوم زودتر تموم شد رو قبول می‌کنیم
+        const manifest = await Promise.race([
+          getArticleManifest(post.slug),
+          timeoutPromise
+        ]) as any;
+
         if (manifest?.images) {
           images = manifest.images.map((img: any) => img.src);
         }
-      } catch (e) {}
+      } catch (e) {
+        // اگر ورکر جواب نداد (تایم‌اوت شد)، ارور رو نادیده می‌گیریم و مقاله رو بدون عکس ثبت می‌کنیم
+        console.warn(`Skipping images for ${post.slug} due to timeout.`);
+      }
 
       return {
         url: `${baseUrl}/blog/${post.slug}`,

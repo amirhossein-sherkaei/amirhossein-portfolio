@@ -98,7 +98,7 @@ export default {
         const entries = index.map((item) => ({
           slug: item.slug,
           title: item.title,
-          cover: `${url.origin}/assets?key=${encodeURIComponent(item.coverKey)}`,
+          cover: `${url.origin}/assets?key=${encodeURIComponent(item.coverKey)}&v=${Date.now()}`,
           alt: item.alt,
           canonicalUrl: item.canonicalUrl,
           generatedAt: item.generatedAt,
@@ -232,12 +232,14 @@ function isAllowedAssetKey(key: string): boolean {
 
 function manifestKey(slug: string): string { return `${MANIFEST_PREFIX}${slug}.json`; }
 
+// ── FIXED: Added Cache-Buster to image URL ──
 function withAssetUrls(manifest: ArticleManifest, origin: string) {
+  const cacheBuster = new Date(manifest.generatedAt).getTime();
   return {
     ...manifest,
     images: manifest.images.map((image) => ({
       ...image,
-      src: `${origin}/assets?key=${encodeURIComponent(image.key)}`,
+      src: `${origin}/assets?key=${encodeURIComponent(image.key)}&v=${cacheBuster}`,
     })),
   };
 }
@@ -437,15 +439,9 @@ function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: 
 }
 
 // ═══════════════════════════════════════════════════════════
-// LLM CONCEPT GENERATION (NEW - Option B)
+// LLM CONCEPT GENERATION
 // ═══════════════════════════════════════════════════════════
 
-/**
- * Ask llama-3.1-8b-instruct to write ONE concrete visual scene
- * for this specific article, using its full content sample.
- * Returns a single English sentence (max ~220 chars) that is fed
- * to flux as the visual concept.
- */
 async function generateConceptWithLLM(
   env: Env,
   article: ArticleSnapshot,
@@ -498,7 +494,6 @@ async function generateConceptWithLLM(
     console.warn("LLM concept failed, falling back to regex heuristic:", error);
   }
 
-  // Fallback: old regex heuristic (keeps current behavior if LLM fails)
   return visualConcept(article, section);
 }
 
@@ -510,7 +505,6 @@ function sanitizeConcept(raw: string): string {
     .replace(/\s+/g, " ")
     .trim();
 
-  // Remove forbidden nouns if the LLM slipped
   text = text.replace(/\b(text|letters?|typography|screenshots?|code|logos?|charts?|UI labels?|numbers?)\b/gi, "");
   text = text.replace(/\s+/g, " ").trim();
 
@@ -603,7 +597,11 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   const maxInline = clampInt(env.MAX_INLINE_IMAGES ?? 1, 0, 1);
   const plannedHeadings = chooseInlineHeadings(article.headings, maxInline);
   const images: VisualAsset[] = [];
-  const version = article.fingerprint.slice(0, 12);
+  
+  // ── FIXED: Dynamic version to prevent caching when forcing regeneration ──
+  const version = force 
+    ? `${article.fingerprint.slice(0, 8)}-${Date.now()}` 
+    : article.fingerprint.slice(0, 12);
 
   const llmEnabled = isLlmEnabled(env);
 
