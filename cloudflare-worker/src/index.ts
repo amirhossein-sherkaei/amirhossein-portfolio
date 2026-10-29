@@ -1,7 +1,13 @@
 /**
  * Shorakaei Visual Intelligence
  * Free-tier, scheduled article visual generation for shorakaei.ir.
- * Uses Cloudflare Workers AI + KV. No paid third-party API is called.
+ *
+ * Flow:
+ *   1. Fetch article HTML
+ *   2. LLM (llama-3.1-8b-instruct) reads content -> returns a one-sentence
+ *      concrete visual scene (Persian-aware, no text in image)
+ *   3. Flux generates the image from that scene
+ *   4. KV stores the manifest + image bytes
  */
 
 interface Env {
@@ -10,7 +16,9 @@ interface Env {
   SITE_ORIGIN: string;
   ADMIN_SECRET: string;
   IMAGE_MODEL?: string;
+  CONCEPT_MODEL?: string;
   MAX_INLINE_IMAGES?: string;
+  ENABLE_LLM_CONCEPT?: string;
 }
 
 interface ArticleSnapshot {
@@ -20,6 +28,7 @@ interface ArticleSnapshot {
   description: string;
   headings: Array<{ text: string; index: number }>;
   excerpt: string;
+  contentSample: string;
   fingerprint: string;
 }
 
@@ -41,9 +50,11 @@ interface ArticleManifest {
   fingerprint: string;
   generatedAt: string;
   images: VisualAsset[];
+  concept?: string;
 }
 
-const DEFAULT_MODEL = "@cf/black-forest-labs/flux-1-schnell";
+const DEFAULT_IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell";
+const DEFAULT_CONCEPT_MODEL = "@cf/meta/llama-3.1-8b-instruct";
 const MANIFEST_PREFIX = "manifests/articles/";
 const INDEX_KEY = "manifests/index.json";
 const STATE_PREFIX = "system/";
@@ -60,7 +71,18 @@ export default {
 
     try {
       if (url.pathname === "/health" && request.method === "GET") {
-        return json({ ok: true, service: BRAND, model: env.IMAGE_MODEL || DEFAULT_MODEL, mode: "free-tier-kv-guarded" }, 200, cors);
+        return json(
+          {
+            ok: true,
+            service: BRAND,
+            imageModel: env.IMAGE_MODEL || DEFAULT_IMAGE_MODEL,
+            conceptModel: env.CONCEPT_MODEL || DEFAULT_CONCEPT_MODEL,
+            llmConceptEnabled: isLlmEnabled(env),
+            mode: "free-tier-kv-guarded",
+          },
+          200,
+          cors
+        );
       }
 
       if (url.pathname === "/manifest" && request.method === "GET") {
@@ -87,10 +109,10 @@ export default {
       if (url.pathname === "/assets" && request.method === "GET") {
         const key = url.searchParams.get("key") || "";
         if (!isAllowedAssetKey(key)) return json({ error: "Invalid asset key" }, 400, cors);
-        
+
         const buffer = await env.VISUAL_ASSETS.get(key, "arrayBuffer");
         if (!buffer) return new Response("Not found", { status: 404, headers: cors });
-        
+
         const headers = new Headers(cors);
         headers.set("Content-Type", "image/jpeg");
         headers.set("Cache-Control", "public, max-age=31536000, immutable");
@@ -106,18 +128,20 @@ export default {
 
       if (url.pathname === "/admin/run" && request.method === "POST") {
         if (!isAdmin(request, env)) return json({ error: "Unauthorized" }, 401, cors);
-        const body = await request.json().catch(() => ({})) as { limit?: number; force?: boolean };
-        const limit = clampInt(body.limit ?? 2, 1, 3);
+        const body = await request.json().catch(() => ({})) as { limit?: number; force?: boolean; slugs?: string[] };
+        const limit = clampInt(body.limit ?? 1, 1, 3);
         const force = body.force === true;
+        const slugs = Array.isArray(body.slugs) ? body.slugs.filter((s) => typeof s === "string").map((s) => safeSlug(s)).filter(Boolean) : [];
         const job = {
           state: "queued",
           startedAt: new Date().toISOString(),
           limit,
           force,
+          slugs,
           message: "The background sweep has been queued.",
         };
         await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(job));
-        ctx.waitUntil(runSweep(env, limit, force, "manual"));
+        ctx.waitUntil(runSweep(env, limit, force, "manual", slugs));
         return json({ ok: true, ...job, statusUrl: `${url.origin}/admin/status` }, 202, cors);
       }
 
@@ -129,9 +153,19 @@ export default {
   },
 
   async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    ctx.waitUntil(runSweep(env, 2, false, "cron"));
+    // Free tier: process only 1 article per cron to stay within AI quota
+    ctx.waitUntil(runSweep(env, 1, false, "cron"));
   },
 };
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS: config
+// ═══════════════════════════════════════════════════════════
+
+function isLlmEnabled(env: Env): boolean {
+  if (env.ENABLE_LLM_CONCEPT === "false") return false;
+  return true;
+}
 
 function corsHeaders(request: Request, env: Env): HeadersInit {
   const requestedOrigin = request.headers.get("Origin") || "";
@@ -237,6 +271,10 @@ async function getManifest(env: Env, slug: string): Promise<ArticleManifest | nu
   return value ? (value as ArticleManifest) : null;
 }
 
+// ═══════════════════════════════════════════════════════════
+// SITEMAP DISCOVERY
+// ═══════════════════════════════════════════════════════════
+
 async function getSitemapArticleUrls(siteOrigin: string): Promise<string[]> {
   const origin = normalizeOrigin(siteOrigin);
   const visited = new Set<string>();
@@ -296,6 +334,10 @@ function slugFromUrl(urlString: string): string {
   return parts[parts.length - 1] || "";
 }
 
+// ═══════════════════════════════════════════════════════════
+// ARTICLE EXTRACTION
+// ═══════════════════════════════════════════════════════════
+
 async function extractArticle(url: string): Promise<ArticleSnapshot | null> {
   const response = await fetch(url, { headers: { "User-Agent": "ShorakaeiVisualIntelligence/1.0", "Accept": "text/html" } });
   if (!response.ok) return null;
@@ -318,13 +360,26 @@ async function extractArticle(url: string): Promise<ArticleSnapshot | null> {
   const paragraphs = [...cleanContent.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
     .map((match) => cleanText(match[1]))
     .filter((text) => text.length > 45)
-    .slice(0, 100);
+    .slice(0, 60);
+
+  // Rich content sample: 600-1200 chars from the first 5 paragraphs
+  const contentSample = paragraphs.slice(0, 5).join(" ").slice(0, 1200);
   const excerpt = paragraphs.slice(0, 4).join(" ").slice(0, 1800) || cleanText(cleanContent).slice(0, 1800);
   const contentSignature = paragraphs.join(" ").slice(0, 14_000);
   const slug = slugFromUrl(url);
   const fingerprintSource = [url, title, description, headings.map((h) => h.text).join("|"), contentSignature].join("\n");
   const fingerprint = await sha256(fingerprintSource);
-  return { url, slug, title: title.slice(0, 180), description: (description || excerpt).slice(0, 500), headings, excerpt, fingerprint };
+
+  return {
+    url,
+    slug,
+    title: title.slice(0, 180),
+    description: (description || excerpt).slice(0, 500),
+    headings,
+    excerpt,
+    contentSample,
+    fingerprint,
+  };
 }
 
 function extractMeta(html: string, attr: string, name: string): string {
@@ -365,6 +420,10 @@ async function sha256(input: string): Promise<string> {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
+// ═══════════════════════════════════════════════════════════
+// INLINE HEADINGS SELECTION
+// ═══════════════════════════════════════════════════════════
+
 function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: number): Array<{ text: string; index: number }> {
   if (headings.length < 2 || maxInline < 1) return [];
   const desired = headings.length >= 5 ? Math.min(2, maxInline) : 1;
@@ -377,9 +436,118 @@ function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: 
   return chosen;
 }
 
-function truncatePromptText(value: string, max = 150): string {
-  return value.replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+// ═══════════════════════════════════════════════════════════
+// LLM CONCEPT GENERATION (NEW - Option B)
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Ask llama-3.1-8b-instruct to write ONE concrete visual scene
+ * for this specific article, using its full content sample.
+ * Returns a single English sentence (max ~220 chars) that is fed
+ * to flux as the visual concept.
+ */
+async function generateConceptWithLLM(
+  env: Env,
+  article: ArticleSnapshot,
+  section?: string
+): Promise<string> {
+  const model = env.CONCEPT_MODEL || DEFAULT_CONCEPT_MODEL;
+
+  const sectionHint = section ? `\nThis image belongs to the section titled: "${section}".` : "";
+  const headingsHint = article.headings.slice(0, 6).map((h) => `- ${h.text}`).join("\n");
+
+  const systemPrompt = [
+    "You are an art director for a Persian tech publication about web design, AI, UX and SEO.",
+    "You produce ONE single concrete visual scene that could be a magazine cover image for the given article.",
+    "Rules:",
+    "- Reply with ONE English sentence, max 40 words, describing a concrete scene (objects, materials, lighting, composition).",
+    "- Never mention text, letters, typography, screenshots, code, logos, charts, or UI labels.",
+    "- Prefer physical 3D metaphors (real objects, rooms, tools, natural elements, light) over abstract concepts.",
+    "- The scene must be specific to THIS article's content, not a generic 'SEO' or 'AI' symbol.",
+    "- Art direction: premium minimal 3D editorial, soft studio light, deep teal and burgundy accents, warm ivory background, generous negative space, distinct silhouette.",
+    "- Do not return quotes, markdown, or explanations. Only the scene sentence.",
+  ].join("\n");
+
+  const userPrompt = [
+    `Article title: ${article.title}`,
+    `Article description: ${article.description}`,
+    `Article headings:\n${headingsHint}`,
+    `Article excerpt: ${article.contentSample}`,
+    sectionHint,
+    "Now write the single visual scene sentence.",
+  ].filter(Boolean).join("\n\n");
+
+  try {
+    const result = await env.AI.run(model, {
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      max_tokens: 120,
+      temperature: 0.6,
+    });
+
+    const raw =
+      (typeof result?.response === "string" && result.response) ||
+      (typeof result?.choices?.[0]?.message?.content === "string" && result.choices[0].message.content) ||
+      "";
+
+    const cleaned = sanitizeConcept(raw);
+    if (cleaned) return cleaned;
+  } catch (error) {
+    console.warn("LLM concept failed, falling back to regex heuristic:", error);
+  }
+
+  // Fallback: old regex heuristic (keeps current behavior if LLM fails)
+  return visualConcept(article, section);
 }
+
+function sanitizeConcept(raw: string): string {
+  let text = raw
+    .replace(/^["'`\s]+|["'`\s]+$/g, "")
+    .replace(/^scene:\s*/i, "")
+    .replace(/^visual concept:\s*/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Remove forbidden nouns if the LLM slipped
+  text = text.replace(/\b(text|letters?|typography|screenshots?|code|logos?|charts?|UI labels?|numbers?)\b/gi, "");
+  text = text.replace(/\s+/g, " ").trim();
+
+  if (text.length > 260) text = text.slice(0, 260).trim();
+  return text;
+}
+
+// ═══════════════════════════════════════════════════════════
+// PROMPT BUILDING (final flux prompt)
+// ═══════════════════════════════════════════════════════════
+
+function buildFinalPrompt(
+  article: ArticleSnapshot,
+  kind: "cover" | "inline",
+  concept: string,
+  section?: string
+): string {
+  const title = truncatePromptText(article.title, 140);
+  const ratioGuide =
+    kind === "cover"
+      ? "wide editorial landscape composition, readable at 16:10 crop, strong central silhouette with breathing room"
+      : "supporting editorial illustration, balanced 4:3 crop, focused on the specific section topic";
+
+  return [
+    "Create a premium, highly art-directed editorial concept illustration for a Persian technology publication.",
+    `Article topic: ${title}.`,
+    section ? `Section: ${section}.` : "",
+    `Visual scene: ${concept}`,
+    "Art direction: sophisticated minimal 3D editorial illustration, physically plausible materials, refined soft studio lighting, subtle transparent glass and controlled optical highlights, deep teal #0d7377 and muted burgundy #8b3a4a accents used sparingly, warm ivory background, elegant composition, generous negative space, distinct silhouette, crisp details, high production value, natural contact shadows.",
+    `Composition: ${ratioGuide}.`,
+    "Do not render text, letters, typography, watermarks, logos, fake screenshots, UI labels, chart numbers or random symbols.",
+  ].filter(Boolean).join(" ").slice(0, 2000);
+}
+
+// ═══════════════════════════════════════════════════════════
+// FALLBACK: regex concept (used only if LLM fails)
+// ═══════════════════════════════════════════════════════════
 
 function visualConcept(article: ArticleSnapshot, heading?: string): string {
   const topic = `${article.title} ${article.description} ${heading || ""} ${article.headings.map((item) => item.text).join(" ")}`;
@@ -398,25 +566,16 @@ function visualConcept(article: ArticleSnapshot, heading?: string): string {
     || "a memorable abstract metaphor for the article built around one central object, a small number of supporting geometric elements and a strong visual hierarchy";
 }
 
-function buildPrompt(article: ArticleSnapshot, kind: "cover" | "inline", heading?: string): string {
-  const title = truncatePromptText(article.title, 150);
-  const subject = truncatePromptText(heading || article.description || article.excerpt, 180);
-  const concept = visualConcept(article, heading);
-  const ratioGuide = kind === "cover" ? "wide editorial landscape composition, readable at 16:10 crop, strong central silhouette with breathing room around the edges" : "supporting editorial illustration, balanced 4:3 crop, focused on the specific section topic";
-  return [
-    "Create a premium, highly art-directed editorial concept illustration for a Persian technology, web design, UX, SEO and AI publication.",
-    `Main article topic: ${title}.`,
-    `Specific subject for this image: ${subject}.`,
-    `Visual concept: ${concept}.`,
-    "Art direction: sophisticated minimal 3D editorial illustration, physically plausible materials, refined soft studio lighting, subtle transparent glass and controlled optical highlights, deep teal #0d7377 and muted burgundy #8b3a4a accents used sparingly, warm ivory background, elegant composition, generous negative space, distinct silhouette, crisp details, high production value, natural contact shadows.",
-    `Composition: ${ratioGuide}.`,
-    "Do not render text, letters, typography, watermarks, logos, fake screenshots, UI labels, chart numbers or random symbols. Do not literally illustrate instructions or slogans as words. Keep the scene visually coherent and relevant to the stated topic.",
-  ].join(" ").slice(0, 2000);
+function truncatePromptText(value: string, max = 150): string {
+  return value.replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-async function generateImage(env: Env, prompt: string, _seed: number): Promise<Uint8Array> {
-  const model = env.IMAGE_MODEL || DEFAULT_MODEL;
-  // پارامتر seed از این مدل پشتیبانی نمی‌شود و باعث خطای 5006 می‌شود. بنابراین فقط prompt و steps ارسال می‌شوند.
+// ═══════════════════════════════════════════════════════════
+// IMAGE GENERATION
+// ═══════════════════════════════════════════════════════════
+
+async function generateImage(env: Env, prompt: string): Promise<Uint8Array> {
+  const model = env.IMAGE_MODEL || DEFAULT_IMAGE_MODEL;
   const result = await env.AI.run(model, { prompt, steps: 4 });
   const base64 = typeof result?.image === "string" ? result.image : "";
   if (!base64) throw new Error(`Image model ${model} returned no image data.`);
@@ -433,6 +592,10 @@ function seedFromText(value: string): number {
   return seed >>> 0;
 }
 
+// ═══════════════════════════════════════════════════════════
+// PER-ARTICLE PROCESSING
+// ═══════════════════════════════════════════════════════════
+
 async function processArticle(env: Env, article: ArticleSnapshot, force: boolean): Promise<"generated" | "unchanged" | "skipped"> {
   const existing = await getManifest(env, article.slug);
   if (!force && existing?.fingerprint === article.fingerprint && existing.images.some((image) => image.kind === "cover")) return "unchanged";
@@ -441,20 +604,52 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   const plannedHeadings = chooseInlineHeadings(article.headings, maxInline);
   const images: VisualAsset[] = [];
   const version = article.fingerprint.slice(0, 12);
-  const seedBase = seedFromText(`${article.slug}:${article.fingerprint}`);
-  
-  const coverKey = `images/${article.slug}/${version}/cover.jpg`;
-  const coverBytes = await generateImage(env, buildPrompt(article, "cover"), seedBase);
-  await env.VISUAL_ASSETS.put(coverKey, coverBytes);
-  images.push({ kind: "cover", key: coverKey, alt: `تصویر مفهومی مقالهٔ «${article.title}»`.slice(0, 180), caption: "" });
 
+  const llmEnabled = isLlmEnabled(env);
+
+  // ── Cover image ──
+  let coverConcept: string;
+  if (llmEnabled) {
+    coverConcept = await generateConceptWithLLM(env, article);
+  } else {
+    coverConcept = visualConcept(article);
+  }
+  console.log(`[concept:cover] ${article.slug} :: ${coverConcept}`);
+
+  const coverPrompt = buildFinalPrompt(article, "cover", coverConcept);
+  const coverKey = `images/${article.slug}/${version}/cover.jpg`;
+  const coverBytes = await generateImage(env, coverPrompt);
+  await env.VISUAL_ASSETS.put(coverKey, coverBytes);
+  images.push({
+    kind: "cover",
+    key: coverKey,
+    alt: `تصویر مفهومی مقالهٔ «${article.title}»`.slice(0, 180),
+    caption: "",
+  });
+
+  // ── Inline images ──
   let index = 0;
   for (const heading of plannedHeadings) {
     index++;
+    let inlineConcept: string;
+    if (llmEnabled) {
+      inlineConcept = await generateConceptWithLLM(env, article, heading.text);
+    } else {
+      inlineConcept = visualConcept(article, heading.text);
+    }
+    console.log(`[concept:inline-${index}] ${article.slug} :: ${inlineConcept}`);
+
+    const inlinePrompt = buildFinalPrompt(article, "inline", inlineConcept, heading.text);
     const key = `images/${article.slug}/${version}/inline-${index}.jpg`;
-    const bytes = await generateImage(env, buildPrompt(article, "inline", heading.text), (seedBase + index * 7919) >>> 0);
+    const bytes = await generateImage(env, inlinePrompt);
     await env.VISUAL_ASSETS.put(key, bytes);
-    images.push({ kind: "inline", key, alt: `تصویر مفهومی برای بخش «${heading.text}» از مقالهٔ «${article.title}»`.slice(0, 180), heading: heading.text, headingIndex: heading.index });
+    images.push({
+      kind: "inline",
+      key,
+      alt: `تصویر مفهومی برای بخش «${heading.text}» از مقالهٔ «${article.title}»`.slice(0, 180),
+      heading: heading.text,
+      headingIndex: heading.index,
+    });
   }
 
   const manifest: ArticleManifest = {
@@ -466,12 +661,23 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
     fingerprint: article.fingerprint,
     generatedAt: new Date().toISOString(),
     images,
+    concept: coverConcept,
   };
   await saveManifest(env, manifest);
   return "generated";
 }
 
-async function runSweep(env: Env, requestedLimit: number, force: boolean, trigger: "cron" | "manual"): Promise<void> {
+// ═══════════════════════════════════════════════════════════
+// SWEEP
+// ═══════════════════════════════════════════════════════════
+
+async function runSweep(
+  env: Env,
+  requestedLimit: number,
+  force: boolean,
+  trigger: "cron" | "manual",
+  slugs?: string[]
+): Promise<void> {
   const startedAt = new Date().toISOString();
   const siteOrigin = normalizeOrigin(env.SITE_ORIGIN || "https://shorakaei.ir");
   let generated = 0;
@@ -484,14 +690,19 @@ async function runSweep(env: Env, requestedLimit: number, force: boolean, trigge
     const urls = await getSitemapArticleUrls(siteOrigin);
     if (!urls.length) throw new Error(`No /blog/ article URLs were found in ${siteOrigin}/sitemap.xml. Check sitemap availability and SITE_ORIGIN.`);
 
-    const state = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}cursor.json`, "json") as { cursor?: number } | null;
-    const cursor = Math.max(0, Number(state?.cursor) || 0) % urls.length;
-    const limit = Math.min(urls.length, clampInt(requestedLimit, 1, trigger === "cron" ? 2 : 3));
-    const selected: string[] = [];
-    for (let i = 0; i < limit; i++) selected.push(urls[(cursor + i) % urls.length]);
-    const nextCursor = (cursor + limit) % urls.length;
-    
-    await env.VISUAL_ASSETS.put(`${STATE_PREFIX}cursor.json`, JSON.stringify({ cursor: nextCursor, totalUrls: urls.length, updatedAt: new Date().toISOString() }));
+    let selected: string[];
+    if (slugs && slugs.length) {
+      selected = urls.filter((u) => slugs.includes(slugFromUrl(u))).slice(0, 10);
+      if (!selected.length) throw new Error("None of the requested slugs were found in the sitemap.");
+    } else {
+      const state = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}cursor.json`, "json") as { cursor?: number } | null;
+      const cursor = Math.max(0, Number(state?.cursor) || 0) % urls.length;
+      const limit = Math.min(urls.length, clampInt(requestedLimit, 1, trigger === "cron" ? 1 : 3));
+      selected = [];
+      for (let i = 0; i < limit; i++) selected.push(urls[(cursor + i) % urls.length]);
+      const nextCursor = (cursor + limit) % urls.length;
+      await env.VISUAL_ASSETS.put(`${STATE_PREFIX}cursor.json`, JSON.stringify({ cursor: nextCursor, totalUrls: urls.length, updatedAt: new Date().toISOString() }));
+    }
 
     for (const url of selected) {
       try {
@@ -521,8 +732,7 @@ async function runSweep(env: Env, requestedLimit: number, force: boolean, trigge
       skipped,
       errors,
       details,
-      nextCursor,
-      note: "The free daily AI allocation is finite. The scheduler deliberately processes a small batch each run.",
+      note: "Free tier: LLM + flux per article consumes significant AI quota. Cron processes only 1 article per run.",
     };
     await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(report));
   } catch (error) {
