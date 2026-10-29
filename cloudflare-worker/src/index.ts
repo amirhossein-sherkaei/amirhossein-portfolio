@@ -177,7 +177,6 @@ function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: 
   return chosen;
 }
 
-// ─── LLM Concept (Ultra Relevant) ───
 async function generateConceptWithLLM(env: Env, article: ArticleSnapshot, section?: string): Promise<string> {
   const model = env.CONCEPT_MODEL || DEFAULT_CONCEPT_MODEL;
   const sec = section ? `\nSection: "${section}".` : "";
@@ -210,7 +209,6 @@ function sanitizeConcept(raw: string): string {
   return t.replace(/\s+/g, " ").trim().slice(0, 300);
 }
 
-// ─── Flux Prompt (Consistent Brand Template & Dominant Colors) ───
 function buildFinalPrompt(article: ArticleSnapshot, kind: "cover" | "inline", concept: string, section?: string): string {
   const title = truncatePromptText(article.title, 140);
   const ratio = kind === "cover" ? "wide landscape 16:9, cinematic framing" : "balanced 4:3, focused on the section";
