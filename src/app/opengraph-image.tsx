@@ -1,7 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "nodejs";
-
 export const alt = "امیرحسین شرکائی | طراحی وب و خلاقیت دیجیتال";
 
 export const size = {

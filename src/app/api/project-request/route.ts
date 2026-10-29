@@ -3,8 +3,6 @@ import { sendProjectRequestEmail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { validateProjectRequest } from "@/lib/validation";
 
-export const runtime = "nodejs";
-
 export async function POST(request: Request) {
   try {
     const forwardedFor = request.headers.get("x-forwarded-for");

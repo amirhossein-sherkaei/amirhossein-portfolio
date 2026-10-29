@@ -1,9 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getPostBySlug } from "@/lib/blog";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -68,3 +65,4 @@ export async function GET(request: Request) {
     return new Response("Error generating image", { status: 500 });
   }
 }
+
