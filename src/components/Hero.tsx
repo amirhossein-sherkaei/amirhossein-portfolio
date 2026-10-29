@@ -10,7 +10,7 @@ import LiveClock from "@/components/ui/LiveClock";
 type LivePost = { slug: string; title: string; date: string; };
 type HeroProps = { latestPost: LivePost | null; archivePost: LivePost | null; totalPosts: number; totalProjects: number; };
 const LIVE_ROTATION_MS = 5500;
-const MARQUEE_WORDS = [ "WEB DESIGN", "CREATIVE DEVELOPMENT", "AI VISUALS", "BRAND IDENTITY", "MOTION", "INTERFACE", ];
+const MARQUEE_WORDS = [ "طراحی وب", "توسعه خلاق", "تصاویر هوشمند", "هویت بصری", "موشن", "رابط کاربری" ];
 const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
 function toPersian(value: string | number): string { return String(value).replace(/\d/g, (d) => PERSIAN_DIGITS[+d]); }
 const CURRENT_PERSIAN_YEAR = new Intl.DateTimeFormat("fa-IR", { year: "numeric" }).format(new Date()).replace(/[^\u06F0-\u06F9]/g, "").slice(0, 4);
@@ -71,9 +71,9 @@ export default function Hero({ latestPost, archivePost, totalPosts, totalProject
 
   const liveStates = useMemo(() => {
     const states: Array<{ id: "latest" | "stats" | "archive"; render: () => React.ReactNode; }> = [];
-    if (latestPost) { states.push({ id: "latest", render: () => (<Link href={`/blog/${latestPost.slug}`} prefetch={false} className="hero-bento-live-item"><span className="hero-bento-live-label">NOW{" "}<span className="hero-bento-live-label-text">· آخرین یادداشت</span></span><span className="hero-bento-live-title">{latestPost.title}</span><span className="hero-bento-live-arrow" aria-hidden="true">←</span>{latestAgo && (<span className="hero-bento-live-ago">{latestAgo}</span>)}</Link>), }); }
-    states.push({ id: "stats", render: () => (<Link href="/blog" prefetch={false} className="hero-bento-live-item hero-bento-live-item--stats"><span className="hero-bento-live-label">INDEX{" "}<span className="hero-bento-live-label-text">· آمار زنده</span></span><span className="hero-bento-live-stats"><span className="hero-bento-live-stat"><strong>{toPersian(totalPosts)}</strong><span>مقاله</span></span><span className="hero-bento-live-stat-sep">·</span><span className="hero-bento-live-stat"><strong>{toPersian(totalProjects)}</strong><span>پروژه</span></span></span></Link>), });
-    if (archivePost) { states.push({ id: "archive", render: () => (<Link href={`/blog/${archivePost.slug}`} prefetch={false} className="hero-bento-live-item"><span className="hero-bento-live-label">ARCHIVE{" "}<span className="hero-bento-live-label-text">· از آرشیو</span></span><span className="hero-bento-live-title">{archivePost.title}</span><span className="hero-bento-live-arrow" aria-hidden="true">←</span>{archiveAgo && (<span className="hero-bento-live-ago">{archiveAgo}</span>)}</Link>), }); }
+    if (latestPost) { states.push({ id: "latest", render: () => (<Link href={`/blog/${latestPost.slug}`} prefetch={false} className="hero-bento-live-item"><span className="hero-bento-live-label">اکنون{" "}<span className="hero-bento-live-label-text">· آخرین یادداشت</span></span><span className="hero-bento-live-title">{latestPost.title}</span><span className="hero-bento-live-arrow" aria-hidden="true">←</span>{latestAgo && (<span className="hero-bento-live-ago">{latestAgo}</span>)}</Link>), }); }
+    states.push({ id: "stats", render: () => (<Link href="/blog" prefetch={false} className="hero-bento-live-item hero-bento-live-item--stats"><span className="hero-bento-live-label">آمار{" "}<span className="hero-bento-live-label-text">· زنده</span></span><span className="hero-bento-live-stats"><span className="hero-bento-live-stat"><strong>{toPersian(totalPosts)}</strong><span>مقاله</span></span><span className="hero-bento-live-stat-sep">·</span><span className="hero-bento-live-stat"><strong>{toPersian(totalProjects)}</strong><span>پروژه</span></span></span></Link>), });
+    if (archivePost) { states.push({ id: "archive", render: () => (<Link href={`/blog/${archivePost.slug}`} prefetch={false} className="hero-bento-live-item"><span className="hero-bento-live-label">آرشیو{" "}<span className="hero-bento-live-label-text">· از گذشته</span></span><span className="hero-bento-live-title">{archivePost.title}</span><span className="hero-bento-live-arrow" aria-hidden="true">←</span>{archiveAgo && (<span className="hero-bento-live-ago">{archiveAgo}</span>)}</Link>), }); }
     return states;
   }, [latestPost, archivePost, latestAgo, archiveAgo, totalPosts, totalProjects]);
 
@@ -88,13 +88,13 @@ export default function Hero({ latestPost, archivePost, totalPosts, totalProject
       <div className="hero-inner">
         <div className="hero-masthead">
           <span className="hero-masthead-cell"><span className="hero-masthead-dot" aria-hidden="true" /><span>پذیرش پروژه · {CURRENT_PERSIAN_YEAR}</span></span>
-          <span className="hero-masthead-cell hero-masthead-cell--center">AMIRHOSSEIN&nbsp;SHORAKAEI</span>
-          <span className="hero-masthead-cell hero-masthead-cell--latin"><span className="hero-masthead-coord">35.6892°N · 51.3890°E</span><span className="hero-masthead-clock"><LiveClock /></span></span>
+          <span className="hero-masthead-cell hero-masthead-cell--center">امیرحسین شرکائی</span>
+          <span className="hero-masthead-cell hero-masthead-cell--latin"><span className="hero-masthead-clock"><LiveClock /></span></span>
         </div>
 
         <div className="hero-grid">
           <div className="hero-main">
-            <span className="hero-kicker" aria-hidden="true"><span className="hero-kicker-line" /><span className="hero-kicker-text">SECTION&nbsp;·&nbsp;01&nbsp;·&nbsp;INTRO</span></span>
+            <span className="hero-kicker" aria-hidden="true"><span className="hero-kicker-line" /><span className="hero-kicker-text">معرفی</span></span>
             <h1 className="hero-title">طراحی سایت اختصاصی برای<span className="ink-word hero-title-em"> دیده شدن</span><em className="hero-title-accent">.</em></h1>
             <p className="hero-description">وب‌سایت‌هایی سریع، ریسپانسیو و متناسب با هویت برند شما — بدون قالب‌های تکراری.</p>
 
@@ -112,22 +112,20 @@ export default function Hero({ latestPost, archivePost, totalPosts, totalProject
 
           <aside className="hero-bento" aria-label="کارت هویت">
             <article className="hero-bento-cell hero-bento-cell--name">
-              <span className="hero-bento-cell-mesh" aria-hidden="true" /><span className="hero-bento-num" aria-hidden="true">۰۱</span>
+              <span className="hero-bento-cell-mesh" aria-hidden="true" />
               <span className="hero-bento-seal" aria-hidden="true"><Image src="/logo.png" alt="" width={44} height={44} className="hero-bento-seal-img" /></span>
               <span className="hero-bento-status"><span className="hero-bento-status-dot" aria-hidden="true" />آماده همکاری</span>
-              <div className="hero-bento-body"><span className="hero-bento-eyebrow">STUDIO</span><h2 className="hero-bento-name">امیرحسین<br />شرکائی</h2><p className="hero-bento-role">طراح و توسعه‌دهنده‌ی وب</p></div>
+              <div className="hero-bento-body"><span className="hero-bento-eyebrow">استودیو</span><h2 className="hero-bento-name">امیرحسین<br />شرکائی</h2><p className="hero-bento-role">طراح و توسعه‌دهنده‌ی وب</p></div>
             </article>
 
-            <article className="hero-bento-cell hero-bento-cell--clock"><span className="hero-bento-num" aria-hidden="true">۰۲</span><span className="hero-bento-label">TEHRAN</span><span className="hero-bento-clock-time"><LiveClock /></span><span className="hero-bento-live"><span className="hero-bento-live-dot" aria-hidden="true" />LIVE</span></article>
+            <article className="hero-bento-cell hero-bento-cell--clock"><span className="hero-bento-label">تهران</span><span className="hero-bento-clock-time"><LiveClock /></span><span className="hero-bento-live"><span className="hero-bento-live-dot" aria-hidden="true" />زنده</span></article>
 
             <article className="hero-bento-cell hero-bento-cell--date">
-              <span className="hero-bento-num" aria-hidden="true">۰۳</span><span className="hero-bento-label">TODAY</span>
+              <span className="hero-bento-label">امروز</span>
               <div className="hero-bento-date"><span className="hero-bento-date-weekday">{persianDate.weekday}</span><span className="hero-bento-date-day">{persianDate.day}</span><span className="hero-bento-date-month">{persianDate.month}</span><span className="hero-bento-date-year">{persianDate.year}</span></div>
             </article>
 
-            <article className="hero-bento-cell hero-bento-cell--num"><span className="hero-bento-cell-mesh" aria-hidden="true" /><span className="hero-bento-num" aria-hidden="true">۰۴</span><span className="hero-bento-label">RES / ۱۰۰</span><span className="hero-bento-bignum">۹۹<em>+</em></span><span className="hero-bento-sub">امتیاز تجربه‌ی کاربری</span></article>
-
-            <article className="hero-bento-cell hero-bento-cell--live"><span className="hero-bento-num" aria-hidden="true">۰۵</span><span className="hero-bento-live-badge" aria-hidden="true"><span className="hero-bento-live-dot" />LIVE</span><div className="hero-bento-live-stack" onMouseEnter={() => setLivePaused(true)} onMouseLeave={() => setLivePaused(false)}>{activeLive && (<div key={activeLive.id}>{activeLive.render()}</div>)}</div></article>
+            <article className="hero-bento-cell hero-bento-cell--live"><span className="hero-bento-live-badge" aria-hidden="true"><span className="hero-bento-live-dot" />زنده</span><div className="hero-bento-live-stack" onMouseEnter={() => setLivePaused(true)} onMouseLeave={() => setLivePaused(false)}>{activeLive && (<div key={activeLive.id}>{activeLive.render()}</div>)}</div></article>
           </aside>
         </div>
 

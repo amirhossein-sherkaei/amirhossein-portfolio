@@ -4,8 +4,7 @@ export type Testimonial = {
   role: string;
   company: string;
   text: string;
-  rating: number; // 1-5
-  avatar?: string;
+  rating: number;
 };
 
 export const testimonials: Testimonial[] = [
@@ -14,9 +13,8 @@ export const testimonials: Testimonial[] = [
     name: "رضا کاشانی",
     role: "مدیر برند",
     company: "فروشگاه نیلا",
-    text: "همکاری با امیرحسین تجربه‌ای حرفه‌ای و لذت‌بخش بود. دقتش در جزئیات و تعهدش به زمان‌بندی واقعاً تحسین‌برانگیز است. سایت ما بعد از طراحی جدید، ۴۰٪ افزایش فروش داشت.",
+    text: "همکاری با امیرحسین تجربه‌ای حرفه‌ای و لذت‌بخش بود. دقتش در جزئیات و تعهدش به زمان‌بندی واقعاً تحسین‌برانگیز است. سایت ما بعد از طراحی جدید، تجربه‌ی کاربری بسیار بهتری دارد.",
     rating: 5,
-    avatar: "/testimonials/reza.webp",
   },
   {
     id: "2",
@@ -25,7 +23,6 @@ export const testimonials: Testimonial[] = [
     company: "استارتاپ آرکا",
     text: "طراحی سایت ما رو کاملاً متحول کرد. امیرحسین نه تنها یک طراح خوب، بلکه یک مشاور واقعی است. همیشه راهکارهای بهتر و خلاقانه‌تری پیشنهاد می‌ده.",
     rating: 5,
-    avatar: "/testimonials/sara.webp",
   },
   {
     id: "3",
@@ -34,6 +31,5 @@ export const testimonials: Testimonial[] = [
     company: "استودیو ویرا",
     text: "دقت و سرعت در کارش عالیه. پروژه ما با کیفیت بسیار بالا و دقیقاً طبق برنامه تحویل داده شد. قطعاً برای پروژه‌های بعدی هم با ایشون همکاری می‌کنیم.",
     rating: 5,
-    avatar: "/testimonials/ali.webp",
   },
 ];
