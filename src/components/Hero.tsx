@@ -113,7 +113,7 @@ export default function Hero({ latestPost, archivePost, totalPosts, totalProject
           <aside className="hero-bento" aria-label="کارت هویت">
             <article className="hero-bento-cell hero-bento-cell--name">
               <span className="hero-bento-cell-mesh" aria-hidden="true" />
-              <span className="hero-bento-seal" aria-hidden="true"><Image src="/logo.png" alt="" width={44} height={44} className="hero-bento-seal-img" /></span>
+              <span className="hero-bento-seal" aria-hidden="true"><Image src="/logo.png" alt="" width={44} height={44} className="hero-bento-seal-img" preload /></span>
               <span className="hero-bento-status"><span className="hero-bento-status-dot" aria-hidden="true" />آماده همکاری</span>
               <div className="hero-bento-body"><span className="hero-bento-eyebrow">استودیو</span><h2 className="hero-bento-name">امیرحسین<br />شرکائی</h2><p className="hero-bento-role">طراح و توسعه‌دهنده‌ی وب</p></div>
             </article>

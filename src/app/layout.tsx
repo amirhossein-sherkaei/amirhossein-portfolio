@@ -181,7 +181,25 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
         ))}
       </head>
-      <body>
+      
+        {/* Speculation Rules API for instant navigation */}
+        <script
+          type="speculationrules"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              prerender: [
+                {
+                  where: { href_matches: "/blog/*" },
+                  eagerness: "moderate"
+                },
+                {
+                  where: { href_matches: "/work/*" },
+                  eagerness: "moderate"
+                }
+              ]
+            })
+          }}
+        />
         <a href="#main" className="skip-link">پرش به محتوای اصلی</a>
         <GlassFilters />
         <ThemeProvider>{children}</ThemeProvider>
@@ -197,3 +215,4 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+
