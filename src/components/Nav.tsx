@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   { label: "درباره من", href: "#about", icon: "about", section: "about", preview: { title: "امیرحسین شرکائی", description: "طراح و توسعه‌دهنده وب", stat: "۰۵", statLabel: "سال تجربه" } },
 ];
 
-/* 🎨 آیکون‌های تمیزتر با گرادیان‌های ملایم و فیلترهای نوری */
+/*  آیکون‌های تمیزتر با گرادیان‌های ملایم و فیلترهای نوری */
 function NavIcon({ type }: { type: NavItem["icon"] }) {
   const defs = (
     <defs>

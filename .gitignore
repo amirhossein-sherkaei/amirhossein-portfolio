@@ -87,3 +87,10 @@ next-env.d.ts
 
 shorakaei-handoff-v2/
 shorakaei-handoff-v2.zip
+
+# AI tool artifacts
+AI_Project_Dump.txt
+_audit_backup/
+revert-backup-*/
+glass-definitive.js
+glass-multi-test.js

@@ -1,49 +1,49 @@
 /* ============================================================
    FINAL POLISH 2026 — ULTIMATE EDITION
    ────────────────────────────────────────────────────────────
-   基于 WCAG 2.2 AA/AAA、Core Web Vitals 2026、现代 CSS 特性、
-   国际化（i18n/RTL）以及性能最佳实践构建。
+    WCAG 2.2 AA/AAA、Core Web Vitals 2026、 CSS 、
+   （i18n/RTL）。
    
-   覆盖范围：
-   1. 架构层（@layer）
-   2. 零特异性重置（基于 :where()）
-   3. 现代色彩系统（oklch, color-mix, relative color）
-   4. 无障碍完成度（焦点、目标尺寸、辅助技术）
-   5. 用户偏好媒体查询（动效、对比度、透明、数据）
-   6. 现代布局（容器查询、:has()、逻辑属性）
-   7. 视图过渡与滚动驱动动画
-   8. 打印样式
-   9. 国际化与双向文本（RTL）
-   10. 微细节（选区、光标、滚动条）
-   11. 性能优化（GPU 合成、内容可见性）
-   12. 终极打磨（排版节奏、间距系统）
+   ：
+   1. （@layer）
+   2. （ :where()）
+   3. （oklch, color-mix, relative color）
+   4. （、、）
+   5. （、、、）
+   6. （、:has()、）
+   7. 
+   8. 
+   9. （RTL）
+   10. （、、）
+   11. （GPU 、）
+   12. （、）
    ============================================================ */
 
 /* ═══════════════════════════════════════════════════════════
-   1. 架构层 — 显式级联顺序
+   1.  — 
    ────────────────────────────────────────────────────────────
-   使用 @layer 定义明确的优先级，彻底告别 !important 和特异性战争[reference:0]。
-   顺序：reset → tokens → base → layout → components → utilities → overrides
+    @layer ， !important [reference:0]。
+   ：reset → tokens → base → layout → components → utilities → overrides
    ═══════════════════════════════════════════════════════════ */
 @layer reset, tokens, base, layout, components, utilities, overrides;
 
 /* ═══════════════════════════════════════════════════════════
-   2. 零特异性重置 — 基于 :where()
+   2.  —  :where()
    ────────────────────────────────────────────────────────────
-   所有规则包裹在 :where() 中，特异性为 0，确保任何自定义样式都能轻松覆盖[reference:1]。
+    :where() ， 0，[reference:1]。
    ═══════════════════════════════════════════════════════════ */
 @layer reset {
-  /* 盒模型与尺寸 */
+  /*  */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: 0 solid currentColor; /* 确保边框可见于强制颜色模式[reference:2] */
+    border: 0 solid currentColor; /* [reference:2] */
   }
 
-  /* 文档基础 */
+  /*  */
   html {
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -53,12 +53,12 @@
     font-kerning: normal;
     font-variant-ligatures: common-ligatures contextual;
     font-synthesis: none;
-    scrollbar-gutter: stable; /* 防止滚动条出现/消失时的布局抖动[reference:3] */
-    overflow-x: clip; /* 兼容 position: sticky 的水平安全裁剪[reference:4] */
+    scrollbar-gutter: stable; /* /[reference:3] */
+    overflow-x: clip; /*  position: sticky [reference:4] */
     tab-size: 2;
   }
 
-  /* 正文 */
+  /*  */
   body {
     min-height: 100svh;
     line-height: 1.5;
@@ -66,14 +66,14 @@
     overflow-x: hidden;
   }
 
-  /* 媒体元素 */
+  /*  */
   :where(img, picture, video, canvas, svg) {
     display: block;
     max-inline-size: 100%;
     max-block-size: 100%;
   }
 
-  /* 表单元素 */
+  /*  */
   :where(input, button, textarea, select) {
     font: inherit;
     color: inherit;
@@ -84,7 +84,7 @@
     -webkit-appearance: none;
   }
 
-  /* 按钮和链接 */
+  /*  */
   :where(button, [role="button"]) {
     cursor: pointer;
     background: none;
@@ -96,43 +96,43 @@
     text-decoration: none;
   }
 
-  /* 列表 */
+  /*  */
   :where(ul, ol) {
     list-style: none;
   }
 
-  /* 标题和段落 */
+  /*  */
   :where(h1, h2, h3, h4, h5, h6, p) {
     font-size: inherit;
     font-weight: inherit;
-    text-wrap: balance; /* 标题自动平衡 */
+    text-wrap: balance; /*  */
   }
 
   :where(p) {
-    text-wrap: pretty; /* 段落避免孤行 */
+    text-wrap: pretty; /*  */
   }
 
-  /* 表格 */
+  /*  */
   :where(table) {
     border-collapse: collapse;
     border-spacing: 0;
     text-indent: 0;
   }
 
-  /* 代码 */
+  /*  */
   :where(pre, code, kbd, samp) {
     font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
     font-size: 0.9em;
-    direction: ltr; /* 代码始终 LTR */
+    direction: ltr; /*  LTR */
     unicode-bidi: isolate;
   }
 
-  /* 引用 */
+  /*  */
   :where(blockquote, q) {
     quotes: none;
   }
 
-  /* 细节/摘要 */
+  /* / */
   :where(details) {
     display: block;
   }
@@ -151,7 +151,7 @@
     content: "";
   }
 
-  /* 强制颜色模式下的无障碍基础 */
+  /*  */
   @media (forced-colors: active) {
     :where(button, input, textarea, select, a, [role="button"]) {
       border: 1px solid ButtonText;
@@ -163,14 +163,14 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   3. 设计令牌层
+   3. 
    ────────────────────────────────────────────────────────────
-   语义化令牌，与现代色彩空间结合，支持无缝主题切换[reference:5]。
+   ，，[reference:5]。
    ═══════════════════════════════════════════════════════════ */
 @layer tokens {
   :root {
-    /* ─── 色彩空间基础（OKLCH 提供感知均匀性）[reference:6] ─── */
-    --accent: oklch(0.62 0.22 40);   /* 强烈橙红色 */
+    /* ─── （OKLCH ）[reference:6] ─── */
+    --accent: oklch(0.62 0.22 40);   /*  */
     --accent-2: oklch(0.72 0.20 55);
     --accent-soft: oklch(0.88 0.08 55);
     --accent-tint: color-mix(in oklch, var(--accent) 12%, transparent);
@@ -194,7 +194,7 @@
     --success: oklch(0.55 0.15 160);
     --danger: oklch(0.55 0.22 25);
 
-    /* ─── 语义令牌（组件只引用这些） ─── */
+    /* ─── （） ─── */
     --color-bg: var(--paper);
     --color-text: var(--ink-2);
     --color-text-strong: var(--ink);
@@ -203,7 +203,7 @@
     --color-surface: var(--surface);
     --color-accent: var(--accent);
 
-    /* ─── 间距系统（4px 基准，与流式单位结合） ─── */
+    /* ─── （4px ，） ─── */
     --space-1: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
     --space-2: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
     --space-3: clamp(0.75rem, 0.6rem + 0.75vw, 1.5rem);
@@ -213,7 +213,7 @@
     --space-7: clamp(3rem, 2.4rem + 3vw, 6rem);
     --space-8: clamp(4rem, 3.2rem + 4vw, 8rem);
 
-    /* ─── 圆角系统 ─── */
+    /* ───  ─── */
     --radius-xs: 4px;
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -222,11 +222,11 @@
     --radius-2xl: 32px;
     --radius-full: 9999px;
 
-    /* ─── 字体系统 ─── */
+    /* ───  ─── */
     --font-sans: var(--font-vazirmatn, system-ui), -apple-system, "Segoe UI", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
 
-    /* ─── 现代缓动曲线（2026） ─── */
+    /* ─── （2026） ─── */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -234,29 +234,29 @@
     --ease-spring-soft: cubic-bezier(0.34, 1.3, 0.64, 1);
     --ease-spring-bold: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    /* ─── 时长 ─── */
+    /* ───  ─── */
     --dur-fast: 160ms;
     --dur-normal: 240ms;
     --dur-slow: 400ms;
     --dur-slower: 640ms;
 
-    /* ─── 阅读宽度 ─── */
+    /* ───  ─── */
     --measure: 65ch;
     --measure-narrow: 50ch;
     --measure-wide: 80ch;
 
-    /* ─── 布局 ─── */
+    /* ───  ─── */
     --container: 1280px;
     --container-narrow: 780px;
 
-    /* ─── 阴影 ─── */
+    /* ───  ─── */
     --shadow-sm: 0 1px 2px -1px oklch(0.15 0.02 80 / 0.06);
     --shadow-md: 0 4px 12px -4px oklch(0.15 0.02 80 / 0.1);
     --shadow-lg: 0 12px 32px -12px oklch(0.15 0.02 80 / 0.18);
     --shadow-xl: 0 24px 64px -24px oklch(0.15 0.02 80 / 0.24);
     --shadow-accent: 0 8px 24px -8px var(--accent-glow);
 
-    /* ─── 强制颜色模式下的系统颜色回退[reference:7] ─── */
+    /* ─── [reference:7] ─── */
     --sys-canvas: Canvas;
     --sys-canvas-text: CanvasText;
     --sys-button-text: ButtonText;
@@ -264,7 +264,7 @@
     --sys-highlight: Highlight;
   }
 
-  /* ─── 暗色主题（OKLCH 色彩空间重映射） ─── */
+  /* ─── （OKLCH ） ─── */
   [data-theme="dark"] {
     --ink: oklch(0.95 0.01 80);
     --ink-2: oklch(0.78 0.01 80);
@@ -295,38 +295,38 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   4. 现代色彩函数 — 动态与对比
+   4.  — 
    ────────────────────────────────────────────────────────────
-   使用相对颜色语法和 color-contrast() 实现自适应对比度[reference:8]。
+    color-contrast() [reference:8]。
    ═══════════════════════════════════════════════════════════ */
 @layer base {
-  /* ─── 基于 Accent 的派生色 ─── */
+  /* ───  Accent  ─── */
   .derived-accent {
-    color: oklch(from var(--accent) l c h); /* 原始 */
-    color: oklch(from var(--accent) calc(l + 0.15) c h); /* 变亮 */
-    color: oklch(from var(--accent) calc(l - 0.15) c h); /* 变暗 */
-    color: oklch(from var(--accent) l calc(c * 0.5) h); /* 去饱和 */
+    color: oklch(from var(--accent) l c h); /*  */
+    color: oklch(from var(--accent) calc(l + 0.15) c h); /*  */
+    color: oklch(from var(--accent) calc(l - 0.15) c h); /*  */
+    color: oklch(from var(--accent) l calc(c * 0.5) h); /*  */
   }
 
-  /* ─── 自适应对比度文本（现代浏览器） ─── */
+  /* ─── （） ─── */
   @supports (color: contrast-color(red)) {
     .adaptive-text {
       color: contrast-color(var(--surface));
     }
   }
 
-  /* ─── 回退：使用 color-mix 计算亮度差 ─── */
+  /* ─── ： color-mix  ─── */
   .adaptive-text-fallback {
     color: light-dark(var(--ink), var(--paper));
   }
 
-  /* ─── 动态透明度（不依赖预定义变量） ─── */
+  /* ─── （） ─── */
   .tinted {
     background: color-mix(in oklch, var(--accent) 15%, transparent);
     border: 1px solid color-mix(in oklch, var(--accent) 30%, transparent);
   }
 
-  /* ─── 色相旋转动画（使用 @property 实现平滑插值）[reference:9] ─── */
+  /* ─── （ @property ）[reference:9] ─── */
   @property --hue-rotate {
     syntax: "<angle>";
     inherits: false;
@@ -343,12 +343,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   5. 无障碍完成度 — WCAG 2.2 AA/AAA
+   5.  — WCAG 2.2 AA/AAA
    ────────────────────────────────────────────────────────────
-   焦点、目标尺寸、辅助功能，全部到位。
+   、、，。
    ═══════════════════════════════════════════════════════════ */
 @layer base {
-  /* ─── 焦点可见性（2.4.7 Focus Visible） ─── */
+  /* ─── （2.4.7 Focus Visible） ─── */
   :where(
     a,
     button,
@@ -367,13 +367,13 @@
     transition: outline-offset var(--dur-fast) var(--ease-out-expo);
   }
 
-  /* ─── 焦点不被遮挡（2.4.11 Focus Not Obscured）[reference:10] ─── */
+  /* ─── （2.4.11 Focus Not Obscured）[reference:10] ─── */
   :where(h1, h2, h3, h4, h5, h6, [id]) {
-    scroll-margin-block-start: 6rem; /* 为粘性头部预留空间 */
+    scroll-margin-block-start: 6rem; /*  */
     scroll-margin-block-end: 2rem;
   }
 
-  /* ─── 触摸目标尺寸（2.5.8 Target Size）[reference:11] ─── */
+  /* ─── （2.5.8 Target Size）[reference:11] ─── */
   @media (pointer: coarse) {
     :where(
       button,
@@ -390,7 +390,7 @@
       min-inline-size: 44px;
     }
 
-    /* 内联文本中的链接除外 */
+    /*  */
     :where(p, li, blockquote, dd) :where(a) {
       min-block-size: auto;
       min-inline-size: auto;
@@ -399,8 +399,8 @@
     }
   }
 
-  /* ─── 拖拽替代（2.5.7 Dragging Movements）[reference:12] ─── */
-  /* 对于任何可拖拽元素，提供键盘/点击替代方案 */
+  /* ─── （2.5.7 Dragging Movements）[reference:12] ─── */
+  /* ，/ */
   [draggable="true"] {
     cursor: grab;
   }
@@ -409,14 +409,14 @@
     cursor: grabbing;
   }
 
-  /* 确保滑块有数字输入回退 */
+  /*  */
   .slider-with-fallback {
     display: flex;
     align-items: center;
     gap: var(--space-2);
   }
 
-  /* ─── 跳过链接（2.4.1 Bypass Blocks） ─── */
+  /* ─── （2.4.1 Bypass Blocks） ─── */
   .skip-link {
     position: fixed;
     inset-block-start: -100px;
@@ -439,7 +439,7 @@
     outline-offset: 3px;
   }
 
-  /* ─── 屏幕阅读器专用（1.3.1 Info and Relationships） ─── */
+  /* ─── （1.3.1 Info and Relationships） ─── */
   .sr-only {
     position: absolute !important;
     inline-size: 1px !important;
@@ -464,7 +464,7 @@
     white-space: normal !important;
   }
 
-  /* ─── ARIA 状态样式 ─── */
+  /* ─── ARIA  ─── */
   [aria-busy="true"] {
     cursor: progress;
     opacity: 0.7;
@@ -476,7 +476,7 @@
     pointer-events: none;
   }
 
-  /* ─── 减少动态效果（2.3.3 Animation from Interactions） ─── */
+  /* ─── （2.3.3 Animation from Interactions） ─── */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -501,17 +501,17 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   6. 用户偏好媒体查询 — 完整的无障碍矩阵
+   6.  — 
    ────────────────────────────────────────────────────────────
-   尊重操作系统层面的每一个用户偏好[reference:13][reference:14]。
+   [reference:13][reference:14]。
    ═══════════════════════════════════════════════════════════ */
 @layer utilities {
-  /* ─── 颜色方案偏好（自动，由主题系统处理） ─── */
+  /* ─── （，） ─── */
   :root {
     color-scheme: light dark;
   }
 
-  /* ─── 强制颜色模式（Windows 高对比度）[reference:15] ─── */
+  /* ─── （Windows ）[reference:15] ─── */
   @media (forced-colors: active) {
     * {
       forced-color-adjust: auto;
@@ -532,7 +532,7 @@
       box-shadow: none;
     }
 
-    /* 隐藏装饰性元素 */
+    /*  */
     :where(
       .hero-bg-orb,
       .hero-aperture,
@@ -546,20 +546,20 @@
       display: none !important;
     }
 
-    /* 焦点 */
+    /*  */
     :focus-visible {
       outline: 3px solid Highlight;
       outline-offset: 2px;
     }
 
-    /* 移除透明背景 */
+    /*  */
     :where(.glass, .glass-soft, .glass-strong, .nav-pill, .mbn) {
       background: Canvas !important;
       backdrop-filter: none !important;
     }
   }
 
-  /* ─── 对比度偏好：更高[reference:16] ─── */
+  /* ─── ：[reference:16] ─── */
   @media (prefers-contrast: more) {
     :root {
       --line: color-mix(in oklch, var(--ink) 35%, transparent);
@@ -587,7 +587,7 @@
     }
   }
 
-  /* ─── 对比度偏好：更低 ─── */
+  /* ─── ： ─── */
   @media (prefers-contrast: less) {
     :root {
       --line: color-mix(in oklch, var(--ink) 5%, transparent);
@@ -595,7 +595,7 @@
     }
   }
 
-  /* ─── 透明度偏好：减少 ─── */
+  /* ─── ： ─── */
   @media (prefers-reduced-transparency: reduce) {
     :where(
       .glass,
@@ -616,7 +616,7 @@
     }
   }
 
-  /* ─── 数据偏好：减少 ─── */
+  /* ─── ： ─── */
   @media (prefers-reduced-data: reduce) {
     :where(
       .hero-bg-orb,
@@ -637,22 +637,22 @@
     }
   }
 
-  /* ─── 色彩空间偏好：P3 ─── */
+  /* ─── ：P3 ─── */
   @media (color-gamut: p3) {
     :root {
-      --accent: oklch(0.62 0.24 40); /* 更鲜艳的 P3 色彩 */
+      --accent: oklch(0.62 0.24 40); /*  P3  */
     }
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   7. 现代布局 — 容器查询、:has()、逻辑属性
+   7.  — 、:has()、
    ────────────────────────────────────────────────────────────
-   组件响应父容器宽度，而非视口[reference:17][reference:18]。
-   :has() 实现父级条件样式[reference:19]。
+   ，[reference:17][reference:18]。
+   :has() [reference:19]。
    ═══════════════════════════════════════════════════════════ */
 @layer layout {
-  /* ─── 容器查询基础 ─── */
+  /* ───  ─── */
   .card,
   .work-card,
   .blog-card,
@@ -664,14 +664,14 @@
     container-name: card;
   }
 
-  /* ─── 卡片在窄容器中 ─── */
+  /* ───  ─── */
   @container card (max-width: 400px) {
     :where(.card, .work-card, .blog-card, .commitment-card) {
       padding: var(--space-2);
     }
   }
 
-  /* ─── 卡片在宽容器中 ─── */
+  /* ───  ─── */
   @container card (min-width: 600px) {
     :where(.card, .work-card, .blog-card) {
       padding: var(--space-4);
@@ -682,7 +682,7 @@
     }
   }
 
-  /* ─── :has() 条件样式 ─── */
+  /* ─── :has()  ─── */
   .form-field:has(input:focus) {
     --field-focus: 1;
   }
@@ -695,14 +695,14 @@
     --field-valid: 1;
   }
 
-  /* ─── 有图片的卡片 → 溢出隐藏 ─── */
+  /* ───  →  ─── */
   .work-card:has(img),
   .blog-card:has(img),
   .portfolio-card:has(img) {
     overflow: hidden;
   }
 
-  /* ─── 空列表容器 ─── */
+  /* ───  ─── */
   :where(ul, ol, .grid, .list):not(:has(li, .item, .card))::after {
     content: "هیچ موردی برای نمایش وجود ندارد";
     display: block;
@@ -713,7 +713,7 @@
     font-style: italic;
   }
 
-  /* ─── 逻辑属性优先（RTL 原生支持）[reference:20] ─── */
+  /* ─── （RTL ）[reference:20] ─── */
   .container {
     inline-size: min(calc(100% - var(--space-4) * 2), var(--container));
     margin-inline: auto;
@@ -724,13 +724,13 @@
     margin-inline: auto;
   }
 
-  /* ─── 网格间距使用逻辑属性 ─── */
+  /* ───  ─── */
   :where(.grid, .grid-2, .grid-3, .grid-4) {
     display: grid;
     gap: var(--space-3);
   }
 
-  /* ─── 边距使用块轴属性 ─── */
+  /* ───  ─── */
   :where(h1, h2, h3, h4, h5, h6) {
     margin-block-start: 0;
     margin-block-end: var(--space-2);
@@ -740,13 +740,13 @@
     margin-block-end: var(--space-3);
   }
 
-  /* ─── 内边距使用逻辑属性 ─── */
+  /* ───  ─── */
   :where(.button, .btn) {
     padding-block: 0.75rem;
     padding-inline: 1.5rem;
   }
 
-  /* ─── 边框使用逻辑属性 ─── */
+  /* ───  ─── */
   .callout,
   .aside,
   .note {
@@ -756,13 +756,13 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   8. 视图过渡与滚动驱动动画
+   8. 
    ────────────────────────────────────────────────────────────
-   View Transitions API 和 scroll-driven animations 是现代
-   页面过渡和滚动效果的基石[reference:21]。
+   View Transitions API  scroll-driven animations 
+   [reference:21]。
    ═══════════════════════════════════════════════════════════ */
 @layer utilities {
-  /* ─── 视图过渡（跨页面） ─── */
+  /* ─── （） ─── */
   @view-transition {
     navigation: auto;
   }
@@ -785,7 +785,7 @@
     to { opacity: 1; }
   }
 
-  /* ─── 滚动驱动动画（渐进增强） ─── */
+  /* ─── （） ─── */
   @supports (animation-timeline: view()) {
     .scroll-fade-in {
       animation: scroll-fade-in linear both;
@@ -816,7 +816,7 @@
     }
   }
 
-  /* ─── 回退：使用 IntersectionObserver（已有 .reveal 系统） ─── */
+  /* ─── ： IntersectionObserver（ .reveal ） ─── */
   @supports not (animation-timeline: view()) {
     .scroll-fade-in,
     .scroll-slide-up {
@@ -825,7 +825,7 @@
     }
   }
 
-  /* ─── 减少动态效果时的回退 ─── */
+  /* ───  ─── */
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-old(root),
     ::view-transition-new(root) {
@@ -842,9 +842,9 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   9. 打印样式
+   9. 
    ────────────────────────────────────────────────────────────
-   专业的打印输出，A4 优化，隐藏装饰性元素。
+   ，A4 ，。
    ═══════════════════════════════════════════════════════════ */
 @layer utilities {
   @media print {
@@ -853,7 +853,7 @@
       size: A4 portrait;
     }
 
-    /* ─── 隐藏非内容元素 ─── */
+    /* ───  ─── */
     :where(
       .site-nav,
       .mbn,
@@ -885,7 +885,7 @@
       display: none !important;
     }
 
-    /* ─── 基础排版 ─── */
+    /* ───  ─── */
     html,
     body {
       background: #fff !important;
@@ -906,7 +906,7 @@
       widows: 3;
     }
 
-    /* ─── 链接 URL 显示 ─── */
+    /* ───  URL  ─── */
     :where(a) {
       color: #000 !important;
       text-decoration: underline !important;
@@ -919,7 +919,7 @@
       word-break: break-all;
     }
 
-    /* ─── 按钮作为文本 ─── */
+    /* ───  ─── */
     :where(.button, .btn) {
       border: 1px solid #000 !important;
       background: transparent !important;
@@ -927,7 +927,7 @@
       box-shadow: none !important;
     }
 
-    /* ─── 卡片和面板 ─── */
+    /* ───  ─── */
     :where(.card, .panel, .work-card, .blog-card, .commitment-card) {
       border: 1px solid #ccc !important;
       box-shadow: none !important;
@@ -935,14 +935,14 @@
       break-inside: avoid;
     }
 
-    /* ─── 图片和图表 ─── */
+    /* ───  ─── */
     :where(img, figure) {
       max-inline-size: 100% !important;
       page-break-inside: avoid;
       break-inside: avoid;
     }
 
-    /* ─── 隐藏动画和过渡 ─── */
+    /* ───  ─── */
     * {
       animation: none !important;
       transition: none !important;
@@ -951,24 +951,24 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   10. 国际化与双向文本（RTL 最佳实践）
+   10. （RTL ）
    ────────────────────────────────────────────────────────────
-   波斯语文本永远不应应用 letter-spacing[reference:22]。
-   代码和 LTR 内容使用 bidi isolate[reference:23]。
+    letter-spacing[reference:22]。
+    LTR  bidi isolate[reference:23]。
    ═══════════════════════════════════════════════════════════ */
 @layer base {
-  /* ─── 波斯语文本：无 letter-spacing ─── */
+  /* ─── ： letter-spacing ─── */
   :where([lang="fa"], [lang="ar"], [lang="ur"], [dir="rtl"]) {
     letter-spacing: 0;
     word-spacing: normal;
   }
 
-  /* ─── 拉丁语文本：可以使用 letter-spacing ─── */
+  /* ─── ： letter-spacing ─── */
   :where([lang="en"], [lang="la"]) {
     letter-spacing: normal;
   }
 
-  /* ─── 混合方向内容 ─── */
+  /* ───  ─── */
   .ltr-content {
     direction: ltr;
     unicode-bidi: isolate;
@@ -979,7 +979,7 @@
     unicode-bidi: isolate;
   }
 
-  /* ─── 数字：波斯语数字使用 tabular-nums ─── */
+  /* ─── ： tabular-nums ─── */
   .persian-nums {
     font-variant-numeric: tabular-nums;
     direction: ltr;
@@ -987,45 +987,45 @@
     font-feature-settings: "tnum" 1;
   }
 
-  /* ─── 拉丁数字 ─── */
+  /* ───  ─── */
   .latin-nums {
     direction: ltr;
     unicode-bidi: isolate;
     font-variant-numeric: tabular-nums lining-nums;
   }
 
-  /* ─── 代码块始终 LTR ─── */
+  /* ───  LTR ─── */
   :where(pre, code, kbd, samp) {
     direction: ltr !important;
     unicode-bidi: isolate !important;
     text-align: left !important;
   }
 
-  /* ─── 表单输入：根据内容方向自动切换 ─── */
+  /* ─── ： ─── */
   :where(input[type="email"], input[type="url"], input[type="tel"], input[type="number"]) {
     direction: ltr;
     text-align: start;
   }
 
-  /* ─── 双向文本的容器 ─── */
+  /* ───  ─── */
   .bidi-container {
     unicode-bidi: plaintext;
   }
 
-  /* ─── 波斯语 Typography 优化 ─── */
+  /* ───  Typography  ─── */
   :where([lang="fa"]) :where(p, li, dd, blockquote) {
-    line-height: 1.85; /* 波斯语需要更高的行高 */
+    line-height: 1.85; /*  */
     text-wrap: pretty;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   11. 微细节 — 选区、光标、滚动条
+   11.  — 、、
    ────────────────────────────────────────────────────────────
-   这些细节用户不会注意到，但缺少它们会感觉“不对”。
+   ，“”。
    ═══════════════════════════════════════════════════════════ */
 @layer base {
-  /* ─── 选区 ─── */
+  /* ───  ─── */
   ::selection {
     background: color-mix(in oklch, var(--accent) 85%, transparent);
     color: #fff;
@@ -1037,12 +1037,12 @@
     color: #fff;
   }
 
-  /* ─── 光标 ─── */
+  /* ───  ─── */
   :where(input, textarea, [contenteditable]) {
     caret-color: var(--accent);
   }
 
-  /* ─── 滚动条（WebKit） ─── */
+  /* ─── （WebKit） ─── */
   ::-webkit-scrollbar {
     inline-size: 10px;
     block-size: 10px;
@@ -1072,13 +1072,13 @@
     background: transparent;
   }
 
-  /* ─── 滚动条（Firefox） ─── */
+  /* ─── （Firefox） ─── */
   * {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in oklch, var(--accent) 55%, transparent) transparent;
   }
 
-  /* ─── 图片渲染优化 ─── */
+  /* ───  ─── */
   img {
     max-inline-size: 100%;
     block-size: auto;
@@ -1095,14 +1095,14 @@
     opacity: 0.8;
   }
 
-  /* ─── 禁用状态 ─── */
+  /* ───  ─── */
   :where(button, input, textarea, select):disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
   }
 
-  /* ─── 自动填充修复（Chrome 黄色背景） ─── */
+  /* ─── （Chrome ） ─── */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -1116,25 +1116,25 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  /* ─── 暗色模式自动填充 ─── */
+  /* ───  ─── */
   [data-theme="dark"] input:-webkit-autofill,
   [data-theme="dark"] textarea:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px var(--surface) inset;
     -webkit-text-fill-color: var(--ink);
   }
 
-  /* ─── 锚点滚动 ─── */
+  /* ───  ─── */
   :target {
     scroll-margin-block-start: 6rem;
   }
 
-  /* ─── 触摸优化 ─── */
+  /* ───  ─── */
   :where(button, a, [role="button"], input, textarea, select) {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ─── 内容可见性（性能优化） ─── */
+  /* ─── （） ─── */
   :where(section, footer, .section) {
     content-visibility: auto;
     contain-intrinsic-size: auto 800px;
@@ -1146,12 +1146,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   12. 性能优化 — GPU 合成与层管理
+   12.  — GPU 
    ────────────────────────────────────────────────────────────
-   确保所有动画使用 transform 和 opacity（仅合成层）。
+    transform  opacity（）。
    ═══════════════════════════════════════════════════════════ */
 @layer utilities {
-  /* ─── 合成层提升 ─── */
+  /* ───  ─── */
   :where(
     .hero-bg-orb,
     .hero-aperture,
@@ -1166,21 +1166,21 @@
     backface-visibility: hidden;
   }
 
-  /* ─── 仅动画 transform 和 opacity ─── */
+  /* ───  transform  opacity ─── */
   :where(.button, .btn, a, .card, .work-card, .blog-card) {
     transition-property: transform, opacity, box-shadow, background-color, border-color, color;
     transition-duration: var(--dur-fast);
     transition-timing-function: var(--ease-out-expo);
   }
 
-  /* ─── 布局包容性（桌面端） ─── */
+  /* ─── （） ─── */
   @media (min-width: 901px) {
     :where(.services-section, .portfolio-section, .about-section, .why-section) {
       contain: layout style paint;
     }
   }
 
-  /* ─── 移动端：禁用重型效果 ─── */
+  /* ─── ： ─── */
   @media (max-width: 720px) {
     :where(
       .hero-bg-orb-2,
@@ -1210,7 +1210,7 @@
     }
   }
 
-  /* ─── 标签页隐藏时暂停动画 ─── */
+  /* ───  ─── */
   html[data-tab-hidden="true"] *,
   html[data-tab-hidden="true"] *::before,
   html[data-tab-hidden="true"] *::after {
@@ -1219,12 +1219,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   13. 终极打磨 — 排版节奏与间距系统
+   13.  — 
    ────────────────────────────────────────────────────────────
-   统一的垂直节奏，基于 8px 基线网格的间距系统。
+   ， 8px 。
    ═══════════════════════════════════════════════════════════ */
 @layer utilities {
-  /* ─── 流式排版比例 ─── */
+  /* ───  ─── */
   :root {
     --fs-hero: clamp(2.5rem, 1rem + 7.5vw, 9rem);
     --fs-display: clamp(2rem, 1rem + 5vw, 6rem);
@@ -1238,7 +1238,7 @@
     --fs-micro: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
   }
 
-  /* ─── 行高 ─── */
+  /* ───  ─── */
   :root {
     --lh-hero: 1.05;
     --lh-display: 1.08;
@@ -1248,7 +1248,7 @@
     --lh-small: 1.6;
   }
 
-  /* ─── 垂直节奏 ─── */
+  /* ───  ─── */
   :where(.section, .section-compact) {
     padding-block: var(--space-7);
   }
@@ -1280,20 +1280,20 @@
     text-transform: uppercase;
   }
 
-  /* ─── 阅读宽度限制 ─── */
+  /* ───  ─── */
   :where(.blog-post-content, .prose, .article-body) {
     max-inline-size: var(--measure);
     margin-inline: auto;
   }
 
-  /* ─── 文本装饰优化 ─── */
+  /* ───  ─── */
   :where(a) {
     text-underline-offset: 3px;
     text-decoration-skip-ink: auto;
     text-decoration-thickness: from-font;
   }
 
-  /* ─── 强调元素 ─── */
+  /* ───  ─── */
   :where(strong, b) {
     font-weight: 700;
     color: var(--ink);
@@ -1304,7 +1304,7 @@
     color: var(--ink);
   }
 
-  /* ─── 首字下沉 ─── */
+  /* ───  ─── */
   @supports (initial-letter: 4) {
     .drop-cap::first-letter {
       initial-letter: 4;
@@ -1314,18 +1314,18 @@
     }
   }
 
-  /* ─── 悬挂标点 ─── */
+  /* ───  ─── */
   :where(blockquote, p, li) {
     hanging-punctuation: first last;
   }
 
-  /* ─── 连字符（仅长文本） ─── */
+  /* ─── （） ─── */
   :where(.blog-post-content p, .prose p) {
     hyphens: auto;
     -webkit-hyphens: auto;
   }
 
-  /* ─── 孤行寡行控制 ─── */
+  /* ───  ─── */
   :where(p, li) {
     orphans: 2;
     widows: 2;
@@ -1333,12 +1333,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   14. 覆盖层 — 最后的手段
+   14.  — 
    ────────────────────────────────────────────────────────────
-   只在极少数情况下使用。优先使用 @layer 和语义化令牌。
+   。 @layer 。
    ═══════════════════════════════════════════════════════════ */
 @layer overrides {
-  /* ─── 仅针对旧浏览器修复 ─── */
+  /* ───  ─── */
   @supports not (backdrop-filter: blur(1px)) {
     .glass,
     .glass-soft,
@@ -1350,24 +1350,24 @@
     }
   }
 
-  /* ─── 仅针对不支持 :has() 的浏览器 ─── */
+  /* ───  :has()  ─── */
   @supports not selector(:has(*)) {
     .form-field:has(input:focus) {
-      /* 回退：不应用特殊样式 */
+      /* ： */
     }
   }
 
-  /* ─── 仅针对不支持容器查询的浏览器 ─── */
+  /* ───  ─── */
   @supports not (container-type: inline-size) {
     .card,
     .work-card,
     .blog-card {
-      /* 回退到媒体查询 */
+      /*  */
     }
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   结束 — 这个文件应该永远是最后一个加载的 CSS。
-   所有样式都被组织在 @layer 中，确保级联顺序可预测。
+    —  CSS。
+    @layer ，。
    ═══════════════════════════════════════════════════════════ */

@@ -71,7 +71,7 @@ import "@/styles/chapter-rail.css";
 import "@/styles/nav-premium.css";
 
 /* 51-55 - Final polish + Editorial */
-import "@/styles/final-polish.css";
+import "@/styles/polish.css";
 import "@/styles/mobile-performance-fix.css";
 import "@/styles/editorial-structure.css";
 
@@ -79,7 +79,7 @@ import "@/styles/editorial-structure.css";
 import "@/styles/grid-overlay.css";
 
 /* 57 - ULTIMATE FINAL (Desktop Base) */
-import "@/styles/final-polish-2026.css";
+import "@/styles/polish-2026.css";
 import "@/styles/balance-turquoise-burgundy.css";
 import "@/styles/waline-custom.css";
 import "@/styles/shahkar-typography.css";
@@ -88,8 +88,8 @@ import "@/styles/liquid-glass-infinity.css";
 import "@/styles/infinity-icons.css";
 import "@/styles/chat-bubble-glass.css";
 import "@/styles/theme-smooth-fix.css";
-import "@/styles/mobile-ultimate-fix.css";
-import "@/styles/mobile-navbar-nuclear.css";
+import "@/styles/mobile-layout.css";
+import "@/styles/mobile-navbar-clean.css";
 import "@/styles/3d-material.css";
 
 /* ============================================================
@@ -106,8 +106,8 @@ import "@/styles/view-transitions.css";
 import "@/styles/infinity-pwa-cro.css";
 import "@/styles/mdx-infinity.css";
 import "@/styles/infinity-search.css";
-import "@/styles/infinity-perf-final.css";
-import "@/styles/infinity-master-polish.css";
+import "@/styles/infinity-performance.css";
+import "@/styles/infinity-typography.css";
 import "@/styles/infinity-home-speed.css";
 
 /* Components */
