@@ -13,7 +13,6 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     try {
@@ -37,7 +36,6 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
       const y = window.scrollY;
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) setProgress((y / totalHeight) * 100);
-      setIsVisible(y > 200);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
@@ -68,7 +66,7 @@ export default function ArticleGlassNav({ title, slug, toc = [] }: Props) {
 
   return (
     <>
-      <div className={`article-glass-nav${isVisible ? " is-visible" : ""}`} aria-label="ابزارهای مقاله" aria-hidden={!isVisible}>
+      <div className="article-glass-nav" aria-label="ابزارهای مقاله">
         <div className="nav-progress-fill" style={{ width: `${progress}%` }} />
         <Link href="/blog" className="article-glass-nav-btn" aria-label="بازگشت به بلاگ">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
