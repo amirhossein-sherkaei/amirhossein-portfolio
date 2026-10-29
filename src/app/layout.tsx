@@ -122,6 +122,7 @@ import SearchCommand from "@/components/SearchCommand";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
+import { SpeculationRules } from '@/components/SpeculationRules';
 
 const estedad = localFont({
   src: "../../public/fonts/Estedad-Variable.woff2",
@@ -194,20 +195,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SearchCommand />
         <Analytics />
         <SpeedInsights />
-              <script
-          type="speculationrules"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              prerender: [
-                { where: { href_matches: "/blog/*" }, eagerness: "moderate" },
-                { where: { href_matches: "/work/*" }, eagerness: "moderate" }
-              ]
-            })
-          }}
-        />
+              
+              <SpeculationRules />
       </body>
     </html>
   );
 }
-
 
