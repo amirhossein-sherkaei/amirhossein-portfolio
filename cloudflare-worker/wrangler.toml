@@ -1,7 +1,6 @@
-# ساخته‌شده توسط Fix-AutoImage.ps1 — ویرایش دستی امن است
 name = "shorakaei-visual-intelligence"
 main = "src/index.ts"
-compatibility_date = "2026-10-01"
+compatibility_date = "2026-10-29"
 workers_dev = true
 preview_urls = true
 
