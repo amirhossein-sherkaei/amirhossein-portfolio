@@ -1,5 +1,5 @@
 /**
- * Shorakaei Visual Intelligence - Ultra Relevant & Consistent Style
+ * Shorakaei Visual Intelligence - Ultra Relevant & Branded Colors
  */
 interface Env {
   AI: { run(model: string, input: Record<string, unknown>): Promise<any> };
@@ -210,7 +210,7 @@ function sanitizeConcept(raw: string): string {
   return t.replace(/\s+/g, " ").trim().slice(0, 300);
 }
 
-// ─── Flux Prompt (Consistent Brand Template) ───
+// ─── Flux Prompt (Consistent Brand Template & Dominant Colors) ───
 function buildFinalPrompt(article: ArticleSnapshot, kind: "cover" | "inline", concept: string, section?: string): string {
   const title = truncatePromptText(article.title, 140);
   const ratio = kind === "cover" ? "wide landscape 16:9, cinematic framing" : "balanced 4:3, focused on the section";
@@ -218,9 +218,9 @@ function buildFinalPrompt(article: ArticleSnapshot, kind: "cover" | "inline", co
     "A premium, high-end editorial illustration for a modern tech blog.",
     `Topic: ${title}.`,
     section ? `Section: ${section}.` : "",
-    `Scene: ${concept}`, // صحنه دقیق تولید شده توسط LLM
+    `Scene: ${concept}`,
     "UNIFIED ART DIRECTION: Photorealistic 3D render, cinematic studio lighting, Unreal Engine 5 style, ray tracing, 8k resolution, extremely detailed.",
-    "COLOR PALETTE: Deep teal (#0d7377), warm ivory (#f5f5f0), and subtle gold accents. Harmonious with a modern premium corporate website.",
+    "DOMINANT COLOR PALETTE: The image MUST be heavily dominated by Deep Teal (#0d7377) and rich Burgundy (#8b3a4a). These two colors must be the primary focus, with warm ivory (#f5f5f0) only as a subtle background accent to create contrast.",
     "COMPOSITION: Clean, minimalist, elegant, professional.",
     "NEGATIVE PROMPT: No text, no typography, no watermarks, no UI elements, no abstract glowing shapes, no geometric patterns.",
     `Format: ${ratio}.`
@@ -245,7 +245,7 @@ function truncatePromptText(v: string, max = 150): string { return v.replace(/[\
 
 async function generateImage(env: Env, prompt: string): Promise<Uint8Array> {
   const model = env.IMAGE_MODEL || DEFAULT_IMAGE_MODEL;
-  const res = await env.AI.run(model, { prompt, steps: 6 }); // کیفیت بالا
+  const res = await env.AI.run(model, { prompt, steps: 6 }); 
   const b64 = typeof res?.image === "string" ? res.image : "";
   if (!b64) throw new Error("No image data.");
   const raw = atob(b64); const bytes = new Uint8Array(raw.length);
