@@ -1,5 +1,6 @@
 /**
- * Shorakaei Visual Intelligence - Ultra Relevant & Branded Colors
+ * Shorakaei Visual Intelligence - Infinite Relevance Engine
+ * JSON-structured prompts + relevance scoring + site-wide assets
  */
 interface Env {
   AI: { run(model: string, input: Record<string, unknown>): Promise<any> };
@@ -19,8 +20,10 @@ interface ArticleSnapshot {
 }
 
 interface VisualAsset {
-  kind: "cover" | "inline"; key: string; alt: string;
+  kind: "cover" | "inline" | "hero" | "service" | "process" | "og" | "category";
+  key: string; alt: string;
   heading?: string; headingIndex?: number; caption?: string;
+  meta?: Record<string, string>;
 }
 
 interface ArticleManifest {
@@ -37,6 +40,24 @@ const STATE_PREFIX = "system/";
 const BRAND = "Shorakaei Visual Intelligence";
 const MAX_SITEMAP_FILES = 12;
 const MAX_PAGE_CHARS = 180_000;
+
+// ─── Site-wide visual assets ───
+const SITE_ASSETS = [
+  { kind: "hero", slug: "home-hero", title: "طراحی سایت اختصاصی برای دیده شدن", desc: "وب‌سایت‌هایی سریع، ریسپانسیو و متناسب با هویت برند" },
+  { kind: "service", slug: "svc-web", title: "وب‌سایت اختصاصی", desc: "طراحی و توسعه وب‌سایت اختصاصی بدون قالب آماده" },
+  { kind: "service", slug: "svc-creative", title: "توسعه خلاق", desc: "ایده‌های نوآورانه برای حضور دیجیتال متمایز" },
+  { kind: "service", slug: "svc-visual", title: "تصاویر هوشمند", desc: "تولید تصاویر با هوش مصنوعی متناسب با برند" },
+  { kind: "service", slug: "svc-identity", title: "هویت بصری", desc: "طراحی هویت بصری منسجم و حرفه‌ای" },
+  { kind: "process", slug: "prc-discovery", title: "کشف", desc: "گفت‌وگو و کشف هدف، مخاطب و رقبا" },
+  { kind: "process", slug: "prc-design", title: "طراحی", desc: "ساختار، جریان کاربر و طراحی بصری" },
+  { kind: "process", slug: "prc-dev", title: "توسعه", desc: "پیاده‌سازی با Next.js و React" },
+  { kind: "process", slug: "prc-deliver", title: "تحویل", desc: "انتشار، آموزش و پشتیبانی" },
+  { kind: "og", slug: "og-home", title: "امیرحسین شرکائی | طراحی سایت اختصاصی", desc: "وب‌سایت‌هایی سریع، ریسپانسیو و متناسب با هویت برند" },
+  { kind: "category", slug: "cat-design", title: "طراحی وب", desc: "مقالات طراحی سایت و رابط کاربری" },
+  { kind: "category", slug: "cat-seo", title: "سئو", desc: "مقالات بهینه‌سازی برای موتور جستجو" },
+  { kind: "category", slug: "cat-ai", title: "هوش مصنوعی", desc: "مقالات هوش مصنوعی و کاربردهای آن" },
+  { kind: "category", slug: "cat-ux", title: "تجربه کاربری", desc: "مقالات UX و تجربه کاربری" },
+];
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -73,20 +94,20 @@ export default {
       }
       if (url.pathname === "/admin/run" && request.method === "POST") {
         if (!isAdmin(request, env)) return json({ error: "Unauthorized" }, 401, cors);
-        const body = await request.json().catch(() => ({})) as { limit?: number; force?: boolean; slugs?: string[] };
+        const body = await request.json().catch(() => ({})) as { limit?: number; force?: boolean; slugs?: string[]; siteAssets?: boolean };
         const limit = clampInt(body.limit ?? 1, 1, 3);
         const force = body.force === true;
         const slugs = Array.isArray(body.slugs) ? body.slugs.filter((s) => typeof s === "string").map((s) => safeSlug(s)).filter(Boolean) : [];
-        const job = { state: "queued", startedAt: new Date().toISOString(), limit, force, slugs, message: "Queued." };
+        const job = { state: "queued", startedAt: new Date().toISOString(), limit, force, slugs, siteAssets: body.siteAssets === true, message: "Queued." };
         await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify(job));
-        ctx.waitUntil(runSweep(env, limit, force, "manual", slugs));
+        ctx.waitUntil(runSweep(env, limit, force, "manual", slugs, body.siteAssets === true));
         return json({ ok: true, ...job }, 202, cors);
       }
       return json({ error: "Not found" }, 404, cors);
     } catch (error) { return json({ error: error instanceof Error ? error.message : "Error" }, 500, cors); }
   },
   async scheduled(_c: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    ctx.waitUntil(runSweep(env, 1, false, "cron"));
+    ctx.waitUntil(runSweep(env, 1, false, "cron", undefined, false));
   },
 };
 
@@ -125,58 +146,22 @@ async function saveManifest(env: Env, m: ArticleManifest): Promise<void> {
 }
 async function getManifest(env: Env, slug: string): Promise<ArticleManifest | null> { const v = await env.VISUAL_ASSETS.get(manifestKey(slug), "json"); return v ? (v as ArticleManifest) : null; }
 
-async function getSitemapArticleUrls(siteOrigin: string): Promise<string[]> {
-  const origin = normalizeOrigin(siteOrigin); const visited = new Set<string>(); const urls = new Set<string>(); const queue = [`${origin}/sitemap.xml`];
-  for (let r = 0; queue.length && r < MAX_SITEMAP_FILES; r++) {
-    const su = queue.shift()!; if (visited.has(su)) continue; visited.add(su);
-    let res: Response; try { res = await fetch(su, { headers: { "User-Agent": "SVI/1.0" } }); } catch { continue; }
-    if (!res.ok) continue; const xml = (await res.text()).slice(0, 2000000);
-    for (const loc of [...xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)].map((m) => decodeXml(m[1].trim()))) {
-      let p: URL; try { p = new URL(loc); } catch { continue; }
-      if (!isAllowedSiteUrl(p, origin)) continue;
-      if (/\.xml(?:\.gz)?$/i.test(p.pathname) && /sitemap/i.test(p.pathname)) { if (!visited.has(p.href) && queue.length < MAX_SITEMAP_FILES) queue.push(p.href); }
-      else if (isBlogArticlePath(p.pathname)) { p.search = ""; p.hash = ""; urls.add(p.href); }
-    }
-  }
-  return [...urls].sort((a, b) => a.localeCompare(b));
-}
-function isAllowedSiteUrl(u: URL, o: string): boolean { const c = new URL(o); if (u.protocol !== "https:" && u.protocol !== "http:") return false; return u.hostname.replace(/^www\./, "") === c.hostname.replace(/^www\./, ""); }
-function isBlogArticlePath(p: string): boolean { const c = p.replace(/\/+$/, ""); if (!c.startsWith("/blog/") || c === "/blog") return false; if (/^\/blog\/(category|tag|page|author|feed)(\/|$)/i.test(c)) return false; if (/\.(xml|json|jpg|jpeg|png|webp|svg|pdf)$/i.test(c)) return false; return c.split("/").filter(Boolean).length >= 2; }
-function decodeXml(v: string): string { return v.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'"); }
-function slugFromUrl(u: string): string { const p = new URL(u).pathname.split("/").filter(Boolean); return p[p.length - 1] || ""; }
-
-async function extractArticle(url: string): Promise<ArticleSnapshot | null> {
-  const res = await fetch(url, { headers: { "User-Agent": "SVI/1.0", "Accept": "text/html" } });
-  if (!res.ok) return null; const html = (await res.text()).slice(0, MAX_PAGE_CHARS);
-  if (!/<html[\s>]/i.test(html)) return null;
-  const ah = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1] || html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] || html;
-  const title = extractMeta(html, "property", "og:title") || extractTagText(html, "h1") || extractTagText(html, "title");
-  const desc = extractMeta(html, "name", "description") || extractMeta(html, "property", "og:description");
-  if (!title) return null;
-  const clean = ah.replace(/<(script|style|noscript|svg|nav|footer|header|aside)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
-  const headings = [...clean.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)].map((m, i) => ({ text: cleanText(m[1]).slice(0, 180), index: i })).filter((h) => h.text.length > 3);
-  const paras = [...clean.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map((m) => cleanText(m[1])).filter((t) => t.length > 45).slice(0, 60);
-  const sample = paras.slice(0, 5).join(" ").slice(0, 1200);
-  const excerpt = paras.slice(0, 4).join(" ").slice(0, 1800) || cleanText(clean).slice(0, 1800);
-  const sig = paras.join(" ").slice(0, 14000);
-  const slug = slugFromUrl(url);
-  const fp = await sha256([url, title, desc, headings.map((h) => h.text).join("|"), sig].join("\n"));
-  return { url, slug, title: title.slice(0, 180), description: (desc || excerpt).slice(0, 500), headings, excerpt, contentSample: sample, fingerprint: fp };
-}
-function extractMeta(h: string, a: string, n: string): string { const e = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); const rA = new RegExp(`<meta\\b(?=[^>]*\\b${a}=["']${e}["'])(?=[^>]*\\bcontent=["']([^"']*)["'])[^>]*>`, "i"); const rB = new RegExp(`<meta\\b(?=[^>]*\\bcontent=["']([^"']*)["'])(?=[^>]*\\b${a}=["']${e}["'])[^>]*>`, "i"); const m = h.match(rA) || h.match(rB); return m ? cleanText(m[1]) : ""; }
-function extractTagText(h: string, t: string): string { const m = h.match(new RegExp(`<${t}\\b[^>]*>([\\s\\S]*?)<\\/${t}>`, "i")); return m ? cleanText(m[1]) : ""; }
-function cleanText(v: string): string { return decodeEntities(v.replace(/<[^>]+>/g, " ").replace(/<!--[\s\S]*?-->/g, " ")).replace(/[\u200b\u200c\u200d]/g, " ").replace(/\s+/g, " ").trim(); }
-function decodeEntities(v: string): string { return v.replace(/&nbsp;|&#160;/gi, " ").replace(/&amp;/gi, "&").replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&#(\d+);/g, (_m, c) => String.fromCodePoint(Math.min(0x10ffff, Number(c)))).replace(/&#x([\da-f]+);/gi, (_m, c) => String.fromCodePoint(Math.min(0x10ffff, parseInt(c, 16)))); }
-async function sha256(input: string): Promise<string> { const d = new TextEncoder().encode(input); const h = await crypto.subtle.digest("SHA-256", d); return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join(""); }
-
-function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: number): Array<{ text: string; index: number }> {
-  if (headings.length < 2 || maxInline < 1) return [];
-  const desired = headings.length >= 5 ? Math.min(2, maxInline) : 1;
-  const chosen: Array<{ text: string; index: number }> = [];
-  for (let n = 1; n <= desired; n++) { const t = Math.round((n * (headings.length - 1)) / (desired + 1)); const item = headings[t]; if (item && !chosen.some((c) => c.index === item.index)) chosen.push(item); }
-  return chosen;
+// ─── JSON-structured prompt builder ───
+function buildJsonPrompt(article: ArticleSnapshot, kind: "cover" | "inline", concept: string, section?: string): string {
+  const ratio = kind === "cover" ? "16:9" : "4:3";
+  return JSON.stringify({
+    subject: concept,
+    action: article.title,
+    environment: section ? `Section: ${section}` : "article context",
+    composition: `${ratio} aspect ratio, cinematic framing, rule of thirds, negative space on one side`,
+    lighting: "dramatic cinematic side lighting, deep soft shadows, subtle rim light",
+    color_palette: "dominant deep teal #0d7377 and rich burgundy #8b3a4a, warm ivory #f5f5f0 only as background accent",
+    style: "photorealistic 3D render, Unreal Engine 5, ray tracing, 8k resolution, extremely detailed, premium editorial",
+    constraints: "NO text, NO typography, NO watermarks, NO UI elements, NO abstract glowing shapes, NO geometric patterns",
+  });
 }
 
+// ─── Concept generation with semantic depth ───
 async function generateConceptWithLLM(env: Env, article: ArticleSnapshot, section?: string): Promise<string> {
   const model = env.CONCEPT_MODEL || DEFAULT_CONCEPT_MODEL;
   const sec = section ? `\nSection: "${section}".` : "";
@@ -209,20 +194,39 @@ function sanitizeConcept(raw: string): string {
   return t.replace(/\s+/g, " ").trim().slice(0, 300);
 }
 
-function buildFinalPrompt(article: ArticleSnapshot, kind: "cover" | "inline", concept: string, section?: string): string {
-  const title = truncatePromptText(article.title, 140);
-  const ratio = kind === "cover" ? "wide landscape 16:9, cinematic framing" : "balanced 4:3, focused on the section";
-  return [
-    "A premium, high-end editorial illustration for a modern tech blog.",
-    `Topic: ${title}.`,
-    section ? `Section: ${section}.` : "",
-    `Scene: ${concept}`,
-    "UNIFIED ART DIRECTION: Photorealistic 3D render, cinematic studio lighting, Unreal Engine 5 style, ray tracing, 8k resolution, extremely detailed.",
-    "DOMINANT COLOR PALETTE: The image MUST be heavily dominated by Deep Teal (#0d7377) and rich Burgundy (#8b3a4a). These two colors must be the primary focus, with warm ivory (#f5f5f0) only as a subtle background accent to create contrast.",
-    "COMPOSITION: Clean, minimalist, elegant, professional.",
-    "NEGATIVE PROMPT: No text, no typography, no watermarks, no UI elements, no abstract glowing shapes, no geometric patterns.",
-    `Format: ${ratio}.`
-  ].filter(Boolean).join(" ").slice(0, 2000);
+// ─── Relevance scoring ───
+async function scoreRelevance(env: Env, article: ArticleSnapshot, concept: string): Promise<number> {
+  const model = env.CONCEPT_MODEL || DEFAULT_CONCEPT_MODEL;
+  const sys = "You are a strict relevance judge. Given an article's title and a visual scene description, rate how relevant the scene is to the article's core message on a scale of 1 to 10. Reply with ONLY a single integer number.";
+  const usr = `Article title: ${article.title}\nArticle description: ${article.description}\nVisual scene: ${concept}\nRelevance score (1-10):`;
+  try {
+    const res = await env.AI.run(model, { messages: [{ role: "system", content: sys }, { role: "user", content: usr }], max_tokens: 5, temperature: 0.1 });
+    const raw = (typeof res?.response === "string" && res.response) || (typeof res?.choices?.[0]?.message?.content === "string" && res.choices[0].message.content) || "";
+    const num = parseInt(raw.replace(/\D/g, ""), 10);
+    return Number.isFinite(num) ? Math.max(1, Math.min(10, num)) : 5;
+  } catch { return 5; }
+}
+
+// ─── Site asset generation ───
+async function generateSiteAsset(env: Env, asset: { kind: string; slug: string; title: string; desc: string }): Promise<void> {
+  const articleLike: ArticleSnapshot = {
+    url: `${normalizeOrigin(env.SITE_ORIGIN || "https://shorakaei.ir")}/${asset.kind}/${asset.slug}`,
+    slug: asset.slug, title: asset.title, description: asset.desc,
+    headings: [], excerpt: asset.desc, contentSample: asset.desc, fingerprint: await sha256(asset.slug + asset.title),
+  };
+  const concept = await generateConceptWithLLM(env, articleLike);
+  const prompt = buildJsonPrompt(articleLike, "cover", concept);
+  const key = `images/site/${asset.kind}/${asset.slug}.jpg`;
+  const bytes = await generateImage(env, prompt);
+  await env.VISUAL_ASSETS.put(key, bytes);
+  // Store a simple manifest for site assets
+  const manifest: ArticleManifest = {
+    version: 1, slug: asset.slug, canonicalUrl: articleLike.url, title: asset.title,
+    description: asset.desc, fingerprint: articleLike.fingerprint, generatedAt: new Date().toISOString(),
+    images: [{ kind: asset.kind as any, key, alt: asset.title.slice(0, 180) }],
+    concept,
+  };
+  await saveManifest(env, manifest);
 }
 
 function visualConcept(article: ArticleSnapshot, heading?: string): string {
@@ -243,7 +247,7 @@ function truncatePromptText(v: string, max = 150): string { return v.replace(/[\
 
 async function generateImage(env: Env, prompt: string): Promise<Uint8Array> {
   const model = env.IMAGE_MODEL || DEFAULT_IMAGE_MODEL;
-  const res = await env.AI.run(model, { prompt, steps: 6 }); 
+  const res = await env.AI.run(model, { prompt, steps: 6 });
   const b64 = typeof res?.image === "string" ? res.image : "";
   if (!b64) throw new Error("No image data.");
   const raw = atob(b64); const bytes = new Uint8Array(raw.length);
@@ -261,9 +265,18 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   const ver = force ? `${article.fingerprint.slice(0, 8)}-${Date.now()}` : article.fingerprint.slice(0, 12);
   const llm = isLlmEnabled(env);
 
-  let cc: string; if (llm) cc = await generateConceptWithLLM(env, article); else cc = visualConcept(article);
-  console.log(`[cover] ${article.slug} :: ${cc}`);
-  const cp = buildFinalPrompt(article, "cover", cc);
+  // Cover with relevance loop
+  let cc = llm ? await generateConceptWithLLM(env, article) : visualConcept(article);
+  let score = await scoreRelevance(env, article, cc);
+  let attempts = 0;
+  while (score < 7 && attempts < 2 && llm) {
+    console.log(`[relevance] low score ${score}, retrying concept...`);
+    cc = await generateConceptWithLLM(env, article);
+    score = await scoreRelevance(env, article, cc);
+    attempts++;
+  }
+  console.log(`[cover] ${article.slug} :: score=${score} :: ${cc}`);
+  const cp = buildJsonPrompt(article, "cover", cc);
   const ck = `images/${article.slug}/${ver}/cover.jpg`;
   const cb = await generateImage(env, cp);
   await env.VISUAL_ASSETS.put(ck, cb);
@@ -272,9 +285,16 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   let idx = 0;
   for (const h of heads) {
     idx++;
-    let ic: string; if (llm) ic = await generateConceptWithLLM(env, article, h.text); else ic = visualConcept(article, h.text);
-    console.log(`[inline-${idx}] ${article.slug} :: ${ic}`);
-    const ip = buildFinalPrompt(article, "inline", ic, h.text);
+    let ic = llm ? await generateConceptWithLLM(env, article, h.text) : visualConcept(article, h.text);
+    let iscore = await scoreRelevance(env, article, ic);
+    let iatt = 0;
+    while (iscore < 7 && iatt < 2 && llm) {
+      ic = await generateConceptWithLLM(env, article, h.text);
+      iscore = await scoreRelevance(env, article, ic);
+      iatt++;
+    }
+    console.log(`[inline-${idx}] ${article.slug} :: score=${iscore} :: ${ic}`);
+    const ip = buildJsonPrompt(article, "inline", ic, h.text);
     const k = `images/${article.slug}/${ver}/inline-${idx}.jpg`;
     const b = await generateImage(env, ip);
     await env.VISUAL_ASSETS.put(k, b);
@@ -286,10 +306,22 @@ async function processArticle(env: Env, article: ArticleSnapshot, force: boolean
   return "generated";
 }
 
-async function runSweep(env: Env, reqLim: number, force: boolean, trig: "cron" | "manual", slugs?: string[]): Promise<void> {
+async function runSweep(env: Env, reqLim: number, force: boolean, trig: "cron" | "manual", slugs?: string[], siteAssets?: boolean): Promise<void> {
   const st = new Date().toISOString(); const so = normalizeOrigin(env.SITE_ORIGIN || "https://shorakaei.ir");
   let g = 0; let u = 0; let s = 0; let e = 0; const det: any[] = [];
   try {
+    if (siteAssets) {
+      for (const asset of SITE_ASSETS) {
+        try {
+          await generateSiteAsset(env, asset);
+          g++;
+          det.push({ slug: asset.slug, kind: asset.kind, result: "generated" });
+        } catch (err) { e++; det.push({ slug: asset.slug, result: "error", message: String(err) }); }
+      }
+      await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify({ state: "completed", trigger: trig, startedAt: st, finishedAt: new Date().toISOString(), generated: g, errors: e, details: det }));
+      return;
+    }
+
     const urls = await getSitemapArticleUrls(so);
     if (!urls.length) throw new Error("No URLs found.");
     let sel: string[];
@@ -313,4 +345,55 @@ async function runSweep(env: Env, reqLim: number, force: boolean, trig: "cron" |
   } catch (err) {
     await env.VISUAL_ASSETS.put(`${STATE_PREFIX}last-job.json`, JSON.stringify({ state: "error", trigger: trig, startedAt: st, message: String(err) }));
   }
+}
+
+// ─── Helpers (sitemap, extraction, etc.) ───
+async function getSitemapArticleUrls(siteOrigin: string): Promise<string[]> {
+  const origin = normalizeOrigin(siteOrigin); const visited = new Set<string>(); const urls = new Set<string>(); const queue = [`${origin}/sitemap.xml`];
+  for (let r = 0; queue.length && r < MAX_SITEMAP_FILES; r++) {
+    const su = queue.shift()!; if (visited.has(su)) continue; visited.add(su);
+    let res: Response; try { res = await fetch(su, { headers: { "User-Agent": "SVI/1.0" } }); } catch { continue; }
+    if (!res.ok) continue; const xml = (await res.text()).slice(0, 2000000);
+    for (const loc of [...xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)].map((m) => decodeXml(m[1].trim()))) {
+      let p: URL; try { p = new URL(loc); } catch { continue; }
+      if (!isAllowedSiteUrl(p, origin)) continue;
+      if (/\.xml(?:\.gz)?$/i.test(p.pathname) && /sitemap/i.test(p.pathname)) { if (!visited.has(p.href) && queue.length < MAX_SITEMAP_FILES) queue.push(p.href); }
+      else if (isBlogArticlePath(p.pathname)) { p.search = ""; p.hash = ""; urls.add(p.href); }
+    }
+  }
+  return [...urls].sort((a, b) => a.localeCompare(b));
+}
+function isAllowedSiteUrl(u: URL, o: string): boolean { const c = new URL(o); if (u.protocol !== "https:" && u.protocol !== "http:") return false; return u.hostname.replace(/^www\./, "") === c.hostname.replace(/^www\./, ""); }
+function isBlogArticlePath(p: string): boolean { const c = p.replace(/\/+$/, ""); if (!c.startsWith("/blog/") || c === "/blog") return false; if (/^\/blog\/(category|tag|page|author|feed)(\/|$)/i.test(c)) return false; if (/\.(xml|json|jpg|jpeg|png|webp|svg|pdf)$/i.test(c)) return false; return c.split("/").filter(Boolean).length >= 2; }
+function decodeXml(v: string): string { return v.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'"); }
+function slugFromUrl(u: string): string { const p = new URL(u).pathname.split("/").filter(Boolean); return p[p.length - 1] || ""; }
+async function extractArticle(url: string): Promise<ArticleSnapshot | null> {
+  const res = await fetch(url, { headers: { "User-Agent": "SVI/1.0", "Accept": "text/html" } });
+  if (!res.ok) return null; const html = (await res.text()).slice(0, MAX_PAGE_CHARS);
+  if (!/<html[\s>]/i.test(html)) return null;
+  const ah = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1] || html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] || html;
+  const title = extractMeta(html, "property", "og:title") || extractTagText(html, "h1") || extractTagText(html, "title");
+  const desc = extractMeta(html, "name", "description") || extractMeta(html, "property", "og:description");
+  if (!title) return null;
+  const clean = ah.replace(/<(script|style|noscript|svg|nav|footer|header|aside)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
+  const headings = [...clean.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)].map((m, i) => ({ text: cleanText(m[1]).slice(0, 180), index: i })).filter((h) => h.text.length > 3);
+  const paras = [...clean.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map((m) => cleanText(m[1])).filter((t) => t.length > 45).slice(0, 60);
+  const sample = paras.slice(0, 5).join(" ").slice(0, 1200);
+  const excerpt = paras.slice(0, 4).join(" ").slice(0, 1800) || cleanText(clean).slice(0, 1800);
+  const sig = paras.join(" ").slice(0, 14000);
+  const slug = slugFromUrl(url);
+  const fp = await sha256([url, title, desc, headings.map((h) => h.text).join("|"), sig].join("\n"));
+  return { url, slug, title: title.slice(0, 180), description: (desc || excerpt).slice(0, 500), headings, excerpt, contentSample: sample, fingerprint: fp };
+}
+function extractMeta(h: string, a: string, n: string): string { const e = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); const rA = new RegExp(`<meta\\b(?=[^>]*\\b${a}=["']${e}["'])(?=[^>]*\\bcontent=["']([^"']*)["'])[^>]*>`, "i"); const rB = new RegExp(`<meta\\b(?=[^>]*\\bcontent=["']([^"']*)["'])(?=[^>]*\\b${a}=["']${e}["'])[^>]*>`, "i"); const m = h.match(rA) || h.match(rB); return m ? cleanText(m[1]) : ""; }
+function extractTagText(h: string, t: string): string { const m = h.match(new RegExp(`<${t}\\b[^>]*>([\\s\\S]*?)<\\/${t}>`, "i")); return m ? cleanText(m[1]) : ""; }
+function cleanText(v: string): string { return decodeEntities(v.replace(/<[^>]+>/g, " ").replace(/<!--[\s\S]*?-->/g, " ")).replace(/[\u200b\u200c\u200d]/g, " ").replace(/\s+/g, " ").trim(); }
+function decodeEntities(v: string): string { return v.replace(/&nbsp;|&#160;/gi, " ").replace(/&amp;/gi, "&").replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&#(\d+);/g, (_m, c) => String.fromCodePoint(Math.min(0x10ffff, Number(c)))).replace(/&#x([\da-f]+);/gi, (_m, c) => String.fromCodePoint(Math.min(0x10ffff, parseInt(c, 16)))); }
+async function sha256(input: string): Promise<string> { const d = new TextEncoder().encode(input); const h = await crypto.subtle.digest("SHA-256", d); return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join(""); }
+function chooseInlineHeadings(headings: ArticleSnapshot["headings"], maxInline: number): Array<{ text: string; index: number }> {
+  if (headings.length < 2 || maxInline < 1) return [];
+  const desired = headings.length >= 5 ? Math.min(2, maxInline) : 1;
+  const chosen: Array<{ text: string; index: number }> = [];
+  for (let n = 1; n <= desired; n++) { const t = Math.round((n * (headings.length - 1)) / (desired + 1)); const item = headings[t]; if (item && !chosen.some((c) => c.index === item.index)) chosen.push(item); }
+  return chosen;
 }
