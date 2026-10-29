@@ -1,0 +1,22 @@
+# ساخته‌شده توسط Fix-AutoImage.ps1 — ویرایش دستی امن است
+name = "shorakaei-visual-intelligence"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+preview_urls = true
+
+routes = [
+  { pattern = "img.shorakaei.ir", custom_domain = true, zone_name = "shorakaei.ir" }
+]
+
+[[kv_namespaces]]
+binding = "VISUAL_ASSETS"
+id = "642bc4362da94c3b86d5e8ffb45790c4"
+
+[vars]
+SITE_ORIGIN = "https://shorakaei.ir"
+IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell"
+MAX_INLINE_IMAGES = "1"
+
+[ai]
+binding = "AI"

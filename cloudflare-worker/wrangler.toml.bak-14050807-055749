@@ -1,0 +1,10 @@
+name = "shorakaei-visual-intelligence"
+main = "src/index.ts"
+compatibility_date = "2026-10-29"
+
+routes = [
+  { pattern = "img.shorakaei.ir", custom_domain = true }
+]
+
+[ai]
+binding = "AI"
