@@ -39,7 +39,7 @@
         "shiki": "^4.4.3"
     },
     "devDependencies": {
-        "@next/bundle-analyzer": "^16.4.0",
+        "@next/bundle-analyzer": "^16.4.3",
         "@types/node": "^20.19.43",
         "@types/pg": "^8.23.1",
         "@types/react": "19.3.0",
@@ -53,4 +53,3 @@
         "@types/react-dom": "19.3.0"
     }
 }
-

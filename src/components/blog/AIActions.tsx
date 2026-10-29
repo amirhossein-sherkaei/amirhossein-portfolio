@@ -1,4 +1,4 @@
-"use client";
+
 
 export default function AIActions({ title, slug }: { title: string; slug: string }) {
   const url = `https://shorakaei.ir/blog/${slug}`;
