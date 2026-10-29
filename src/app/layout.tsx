@@ -172,33 +172,15 @@ export const viewport: Viewport = {
 const themeInitScript = "(function(){try{var s=localStorage.getItem('theme');var t;if(s==='light'||s==='dark'){t=s;}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){t='dark';}else{t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="fa" dir="rtl" className={estedad.variable} data-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="alternate" type="application/rss+xml" title="مجله امیرحسین شرکائی" href="/feed.xml" />
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        {allSchemas.map((schema, i) => (
-          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-        ))}
-      </head>
-      
-        
-        <a href="#main" className="skip-link">پرش به محتوای اصلی</a>
-        <GlassFilters />
-        <ThemeProvider>{children}</ThemeProvider>
-        <ClientOverlays />
-        <WebVitals />
-        <MicrosoftClarity />
-        <AutoArticleVisuals />
-        <NewsletterPopup />
-        <SearchCommand />
-        <Analytics />
+    return (
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
+      <body>
+        {children}
         <SpeedInsights />
-              
-              <SpeculationRules />
+        <SpeculationRules />
       </body>
     </html>
   );
 }
+
 
