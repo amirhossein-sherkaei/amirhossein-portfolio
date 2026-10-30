@@ -1,7 +1,7 @@
 ---
 title: "ابزارهای آنالیتیکس و سئو: راهنمای راه‌اندازی Google Analytics 4 و Search Console"
 excerpt: "بدون داده، شما فقط حدس می‌زنید. برای رشد سایت، باید بدانید کاربران از کجا می‌آیند، چه صفحاتی را می‌بینند و کجا سایت را ترک می‌کنند. در این مقاله، راه‌اندازی حرفه‌ای Google Analytics 4 و Search Console را یاد می‌گیرید."
-$11405-08-08"
+date: "2026-10-30"
 category: "سئو"
 tags: ["Google Analytics", "Search Console", "آنالیتیکس", "ابزارهای سئو"]
 readingTime: 12
