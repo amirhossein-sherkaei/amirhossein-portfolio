@@ -1,3 +1,4 @@
+import SpatialOrbitShowcase from "@/components/SpatialOrbitShowcase";
 import type { Metadata } from "next";
 import { getAllPosts, getAllTags } from "@/lib/blog";
 import { getBlogIndexSchema } from "@/lib/schema";
@@ -14,10 +15,29 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   const posts = getAllPosts();
   const tags = getAllTags();
-  const blogSchema = getBlogIndexSchema(posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date })));
+  const blogSchema = getBlogIndexSchema(posts.map((p) => ({ slug: p.slug, title: p.title, date: p.date })));  const orbitArticles = posts.slice(0, 6).map((post: any) => ({
+    id: post.slug,
+    href: `/blog/${post.slug}`,
+    title: post.title,
+    category: post.category || "مقاله",
+    image: post.coverImage || post.image || `https://img.shorakaei.ir/assets?key=images%2F${post.slug}%2Fcover.jpg`,
+    imageAlt: post.title,
+    description: post.excerpt || "",
+    meta: post.readingTime ? `${post.readingTime} دقیقه مطالعه` : "مقاله تحریریه",
+  }));
 
-  return (
+
+      return (
     <main id="main" className="section">
+      <SpatialOrbitShowcase
+        kind="article"
+        eyebrow="THE EDITORIAL ORBIT"
+        title="مقالات، در یک مدار تازه"
+        description="ایده‌ها و تحلیل‌های تازه را از زاویه‌ای متفاوت کشف کن."
+        items={orbitArticles}
+      />
+
+      
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
       
       <div className="container">

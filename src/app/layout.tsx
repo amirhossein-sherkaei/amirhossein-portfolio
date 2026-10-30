@@ -1,3 +1,4 @@
+import "@/styles/spatial-orbit-showcase.css";
 import CommandMenu from '@/components/CommandMenu';
 import { StructuredData } from '@/components/StructuredData';
 import type { Metadata, Viewport } from "next";
@@ -109,7 +110,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { allSchemas } from "@/lib/schema";
 import { SpeculationRules } from '@/components/SpeculationRules';
 const estedad = localFont({
-  src: "../../public/fonts/Estedad-Variable.woff2",
+  src: "../fonts/Estedad-Variable.woff2",
   variable: "--font-estedad",
   display: "swap",
   weight: "100 900",
