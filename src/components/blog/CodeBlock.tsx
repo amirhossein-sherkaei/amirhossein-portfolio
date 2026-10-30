@@ -9,7 +9,7 @@ export default function CodeBlock({ children, className }: { children: string, c
   const lang = className?.replace("language-", "") || "text";
   
   return (
-    <div style={{ margin: "1.5rem 0", borderRadius: "0.75rem", overflow: "hidden", border: "1px solid #444", direction: "ltr" }}>
+    <div style={{ margin: "1.5rem 0", borderRadius: "0.75rem", overflow: "hidden", border: "1px solid #444", direction: "ltr", backgroundColor: "#282c34" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 1rem", backgroundColor: "#21252b", borderBottom: "1px solid #444" }}>
         <span style={{ fontSize: "0.75rem", color: "#9ca3af", textTransform: "uppercase", fontFamily: "monospace" }}>{lang}</span>
         <button 
@@ -19,7 +19,7 @@ export default function CodeBlock({ children, className }: { children: string, c
           {copied ? <><Check size={14} color="#22c55e" /> <span style={{ color: "#22c55e" }}>Copied!</span></> : <><Copy size={14} /> <span>Copy</span></>}
         </button>
       </div>
-      <div style={{ overflowX: "auto", backgroundColor: "#282c34" }}>
+      <div style={{ overflowX: "auto" }}>
         <SyntaxHighlighter 
           language={lang} 
           style={oneDark} 
