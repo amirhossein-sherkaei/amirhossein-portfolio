@@ -11,5 +11,5 @@ const components = {
 };
 
 export default function MarkdownContent({ content }: { content: string }) {
-  return <MDXRemote source={content} components={components} />;
+  return <MDXRemote source={content} components={components} /> components={{ code: CodeBlock }};
 }
