@@ -1,7 +1,7 @@
 ---
 title: "از مقالهٔ متنی تا تصویرسازی هوشمند؛ ساخت یک خط تولید خودکار تصویر با هوش مصنوعی در لبهٔ شبکه"
 description: "مطالعهٔ موردی مهندسی Shorakaei Visual Intelligence با Next.js 16، Cloudflare Workers AI و FLUX.1 Schnell"
-date: "2026-10-31"
+date: "2026-11-01"
 author: "امیرحسین شرکائی"
 tags: ["معماری نرم‌افزار", "هوش مصنوعی", "Next.js", "Cloudflare"]
 readingTime: "۱۵ دقیقه"
