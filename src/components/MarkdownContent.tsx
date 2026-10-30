@@ -1,15 +1,26 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
-import Callout from "@/components/mdx/Callout";
-import Stat from "@/components/mdx/Stat";
-import { Steps, Step } from "@/components/mdx/Steps";
+import ReactMarkdown from "react-markdown";
+import CodeBlock from "@/components/blog/CodeBlock";
 
-const components = {
-  Callout,
-  Stat,
-  Steps,
-  Step,
-};
-
-export default function MarkdownContent({ content }: { content: string }) {
-  return <MDXRemote source={content} components={components} /> components={{ code: CodeBlock }};
+export function MarkdownContent({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      components={{
+        code(props: any) {
+          const { children, className, node, ...rest } = props;
+          const match = /language-(\w+)/.exec(className || "");
+          return match ? (
+            <CodeBlock className={className}>
+              {String(children).replace(/\n$/, "")}
+            </CodeBlock>
+          ) : (
+            <code {...rest} className={className}>
+              {children}
+            </code>
+          );
+        },
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
 }
