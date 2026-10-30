@@ -8,42 +8,22 @@ export default function CodeBlock({ children, className }: { children: string, c
   const [copied, setCopied] = useState(false);
   const lang = className?.replace("language-", "") || "text";
   
-  const handleCopy = () => {
-    navigator.clipboard.writeText(children);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div className="my-6 w-full max-w-full rounded-xl overflow-hidden border border-gray-700 bg-[#282c34] shadow-lg" dir="ltr">
-      {/* Header with Copy Button */}
-      <div className="flex items-center justify-between px-4 py-2 bg-[#21252b] border-b border-gray-700">
-        <span className="text-xs font-mono text-gray-400 uppercase tracking-wider">{lang}</span>
+    <div style={{ margin: "1.5rem 0", borderRadius: "0.75rem", overflow: "hidden", border: "1px solid #444", direction: "ltr" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.5rem 1rem", backgroundColor: "#21252b", borderBottom: "1px solid #444" }}>
+        <span style={{ fontSize: "0.75rem", color: "#9ca3af", textTransform: "uppercase", fontFamily: "monospace" }}>{lang}</span>
         <button 
-          onClick={handleCopy} 
-          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
+          onClick={() => { navigator.clipboard.writeText(children); setCopied(true); setTimeout(() => setCopied(false), 2000); }} 
+          style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.75rem", color: "#9ca3af", background: "none", border: "none", cursor: "pointer" }}
         >
-          {copied ? (
-            <><Check size={14} className="text-green-500" /> <span className="text-green-500">Copied!</span></>
-          ) : (
-            <><Copy size={14} /> <span>Copy</span></>
-          )}
+          {copied ? <><Check size={14} color="#22c55e" /> <span style={{ color: "#22c55e" }}>Copied!</span></> : <><Copy size={14} /> <span>Copy</span></>}
         </button>
       </div>
-      
-      {/* Code Area with Horizontal Scroll */}
-      <div className="w-full overflow-x-auto">
+      <div style={{ overflowX: "auto", backgroundColor: "#282c34" }}>
         <SyntaxHighlighter 
           language={lang} 
           style={oneDark} 
-          customStyle={{ 
-            margin: 0, 
-            padding: "1.25rem", 
-            background: "transparent", 
-            fontSize: "0.875rem",
-            direction: "ltr",
-            textAlign: "left"
-          }} 
+          customStyle={{ margin: 0, padding: "1rem", background: "transparent", fontSize: "0.875rem" }} 
           showLineNumbers
         >
           {children}
