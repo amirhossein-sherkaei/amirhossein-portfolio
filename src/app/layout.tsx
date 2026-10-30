@@ -1,218 +1,113 @@
-import type { Metadata, Viewport } from "next";
-import { StructuredData } from '@/components/StructuredData';
-import localFont from "next/font/local";
 import { StructuredData } from '@/components/StructuredData';
 
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 /* 01-04 - Foundation */
 import "@/styles/tokens.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/motion.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/base.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/magnetic.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 05-09 - Core systems */
 import "@/styles/reveal.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-touch.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-modal.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-typography.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-nav-v2.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 10-14 - Mobile foundations */
 import "@/styles/mobile-bottom-nav.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/perceived-performance.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/adaptive-navigation.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/sensory.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/welcome-onboarding.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 15-17 - Forms */
 import "@/styles/order-form-v2.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/order-premium.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-declutter.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 18-22 - Work + Layout */
 import "@/styles/work-pages.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/work-premium.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/layout.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/layout-more.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/footer-effects.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 23-27 - Pages + Responsive */
 import "@/styles/pages.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/responsive.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/enhancements.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/process.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/commitments.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 28-29 - Mobile overrides */
 import "@/styles/mobile-fix.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-polish-v2.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 31 - Theme + Hero */
 import "@/styles/theme-toggle.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/hero-editorial.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 34-38 - Hero + Branding */
 import "@/styles/hero-premium.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/signature-ink.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/density-standardization.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/services-premium.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/manuscript-grid.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 39-42 - Sections */
 import "@/styles/hero-bento-live.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/testimonials.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/brand-logo.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/newsletter.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 43-47 - Performance + Footer */
 import "@/styles/footer-v2.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/contact-links.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/count-up.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/chapter-rail.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 48-50 - Performance + Nav */
 import "@/styles/nav-premium.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 51-55 - Final polish + Editorial */
 import "@/styles/polish.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-performance-fix.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/editorial-structure.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 56 - Dev tools */
 import "@/styles/grid-overlay.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* 57 - ULTIMATE FINAL (Desktop Base) */
 import "@/styles/polish-2026.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/balance-turquoise-burgundy.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/waline-custom.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/shahkar-typography.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/shahkar-ui-fixes.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/liquid-glass-infinity.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-icons.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/chat-bubble-glass.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/theme-smooth-fix.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-layout.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mobile-navbar-clean.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/3d-material.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* ============================================================
    INFINITY MOBILE LUXURY (The New Design System)
    ============================================================ */
 import "@/styles/infinity-tokens.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-order-mobile.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-blog-mobile.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-speed-engine.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-home-performance.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-visual-system.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/blog-skeleton.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/view-transitions.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-pwa-cro.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/mdx-infinity.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-search.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-performance.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-typography.css";
-import { StructuredData } from '@/components/StructuredData';
 import "@/styles/infinity-home-speed.css";
-import { StructuredData } from '@/components/StructuredData';
-
 /* Components */
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { StructuredData } from '@/components/StructuredData';
 import ClientOverlays from "@/components/ClientOverlays";
-import { StructuredData } from '@/components/StructuredData';
 import GlassFilters from "@/components/GlassFilters";
-import { StructuredData } from '@/components/StructuredData';
 import WebVitals from "@/components/WebVitals";
-import { StructuredData } from '@/components/StructuredData';
 import MicrosoftClarity from "@/components/MicrosoftClarity";
-import { StructuredData } from '@/components/StructuredData';
 import AutoArticleVisuals from "@/components/AutoArticleVisuals";
-import { StructuredData } from '@/components/StructuredData';
 import NewsletterPopup from "@/components/NewsletterPopup";
-import { StructuredData } from '@/components/StructuredData';
 import SearchCommand from "@/components/SearchCommand";
-import { StructuredData } from '@/components/StructuredData';
 import { Analytics } from "@vercel/analytics/next";
-import { StructuredData } from '@/components/StructuredData';
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { StructuredData } from '@/components/StructuredData';
 import { allSchemas } from "@/lib/schema";
-import { StructuredData } from '@/components/StructuredData';
 import { SpeculationRules } from '@/components/SpeculationRules';
-import { StructuredData } from '@/components/StructuredData';
-
 const estedad = localFont({
   src: "../../public/fonts/Estedad-Variable.woff2",
   variable: "--font-estedad",
@@ -272,6 +167,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-
 
 
