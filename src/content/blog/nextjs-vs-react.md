@@ -1,7 +1,7 @@
 ---
 title: "Next.js یا React؟ برای پروژه بعدیت کدوم رو انتخاب کنی"
 excerpt: "انتخاب بین Next.js و React یکی از مهم‌ترین تصمیمات فنی توئه. این مقاله بهت کمک می‌کنه بر اساس نیازت، معماری پروژه و اهدافت تصمیم درستی بگیری."
-date: 2026-09-15
+$11405-08-08
 tags: [Next.js, React, Web Development]
 category: "توسعه"
 featured: false
