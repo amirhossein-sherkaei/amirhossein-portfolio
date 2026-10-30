@@ -140,7 +140,21 @@ async function runSweep(env: Env, limit: number, force: boolean, trigger: string
     const sitemapRes = await fetch(`${env.SITE_ORIGIN}/sitemap.xml`);
     const xml = await sitemapRes.text();
     const urls = [...xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)].map(m => m[1].trim()).filter(u => u.includes("/blog/") && u !== `${env.SITE_ORIGIN}/blog`);
-    let selected = slugs?.length ? urls.filter(u => slugs.includes(u.split("/").pop() || "")) : urls.slice(0, limit);
+    let selected: string[];
+    if (slugs && slugs.length) {
+      selected = urls.filter(u => slugs.includes(u.split("/").pop() || ""));
+    } else {
+      const cursorState = await env.VISUAL_ASSETS.get(`${STATE_PREFIX}cursor.json`, "json") as { cursor?: number } | null;
+      const cursor = (cursorState?.cursor || 0) % urls.length;
+      selected = [];
+      for (let i = 0; i < Math.min(limit, urls.length); i++) {
+        selected.push(urls[(cursor + i) % urls.length]);
+      }
+      await env.VISUAL_ASSETS.put(`${STATE_PREFIX}cursor.json`, JSON.stringify({ 
+        cursor: (cursor + limit) % urls.length,
+        updatedAt: new Date().toISOString()
+      }));
+    }
     if (!selected.length) throw new Error("No matching URLs in sitemap.");
     for (const url of selected) {
       try {
