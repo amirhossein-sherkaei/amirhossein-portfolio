@@ -1,113 +1,203 @@
-import { StructuredData } from '@/components/StructuredData';
+import { StructuredData } from '@/components/StructuredData';
+import CommandMenu from '@/components/CommandMenu';
 
-import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import type { Metadata, Viewport } from "next";
+import CommandMenu from '@/components/CommandMenu';
+import localFont from "next/font/local";
+import CommandMenu from '@/components/CommandMenu';
 /* 01-04 - Foundation */
-import "@/styles/tokens.css";
-import "@/styles/motion.css";
-import "@/styles/base.css";
-import "@/styles/magnetic.css";
+import "@/styles/tokens.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/motion.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/base.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/magnetic.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 05-09 - Core systems */
-import "@/styles/reveal.css";
-import "@/styles/mobile-touch.css";
-import "@/styles/mobile-modal.css";
-import "@/styles/mobile-typography.css";
-import "@/styles/mobile-nav-v2.css";
+import "@/styles/reveal.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-touch.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-modal.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-typography.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-nav-v2.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 10-14 - Mobile foundations */
-import "@/styles/mobile-bottom-nav.css";
-import "@/styles/perceived-performance.css";
-import "@/styles/adaptive-navigation.css";
-import "@/styles/sensory.css";
-import "@/styles/welcome-onboarding.css";
+import "@/styles/mobile-bottom-nav.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/perceived-performance.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/adaptive-navigation.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/sensory.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/welcome-onboarding.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 15-17 - Forms */
-import "@/styles/order-form-v2.css";
-import "@/styles/order-premium.css";
-import "@/styles/mobile-declutter.css";
+import "@/styles/order-form-v2.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/order-premium.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-declutter.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 18-22 - Work + Layout */
-import "@/styles/work-pages.css";
-import "@/styles/work-premium.css";
-import "@/styles/layout.css";
-import "@/styles/layout-more.css";
-import "@/styles/footer-effects.css";
+import "@/styles/work-pages.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/work-premium.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/layout.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/layout-more.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/footer-effects.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 23-27 - Pages + Responsive */
-import "@/styles/pages.css";
-import "@/styles/responsive.css";
-import "@/styles/enhancements.css";
-import "@/styles/process.css";
-import "@/styles/commitments.css";
+import "@/styles/pages.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/responsive.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/enhancements.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/process.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/commitments.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 28-29 - Mobile overrides */
-import "@/styles/mobile-fix.css";
-import "@/styles/mobile-polish-v2.css";
+import "@/styles/mobile-fix.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-polish-v2.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 31 - Theme + Hero */
-import "@/styles/theme-toggle.css";
-import "@/styles/hero-editorial.css";
+import "@/styles/theme-toggle.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/hero-editorial.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 34-38 - Hero + Branding */
-import "@/styles/hero-premium.css";
-import "@/styles/signature-ink.css";
-import "@/styles/density-standardization.css";
-import "@/styles/services-premium.css";
-import "@/styles/manuscript-grid.css";
+import "@/styles/hero-premium.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/signature-ink.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/density-standardization.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/services-premium.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/manuscript-grid.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 39-42 - Sections */
-import "@/styles/hero-bento-live.css";
-import "@/styles/testimonials.css";
-import "@/styles/brand-logo.css";
-import "@/styles/newsletter.css";
+import "@/styles/hero-bento-live.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/testimonials.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/brand-logo.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/newsletter.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 43-47 - Performance + Footer */
-import "@/styles/footer-v2.css";
-import "@/styles/contact-links.css";
-import "@/styles/count-up.css";
-import "@/styles/chapter-rail.css";
+import "@/styles/footer-v2.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/contact-links.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/count-up.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/chapter-rail.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 48-50 - Performance + Nav */
-import "@/styles/nav-premium.css";
+import "@/styles/nav-premium.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 51-55 - Final polish + Editorial */
-import "@/styles/polish.css";
-import "@/styles/mobile-performance-fix.css";
-import "@/styles/editorial-structure.css";
+import "@/styles/polish.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-performance-fix.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/editorial-structure.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 56 - Dev tools */
-import "@/styles/grid-overlay.css";
+import "@/styles/grid-overlay.css";
+import CommandMenu from '@/components/CommandMenu';
 /* 57 - ULTIMATE FINAL (Desktop Base) */
-import "@/styles/polish-2026.css";
-import "@/styles/balance-turquoise-burgundy.css";
-import "@/styles/waline-custom.css";
-import "@/styles/shahkar-typography.css";
-import "@/styles/shahkar-ui-fixes.css";
-import "@/styles/liquid-glass-infinity.css";
-import "@/styles/infinity-icons.css";
-import "@/styles/chat-bubble-glass.css";
-import "@/styles/theme-smooth-fix.css";
-import "@/styles/mobile-layout.css";
-import "@/styles/mobile-navbar-clean.css";
-import "@/styles/3d-material.css";
+import "@/styles/polish-2026.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/balance-turquoise-burgundy.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/waline-custom.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/shahkar-typography.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/shahkar-ui-fixes.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/liquid-glass-infinity.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-icons.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/chat-bubble-glass.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/theme-smooth-fix.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-layout.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mobile-navbar-clean.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/3d-material.css";
+import CommandMenu from '@/components/CommandMenu';
 /* ============================================================
    INFINITY MOBILE LUXURY (The New Design System)
    ============================================================ */
-import "@/styles/infinity-tokens.css";
-import "@/styles/infinity-order-mobile.css";
-import "@/styles/infinity-blog-mobile.css";
-import "@/styles/infinity-speed-engine.css";
-import "@/styles/infinity-home-performance.css";
-import "@/styles/infinity-visual-system.css";
-import "@/styles/blog-skeleton.css";
-import "@/styles/view-transitions.css";
-import "@/styles/infinity-pwa-cro.css";
-import "@/styles/mdx-infinity.css";
-import "@/styles/infinity-search.css";
-import "@/styles/infinity-performance.css";
-import "@/styles/infinity-typography.css";
-import "@/styles/infinity-home-speed.css";
+import "@/styles/infinity-tokens.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-order-mobile.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-blog-mobile.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-speed-engine.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-home-performance.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-visual-system.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/blog-skeleton.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/view-transitions.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-pwa-cro.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/mdx-infinity.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-search.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-performance.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-typography.css";
+import CommandMenu from '@/components/CommandMenu';
+import "@/styles/infinity-home-speed.css";
+import CommandMenu from '@/components/CommandMenu';
 /* Components */
-import { ThemeProvider } from "@/components/ThemeProvider";
-import ClientOverlays from "@/components/ClientOverlays";
-import GlassFilters from "@/components/GlassFilters";
-import WebVitals from "@/components/WebVitals";
-import MicrosoftClarity from "@/components/MicrosoftClarity";
-import AutoArticleVisuals from "@/components/AutoArticleVisuals";
-import NewsletterPopup from "@/components/NewsletterPopup";
-import SearchCommand from "@/components/SearchCommand";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { allSchemas } from "@/lib/schema";
-import { SpeculationRules } from '@/components/SpeculationRules';
+import { ThemeProvider } from "@/components/ThemeProvider";
+import CommandMenu from '@/components/CommandMenu';
+import ClientOverlays from "@/components/ClientOverlays";
+import CommandMenu from '@/components/CommandMenu';
+import GlassFilters from "@/components/GlassFilters";
+import CommandMenu from '@/components/CommandMenu';
+import WebVitals from "@/components/WebVitals";
+import CommandMenu from '@/components/CommandMenu';
+import MicrosoftClarity from "@/components/MicrosoftClarity";
+import CommandMenu from '@/components/CommandMenu';
+import AutoArticleVisuals from "@/components/AutoArticleVisuals";
+import CommandMenu from '@/components/CommandMenu';
+import NewsletterPopup from "@/components/NewsletterPopup";
+import CommandMenu from '@/components/CommandMenu';
+import SearchCommand from "@/components/SearchCommand";
+import CommandMenu from '@/components/CommandMenu';
+import { Analytics } from "@vercel/analytics/next";
+import CommandMenu from '@/components/CommandMenu';
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import CommandMenu from '@/components/CommandMenu';
+import { allSchemas } from "@/lib/schema";
+import CommandMenu from '@/components/CommandMenu';
+import { SpeculationRules } from '@/components/SpeculationRules';
+import CommandMenu from '@/components/CommandMenu';
 const estedad = localFont({
   src: "../../public/fonts/Estedad-Variable.woff2",
   variable: "--font-estedad",
@@ -163,6 +253,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SpeedInsights />
         <SpeculationRules />
               <StructuredData />
+              <CommandMenu />
       </body>
     </html>
   );

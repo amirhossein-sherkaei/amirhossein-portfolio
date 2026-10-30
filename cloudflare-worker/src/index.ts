@@ -46,7 +46,14 @@ export default {
         return m ? json(withAssetUrls(m, url.origin), 200, cors) : json({ error: "Not found" }, 404, cors);
       }
       if (url.pathname === "/index") {
-        return json({ version: 1, items: await getIndex(env) }, 200, cors);
+        const index = await getIndex(env);
+        return json({ 
+          version: 1, 
+          items: index.map((i: any) => ({ 
+            ...i, 
+            cover: `${url.origin}/assets?key=${encodeURIComponent(i.coverKey)}&v=${Date.now()}` 
+          })) 
+        }, 200, cors);
       }
       if (url.pathname === "/assets") {
         const key = url.searchParams.get("key") || "";
