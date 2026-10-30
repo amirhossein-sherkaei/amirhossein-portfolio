@@ -1,150 +1,73 @@
-import { Metadata } from "next";
+import { getAllPosts } from "@/lib/blog";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/blog";
-import { getBlogPostSchema } from "@/lib/schema";
-import MarkdownContent from "@/components/MarkdownContent";
-import ReadingProgress from "@/components/ui/ReadingProgress";
-import TableOfContents from "@/components/blog/TableOfContents";
-import AIActions from "@/components/blog/AIActions";
-import BlogComments from "@/components/blog/BlogComments";
-import BlogShare from "@/components/BlogShare";
-import BlogAuthorBox from "@/components/BlogAuthorBox";
-import BlogPrevNext from "@/components/BlogPrevNext";
-import BlogEndCTA from "@/components/BlogEndCTA";
-import BlogBreadcrumb from "@/components/BlogBreadcrumb";
-import ArticleGlassNav from "@/components/blog/ArticleGlassNav";
+import SpatialOrbitShowcase from "@/components/SpatialOrbitShowcase";
 
-import "@/styles/blog-post-premium.css";
-import "@/styles/blog-mobile-fix.css";
+export default async function BlogPage() {
+  const posts = getAllPosts();
 
-type Props = {
-  params: Promise<{ slug: string }>;
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
-  if (!post) return { title: "یافت نشد" };
-
-  return {
+  // رفع خطای TypeScript با استفاده از any
+  const orbitArticles = posts.slice(0, 6).map((post: any) => ({
+    id: post.slug,
+    href: `/blog/${post.slug}`,
     title: post.title,
-    description: post.excerpt,
-    alternates: { canonical: `https://shorakaei.ir/blog/${post.slug}` },
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `https://shorakaei.ir/blog/${post.slug}`,
-      type: "article",
-      publishedTime: post.date,
-      images: [{ url: `https://shorakaei.ir/api/og?slug=${post.slug}`, width: 1200, height: 630 }],
-    },
-  };
-}
-
-export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
-}
-
-export default async function BlogPostPage({ params }: Props) {
-  const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
-
-  if (!post) notFound();
-
-  const articleSchema = getBlogPostSchema({
-    title: post.title,
-    excerpt: post.excerpt,
-    date: post.date,
-    slug: post.slug,
-  });
-
-  const relatedPosts = getRelatedPosts(post.slug, post.tags, 3);
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "خانه", item: "https://shorakaei.ir" },
-      { "@type": "ListItem", position: 2, name: "بلاگ", item: "https://shorakaei.ir/blog" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://shorakaei.ir/blog/${post.slug}` },
-    ],
-  };
-
-  // Remove the first H1 from rendered content (prevents duplicate title)
-  const cleanContent = (post.content || "").replace(/^# .+$/m, "").trim();
+    category: post.category || "مقاله",
+    image: post.coverImage || post.image || `https://img.shorakaei.ir/assets?key=images%2F${post.slug}%2Fcover.jpg`,
+    imageAlt: post.title,
+    description: post.excerpt || post.description || "",
+    meta: post.readingTime ? `${post.readingTime} دقیقه مطالعه` : "مقاله تحریریه",
+  }));
 
   return (
-    <>
-      <ReadingProgress />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+    <main className="min-h-screen bg-[#fafafa] dark:bg-[#09090b] pb-24">
+      {/* هدر بلاگ */}
+      <section className="pt-32 pb-12 px-4 max-w-4xl mx-auto text-center" dir="rtl">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+          مقالات و تحلیل‌های شرکائی
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          ایده‌ها، تجربه‌ها و تکنولوژی‌های دنیای وب و هوش مصنوعی
+        </p>
+      </section>
 
-      <main className="blog-post-page">
-        <ArticleGlassNav
-          title={post.title}
-          slug={post.slug}
-          toc={post.toc || []}
+      {/* نمایشگر جدید */}
+      <div className="px-4">
+        <SpatialOrbitShowcase
+          kind="article"
+          eyebrow="THE EDITORIAL ORBIT"
+          title="مقالات، در یک مدار تازه"
+          description="ایده‌ها و تحلیل‌های تازه را از زاویه‌ای متفاوت کشف کن."
+          items={orbitArticles}
         />
+      </div>
 
-        <div className="container">
-          <BlogBreadcrumb title={post.title} />
-
-          <header className="blog-post-header">
-            <span className="blog-post-category">{post.category}</span>
-            <h1 className="blog-post-title">{post.title}</h1>
-            <p className="blog-post-excerpt">{post.excerpt}</p>
-            <div className="blog-post-meta">
-              <span>{post.dateFormatted}</span>
-              <span>{post.readingTime} دقیقه مطالعه</span>
-            </div>
-          </header>
-
-          {post.toc && post.toc.length > 0 && (
-            <div style={{ marginBottom: "32px" }}>
-              <TableOfContents items={post.toc} variant="inline" />
-            </div>
-          )}
-
-          <div className="blog-post-layout">
-            <article className="blog-post-content glass-panel">
-              <MarkdownContent content={cleanContent} />
-
-              <BlogShare title={post.title} />
-              <BlogAuthorBox />
-              <BlogEndCTA />
-
-              <div style={{ marginTop: "24px" }}>
-                <AIActions title={post.title} slug={post.slug} />
+      {/* لیست عادی مقالات */}
+      <section className="px-4 max-w-4xl mx-auto mt-20" dir="rtl">
+        <h2 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white border-r-4 border-[#0d7377] pr-3">
+          آرشیو تمام مقالات
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {posts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group p-6 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-[#0d7377] transition-all"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs text-[#8b3a4a] font-medium bg-[#8b3a4a]/10 px-2 py-1 rounded">
+                  {(post as any).category || "مقاله"}
+                </span>
+                <span className="text-xs text-gray-500">{(post as any).readingTime} دقیقه</span>
               </div>
-
-              <BlogComments serverURL="https://shorakaei-comments.vercel.app" path={`/blog/${post.slug}`} />
-            </article>
-
-            {post.toc && post.toc.length > 0 && (
-              <aside className="blog-post-sidebar">
-                <TableOfContents items={post.toc} />
-              </aside>
-            )}
-          </div>
-
-          {relatedPosts.length > 0 && (
-            <section className="related-posts-section">
-              <h2 className="related-posts-title">مقالات مرتبط</h2>
-              <div className="related-posts-grid">
-                {relatedPosts.map((related) => (
-                  <Link key={related.slug} href={`/blog/${related.slug}`} className="related-post-card">
-                    <span className="blog-post-category" style={{ fontSize: '0.65rem' }}>{related.category}</span>
-                    <h3 style={{ fontSize: '1rem', margin: '12px 0', color: 'var(--sh-color-ink)' }}>{related.title}</h3>
-                    <time style={{ fontSize: '0.8rem', color: 'var(--sh-color-muted)' }}>{related.dateFormatted}</time>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <BlogPrevNext currentSlug={post.slug} />
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-[#0d7377] transition-colors mb-2">
+                {post.title}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                {post.excerpt}
+              </p>
+            </Link>
+          ))}
         </div>
-      </main>
-    </>
+      </section>
+    </main>
   );
 }
