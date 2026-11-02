@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "backup": "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\.shorakaei-backups\\spatial-orbit-2026-10-31T18-26-41-448Z",
+  "installed": [
+    "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\components\\SpatialOrbitShowcase.tsx",
+    "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\styles\\spatial-orbit-showcase.css",
+    "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\lib\\spatial-orbit-data.ts"
+  ],
+  "layout": "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\app\\layout.tsx",
+  "cssImport": "../styles/spatial-orbit-showcase.css",
+  "article": {
+    "file": "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\app\\blog\\page.tsx",
+    "dataVariable": "posts",
+    "placement": "after-blog-intro"
+  },
+  "project": {
+    "file": "C:\\Users\\AmirHossien\\Desktop\\amirhossein-portfolio\\src\\app\\page.tsx",
+    "dataVariable": "Portfolio",
+    "placement": "after-portfolio-section"
+  },
+  "note": "Items without a real title, image, or valid destination URL are filtered out by the adapter. Article slug fallback uses /blog/{slug}; project links must come from real href/url/link fields."
+}
