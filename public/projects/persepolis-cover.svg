@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1400" viewBox="0 0 1600 1400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="180" y1="80" x2="1370" y2="1330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35101B"/>
+      <stop offset=".48" stop-color="#170B10"/>
+      <stop offset="1" stop-color="#08090C"/>
+    </linearGradient>
+    <linearGradient id="red" x1="250" y1="200" x2="1260" y2="1220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F04465"/>
+      <stop offset=".45" stop-color="#B80F35"/>
+      <stop offset="1" stop-color="#570F24"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(630 440 -540 774 920 570)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7193F" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#D7193F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="170" y1="0" x2="1420" y2="1250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" stroke="#FFF" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+    <filter id="blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="54"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1400" fill="url(#bg)"/>
+  <rect width="1600" height="1400" fill="url(#grid)"/>
+  <rect width="1600" height="1400" fill="url(#glow)"/>
+  <ellipse cx="1040" cy="680" rx="460" ry="390" fill="#D7193F" fill-opacity=".14" filter="url(#blur)"/>
+
+  <!-- Abstract stadium roof and pitch geometry; intentionally not an official club crest. -->
+  <g opacity=".74">
+    <path d="M170 560C330 250 590 120 890 120C1190 120 1390 290 1480 560" stroke="url(#line)" stroke-width="2"/>
+    <path d="M220 590C380 340 600 230 880 230C1130 230 1320 350 1430 590" stroke="#FFF" stroke-opacity=".19" stroke-width="2"/>
+    <path d="M280 630C430 430 620 340 860 340C1090 340 1260 440 1370 630" stroke="#FFF" stroke-opacity=".12" stroke-width="2"/>
+    <path d="M130 730H1470" stroke="#FFF" stroke-opacity=".1" stroke-width="2"/>
+    <path d="M800 730V1260M250 1260L420 730M1350 1260L1180 730" stroke="#FFF" stroke-opacity=".1" stroke-width="2"/>
+    <path d="M430 1260C500 1040 610 900 800 900C990 900 1100 1040 1170 1260" stroke="#FFF" stroke-opacity=".12" stroke-width="2"/>
+    <circle cx="800" cy="980" r="135" stroke="#FFF" stroke-opacity=".1" stroke-width="2"/>
+  </g>
+
+  <g transform="translate(800 560)">
+    <circle r="205" fill="#13090E" fill-opacity=".7" stroke="#FFF" stroke-opacity=".18" stroke-width="2"/>
+    <circle r="179" stroke="url(#red)" stroke-width="3"/>
+    <circle r="159" stroke="#FFF" stroke-opacity=".14" stroke-width="1" stroke-dasharray="4 12"/>
+    <path d="M-82 -95H46C91 -95 119 -67 119 -25C119 20 88 48 43 48H-8V105H-82V-95ZM-8 -32V-15H37C50 -15 57 -20 57 -25C57 -30 50 -32 37 -32H-8Z" fill="url(#red)"/>
+    <path d="M-111 133H111" stroke="#FFF" stroke-opacity=".2" stroke-width="2"/>
+    <text x="0" y="161" text-anchor="middle" fill="#FFF" fill-opacity=".72" font-family="Arial,sans-serif" font-size="17" letter-spacing="7">INDEPENDENT CONCEPT</text>
+  </g>
+
+  <g fill="#FFF">
+    <text x="140" y="116" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="8" fill-opacity=".8">SHORKAEI® / CASE 05</text>
+    <text x="1460" y="116" text-anchor="end" font-family="Arial,sans-serif" font-size="22" letter-spacing="4" fill-opacity=".58">1405</text>
+    <text x="140" y="1190" font-family="Arial,sans-serif" font-size="112" font-weight="900" letter-spacing="3">PERSEPOLIS</text>
+    <text x="145" y="1250" font-family="Arial,sans-serif" font-size="27" letter-spacing="8" fill-opacity=".72">THE NEXT DIGITAL ERA</text>
+  </g>
+  <path d="M140 1290H1460" stroke="#FFF" stroke-opacity=".22"/>
+  <text x="140" y="1340" fill="#FFF" fill-opacity=".72" font-family="Arial,sans-serif" font-size="24">A CONCEPT FOR A MORE COHESIVE CLUB EXPERIENCE</text>
+  <text x="1460" y="1340" text-anchor="end" fill="#FFF" fill-opacity=".62" font-family="Arial,sans-serif" font-size="22">SHORKAEI.IR</text>
+</svg>

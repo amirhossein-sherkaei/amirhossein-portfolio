@@ -23,7 +23,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "خانه", href: "#home", icon: "home", section: "home", preview: { title: "بازگشت به شروع", description: "معرفی کوتاه و مسیرهای اصلی", stat: "۰۱", statLabel: "بخش" } },
   { label: "خدمات", href: "#services", icon: "services", section: "services", preview: { title: "چهار مسیر همکاری", description: "وب، AI، تبلیغات، ویدیو", stat: "۰۴", statLabel: "خدمت" } },
-  { label: "نمونه‌کارها", href: "#portfolio", icon: "portfolio", section: "portfolio", preview: { title: "پروژه‌های واقعی", description: "آرکا، نیلا، ویرا، لومن", stat: "۰۴", statLabel: "پروژه" } },
+  { label: "نمونه‌کارها", href: "#portfolio", icon: "portfolio", section: "portfolio", preview: { title: "پروژه‌های واقعی", description: "پرسپولیس، آرکا، نیلا، ویرا، لومن", stat: "۰۵", statLabel: "پروژه" } },
   { label: "بلاگ", href: "/blog", icon: "blog", preview: { title: "مقالات و یادداشت‌ها", description: "درباره طراحی، سئو و UX", stat: "۲۰", statLabel: "مقاله" } },
   { label: "درباره من", href: "#about", icon: "about", section: "about", preview: { title: "امیرحسین شرکائی", description: "طراح و توسعه‌دهنده وب", stat: "۰۵", statLabel: "سال تجربه" } },
 ];
