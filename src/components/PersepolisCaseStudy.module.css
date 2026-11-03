@@ -919,3 +919,45 @@
 [data-theme="dark"] .finalCta {
   background-color: color-mix(in srgb, var(--surface) 90%, transparent);
 }
+
+
+/* ============================================================
+   SHORKAEI PERSEPOLIS BUTTON CONTRAST FIX
+   Scoped exclusively to the Persepolis case-study page.
+   ============================================================ */
+
+.page .primaryAction,
+.page .primaryAction:link,
+.page .primaryAction:visited,
+.page .primaryAction:hover,
+.page .primaryAction:active,
+.page .primaryAction:focus,
+.page .primaryAction:focus-visible,
+.page .highlightsLead a,
+.page .highlightsLead a:link,
+.page .highlightsLead a:visited,
+.page .highlightsLead a:hover,
+.page .highlightsLead a:active,
+.page .highlightsLead a:focus,
+.page .highlightsLead a:focus-visible {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+.page .primaryAction *,
+.page .highlightsLead a * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.page .primaryAction:focus-visible,
+.page .highlightsLead a:focus-visible {
+  outline: 3px solid #ffffff !important;
+  outline-offset: 4px;
+}
