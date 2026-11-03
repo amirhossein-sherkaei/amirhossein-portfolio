@@ -67,7 +67,7 @@ export const projects: Project[] = [
     fullDescription:
       "یک پیشنهاد مستقل برای بازطراحی تجربه دیجیتال باشگاه پرسپولیس؛ با تمرکز بر هویت بصری قدرتمند، دسترسی سریع به اطلاعات مسابقات، روایت خبری منسجم و تجربه‌ای یکپارچه در دسکتاپ و موبایل. این اثر یک پروژه مفهومی و مستقل است و به سفارش یا تأیید رسمی باشگاه انجام نشده است.",
     tags: ["Sports UX", "Digital Redesign", "Interactive Web"],
-    coverImage: "/projects/persepolis-cover.svg",
+    coverImage: "/projects/persepolis-cover.webp",
     liveDemoUrl: "/projects/persepolis.html",
     year: CURRENT_PERSIAN_YEAR,
     status: "پروژه مفهومی",

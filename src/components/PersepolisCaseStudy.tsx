@@ -39,7 +39,7 @@ export default function PersepolisCaseStudy({ project }: Props) {
         name: "بازطراحی مفهومی تجربه دیجیتال باشگاه پرسپولیس",
         alternateName: "PERSEPOLIS — THE NEXT DIGITAL ERA",
         description: project.fullDescription,
-        image: "https://shorakaei.ir/projects/persepolis-cover.svg",
+        image: "https://shorakaei.ir/projects/persepolis-cover.webp",
         author: {
           "@type": "Person",
           name: "امیرحسین شرکائی",
@@ -133,7 +133,7 @@ export default function PersepolisCaseStudy({ project }: Props) {
             </div>
             <div className={styles.coverFrame}>
               <Image
-                src={project.coverImage || "/projects/persepolis-cover.svg"}
+                src={project.coverImage || "/projects/persepolis-cover.webp"}
                 alt="تصویر مفهومی پروژه بازطراحی دیجیتال پرسپولیس"
                 fill
                 priority
